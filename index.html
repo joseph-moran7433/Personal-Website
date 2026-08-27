@@ -1,1 +1,381 @@
-See next commit — pushing via tool
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Joseph Moran</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0f12;
+      --surface: #13161b;
+      --surface2: #181c22;
+      --border: rgba(255,255,255,0.07);
+      --text: #e8eaed;
+      --muted: #8a9099;
+      --faint: #4a5058;
+      --accent: #4f98a3;
+      --accent-hover: #3d8490;
+      --gold: #c9a84c;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --radius: 0.75rem;
+      --transition: 180ms cubic-bezier(0.16,1,0.3,1);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(13,15,18,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: var(--font-display); font-size: 1.2rem; letter-spacing: 0.02em; color: var(--text); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color var(--transition); }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      font-size: 0.8rem; padding: 0.5rem 1.25rem;
+      border: 1px solid var(--accent); color: var(--accent);
+      border-radius: 2rem; transition: all var(--transition);
+    }
+    .nav-cta:hover { background: var(--accent); color: #fff; }
+
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('assets/hero_bg.png');
+      background-size: cover; background-position: center;
+    }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(13,15,18,0.3) 0%, rgba(13,15,18,0.7) 60%, rgba(13,15,18,1) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 0 3rem 5rem;
+      max-width: 900px;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.25rem;
+    }
+    .hero-tag::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--accent); }
+    .hero-name {
+      font-family: var(--font-display); font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 1.05; color: #fff; margin-bottom: 1rem;
+    }
+    .hero-tagline {
+      font-size: clamp(1rem, 2vw, 1.25rem); color: var(--muted);
+      max-width: 560px; margin-bottom: 2.5rem; font-weight: 300;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 0.75rem 2rem; border-radius: 2rem;
+      background: var(--accent); color: #fff; font-size: 0.875rem; font-weight: 500;
+      transition: background var(--transition);
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-ghost {
+      padding: 0.75rem 2rem; border-radius: 2rem;
+      border: 1px solid var(--border); color: var(--muted); font-size: 0.875rem;
+      transition: all var(--transition);
+    }
+    .btn-ghost:hover { border-color: var(--text); color: var(--text); }
+    .hero-scroll {
+      position: absolute; bottom: 2rem; right: 3rem; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint);
+    }
+    .hero-scroll::after { content: ''; display: block; width: 1px; height: 3rem; background: var(--faint); }
+
+    section { padding: 6rem 3rem; }
+    .section-label {
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;
+    }
+    .section-label::before { content: ''; display: block; width: 1.5rem; height: 1px; background: var(--accent); }
+    .section-title {
+      font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--text); line-height: 1.1; margin-bottom: 1rem;
+    }
+    .section-sub { font-size: 1rem; color: var(--muted); max-width: 560px; margin-bottom: 3rem; }
+
+    #about { background: var(--surface); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; max-width: 1100px; }
+    .about-photo-wrap {
+      aspect-ratio: 3/4; border-radius: var(--radius); overflow: hidden;
+      background: var(--surface2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 1rem; color: var(--faint);
+    }
+    .about-photo-wrap span { font-size: 0.8rem; letter-spacing: 0.08em; }
+    .about-bio { font-size: 1.05rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+    .about-bio strong { color: var(--text); font-weight: 500; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .stat-card { padding: 1.25rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); }
+    .stat-num { font-family: var(--font-display); font-size: 2rem; color: var(--accent); }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+
+    #projects { background: var(--bg); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; max-width: 1100px; }
+    .project-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2rem;
+      transition: border-color var(--transition), transform var(--transition);
+      cursor: pointer; position: relative; overflow: hidden;
+    }
+    .project-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(79,152,163,0.05), transparent);
+      opacity: 0; transition: opacity var(--transition);
+    }
+    .project-card:hover { border-color: rgba(79,152,163,0.4); transform: translateY(-3px); }
+    .project-card:hover::before { opacity: 1; }
+    .project-date { font-size: 0.72rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .project-title { font-family: var(--font-display); font-size: 1.3rem; color: var(--text); margin-bottom: 0.75rem; line-height: 1.2; }
+    .project-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.5rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag { font-size: 0.7rem; padding: 0.25rem 0.75rem; border-radius: 2rem; background: rgba(79,152,163,0.1); border: 1px solid rgba(79,152,163,0.2); color: var(--accent); letter-spacing: 0.05em; }
+    .project-arrow { position: absolute; top: 1.5rem; right: 1.5rem; color: var(--faint); transition: color var(--transition), transform var(--transition); }
+    .project-card:hover .project-arrow { color: var(--accent); transform: translate(3px,-3px); }
+
+    #travel { background: var(--surface); }
+    .map-container { max-width: 1100px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; position: relative; overflow: hidden; }
+    .map-title { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; letter-spacing: 0.05em; }
+    #travel-map { width: 100%; height: 480px; }
+    .map-legend { display: flex; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--muted); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); }
+
+    #contact { background: var(--bg); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; max-width: 1100px; align-items: start; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+    .contact-link { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); transition: all var(--transition); }
+    .contact-link:hover { border-color: rgba(79,152,163,0.4); background: var(--surface2); }
+    .contact-link-icon { color: var(--accent); flex-shrink: 0; }
+    .contact-link-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .contact-link-value { font-size: 0.95rem; color: var(--text); margin-top: 0.1rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+    .form-input { padding: 0.85rem 1.1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; color: var(--text); font-family: var(--font-body); font-size: 0.95rem; transition: border-color var(--transition); outline: none; }
+    .form-input:focus { border-color: var(--accent); }
+    .form-input::placeholder { color: var(--faint); }
+    textarea.form-input { resize: vertical; min-height: 140px; }
+    .form-submit { padding: 0.85rem 2rem; background: var(--accent); color: #fff; border: none; border-radius: 2rem; font-family: var(--font-body); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background var(--transition); align-self: flex-start; }
+    .form-submit:hover { background: var(--accent-hover); }
+
+    footer { padding: 2rem 3rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--faint); }
+
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 2rem; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-width: 720px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 2.5rem; position: relative; }
+    .modal-close { position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: none; color: var(--muted); cursor: pointer; transition: color var(--transition); }
+    .modal-close:hover { color: var(--text); }
+    .modal-date { font-size: 0.72rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .modal-title { font-family: var(--font-display); font-size: 1.8rem; color: var(--text); margin-bottom: 1rem; line-height: 1.2; }
+    .modal-body { font-size: 0.95rem; color: var(--muted); line-height: 1.8; }
+    .modal-body h4 { color: var(--text); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.08em; margin: 1.5rem 0 0.5rem; }
+    .modal-body p { margin-bottom: 1rem; }
+    .modal-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .hero-content { padding: 0 1.5rem 4rem; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-scroll { display: none; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">JM</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#travel">Travel</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get in Touch</a>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Portfolio</div>
+    <h1 class="hero-name">Joseph<br>Moran</h1>
+    <p class="hero-tagline">Cadet · Quantitative Analyst · Data Scientist — bridging rigorous mathematics with real-world financial modeling.</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-ghost">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<section id="about">
+  <div class="about-grid">
+    <div class="about-photo-wrap">
+      <i data-lucide="user" style="width:48px;height:48px;"></i>
+      <span>Photo coming soon</span>
+    </div>
+    <div>
+      <div class="section-label">About Me</div>
+      <h2 class="section-title">Analyst at heart, <em>leader by training.</em></h2>
+      <p class="about-bio">
+        I'm <strong>Joseph Moran</strong>, a cadet at the <strong>United States Military Academy at West Point</strong> with a passion for quantitative finance, applied mathematics, and data-driven problem solving.
+        <br><br>
+        From constructing <strong>Black-Scholes option pricing models</strong> to interning at <strong>BLKBRD Asset Management</strong> in the world of high-frequency trading, I pursue the intersection of rigorous math and real financial markets.
+        <br><br>
+        Outside academics I'm drawn to <strong>travel, music, and exploring new places</strong> — collecting experiences as intentionally as I collect data points.
+      </p>
+      <div class="about-stats">
+        <div class="stat-card"><div class="stat-num">5+</div><div class="stat-label">Research Projects</div></div>
+        <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Years at West Point</div></div>
+        <div class="stat-card"><div class="stat-num">HFT</div><div class="stat-label">Industry Experience</div></div>
+        <div class="stat-card"><div class="stat-num">∞</div><div class="stat-label">Curiosity</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-label">Work</div>
+  <h2 class="section-title">Projects</h2>
+  <p class="section-sub">Click any project to explore the methodology, analysis, and results in detail.</p>
+  <div class="projects-grid" id="projects-grid"></div>
+</section>
+
+<section id="travel">
+  <div class="section-label">Exploration</div>
+  <h2 class="section-title">Places I've Been</h2>
+  <p class="section-sub">A living map of destinations — every pin a memory.</p>
+  <div class="map-container">
+    <div class="map-title">Interactive Travel Board · Hover pins for details</div>
+    <div id="travel-map"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot"></div> Visited</div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="section-label">Contact</div>
+      <h2 class="section-title">Let's connect.</h2>
+      <p class="section-sub">Interested in collaborating, discussing quant finance, or just saying hello? Reach out.</p>
+      <div class="contact-links">
+        <a href="https://github.com/joseph-moran7433" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-link-icon"><i data-lucide="github" style="width:20px;height:20px;"></i></span>
+          <div><div class="contact-link-label">GitHub</div><div class="contact-link-value">joseph-moran7433</div></div>
+        </a>
+        <a href="https://linkedin.com/in/joseph-moran" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-link-icon"><i data-lucide="linkedin" style="width:20px;height:20px;"></i></span>
+          <div><div class="contact-link-label">LinkedIn</div><div class="contact-link-value">linkedin.com/in/joseph-moran</div></div>
+        </a>
+        <a href="mailto:joseph.moran@westpoint.edu" class="contact-link">
+          <span class="contact-link-icon"><i data-lucide="mail" style="width:20px;height:20px;"></i></span>
+          <div><div class="contact-link-label">Email</div><div class="contact-link-value">joseph.moran@westpoint.edu</div></div>
+        </a>
+      </div>
+    </div>
+    <form class="contact-form" onsubmit="handleForm(event)">
+      <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" placeholder="Your name" required /></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" required /></div>
+      <div class="form-group"><label class="form-label">Message</label><textarea class="form-input" placeholder="What's on your mind?" required></textarea></div>
+      <button type="submit" class="form-submit">Send Message</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Joseph Moran</span>
+  <span>Built with care · West Point, NY</span>
+</footer>
+
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')"><i data-lucide="x" style="width:20px;height:20px;"></i></button>
+    <div class="modal-date" id="modal-date"></div>
+    <h2 class="modal-title" id="modal-title"></h2>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-tags" id="modal-tags"></div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+const projects = [
+  { date: "Summer 2025", title: "BLKBRD Asset Management — Quant Finance AIAD", desc: "Three-week industry internship at a hedge fund in Old Greenwich, CT. Immersed in quantitative finance and high-frequency trading strategies alongside active traders.", tags: ["Python","SQL","High-Frequency Trading","Arbitrage","Finance"], details: `<h4>Experience</h4><p>Hosted by BLKBRD Asset Management in Old Greenwich, CT, this AIAD placed me inside a live hedge fund environment. I worked alongside traders daily, learning how they leveraged assets and exploited arbitrage opportunities in high-frequency trading.</p><h4>Technical Work</h4><p>Used Python and SQL to explore data pipelines in a financial context. Gained hands-on exposure to how quantitative models drive real trading decisions in millisecond timeframes.</p><h4>Leadership & Networking</h4><p>Met veterans at Bank of America, spoke with a former O-6 Army aviator, and represented West Point at the New York Athletic Club.</p>` },
+  { date: "November 2025", title: "Airport Disaster — Queue Simulation", desc: "Probabilistic simulation of airport passenger flow, modeling check-in, bag drop, and security queues across 1,000 Monte Carlo runs.", tags: ["Python","Simulation","Probability","Queue Theory","Statistics"], details: `<h4>Overview</h4><p>Modeled an airport where passengers arrive by bus (23.5%) or car (76.5%), flowing through check-in, bag drop, and security. Ran 1,000 simulations to measure system performance.</p><h4>Key Findings</h4><p>Average bag drop wait: 126 min. Security: 95 min. 95th percentile total time: 306 minutes. Mobile check-in reduced average time from 134 to 126 min.</p><h4>Critical Change Analysis</h4><p>Adding lanes dynamically reduced queue length but did not substantially decrease the 95th percentile money statistic — bottlenecks persist downstream.</p>` },
+  { date: "October 2025", title: "U.S. Flight Risk & Delay Analysis", desc: "Data-driven optimization of multi-city travel itineraries using airline delay statistics. Built a Python routing algorithm and interactive map.", tags: ["Python","Pandas","Data Analysis","Optimization","Visualization"], details: `<h4>Overview</h4><p>Analyzed U.S. airline delay data across airlines, airports, days, and times. Built an optimal multi-city itinerary minimizing expected delay.</p><h4>Key Results</h4><p>Tuesday/Wednesday morning flights from JFK are optimal. Hawaiian Airlines ranked lowest avg delay (7.6 min). Final route: JFK→ORD→DFW→DCA→JFK with average delays of -49, -38, -35, -26 minutes.</p>` },
+  { date: "May 2025", title: "DCF Optimization Model — Danaher Corp.", desc: "Mathematical derivation and Excel implementation of a Discounted Cash Flow valuation model with WACC calculation and sensitivity analysis.", tags: ["Excel","Finance","Optimization","Linear Programming","Valuation"], details: `<h4>Overview</h4><p>Built a full DCF valuation model for Danaher Corporation from a 2010 perspective, projecting 5 years of Free Cash Flows discounted at WACC.</p><h4>Results</h4><p>Model produced $26.30/share vs actual $25.35 — highly accurate. Sensitivity analysis revealed the model is not robust to WACC or terminal growth rate changes, highlighting inherent DCF limitations.</p>` },
+  { date: "December 2024", title: "Options Pricing & the Black-Scholes Equation", desc: "Full mathematical derivation of the Black-Scholes PDE from stochastic calculus via Itô's Lemma and Fourier transform methods. Implemented in MATLAB.", tags: ["MATLAB","Stochastic Calculus","PDEs","Options","Mathematical Finance"], details: `<h4>Overview</h4><p>Derived the Black-Scholes equation from first principles using Itô's Lemma under the no-arbitrage assumption.</p><h4>Mathematical Journey</h4><p>Transformed the B-S PDE into the classical heat equation via change of variables, then solved using Fourier transforms to obtain the closed-form option pricing solution expressed in terms of the normal CDF (d₁, d₂).</p><h4>Greeks</h4><p>Derived Delta — the first-order Greek — and analyzed payoff structures including straddles and strangles. Verified against market prices in MATLAB.</p>` }
+];
+
+const grid = document.getElementById('projects-grid');
+projects.forEach((p,i) => {
+  grid.innerHTML += `<div class="project-card" onclick="openModal(${i})"><div class="project-arrow"><i data-lucide="arrow-up-right" style="width:18px;height:18px;"></i></div><div class="project-date">${p.date}</div><h3 class="project-title">${p.title}</h3><p class="project-desc">${p.desc}</p><div class="project-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`;
+});
+
+function openModal(i) {
+  const p = projects[i];
+  document.getElementById('modal-date').textContent = p.date;
+  document.getElementById('modal-title').textContent = p.title;
+  document.getElementById('modal-body').innerHTML = p.details;
+  document.getElementById('modal-tags').innerHTML = p.tags.map(t=>`<span class="tag">${t}</span>`).join('');
+  document.getElementById('modal').classList.add('open');
+  lucide.createIcons();
+}
+function closeModal(e) { if(e.target.id==='modal') document.getElementById('modal').classList.remove('open'); }
+
+function handleForm(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Sent ✓'; btn.style.background = '#437a22';
+  setTimeout(() => { btn.textContent = 'Send Message'; btn.style.background = ''; e.target.reset(); }, 3000);
+}
+
+lucide.createIcons();
+
+const map = L.map('travel-map', { center: [20,0], zoom: 2, zoomControl: true, attributionControl: false });
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 10 }).addTo(map);
+const pinIcon = L.divIcon({ className: '', html: `<div style="width:12px;height:12px;background:#c9a84c;border-radius:50%;border:2px solid rgba(201,168,76,0.4);box-shadow:0 0 8px rgba(201,168,76,0.6);"></div>`, iconSize:[12,12], iconAnchor:[6,6] });
+const places = [
+  { name: "West Point, NY", lat: 41.39, lng: -73.96 },
+  { name: "Washington D.C.", lat: 38.90, lng: -77.04 },
+  { name: "Old Greenwich, CT", lat: 41.02, lng: -73.57 },
+  { name: "New York City, NY", lat: 40.71, lng: -74.01 },
+  { name: "Chicago, IL", lat: 41.88, lng: -87.63 },
+  { name: "Dallas, TX", lat: 32.78, lng: -96.80 }
+];
+places.forEach(p => L.marker([p.lat,p.lng],{icon:pinIcon}).addTo(map).bindPopup(`<span style="font-family:DM Sans,sans-serif;font-size:0.8rem;color:#e8eaed">${p.name}</span>`));
+</script>
+<style>
+.leaflet-popup-content-wrapper { background: #13161b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #e8eaed; box-shadow: none; }
+.leaflet-popup-tip { background: #13161b; }
+.leaflet-popup-content { margin: 8px 12px; }
+</style>
+</body>
+</html>

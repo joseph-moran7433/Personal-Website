@@ -21,6 +21,9 @@
       --accent: #4f98a3;
       --accent-hover: #3d8490;
       --gold: #c9a84c;
+      --pin-red: #e05c5c;
+      --pin-yellow: #e0c25c;
+      --pin-teal: #5ce0c2;
       --font-display: 'Instrument Serif', Georgia, serif;
       --font-body: 'DM Sans', system-ui, sans-serif;
       --radius: 0.75rem;
@@ -276,7 +279,6 @@
     .detail-section strong { color: var(--text); font-weight: 500; }
     .detail-section em { color: var(--accent); font-style: normal; }
 
-    /* Code block */
     .code-block {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -290,17 +292,13 @@
       background: var(--surface2);
       border-bottom: 1px solid var(--border);
     }
-    .code-block-lang {
-      font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--accent);
-    }
+    .code-block-lang { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
     .code-block-filename { font-size: 0.75rem; color: var(--faint); }
     .code-block pre {
       padding: 1.5rem; overflow-x: auto;
       font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
       font-size: 0.82rem; line-height: 1.7;
-      color: #c9d1d9;
-      margin: 0;
+      color: #c9d1d9; margin: 0;
     }
     .code-comment { color: #6e7681; }
     .code-keyword { color: #ff7b72; }
@@ -309,7 +307,6 @@
     .code-num { color: #79c0ff; }
     .code-var { color: #ffa657; }
 
-    /* Stat callout */
     .stat-row {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 1rem; margin: 1.5rem 0;
@@ -320,14 +317,10 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
     }
-    .stat-callout-num {
-      font-family: var(--font-display); font-size: 2rem; color: var(--accent);
-      line-height: 1;
-    }
+    .stat-callout-num { font-family: var(--font-display); font-size: 2rem; color: var(--accent); line-height: 1; }
     .stat-callout-num.gold { color: var(--gold); }
     .stat-callout-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.35rem; }
 
-    /* Reflection block */
     .reflection {
       padding: 2rem 2.25rem;
       background: var(--surface);
@@ -335,24 +328,127 @@
       border-left: 3px solid var(--gold);
       border-radius: 0 var(--radius) var(--radius) 0;
     }
-    .reflection-label {
-      font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 0.75rem;
-    }
+    .reflection-label { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
     .reflection p { font-size: 0.95rem; color: var(--muted); line-height: 1.85; max-width: 680px; }
     .reflection p + p { margin-top: 0.75rem; }
-
-    /* Divider */
     .detail-divider { border: none; border-top: 1px solid var(--border); }
 
-    /* ── TRAVEL ── */
+    /* ── TRAVEL PIN BOARD ── */
     #travel { background: var(--surface); }
-    .map-container { max-width: 1100px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; position: relative; overflow: hidden; }
-    .map-title { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; letter-spacing: 0.05em; }
-    #travel-map { width: 100%; height: 480px; }
-    .map-legend { display: flex; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap; }
-    .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--muted); }
-    .legend-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); }
+
+    .pin-board {
+      max-width: 1100px;
+      background: #1a1008;
+      border: 2px solid #3a2a10;
+      border-radius: 1rem;
+      padding: 2.5rem;
+      position: relative;
+      box-shadow: inset 0 2px 40px rgba(0,0,0,0.6), 0 8px 40px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+
+    /* Cork texture overlay */
+    .pin-board::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(ellipse at 20% 30%, rgba(180,120,40,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(160,100,30,0.08) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      background-size: cover;
+      border-radius: 1rem;
+      pointer-events: none;
+    }
+
+    .board-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem; position: relative; z-index: 2;
+    }
+    .board-title {
+      font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(201,168,76,0.7);
+    }
+    .board-count {
+      font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em;
+    }
+
+    /* Map wrapper */
+    .map-svg-wrap {
+      position: relative;
+      width: 100%;
+      background: #0e1a2e;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(79,152,163,0.15);
+      overflow: visible;
+    }
+
+    .map-svg-wrap svg#world-map {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Pin styles */
+    .map-pin-group { cursor: pointer; }
+    .map-pin-group:hover .pin-shadow { opacity: 0.7; }
+    .map-pin-group:hover .pin-circle { filter: brightness(1.3); }
+
+    .pin-circle {
+      transition: filter 0.2s ease, r 0.2s ease;
+      filter: drop-shadow(0 0 4px currentColor);
+    }
+    .pin-stem {
+      stroke-width: 1.5;
+      stroke-linecap: round;
+    }
+    .pin-shadow {
+      opacity: 0.4;
+      transition: opacity 0.2s ease;
+    }
+
+    /* Tooltip */
+    .pin-tooltip {
+      position: absolute;
+      background: #1a1008;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 0.5rem;
+      padding: 0.6rem 0.9rem;
+      font-size: 0.78rem;
+      color: var(--text);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 20;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      min-width: 120px;
+    }
+    .pin-tooltip.visible { opacity: 1; transform: translateY(0); }
+    .pin-tooltip-name { font-weight: 600; color: var(--gold); margin-bottom: 0.15rem; }
+    .pin-tooltip-note { color: var(--muted); font-size: 0.72rem; }
+
+    /* Legend & string decoration */
+    .board-legend {
+      display: flex; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap;
+      position: relative; z-index: 2;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--muted); }
+    .legend-pin {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+
+    /* Decorative string lines across board */
+    .board-strings {
+      position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    }
+
+    /* Pulse animation for recent pins */
+    @keyframes pin-pulse {
+      0%, 100% { opacity: 1; r: 4; }
+      50% { opacity: 0.6; r: 5.5; }
+    }
+    .pin-pulse { animation: pin-pulse 2.5s ease-in-out infinite; }
 
     /* ── CONTACT ── */
     #contact { background: var(--bg); }
@@ -388,6 +484,7 @@
       .timeline { padding-left: 1.75rem; }
       .detail-nav, .detail-hero, .detail-body { padding-left: 1.5rem; padding-right: 1.5rem; }
       .stat-row { grid-template-columns: 1fr 1fr; }
+      .pin-board { padding: 1.25rem; }
     }
   </style>
 </head>
@@ -404,7 +501,6 @@
   <a href="#contact" class="nav-cta" onclick="closeDetail()">Get in Touch</a>
 </nav>
 
-<!-- ═══════════════════════════════════════ MAIN SITE ═══════════════════════════════════════ -->
 <div id="main-site">
 
 <section id="hero">
@@ -412,7 +508,7 @@
   <div class="hero-content">
     <div class="hero-tag">Portfolio</div>
     <h1 class="hero-name">Joseph<br>Moran</h1>
-    <p class="hero-tagline">Cadet · Data Scientist · Cyber Officer Candidate — turning complex data into decisions that matter.</p>
+    <p class="hero-tagline">West Point cadet by discipline, data scientist by design — I find the signal in the noise and lead with it.</p>
     <div class="hero-btns">
       <a href="#projects" class="btn-primary">View Projects</a>
       <a href="#contact" class="btn-ghost">Get in Touch</a>
@@ -455,7 +551,7 @@
       <div class="section-label">About Me</div>
       <h2 class="section-title">Data-driven mind, <em>soldier's discipline.</em></h2>
       <p class="about-bio">
-        I'm <strong>Joseph Moran</strong>, a cadet at the <strong>United States Military Academy at West Point</strong> (Class of 2027), majoring in <strong>Applied Statistics & Data Science</strong> with a Cyber track. I grew up on <strong>Long Island, NY</strong>, and came to West Point driven by a passion for problem solving and public service.
+        I'm <strong>Joseph Moran</strong>, a cadet at the <strong>United States Military Academy at West Point</strong> (Class of 2027), majoring in <strong>Applied Statistics &amp; Data Science</strong> with a Cyber track. I grew up on <strong>Long Island, NY</strong>, and came to West Point driven by a passion for problem solving and public service.
         <br><br>
         My academic focus sits at the intersection of <strong>quantitative analysis and cyber warfare</strong> — building models and pipelines that extract signal from noise. I expect to <strong>branch Cyber</strong> in December 2026, with aspirations toward DoD cyber operations and, eventually, an MBA or advanced degree.
         <br><br>
@@ -493,7 +589,6 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════ PROJECTS ═══════════════════════════════════════ -->
 <section id="projects">
   <div class="section-label">Work</div>
   <h2 class="section-title">Projects</h2>
@@ -501,15 +596,121 @@
   <div class="timeline" id="timeline"></div>
 </section>
 
+<!-- ═══════════════════════════════════════ TRAVEL PIN BOARD ═══════════════════════════════════════ -->
 <section id="travel">
   <div class="section-label">Exploration</div>
   <h2 class="section-title">Places I've Been</h2>
-  <p class="section-sub">A living map of destinations — every pin a memory.</p>
-  <div class="map-container">
-    <div class="map-title">Interactive Travel Board · Hover pins for details</div>
-    <div id="travel-map"></div>
-    <div class="map-legend">
-      <div class="legend-item"><div class="legend-dot"></div> Visited</div>
+  <p class="section-sub">Every pin is a place — hover to see the story.</p>
+
+  <div class="pin-board">
+    <div class="board-header">
+      <span class="board-title">📍 Travel Board · Joseph Moran</span>
+      <span class="board-count" id="pin-count"></span>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="pin-tooltip" id="pin-tooltip">
+      <div class="pin-tooltip-name" id="tooltip-name"></div>
+      <div class="pin-tooltip-note" id="tooltip-note"></div>
+    </div>
+
+    <div class="map-svg-wrap">
+      <!-- Simplified world map SVG paths -->
+      <svg id="world-map" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="oceanGrad" cx="50%" cy="50%" r="80%">
+            <stop offset="0%" stop-color="#0e1a2e"/>
+            <stop offset="100%" stop-color="#060e1a"/>
+          </radialGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Ocean background -->
+        <rect width="1000" height="500" fill="url(#oceanGrad)"/>
+        <!-- Grid lines -->
+        <g stroke="rgba(79,152,163,0.06)" stroke-width="0.5">
+          <line x1="0" y1="125" x2="1000" y2="125"/>
+          <line x1="0" y1="250" x2="1000" y2="250"/>
+          <line x1="0" y1="375" x2="1000" y2="375"/>
+          <line x1="250" y1="0" x2="250" y2="500"/>
+          <line x1="500" y1="0" x2="500" y2="500"/>
+          <line x1="750" y1="0" x2="750" y2="500"/>
+        </g>
+        <!-- Equator -->
+        <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(79,152,163,0.12)" stroke-width="1" stroke-dasharray="6,8"/>
+
+        <!-- ── CONTINENTS (simplified outlines) ── -->
+        <!-- North America -->
+        <path d="M 70 80 L 80 70 L 100 68 L 120 65 L 140 60 L 160 58 L 175 62 L 185 75 L 190 90 L 185 105 L 175 115 L 165 130 L 160 150 L 155 170 L 150 190 L 145 210 L 140 225 L 135 240 L 130 255 L 125 265 L 118 260 L 115 250 L 110 245 L 105 240 L 100 235 L 95 230 L 88 235 L 82 240 L 75 245 L 70 240 L 65 230 L 60 220 L 55 210 L 50 200 L 48 185 L 50 170 L 52 155 L 55 140 L 58 125 L 62 110 L 65 95 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- Central America / Caribbean link -->
+        <path d="M 135 255 L 138 265 L 140 278 L 138 285 L 135 290 L 130 285 L 128 275 L 130 265 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- South America -->
+        <path d="M 185 275 L 195 265 L 210 260 L 225 258 L 240 260 L 255 265 L 265 278 L 268 295 L 265 315 L 260 335 L 255 355 L 248 375 L 240 392 L 230 405 L 218 412 L 205 408 L 195 398 L 188 382 L 182 362 L 178 342 L 175 322 L 174 302 L 175 285 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- Europe -->
+        <path d="M 440 65 L 455 60 L 470 58 L 485 60 L 498 65 L 505 75 L 510 88 L 508 100 L 502 110 L 495 118 L 485 122 L 475 125 L 465 130 L 455 135 L 445 138 L 438 135 L 433 128 L 430 118 L 432 108 L 436 98 L 438 88 L 438 78 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- Scandinavia bump -->
+        <path d="M 460 58 L 465 45 L 470 38 L 478 40 L 482 50 L 480 60 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- Africa -->
+        <path d="M 440 150 L 455 145 L 472 145 L 488 148 L 500 155 L 510 168 L 515 185 L 515 205 L 512 225 L 505 245 L 495 265 L 482 285 L 468 305 L 455 322 L 445 335 L 438 325 L 430 308 L 422 288 L 416 268 L 412 248 L 410 228 L 410 208 L 412 188 L 416 170 L 422 158 L 430 150 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- Middle East / Arabian Peninsula -->
+        <path d="M 510 130 L 525 125 L 540 122 L 555 125 L 565 135 L 568 148 L 562 160 L 550 168 L 535 170 L 520 165 L 512 155 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- Asia (mainland) -->
+        <path d="M 560 55 L 580 48 L 605 42 L 635 40 L 665 42 L 695 45 L 720 50 L 740 55 L 755 65 L 762 78 L 758 92 L 748 102 L 735 108 L 718 115 L 700 120 L 682 125 L 662 130 L 645 135 L 628 140 L 612 145 L 598 150 L 585 155 L 572 160 L 560 165 L 548 162 L 538 155 L 532 145 L 530 132 L 532 120 L 538 108 L 545 95 L 550 82 L 553 70 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- Indian subcontinent -->
+        <path d="M 598 155 L 610 158 L 622 162 L 628 175 L 625 190 L 618 205 L 608 218 L 598 225 L 590 218 L 584 205 L 582 190 L 584 175 L 590 162 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- Southeast Asia -->
+        <path d="M 700 145 L 718 142 L 730 148 L 735 162 L 730 175 L 718 182 L 705 180 L 695 170 L 694 158 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- China / East Asia body -->
+        <path d="M 680 80 L 700 78 L 720 80 L 738 88 L 748 100 L 745 115 L 735 125 L 718 130 L 700 132 L 682 128 L 668 120 L 660 108 L 660 95 L 665 85 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- Japan -->
+        <path d="M 770 85 L 778 80 L 785 82 L 788 90 L 784 98 L 776 100 L 770 95 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- Australia -->
+        <path d="M 720 300 L 738 292 L 758 288 L 780 288 L 800 292 L 815 300 L 822 315 L 820 332 L 812 348 L 798 360 L 780 368 L 762 368 L 745 360 L 732 348 L 724 332 L 720 315 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+        <!-- Greenland -->
+        <path d="M 210 30 L 225 22 L 245 18 L 262 20 L 272 30 L 270 45 L 260 55 L 245 58 L 228 55 L 215 45 Z"
+              fill="#1a2e28" stroke="rgba(79,152,163,0.15)" stroke-width="0.8"/>
+        <!-- UK / Ireland -->
+        <path d="M 432 80 L 438 74 L 444 75 L 446 84 L 442 90 L 435 88 Z"
+              fill="#1e3a28" stroke="rgba(79,152,163,0.2)" stroke-width="0.8"/>
+
+        <!-- Pin layer rendered by JS -->
+        <g id="pins-layer"></g>
+
+        <!-- Decorative string lines between pinned cities -->
+        <g id="strings-layer" stroke="rgba(201,168,76,0.12)" stroke-width="0.8" fill="none" stroke-dasharray="4,6"></g>
+
+        <!-- Compass rose (decorative, bottom right) -->
+        <g transform="translate(950,450)" opacity="0.18">
+          <circle r="14" fill="none" stroke="#c9a84c" stroke-width="0.8"/>
+          <text x="0" y="-18" text-anchor="middle" font-size="7" fill="#c9a84c" font-family="DM Sans,sans-serif">N</text>
+          <text x="0" y="24" text-anchor="middle" font-size="7" fill="#c9a84c" font-family="DM Sans,sans-serif">S</text>
+          <text x="-22" y="3" text-anchor="middle" font-size="7" fill="#c9a84c" font-family="DM Sans,sans-serif">W</text>
+          <text x="22" y="3" text-anchor="middle" font-size="7" fill="#c9a84c" font-family="DM Sans,sans-serif">E</text>
+          <line x1="0" y1="-12" x2="0" y2="12" stroke="#c9a84c" stroke-width="1"/>
+          <line x1="-12" y1="0" x2="12" y2="0" stroke="#c9a84c" stroke-width="1"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="board-legend">
+      <div class="legend-item"><div class="legend-pin" style="background:var(--pin-red)"></div> Home / USA</div>
+      <div class="legend-item"><div class="legend-pin" style="background:var(--pin-yellow)"></div> Glee Club Tour</div>
+      <div class="legend-item"><div class="legend-pin" style="background:var(--pin-teal)"></div> Work / AIAD</div>
     </div>
   </div>
 </section>
@@ -566,12 +767,112 @@
   <div id="detail-content"></div>
 </div>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
 // ─────────────────────────────────────────────────────────────────
-// PROJECT DATA — newest first (top of timeline)
+// TRAVEL PINS DATA
+// x/y are percentages of the SVG viewBox (1000×500)
+// ─────────────────────────────────────────────────────────────────
+const pins = [
+  // USA / Home
+  { name: "New York, NY", note: "Home — Long Island roots", x: 19.5, y: 31, color: "#e05c5c", type: "home", pulse: false },
+  { name: "West Point, NY", note: "USMA · Class of 2027", x: 19.8, y: 30.5, color: "#e05c5c", type: "home", pulse: true },
+  { name: "Old Greenwich, CT", note: "BLKBRD AIAD · Summer 2025", x: 20.0, y: 30.0, color: "#5ce0c2", type: "work", pulse: false },
+  // UK & Scotland
+  { name: "London, UK", note: "Glee Club Tour 🎵", x: 43.3, y: 17.0, color: "#e0c25c", type: "glee", pulse: false },
+  { name: "Edinburgh, Scotland", note: "Glee Club Tour 🎵", x: 43.0, y: 14.5, color: "#e0c25c", type: "glee", pulse: false },
+  // Greece
+  { name: "Athens, Greece", note: "Glee Club Tour 🎵", x: 49.5, y: 26.0, color: "#e0c25c", type: "glee", pulse: false },
+  { name: "Thessaloniki, Greece", note: "Glee Club Tour 🎵", x: 49.8, y: 23.5, color: "#e0c25c", type: "glee", pulse: false },
+  { name: "Volos, Greece", note: "Glee Club Tour 🎵", x: 49.6, y: 25.0, color: "#e0c25c", type: "glee", pulse: false },
+];
+
+// Count display
+document.getElementById('pin-count').textContent = pins.length + ' pins · ' + new Set(pins.map(p => p.note.split('·')[0].trim())).size + ' stories';
+
+// Render pins onto SVG
+const pinsLayer = document.getElementById('pins-layer');
+const stringsLayer = document.getElementById('strings-layer');
+const tooltip = document.getElementById('pin-tooltip');
+const tooltipName = document.getElementById('tooltip-name');
+const tooltipNote = document.getElementById('tooltip-note');
+const mapWrap = document.querySelector('.map-svg-wrap');
+
+// Draw connector strings between Glee Club tour cities
+const gleeNodes = pins.filter(p => p.type === 'glee');
+for (let i = 0; i < gleeNodes.length - 1; i++) {
+  const a = gleeNodes[i], b = gleeNodes[i + 1];
+  const ax = a.x * 10, ay = a.y * 5;
+  const bx = b.x * 10, by = b.y * 5;
+  const mx = (ax + bx) / 2, my = Math.min(ay, by) - 18;
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', `M${ax},${ay} Q${mx},${my} ${bx},${by}`);
+  stringsLayer.appendChild(path);
+}
+
+pins.forEach((pin, i) => {
+  const cx = pin.x * 10; // Convert % to SVG units (viewBox 1000)
+  const cy = pin.y * 5;  // Convert % to SVG units (viewBox 500)
+
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.setAttribute('class', 'map-pin-group');
+  g.setAttribute('data-index', i);
+
+  // Shadow
+  const shadow = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+  shadow.setAttribute('cx', cx + 1);
+  shadow.setAttribute('cy', cy + 8);
+  shadow.setAttribute('rx', 4);
+  shadow.setAttribute('ry', 2);
+  shadow.setAttribute('fill', 'rgba(0,0,0,0.4)');
+  shadow.setAttribute('class', 'pin-shadow');
+
+  // Stem
+  const stem = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  stem.setAttribute('x1', cx);
+  stem.setAttribute('y1', cy);
+  stem.setAttribute('x2', cx + 0.5);
+  stem.setAttribute('y2', cy + 6);
+  stem.setAttribute('stroke', pin.color);
+  stem.setAttribute('class', 'pin-stem');
+
+  // Circle head
+  const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  circle.setAttribute('cx', cx);
+  circle.setAttribute('cy', cy);
+  circle.setAttribute('r', 4);
+  circle.setAttribute('fill', pin.color);
+  circle.setAttribute('class', pin.pulse ? 'pin-circle pin-pulse' : 'pin-circle');
+  circle.setAttribute('filter', 'url(#glow)');
+
+  g.appendChild(shadow);
+  g.appendChild(stem);
+  g.appendChild(circle);
+  pinsLayer.appendChild(g);
+
+  // Hover events
+  g.addEventListener('mouseenter', (e) => {
+    tooltipName.textContent = pin.name;
+    tooltipNote.textContent = pin.note;
+    const svgRect = mapWrap.getBoundingClientRect();
+    const boardRect = mapWrap.closest('.pin-board').getBoundingClientRect();
+    const pinXPx = (cx / 1000) * svgRect.width;
+    const pinYPx = (cy / 500) * svgRect.height;
+    const offsetX = svgRect.left - boardRect.left;
+    const offsetY = svgRect.top - boardRect.top;
+    let tx = offsetX + pinXPx - 60;
+    let ty = offsetY + pinYPx - 72;
+    if (tx < 4) tx = 4;
+    tooltip.style.left = tx + 'px';
+    tooltip.style.top = ty + 'px';
+    tooltip.classList.add('visible');
+  });
+  g.addEventListener('mouseleave', () => {
+    tooltip.classList.remove('visible');
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────
+// PROJECT DATA
 // ─────────────────────────────────────────────────────────────────
 const projects = [
   {
@@ -657,7 +958,7 @@ const projects = [
         <span class="code-keyword">yield</span> req
         <span class="code-keyword">yield</span> env.<span class="code-func">timeout</span>(np.random.<span class="code-func">exponential</span>(<span class="code-num">2.5</span>))
 
-    <span class="code-comment"># Bag drop stage (mobile check-in skips this)</span>
+    <span class="code-comment"># Bag drop stage</span>
     <span class="code-keyword">with</span> bagdrop_res.<span class="code-func">request</span>() <span class="code-keyword">as</span> req:
         <span class="code-keyword">yield</span> req
         <span class="code-keyword">yield</span> env.<span class="code-func">timeout</span>(np.random.<span class="code-func">exponential</span>(<span class="code-num">4.1</span>))
@@ -698,8 +999,7 @@ const projects = [
         {
           label: "The Problem",
           heading: "Which flight do you actually want?",
-          body: `<p>Flight delay data is publicly available but rarely used in a structured way by travelers. Airlines market on-time performance broadly, but <strong>actual delay risk varies enormously by airline, airport, day of week, and time of day</strong>. The goal of this project was to build a data-driven answer to a practical question: given a multi-city trip, what's the objectively best routing?</p>
-          <p>The dataset contained <strong>millions of flight records</strong> across U.S. carriers, with departure delay, arrival delay, carrier, origin, destination, day of week, and scheduled time.</p>`
+          body: `<p>Flight delay data is publicly available but rarely used in a structured way by travelers. Airlines market on-time performance broadly, but <strong>actual delay risk varies enormously by airline, airport, day of week, and time of day</strong>. The goal of this project was to build a data-driven answer to a practical question: given a multi-city trip, what's the objectively best routing?</p>`
         },
         {
           label: "Analysis",
@@ -718,17 +1018,13 @@ const projects = [
     mean=<span class="code-string">'mean'</span>,
     p75=<span class="code-keyword">lambda</span> x: x.<span class="code-func">quantile</span>(<span class="code-num">0.75</span>),
     p95=<span class="code-keyword">lambda</span> x: x.<span class="code-func">quantile</span>(<span class="code-num">0.95</span>)
-).<span class="code-func">sort_values</span>(<span class="code-string">'mean'</span>)
-
-<span class="code-comment"># Best departure window by day + hour</span>
-<span class="code-var">time_grid</span> = <span class="code-var">df</span>.<span class="code-func">groupby</span>([<span class="code-string">'day_of_week'</span>, <span class="code-string">'dep_hour'</span>])[<span class="code-string">'dep_delay'</span>].<span class="code-func">mean</span>().<span class="code-func">unstack</span>()
-<span class="code-func">print</span>(<span class="code-string">"Optimal window:"</span>, <span class="code-var">time_grid</span>.<span class="code-func">stack</span>().<span class="code-func">idxmin</span>())`
+).<span class="code-func">sort_values</span>(<span class="code-string">'mean'</span>)`
           }
         },
         {
           label: "Optimal Route",
           heading: "JFK → ORD → DFW → DCA → JFK",
-          body: `<p>Tuesday and Wednesday morning departures from JFK consistently showed the lowest expected delays. <strong>Hawaiian Airlines</strong> led the pack with a 7.6-minute average delay — but operates limited routes. For the mainland itinerary, the optimal sequence minimized cumulative expected delay across all four legs.</p>`,
+          body: `<p>Tuesday and Wednesday morning departures from JFK consistently showed the lowest expected delays. <strong>Hawaiian Airlines</strong> led the pack with a 7.6-minute average delay.</p>`,
           stats: [
             { num: "−49 min", label: "JFK → ORD avg delay", gold: false },
             { num: "−38 min", label: "ORD → DFW avg delay", gold: false },
@@ -737,7 +1033,7 @@ const projects = [
           ]
         }
       ],
-      reflection: `This project reinforced something about data analysis that I keep relearning: the answer is almost never in the overall average. The interesting signal is always in the stratified breakdown — by day, by hour, by route pair. Routing optimization also taught me that "minimize delay" is not the same as "minimize risk of missing a connection" — those are different objective functions and they sometimes point to different itineraries. Next time, I'd model connection risk explicitly using delay distributions rather than just means.`
+      reflection: `This project reinforced something about data analysis that I keep relearning: the answer is almost never in the overall average. The interesting signal is always in the stratified breakdown — by day, by hour, by route pair. Routing optimization also taught me that "minimize delay" is not the same as "minimize risk of missing a connection" — those are different objective functions.`
     }
   },
   {
@@ -753,38 +1049,21 @@ const projects = [
         {
           label: "The Framework",
           heading: "Discounted Cash Flow from first principles",
-          body: `<p>DCF valuation is conceptually simple: a company is worth the present value of all future cash flows it will generate. In practice, the model is only as good as its assumptions — and every assumption is a place where analysis can distinguish itself from guesswork.</p>
-          <p>The model structure: project <strong>Free Cash Flow to Firm (FCFF)</strong> for years 1–5, estimate a <strong>terminal value</strong> via the Gordon Growth Model, discount everything at <strong>WACC</strong>, and subtract net debt to arrive at equity value per share.</p>`,
+          body: `<p>DCF valuation is conceptually simple: a company is worth the present value of all future cash flows it will generate. In practice, the model is only as good as its assumptions.</p>`,
           code: {
             lang: "Excel (formula logic)",
             filename: "dcf_model.xlsx",
-            content: `<span class="code-comment">// WACC Calculation</span>
-<span class="code-comment">// WACC = (E/V) * Re + (D/V) * Rd * (1 - Tax Rate)</span>
-
-<span class="code-var">Re</span>  = Risk_Free + Beta * (<span class="code-var">Equity_Risk_Premium</span>)   <span class="code-comment">// CAPM</span>
-<span class="code-var">Rd</span>  = Interest_Expense / Total_Debt                <span class="code-comment">// Pre-tax cost of debt</span>
-<span class="code-var">E/V</span> = Market_Cap / (Market_Cap + Total_Debt)
-<span class="code-var">D/V</span> = <span class="code-num">1</span> - E/V
-
+            content: `<span class="code-comment">// WACC = (E/V) * Re + (D/V) * Rd * (1 - Tax Rate)</span>
+<span class="code-var">Re</span>  = Risk_Free + Beta * Equity_Risk_Premium   <span class="code-comment">// CAPM</span>
 <span class="code-var">WACC</span> = (E/V * Re) + (D/V * Rd * (<span class="code-num">1</span> - Tax_Rate))
-
-<span class="code-comment">// FCF Projection (Year t)</span>
-<span class="code-var">FCFF_t</span> = EBIT_t * (<span class="code-num">1</span> - Tax) + D&A_t - CapEx_t - ΔNWC_t
-
-<span class="code-comment">// Terminal Value</span>
 <span class="code-var">TV</span> = FCFF_5 * (<span class="code-num">1</span> + g) / (WACC - g)
-
-<span class="code-comment">// Intrinsic Value per Share</span>
-<span class="code-var">EV</span> = PV(FCFFs) + PV(TV)
-<span class="code-var">Equity_Value</span> = EV - Net_Debt
-<span class="code-var">Price_per_Share</span> = Equity_Value / Shares_Outstanding`
+<span class="code-var">Price_per_Share</span> = (PV(FCFFs) + PV(TV) - Net_Debt) / Shares`
           }
         },
         {
           label: "Results",
           heading: "Accuracy & sensitivity",
-          body: `<p>The model produced an intrinsic value of <strong>$26.30/share</strong> against Danaher's actual 2010 market price of <strong>$25.35</strong> — a 3.7% delta, well within the margin of error for a DCF.</p>
-          <p>But the sensitivity analysis revealed the model's true limitation: small changes in WACC (±50 bps) or the terminal growth rate (±25 bps) produced swings of 15–30% in the derived price. <strong>The model is accurate, but fragile.</strong> This is not a flaw in the implementation — it's a fundamental property of DCF math, and understanding that distinction matters.</p>`,
+          body: `<p>The model produced an intrinsic value of <strong>$26.30/share</strong> against Danaher's actual 2010 market price of <strong>$25.35</strong> — a 3.7% delta. Sensitivity analysis revealed small changes in WACC produce 15–30% price swings.</p>`,
           stats: [
             { num: "$26.30", label: "Model intrinsic value", gold: true },
             { num: "$25.35", label: "Actual market price (2010)", gold: false },
@@ -793,7 +1072,7 @@ const projects = [
           ]
         }
       ],
-      reflection: `The hardest part of this project wasn't the math — it was making assumptions I could defend. Anyone can build a DCF. The skill is in explaining why your growth rate, your beta, your terminal multiple are reasonable, not just plugged in to get a target price. The sensitivity analysis was the most intellectually honest part: it proved the model wasn't a crystal ball, and it showed exactly where the uncertainty lived. I came away with deep skepticism of any DCF that doesn't show its sensitivity table.`
+      reflection: `The hardest part of this project wasn't the math — it was making assumptions I could defend. The sensitivity analysis was the most intellectually honest part: it proved the model wasn't a crystal ball, and it showed exactly where the uncertainty lived.`
     }
   },
   {
@@ -804,43 +1083,35 @@ const projects = [
     desc: "Full mathematical derivation of the Black-Scholes PDE from stochastic calculus via Itô's Lemma, transformed to the heat equation and solved with Fourier methods. Verified in MATLAB.",
     tags: ["MATLAB","Stochastic Calculus","PDEs","Options","Mathematical Finance"],
     detail: {
-      summary: "Derived the Black-Scholes partial differential equation from first principles using Itô's Lemma, transformed it to the classical heat equation via change of variables, and solved it analytically using Fourier transform methods to obtain the closed-form option pricing formula. Implemented and verified in MATLAB.",
+      summary: "Derived the Black-Scholes partial differential equation from first principles using Itô's Lemma, transformed it to the classical heat equation via change of variables, and solved it analytically using Fourier transform methods. Implemented and verified in MATLAB.",
       sections: [
         {
           label: "The Foundation",
           heading: "From Brownian motion to a PDE",
-          body: `<p>The Black-Scholes equation starts with a model for how stock prices move. We assume the stock price <em>S</em> follows a geometric Brownian motion: <em>dS = μS dt + σS dW</em>, where <em>W</em> is a standard Brownian motion, <em>μ</em> is drift, and <em>σ</em> is volatility.</p>
-          <p>To price an option <em>V(S, t)</em>, we need to find how <em>V</em> evolves as <em>S</em> moves stochastically. That requires <strong>Itô's Lemma</strong> — the stochastic calculus chain rule — which adds a second-order correction term absent in ordinary calculus.</p>`
+          body: `<p>The Black-Scholes equation starts with geometric Brownian motion for stock prices. To price an option V(S,t), we need Itô's Lemma — the stochastic calculus chain rule — which adds a second-order correction term absent in ordinary calculus.</p>`
         },
         {
           label: "The Derivation",
           heading: "Itô's Lemma → Black-Scholes PDE",
-          body: `<p>Applying Itô's Lemma to <em>V(S, t)</em> and constructing a delta-hedged portfolio (long option, short Δ shares of stock) eliminates the stochastic <em>dW</em> term. Under the no-arbitrage condition, the hedged portfolio must earn the risk-free rate <em>r</em>. Collecting terms yields the Black-Scholes PDE.</p>`,
+          body: `<p>Constructing a delta-hedged portfolio eliminates the stochastic dW term. Under no-arbitrage, the portfolio must earn the risk-free rate, yielding the Black-Scholes PDE.</p>`,
           code: {
             lang: "Mathematical Derivation",
             filename: "black_scholes.tex",
             content: `<span class="code-comment">// Itô's Lemma applied to V(S,t)</span>
 dV = (∂V/∂t + μS·∂V/∂S + ½σ²S²·∂²V/∂S²) dt + σS·∂V/∂S dW
 
-<span class="code-comment">// Delta-hedge: Π = V - Δ·S, where Δ = ∂V/∂S</span>
-dΠ = dV - (∂V/∂S) dS
-   = (∂V/∂t + ½σ²S²·∂²V/∂S²) dt   <span class="code-comment">// dW cancels</span>
-
-<span class="code-comment">// No-arbitrage: dΠ = r·Π·dt</span>
-<span class="code-comment">// This yields the Black-Scholes PDE:</span>
-
+<span class="code-comment">// Delta-hedge: Π = V - Δ·S  →  dW cancels</span>
+<span class="code-comment">// No-arbitrage → Black-Scholes PDE:</span>
 ∂V/∂t + ½σ²S²·∂²V/∂S² + rS·∂V/∂S - rV = 0
 
-<span class="code-comment">// Change of variables: x = ln(S), τ = T-t</span>
-<span class="code-comment">// Transforms B-S PDE into the heat equation:</span>
-∂u/∂τ = ∂²u/∂x²   <span class="code-comment">// classical diffusion equation</span>`
+<span class="code-comment">// Change of variables → heat equation:</span>
+∂u/∂τ = ∂²u/∂x²`
           }
         },
         {
-          label: "Solution & Implementation",
+          label: "Solution",
           heading: "Fourier transforms → closed form",
-          body: `<p>With the heat equation in hand, the solution follows from Fourier transform methods. The inverse transform produces the familiar Black-Scholes formula for a European call, expressed in terms of the cumulative normal distribution evaluated at <em>d₁</em> and <em>d₂</em>.</p>
-          <p>I then implemented the formula in MATLAB, computed the Greeks (starting with Delta as the first-order hedge ratio), and analyzed payoff structures for straddles and strangles — strategies that exploit volatility rather than direction.</p>`,
+          body: `<p>The heat equation yields the Black-Scholes formula via Fourier transforms, expressed through the cumulative normal distribution at d₁ and d₂. Implemented in MATLAB and verified against market option prices.</p>`,
           stats: [
             { num: "d₁, d₂", label: "Closed-form solution via CDF", gold: true },
             { num: "Δ = N(d₁)", label: "Delta — first-order Greek", gold: false },
@@ -849,12 +1120,11 @@ dΠ = dV - (∂V/∂S) dS
           ]
         }
       ],
-      reflection: `This was the hardest project I've done academically — not because of the computation, but because of the conceptual density. Understanding why Itô's Lemma has a second-order term (the quadratic variation of Brownian motion is non-zero) took me days to fully internalize. But when it clicked, it changed how I think about modeling uncertain systems generally. The idea that you can hedge away randomness by holding the right portfolio — and that the remaining dynamics are fully deterministic — is one of the most elegant results in all of applied mathematics. I want to go deeper into stochastic processes and mathematical finance as a graduate student someday.`
+      reflection: `This was the hardest project I've done academically — not because of the computation, but because of the conceptual density. Understanding why Itô's Lemma has a second-order term took days to fully internalize. The idea that you can hedge away randomness by holding the right portfolio is one of the most elegant results in all of applied mathematics.`
     }
   }
 ];
 
-// Sort newest first by sortKey descending
 projects.sort((a, b) => b.sortKey - a.sortKey);
 
 // ─────────────────────────────────────────────────────────────────
@@ -902,32 +1172,20 @@ function openDetail(id) {
     }
     let statsHTML = '';
     if (s.stats) {
-      statsHTML = `<div class="stat-row">${s.stats.map(st =>
-        `<div class="stat-callout">
+      statsHTML = `<div class="stat-row">${s.stats.map(st => `
+        <div class="stat-callout">
           <div class="stat-callout-num${st.gold ? ' gold' : ''}">${st.num}</div>
           <div class="stat-callout-label">${st.label}</div>
         </div>`).join('')}</div>`;
     }
-    sectionsHTML += `
-      <div class="detail-section">
-        <div class="detail-section-label">${s.label}</div>
-        <h3>${s.heading}</h3>
-        ${s.body}
-        ${codeHTML}
-        ${statsHTML}
-      </div>
-      <hr class="detail-divider">`;
-  });
-
-  const reflectionHTML = `
-    <div class="detail-section">
-      <div class="detail-section-label">Reflection</div>
-      <h3>What I took away</h3>
-      <div class="reflection">
-        <div class="reflection-label">Personal Reflection</div>
-        <p>${d.reflection}</p>
-      </div>
+    sectionsHTML += `<div class="detail-section">
+      <div class="detail-section-label">${s.label}</div>
+      <h3>${s.heading}</h3>
+      ${s.body}
+      ${codeHTML}
+      ${statsHTML}
     </div>`;
+  });
 
   document.getElementById('detail-content').innerHTML = `
     <div class="detail-hero">
@@ -938,13 +1196,16 @@ function openDetail(id) {
     </div>
     <div class="detail-body">
       ${sectionsHTML}
-      ${reflectionHTML}
+      <hr class="detail-divider"/>
+      <div class="reflection">
+        <div class="reflection-label">Reflection</div>
+        <p>${d.reflection}</p>
+      </div>
     </div>`;
 
+  document.getElementById('project-detail').classList.add('open');
   document.getElementById('main-site').classList.add('hidden');
-  const detail = document.getElementById('project-detail');
-  detail.classList.add('open');
-  detail.scrollTop = 0;
+  window.scrollTo(0, 0);
   lucide.createIcons();
 }
 
@@ -953,47 +1214,15 @@ function closeDetail() {
   document.getElementById('main-site').classList.remove('hidden');
 }
 
-// Close on back button
-window.addEventListener('popstate', closeDetail);
-
-// ─────────────────────────────────────────────────────────────────
-// CONTACT FORM
-// ─────────────────────────────────────────────────────────────────
 function handleForm(e) {
   e.preventDefault();
   const btn = e.target.querySelector('.form-submit');
-  btn.textContent = 'Sent ✓'; btn.style.background = '#437a22';
-  setTimeout(() => { btn.textContent = 'Send Message'; btn.style.background = ''; e.target.reset(); }, 3000);
+  btn.textContent = 'Message sent ✓';
+  btn.style.background = '#437a22';
+  setTimeout(() => { btn.textContent = 'Send Message'; btn.style.background = ''; }, 3000);
 }
 
-// ─────────────────────────────────────────────────────────────────
-// TRAVEL MAP
-// ─────────────────────────────────────────────────────────────────
 lucide.createIcons();
-
-const map = L.map('travel-map', { center: [20,0], zoom: 2, zoomControl: true, attributionControl: false });
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 10 }).addTo(map);
-const pinIcon = L.divIcon({ className: '', html: `<div style="width:12px;height:12px;background:#c9a84c;border-radius:50%;border:2px solid rgba(201,168,76,0.4);box-shadow:0 0 8px rgba(201,168,76,0.6);"></div>`, iconSize:[12,12], iconAnchor:[6,6] });
-const places = [
-  { name: "West Point, NY", lat: 41.39, lng: -73.96 },
-  { name: "Long Island, NY", lat: 40.79, lng: -73.13 },
-  { name: "New York City, NY", lat: 40.71, lng: -74.01 },
-  { name: "Washington D.C.", lat: 38.90, lng: -77.04 },
-  { name: "Old Greenwich, CT", lat: 41.02, lng: -73.57 },
-  { name: "Chicago, IL", lat: 41.88, lng: -87.63 },
-  { name: "Dallas, TX", lat: 32.78, lng: -96.80 },
-  { name: "London, UK", lat: 51.51, lng: -0.13 },
-  { name: "Edinburgh, Scotland", lat: 55.95, lng: -3.19 },
-  { name: "Athens, Greece", lat: 37.98, lng: 23.73 },
-  { name: "Thessaloniki, Greece", lat: 40.64, lng: 22.94 },
-  { name: "Volos, Greece", lat: 39.36, lng: 22.94 }
-];
-places.forEach(p => L.marker([p.lat,p.lng],{icon:pinIcon}).addTo(map).bindPopup(`<span style="font-family:DM Sans,sans-serif;font-size:0.8rem;color:#e8eaed">${p.name}</span>`));
 </script>
-<style>
-.leaflet-popup-content-wrapper { background: #13161b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #e8eaed; box-shadow: none; }
-.leaflet-popup-tip { background: #13161b; }
-.leaflet-popup-content { margin: 8px 12px; }
-</style>
 </body>
 </html>

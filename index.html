@@ -114,8 +114,10 @@
     }
     .section-sub { font-size: 1rem; color: var(--muted); max-width: 560px; margin-bottom: 3rem; }
 
+    /* ── ABOUT ── */
     #about { background: var(--surface); }
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; max-width: 1100px; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: start; max-width: 1100px; }
+    .about-left { display: flex; flex-direction: column; gap: 1.5rem; }
     .about-photo-wrap {
       aspect-ratio: 3/4; border-radius: var(--radius); overflow: hidden;
       background: var(--surface2); border: 1px solid var(--border);
@@ -123,12 +125,33 @@
       flex-direction: column; gap: 1rem; color: var(--faint);
     }
     .about-photo-wrap span { font-size: 0.8rem; letter-spacing: 0.08em; }
-    .about-bio { font-size: 1.05rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+
+    /* Skills pills */
+    .skills-block { display: flex; flex-direction: column; gap: 0.75rem; }
+    .skills-category { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); margin-bottom: 0.25rem; }
+    .skills-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .skill-pill {
+      font-size: 0.72rem; padding: 0.3rem 0.8rem; border-radius: 2rem;
+      border: 1px solid var(--border); color: var(--muted); background: var(--bg);
+      transition: all var(--transition);
+    }
+    .skill-pill.fluent { border-color: rgba(79,152,163,0.4); color: var(--accent); background: rgba(79,152,163,0.08); }
+    .skill-pill.cert { border-color: rgba(201,168,76,0.4); color: var(--gold); background: rgba(201,168,76,0.08); }
+
+    .about-bio { font-size: 1rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.5rem; }
     .about-bio strong { color: var(--text); font-weight: 500; }
-    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .stat-card { padding: 1.25rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); }
-    .stat-num { font-family: var(--font-display); font-size: 2rem; color: var(--accent); }
-    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+    .about-bio em { color: var(--accent); font-style: normal; }
+
+    /* Leadership cards */
+    .leadership-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    .leadership-card { padding: 1rem 1.25rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); }
+    .leadership-role { font-size: 0.8rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+    .leadership-org { font-size: 0.75rem; color: var(--muted); }
+
+    .about-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .stat-card { padding: 1.25rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); text-align: center; }
+    .stat-num { font-family: var(--font-display); font-size: 1.75rem; color: var(--accent); }
+    .stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.25rem; }
 
     #projects { background: var(--bg); }
     .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; max-width: 1100px; }
@@ -199,6 +222,8 @@
       section { padding: 4rem 1.5rem; }
       .hero-content { padding: 0 1.5rem 4rem; }
       .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .leadership-grid { grid-template-columns: 1fr; }
       .hero-scroll { display: none; }
       footer { flex-direction: column; gap: 0.5rem; text-align: center; }
     }
@@ -222,7 +247,7 @@
   <div class="hero-content">
     <div class="hero-tag">Portfolio</div>
     <h1 class="hero-name">Joseph<br>Moran</h1>
-    <p class="hero-tagline">Cadet · Quantitative Analyst · Data Scientist — bridging rigorous mathematics with real-world financial modeling.</p>
+    <p class="hero-tagline">Cadet · Data Scientist · Cyber Officer Candidate — turning complex data into decisions that matter.</p>
     <div class="hero-btns">
       <a href="#projects" class="btn-primary">View Projects</a>
       <a href="#contact" class="btn-ghost">Get in Touch</a>
@@ -233,25 +258,71 @@
 
 <section id="about">
   <div class="about-grid">
-    <div class="about-photo-wrap">
-      <i data-lucide="user" style="width:48px;height:48px;"></i>
-      <span>Photo coming soon</span>
+    <div class="about-left">
+      <div class="about-photo-wrap">
+        <i data-lucide="user" style="width:48px;height:48px;"></i>
+        <span>Photo coming soon</span>
+      </div>
+      <div class="skills-block">
+        <div>
+          <div class="skills-category">Fluent</div>
+          <div class="skills-pills">
+            <span class="skill-pill fluent">Python</span>
+            <span class="skill-pill fluent">SQL</span>
+          </div>
+        </div>
+        <div>
+          <div class="skills-category">Competent</div>
+          <div class="skills-pills">
+            <span class="skill-pill">R</span>
+            <span class="skill-pill">MATLAB</span>
+          </div>
+        </div>
+        <div>
+          <div class="skills-category">Certified</div>
+          <div class="skills-pills">
+            <span class="skill-pill cert">Microsoft Office Specialist</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div>
       <div class="section-label">About Me</div>
-      <h2 class="section-title">Analyst at heart, <em>leader by training.</em></h2>
+      <h2 class="section-title">Data-driven mind, <em>soldier's discipline.</em></h2>
       <p class="about-bio">
-        I'm <strong>Joseph Moran</strong>, a cadet at the <strong>United States Military Academy at West Point</strong> with a passion for quantitative finance, applied mathematics, and data-driven problem solving.
+        I'm <strong>Joseph Moran</strong>, a cadet at the <strong>United States Military Academy at West Point</strong> (Class of 2027), majoring in <strong>Applied Statistics & Data Science</strong> with a Cyber track. I grew up on <strong>Long Island, NY</strong>, and came to West Point driven by a passion for problem solving and public service.
         <br><br>
-        From constructing <strong>Black-Scholes option pricing models</strong> to interning at <strong>BLKBRD Asset Management</strong> in the world of high-frequency trading, I pursue the intersection of rigorous math and real financial markets.
+        My academic focus sits at the intersection of <strong>quantitative analysis and cyber warfare</strong> — building models and pipelines that extract signal from noise. I expect to <strong>branch Cyber</strong> in December 2026, with aspirations toward DoD cyber operations and, eventually, an MBA or advanced degree.
         <br><br>
-        Outside academics I'm drawn to <strong>travel, music, and exploring new places</strong> — collecting experiences as intentionally as I collect data points.
+        Outside the classroom, I've served as <strong>S1, S3, and S4</strong> for my company — handling personnel, operations, and logistics. I'm also a proud member of the <strong>West Point Glee Club</strong>, having performed across the United States and internationally in London, Scotland, Athens, Thessaloniki, and Volos. Music and travel are as much a part of who I am as data and code.
+        <br><br>
+        I grew up cooking alongside my grandmother — a habit that never left me. The kitchen, like a good dataset, rewards patience and attention to detail.
       </p>
+
+      <div class="leadership-grid">
+        <div class="leadership-card">
+          <div class="leadership-role">S1 · S3 — Company</div>
+          <div class="leadership-org">Personnel &amp; Operations</div>
+        </div>
+        <div class="leadership-card">
+          <div class="leadership-role">S4 — Basic Training</div>
+          <div class="leadership-org">Logistics &amp; Supply</div>
+        </div>
+        <div class="leadership-card">
+          <div class="leadership-role">Glee Club S4 · Spitivities</div>
+          <div class="leadership-org">West Point Glee Club</div>
+        </div>
+        <div class="leadership-card">
+          <div class="leadership-role">Combatives</div>
+          <div class="leadership-org">Modern Army Combatives</div>
+        </div>
+      </div>
+
       <div class="about-stats">
-        <div class="stat-card"><div class="stat-num">5+</div><div class="stat-label">Research Projects</div></div>
-        <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Years at West Point</div></div>
-        <div class="stat-card"><div class="stat-num">HFT</div><div class="stat-label">Industry Experience</div></div>
-        <div class="stat-card"><div class="stat-num">∞</div><div class="stat-label">Curiosity</div></div>
+        <div class="stat-card"><div class="stat-num">2027</div><div class="stat-label">Graduation</div></div>
+        <div class="stat-card"><div class="stat-num">5+</div><div class="stat-label">Projects</div></div>
+        <div class="stat-card"><div class="stat-num">12+</div><div class="stat-label">Cities Performed</div></div>
+        <div class="stat-card"><div class="stat-num">Cyber</div><div class="stat-label">Branch of Choice</div></div>
       </div>
     </div>
   </div>
@@ -282,7 +353,7 @@
     <div>
       <div class="section-label">Contact</div>
       <h2 class="section-title">Let's connect.</h2>
-      <p class="section-sub">Interested in collaborating, discussing quant finance, or just saying hello? Reach out.</p>
+      <p class="section-sub">Interested in collaborating, discussing cyber or quant finance, or just saying hello? Reach out.</p>
       <div class="contact-links">
         <a href="https://github.com/joseph-moran7433" target="_blank" rel="noopener" class="contact-link">
           <span class="contact-link-icon"><i data-lucide="github" style="width:20px;height:20px;"></i></span>
@@ -364,11 +435,17 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { m
 const pinIcon = L.divIcon({ className: '', html: `<div style="width:12px;height:12px;background:#c9a84c;border-radius:50%;border:2px solid rgba(201,168,76,0.4);box-shadow:0 0 8px rgba(201,168,76,0.6);"></div>`, iconSize:[12,12], iconAnchor:[6,6] });
 const places = [
   { name: "West Point, NY", lat: 41.39, lng: -73.96 },
+  { name: "Long Island, NY", lat: 40.79, lng: -73.13 },
+  { name: "New York City, NY", lat: 40.71, lng: -74.01 },
   { name: "Washington D.C.", lat: 38.90, lng: -77.04 },
   { name: "Old Greenwich, CT", lat: 41.02, lng: -73.57 },
-  { name: "New York City, NY", lat: 40.71, lng: -74.01 },
   { name: "Chicago, IL", lat: 41.88, lng: -87.63 },
-  { name: "Dallas, TX", lat: 32.78, lng: -96.80 }
+  { name: "Dallas, TX", lat: 32.78, lng: -96.80 },
+  { name: "London, UK", lat: 51.51, lng: -0.13 },
+  { name: "Edinburgh, Scotland", lat: 55.95, lng: -3.19 },
+  { name: "Athens, Greece", lat: 37.98, lng: 23.73 },
+  { name: "Thessaloniki, Greece", lat: 40.64, lng: 22.94 },
+  { name: "Volos, Greece", lat: 39.36, lng: 22.94 }
 ];
 places.forEach(p => L.marker([p.lat,p.lng],{icon:pinIcon}).addTo(map).bindPopup(`<span style="font-family:DM Sans,sans-serif;font-size:0.8rem;color:#e8eaed">${p.name}</span>`));
 </script>

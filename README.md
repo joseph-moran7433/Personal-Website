@@ -19,6 +19,6 @@ Personal portfolio site for Joseph Moran, Cadet at the United States Military Ac
 
 ## To Update
 - **Add headshot**: Replace the placeholder in `#about` with `<img src="assets/headshot.jpg" alt="Joseph Moran">`
-- **Add travel pins**: Edit the `places` array in the script at the bottom of `index.html`
+- **Add travel pins**: Edit the `pins` array in the script at the bottom of `index.html` — each entry takes a real `lat`/`lon` (the map projects them automatically, so pins always land in the right spot) plus a `type` (`home`/`work`/`glee`/`vacation`, which sets pin color and legend group) and an optional `tourGroup` to draw a connector line between stops on the same trip
 - **Update LinkedIn URL**: Search for `linkedin.com/in/joseph-moran` and replace with your actual URL
 - **Add hero image**: Upload `hero_bg.png` to the `assets/` folder

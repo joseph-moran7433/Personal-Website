@@ -1384,6 +1384,440 @@ P(S,t) = E·e^{−r(T−t)}·N(−d₂) − S·N(−d₁)`
       ],
       reflection: `This was the hardest project I've done academically — not because of the computation, but because of the conceptual density. Understanding why Itô's Lemma has a second-order term, and why (dS)² doesn't vanish the way it would in ordinary calculus, took days to fully internalize. The idea that you can hedge away all randomness just by holding Δ = ∂V/∂S shares of the underlying — and that no-arbitrage alone is enough to pin down the exact price of an option — is one of the most elegant results in all of applied mathematics. Reducing a terminal boundary-value problem to the heat equation and solving it with a 200-year-old Fourier technique tied the whole thing together: a finance problem, solved with tools built for heat flow.`
     }
+  },
+  {
+    id: 5,
+    date: "February 2026",
+    sortKey: 202602,
+    title: "Ames Housing — Sale Price Prediction",
+    desc: "Regression pipeline predicting home sale price from the Ames Housing dataset — correlation-driven feature selection, leakage-safe preprocessing, and a tuned Gradient Boosting Regressor.",
+    tags: ["Python","Scikit-learn","Regression","Feature Engineering","Kaggle"],
+    detail: {
+      summary: "Built a full regression pipeline to predict residential sale price from the Ames Housing dataset (1,460 homes, 81 raw features) for a Kaggle-style competition in MA477: Theory and Applications of Data Science. Used a correlation pass to cut 81 columns down to 11 defensible features, built a leakage-safe preprocessing pipeline for mixed numeric/categorical data, and moved from a linear baseline to a tuned Gradient Boosting Regressor trained on log-transformed sale price.",
+      sections: [
+        {
+          label: "The Data",
+          heading: "1,460 homes, 81 features, one target",
+          body: `<p>The Ames Housing dataset packs 1,460 home sales into 81 raw columns — a mix of <strong>38 numeric</strong> and <strong>43 categorical</strong> features describing everything from lot size to roof material. The task: predict <strong>SalePrice</strong> from the rest. The working assumption underneath any model here is that past sales reflect the same relationships that will hold going forward — which is why a correlation pass came before any modeling.</p>
+          <div class="chart-wrap">
+            <div class="chart-title">Correlation with Sale Price (Pearson r)</div>
+            <svg class="chart-svg" viewBox="0 0 560 270" role="img" aria-label="Horizontal bar chart of Pearson correlation between eight numeric features and SalePrice, ranging from 0.79 for Overall Quality down to 0.26 for Lot Area">
+              <line class="chart-gridline" x1="150" y1="15" x2="150" y2="231"/>
+              <line class="chart-gridline" x1="242.5" y1="15" x2="242.5" y2="231"/>
+              <line class="chart-gridline" x1="335" y1="15" x2="335" y2="231"/>
+              <line class="chart-gridline" x1="427.5" y1="15" x2="427.5" y2="231"/>
+              <line class="chart-gridline" x1="520" y1="15" x2="520" y2="231"/>
+              <text x="150" y="248" text-anchor="middle" font-size="9">0.0</text>
+              <text x="242.5" y="248" text-anchor="middle" font-size="9">0.2</text>
+              <text x="335" y="248" text-anchor="middle" font-size="9">0.4</text>
+              <text x="427.5" y="248" text-anchor="middle" font-size="9">0.6</text>
+              <text x="520" y="248" text-anchor="middle" font-size="9">0.8</text>
+              <text x="145" y="29" text-anchor="end" font-size="9.5">OverallQual</text>
+              <rect x="150" y="15" width="365.4" height="20" fill="#4f98a3"><title>OverallQual: r = 0.79</title></rect>
+              <text x="519" y="29" font-size="9">0.79</text>
+              <text x="145" y="57" text-anchor="end" font-size="9.5">GrLivArea</text>
+              <rect x="150" y="43" width="328.4" height="20" fill="#4f98a3"><title>GrLivArea: r = 0.71</title></rect>
+              <text x="482" y="57" font-size="9">0.71</text>
+              <text x="145" y="85" text-anchor="end" font-size="9.5">GarageCars</text>
+              <rect x="150" y="71" width="296" height="20" fill="#4f98a3"><title>GarageCars: r = 0.64</title></rect>
+              <text x="450" y="85" font-size="9">0.64</text>
+              <text x="145" y="113" text-anchor="end" font-size="9.5">TotalBsmtSF</text>
+              <rect x="150" y="99" width="282.1" height="20" fill="#4f98a3"><title>TotalBsmtSF: r = 0.61</title></rect>
+              <text x="436" y="113" font-size="9">0.61</text>
+              <text x="145" y="141" text-anchor="end" font-size="9.5">FullBath</text>
+              <rect x="150" y="127" width="259" height="20" fill="#4f98a3"><title>FullBath: r = 0.56</title></rect>
+              <text x="413" y="141" font-size="9">0.56</text>
+              <text x="145" y="169" text-anchor="end" font-size="9.5">TotRmsAbvGrd</text>
+              <rect x="150" y="155" width="245.1" height="20" fill="#4f98a3"><title>TotRmsAbvGrd: r = 0.53</title></rect>
+              <text x="399" y="169" font-size="9">0.53</text>
+              <text x="145" y="197" text-anchor="end" font-size="9.5">YearBuilt</text>
+              <rect x="150" y="183" width="240.5" height="20" fill="#4f98a3"><title>YearBuilt: r = 0.52</title></rect>
+              <text x="394" y="197" font-size="9">0.52</text>
+              <text x="145" y="225" text-anchor="end" font-size="9.5">LotArea</text>
+              <rect x="150" y="211" width="120.25" height="20" fill="#4f98a3"><title>LotArea: r = 0.26</title></rect>
+              <text x="274" y="225" font-size="9">0.26</text>
+            </svg>
+            <div class="chart-caption">Overall quality and above-ground living area dominate, both correlating with SalePrice above 0.7. Lot area barely moves it at 0.26 — that gap is what drove the final feature list.</div>
+          </div>`
+        },
+        {
+          label: "Feature Selection",
+          heading: "Cutting 81 columns down to 11",
+          body: `<p>Rather than one-hot encoding all 43 categorical columns into hundreds of sparse dimensions, I picked <strong>8 numeric features</strong> (quality, living area, basement size, garage capacity, year built, bathrooms, room count, lot area) and <strong>3 categorical features</strong> (neighborhood, house style, kitchen quality) based on the correlation pass and domain judgment about what actually drives a home's price. Missing numeric values were imputed to 0, missing categorical values to the literal string "Missing" — preserving the row instead of dropping it — and every step was wrapped in a single scikit-learn pipeline to keep preprocessing leakage-safe under cross-validation.</p>`,
+          code: {
+            lang: "Python",
+            filename: "preprocessing.py",
+            content: `<span class="code-keyword">from</span> sklearn.compose <span class="code-keyword">import</span> ColumnTransformer
+<span class="code-keyword">from</span> sklearn.pipeline <span class="code-keyword">import</span> Pipeline
+<span class="code-keyword">from</span> sklearn.preprocessing <span class="code-keyword">import</span> OneHotEncoder, StandardScaler
+<span class="code-keyword">from</span> sklearn.impute <span class="code-keyword">import</span> SimpleImputer
+
+<span class="code-var">numeric_features</span> = [<span class="code-string">"OverallQual"</span>, <span class="code-string">"GrLivArea"</span>, <span class="code-string">"TotalBsmtSF"</span>, <span class="code-string">"GarageCars"</span>,
+                     <span class="code-string">"YearBuilt"</span>, <span class="code-string">"FullBath"</span>, <span class="code-string">"TotRmsAbvGrd"</span>, <span class="code-string">"LotArea"</span>]
+<span class="code-var">categorical_features</span> = [<span class="code-string">"Neighborhood"</span>, <span class="code-string">"HouseStyle"</span>, <span class="code-string">"KitchenQual"</span>]
+
+<span class="code-var">numeric_transformer</span> = <span class="code-func">Pipeline</span>([
+    (<span class="code-string">"imputer"</span>, <span class="code-func">SimpleImputer</span>(strategy=<span class="code-string">"constant"</span>, fill_value=<span class="code-num">0</span>)),
+    (<span class="code-string">"scaler"</span>, <span class="code-func">StandardScaler</span>())
+])
+<span class="code-var">categorical_transformer</span> = <span class="code-func">Pipeline</span>([
+    (<span class="code-string">"imputer"</span>, <span class="code-func">SimpleImputer</span>(strategy=<span class="code-string">"constant"</span>, fill_value=<span class="code-string">"Missing"</span>)),
+    (<span class="code-string">"onehot"</span>, <span class="code-func">OneHotEncoder</span>(handle_unknown=<span class="code-string">"ignore"</span>))
+])
+<span class="code-var">preprocessor</span> = <span class="code-func">ColumnTransformer</span>([
+    (<span class="code-string">"num"</span>, numeric_transformer, numeric_features),
+    (<span class="code-string">"cat"</span>, categorical_transformer, categorical_features)
+])`
+          }
+        },
+        {
+          label: "Model",
+          heading: "From linear regression to gradient boosting",
+          body: `<p>The first model was a straight multiple linear regression, ŷ = β₀ + Σβⱼxⱼ. It worked, but sale price is heavily right-skewed — a handful of expensive homes stretch the target's tail — so the final model trained on <strong>log(SalePrice)</strong> instead, which tames the variance the linear model was struggling with. The regressor itself became a <strong>Gradient Boosting Regressor</strong>: an additive ensemble of shallow trees, each one fit to correct the residual error left by the trees before it, f̂(x) = Σₘ γₘhₘ(x).</p>`,
+          code: {
+            lang: "Python",
+            filename: "model.py",
+            content: `<span class="code-keyword">from</span> sklearn.ensemble <span class="code-keyword">import</span> GradientBoostingRegressor
+<span class="code-keyword">from</span> sklearn.metrics <span class="code-keyword">import</span> mean_squared_error
+
+<span class="code-comment"># Train on log(SalePrice) to tame the right-skewed target</span>
+<span class="code-var">y</span> = np.<span class="code-func">log</span>(train[<span class="code-string">"SalePrice"</span>])
+
+<span class="code-var">model</span> = <span class="code-func">Pipeline</span>([
+    (<span class="code-string">"preprocessor"</span>, preprocessor),
+    (<span class="code-string">"regressor"</span>, <span class="code-func">GradientBoostingRegressor</span>(
+        n_estimators=<span class="code-num">300</span>, learning_rate=<span class="code-num">0.05</span>, max_depth=<span class="code-num">3</span>, random_state=<span class="code-num">42</span>
+    ))
+])
+model.<span class="code-func">fit</span>(x_train, y_train)
+
+<span class="code-var">y_pred</span> = model.<span class="code-func">predict</span>(x_valid)
+<span class="code-var">rmse</span> = np.<span class="code-func">sqrt</span>(<span class="code-func">mean_squared_error</span>(y_valid, y_pred))
+<span class="code-func">print</span>(rmse)   <span class="code-comment"># 0.1476 (log-scale RMSE)</span>`
+          }
+        },
+        {
+          label: "Results",
+          heading: "Validation performance",
+          body: `<p>The tuned model reached a validation RMSE of <strong>0.1476</strong> on the log-price scale, and its predictions on the held-out test set ranged from <strong>$40,599</strong> to <strong>$526,976</strong> — consistent with the actual spread of sale prices in the data. Matching the correlation pass, <strong>overall quality, living area, and garage size</strong> came out as the strongest price drivers.</p>`,
+          stats: [
+            { num: "0.1476", label: "Validation RMSE (log-scale SalePrice)", gold: true },
+            { num: "$40.6K–$527K", label: "Predicted sale price range", gold: false },
+            { num: "1,460 × 81", label: "Raw dataset shape", gold: false },
+            { num: "11 of 81", label: "Features used in final model", gold: false }
+          ]
+        }
+      ],
+      reflection: `The most useful discipline in this project wasn't the modeling — it was resisting the urge to one-hot encode all 43 categorical columns just because I could. Cutting down to 11 features I could actually justify from the correlation matrix made the model more interpretable without costing accuracy. Training on log(SalePrice) instead of raw price was the other lesson that stuck: a five-minute fix for a right-skewed target that would have quietly capped how good any linear model could get. I used ChatGPT to help debug the RMSE calculation and to explain the jump from linear to gradient-boosted regression, but every model choice and every line of final code was something I ran and checked myself before it went in.`
+    }
+  },
+  {
+    id: 6,
+    date: "March 2026",
+    sortKey: 202603,
+    title: "Spoken Digit Classifier — 6 vs. 7",
+    desc: "Binary audio classifier distinguishing spoken digits 6 and 7 from spectrogram features, comparing five model families and tuning the winner by cross-validated ROC AUC.",
+    tags: ["Python","Scikit-learn","Classification","ROC/AUC","Audio Features"],
+    detail: {
+      summary: "Built a binary classifier estimating P(digit = 7 | recording) from flattened spectrogram features of spoken-digit audio, for a Kaggle-style competition in MA477. Compared five model families — LDA, logistic regression, SVM, KNN, and decision trees — under stratified 5-fold cross-validation scored by ROC AUC, tuned the four models sensitive to hyperparameters, and selected a tuned SVM as the final submission.",
+      sections: [
+        {
+          label: "The Task",
+          heading: "Telling 6 from 7 by ear",
+          body: `<p>Each observation is a spoken-digit recording already converted into <strong>flattened spectrogram features</strong> — no raw audio, no signal processing, just a feature matrix. Digit 6 is class 0, digit 7 is class 1, and the goal is to estimate <strong>P(Y=1|X)</strong>: the probability a given recording is a 7. Five model families were required — <strong>Linear Discriminant Analysis, logistic regression, an SVM, k-nearest neighbors, and a decision tree</strong> — each wrapped in a scikit-learn pipeline so feature scaling stayed isolated to the training folds and never leaked into validation.</p>`
+        },
+        {
+          label: "Tuning",
+          heading: "GridSearchCV, one model at a time",
+          body: `<p>Every model was scored with <strong>stratified 5-fold cross-validated ROC AUC</strong> — a threshold-free metric measuring how well a model ranks a random 7 above a random 6. LDA was left untouched; its default already sat near-perfect. The other four were tuned with GridSearchCV against the same CV split and objective: logistic regression and the SVM over their regularization terms (C, γ), KNN over neighbor count and distance weighting, and the tree over depth and minimum leaf size.</p>
+          <div class="chart-wrap">
+            <div class="chart-title">Baseline vs. Tuned Cross-Validated ROC AUC</div>
+            <svg class="chart-svg" viewBox="0 0 560 260" role="img" aria-label="Grouped bar chart comparing baseline and hyperparameter-tuned ROC AUC for logistic regression, SVM, KNN, and decision tree, y-axis truncated from 0.80 to 1.00">
+              <line class="chart-gridline" x1="70" y1="200" x2="530" y2="200"/>
+              <line class="chart-gridline" x1="70" y1="155" x2="530" y2="155"/>
+              <line class="chart-gridline" x1="70" y1="110" x2="530" y2="110"/>
+              <line class="chart-gridline" x1="70" y1="65" x2="530" y2="65"/>
+              <line class="chart-gridline" x1="70" y1="20" x2="530" y2="20"/>
+              <text x="64" y="203" text-anchor="end" font-size="9">0.80</text>
+              <text x="64" y="158" text-anchor="end" font-size="9">0.85</text>
+              <text x="64" y="113" text-anchor="end" font-size="9">0.90</text>
+              <text x="64" y="68" text-anchor="end" font-size="9">0.95</text>
+              <text x="64" y="23" text-anchor="end" font-size="9">1.00</text>
+              <rect x="83.5" y="21.89" width="40" height="178.11" fill="#4f98a3"><title>Logistic Regression baseline: 0.9979</title></rect>
+              <rect x="131.5" y="21.8" width="40" height="178.2" fill="#c9a84c"><title>Logistic Regression tuned: 0.9980</title></rect>
+              <rect x="198.5" y="20.72" width="40" height="179.28" fill="#4f98a3"><title>SVM (RBF) baseline: 0.9992</title></rect>
+              <rect x="246.5" y="20.54" width="40" height="179.46" fill="#c9a84c"><title>SVM (RBF) tuned: 0.9994</title></rect>
+              <rect x="313.5" y="28.82" width="40" height="171.18" fill="#4f98a3"><title>KNN baseline: 0.9902</title></rect>
+              <rect x="361.5" y="24.95" width="40" height="175.05" fill="#c9a84c"><title>KNN tuned: 0.9945</title></rect>
+              <rect x="428.5" y="146.54" width="40" height="53.46" fill="#4f98a3"><title>Decision Tree baseline: 0.8594</title></rect>
+              <rect x="476.5" y="112.88" width="40" height="87.12" fill="#c9a84c"><title>Decision Tree tuned: 0.8968</title></rect>
+              <text x="151.5" y="17" text-anchor="middle" font-size="8.5" fill="var(--text)">0.998</text>
+              <text x="266.5" y="16" text-anchor="middle" font-size="8.5" fill="var(--text)">0.999</text>
+              <text x="381.5" y="20.95" text-anchor="middle" font-size="8.5" fill="var(--text)">0.995</text>
+              <text x="496.5" y="108.88" text-anchor="middle" font-size="8.5" fill="var(--text)">0.897</text>
+              <text x="127.5" y="214" text-anchor="middle" font-size="9.5">LogReg</text>
+              <text x="242.5" y="214" text-anchor="middle" font-size="9.5">SVM (RBF)</text>
+              <text x="357.5" y="214" text-anchor="middle" font-size="9.5">KNN</text>
+              <text x="472.5" y="214" text-anchor="middle" font-size="9.5">Decision Tree</text>
+            </svg>
+            <div class="chart-legend">
+              <div class="chart-legend-item"><span class="chart-legend-dot" style="background:#4f98a3; border-radius:2px;"></span>Baseline (defaults)</div>
+              <div class="chart-legend-item"><span class="chart-legend-dot" style="background:#c9a84c; border-radius:2px;"></span>Tuned (GridSearchCV)</div>
+            </div>
+            <div class="chart-caption">LDA's baseline (0.999, not shown) was already near-perfect and left untuned. Tuning barely moved logistic regression and the SVM — both were already near the ceiling — but gave the decision tree a real +0.037 AUC gain and KNN a smaller, still meaningful lift.</div>
+          </div>`,
+          code: {
+            lang: "Python",
+            filename: "model_tuning.py",
+            content: `<span class="code-keyword">from</span> sklearn.model_selection <span class="code-keyword">import</span> GridSearchCV, StratifiedKFold
+<span class="code-keyword">from</span> sklearn.svm <span class="code-keyword">import</span> SVC
+
+<span class="code-var">cv</span> = <span class="code-func">StratifiedKFold</span>(n_splits=<span class="code-num">5</span>, shuffle=<span class="code-keyword">True</span>, random_state=<span class="code-num">42</span>)
+
+<span class="code-var">svm_pipe</span> = <span class="code-func">Pipeline</span>([
+    (<span class="code-string">"scaler"</span>, <span class="code-func">StandardScaler</span>()),
+    (<span class="code-string">"svm"</span>, <span class="code-func">SVC</span>(kernel=<span class="code-string">"rbf"</span>, probability=<span class="code-keyword">True</span>))
+])
+<span class="code-var">param_grid</span> = {<span class="code-string">"svm__C"</span>: [<span class="code-num">0.1</span>, <span class="code-num">1</span>, <span class="code-num">10</span>, <span class="code-num">100</span>], <span class="code-string">"svm__gamma"</span>: [<span class="code-string">"scale"</span>, <span class="code-num">0.01</span>, <span class="code-num">0.1</span>]}
+
+<span class="code-var">grid</span> = <span class="code-func">GridSearchCV</span>(svm_pipe, param_grid, scoring=<span class="code-string">"roc_auc"</span>, cv=cv, refit=<span class="code-keyword">True</span>)
+grid.<span class="code-func">fit</span>(X_train, y_train)
+
+<span class="code-func">print</span>(grid.best_params_)   <span class="code-comment"># {'svm__C': 10, 'svm__gamma': 'scale'}</span>
+<span class="code-func">print</span>(grid.best_score_)    <span class="code-comment"># 0.9994</span>`
+          }
+        },
+        {
+          label: "Final Model & ROC",
+          heading: "SVM wins — and a caveat worth naming",
+          body: `<p>On the validation set, the tuned SVM's ROC curve hugs the top-left corner almost perfectly (AUC = 1.000), narrowly ahead of logistic regression (0.997) and KNN (0.996); the decision tree trails well behind at 0.872. I chose the <strong>SVM (C = 10, γ = scale)</strong> as the final model — best AUC, lowest fold-to-fold variance, and more flexibility than a linear model if the underlying feature space turns out to be more complex than it looks.</p>
+          <div class="chart-wrap">
+            <div class="chart-title">ROC Curves on the Validation Set</div>
+            <svg class="chart-svg" viewBox="0 0 540 410" role="img" aria-label="ROC curves for SVM, logistic regression, KNN, and decision tree, with a diagonal no-skill reference line. SVM, logistic regression, and KNN curves hug the top-left corner; the decision tree curve is visibly more bowed toward the diagonal">
+              <line class="chart-gridline" x1="70" y1="370" x2="470" y2="370"/>
+              <line class="chart-gridline" x1="70" y1="300" x2="470" y2="300"/>
+              <line class="chart-gridline" x1="70" y1="230" x2="470" y2="230"/>
+              <line class="chart-gridline" x1="70" y1="160" x2="470" y2="160"/>
+              <line class="chart-gridline" x1="70" y1="90" x2="470" y2="90"/>
+              <line class="chart-gridline" x1="70" y1="20" x2="470" y2="20"/>
+              <line class="chart-gridline" x1="70" y1="20" x2="70" y2="370"/>
+              <line class="chart-gridline" x1="150" y1="20" x2="150" y2="370"/>
+              <line class="chart-gridline" x1="230" y1="20" x2="230" y2="370"/>
+              <line class="chart-gridline" x1="310" y1="20" x2="310" y2="370"/>
+              <line class="chart-gridline" x1="390" y1="20" x2="390" y2="370"/>
+              <line class="chart-gridline" x1="470" y1="20" x2="470" y2="370"/>
+              <text x="64" y="373" text-anchor="end" font-size="9">0.0</text>
+              <text x="64" y="303" text-anchor="end" font-size="9">0.2</text>
+              <text x="64" y="233" text-anchor="end" font-size="9">0.4</text>
+              <text x="64" y="163" text-anchor="end" font-size="9">0.6</text>
+              <text x="64" y="93" text-anchor="end" font-size="9">0.8</text>
+              <text x="64" y="23" text-anchor="end" font-size="9">1.0</text>
+              <text x="70" y="384" text-anchor="middle" font-size="9">0.0</text>
+              <text x="150" y="384" text-anchor="middle" font-size="9">0.2</text>
+              <text x="230" y="384" text-anchor="middle" font-size="9">0.4</text>
+              <text x="310" y="384" text-anchor="middle" font-size="9">0.6</text>
+              <text x="390" y="384" text-anchor="middle" font-size="9">0.8</text>
+              <text x="470" y="384" text-anchor="middle" font-size="9">1.0</text>
+              <text x="270" y="400" text-anchor="middle" font-size="10">False Positive Rate</text>
+              <text x="22" y="195" text-anchor="middle" font-size="10" transform="rotate(-90 22 195)">True Positive Rate</text>
+              <line x1="70" y1="370" x2="470" y2="20" stroke="var(--faint)" stroke-width="1.5" stroke-dasharray="4,4"/>
+              <polyline fill="none" stroke="#8a9099" stroke-width="2" stroke-dasharray="1,3" points="70,370 72,209.24 74,191.95 78,172.91 82,160.80 90,144.53 102,128.43 118,113.59 142,97.87 170,84.43 210,69.98 270,53.84 350,37.85 470,20"/>
+              <polyline fill="none" stroke="#8b7fc7" stroke-width="2" stroke-dasharray="2,3" points="70,370 72,27.37 74,26.41 78,25.46 82,24.90 90,24.19 102,23.53 118,22.97 142,22.40 170,21.94 210,21.47 270,20.97 350,20.50 470,20"/>
+              <polyline fill="none" stroke="#c9a84c" stroke-width="2" stroke-dasharray="6,3" points="70,370 72,25.53 74,24.82 78,24.10 82,23.67 90,23.14 102,22.65 118,22.23 142,21.80 170,21.46 210,21.10 270,20.73 350,20.37 470,20"/>
+              <polyline fill="none" stroke="#4f98a3" stroke-width="2.5" points="70,370 72,21.85 74,21.61 78,21.36 82,21.23 90,21.05 102,20.88 118,20.74 142,20.60 170,20.49 210,20.37 270,20.24 350,20.13 470,20"/>
+            </svg>
+            <div class="chart-legend">
+              <div class="chart-legend-item"><span class="chart-legend-dot" style="background:#4f98a3; border-radius:2px;"></span>SVM (AUC = 1.000)</div>
+              <div class="chart-legend-item"><span class="chart-legend-dot" style="background:#c9a84c; border-radius:2px;"></span>Logistic Regression (AUC = 0.997)</div>
+              <div class="chart-legend-item"><span class="chart-legend-dot" style="background:#8b7fc7; border-radius:2px;"></span>KNN (AUC = 0.996)</div>
+              <div class="chart-legend-item"><span class="chart-legend-dot" style="background:#8a9099; border-radius:2px;"></span>Decision Tree (AUC = 0.872)</div>
+            </div>
+            <div class="chart-caption">Curves are smooth analytic approximations at each model's reported AUC (y = x^p, chosen so the area under each curve matches the stated value exactly), not the raw empirical curve — drawn to show relative shape, not to claim pixel-exact tracing of the original plot.</div>
+          </div>
+          <p>One caveat worth naming: cross-validation folds mixed speakers together, while Kaggle's held-out test set is speaker-held-out. The near-1.0 AUCs above are almost certainly a little optimistic about how the model generalizes to a voice it has never heard in any form — a stricter, speaker-level CV split would be the honest next step.</p>`,
+          stats: [
+            { num: "0.9994", label: "Tuned SVM cross-validated ROC AUC", gold: true },
+            { num: "C=10, γ=scale", label: "Best SVM hyperparameters", gold: false },
+            { num: "5 models", label: "LDA, LogReg, SVM, KNN, Decision Tree compared", gold: false },
+            { num: "+0.037 AUC", label: "Decision tree gain from tuning", gold: false }
+          ]
+        }
+      ],
+      reflection: `The most important decision in this project wasn't which model to pick — it was picking ROC AUC over plain accuracy in the first place, since a threshold-free ranking metric answers "does this model separate 6s from 7s" rather than "did it guess right at one arbitrary cutoff." The uncomfortable part came later, once I looked past the leaderboard number: the cross-validation folds mixed speakers together, while Kaggle's held-out test set doesn't, which means the near-perfect AUCs I was seeing were probably a bit optimistic about generalizing to a genuinely new voice. I didn't have a clean way to fix that within the scope of the assignment, but naming the gap mattered more than pretending the validation score was the whole story.`
+    }
+  },
+  {
+    id: 7,
+    date: "May 2026",
+    sortKey: 202605,
+    title: "Distracted Driver Detection — ResNet50 Transfer Learning",
+    desc: "10-class image classifier flagging distracted-driving behavior from dashboard camera stills, built with transfer learning on a frozen ResNet50 backbone and a grid-searched classifier head.",
+    tags: ["Python","TensorFlow/Keras","Computer Vision","Transfer Learning","Deep Learning"],
+    detail: {
+      summary: "Partnered final project for MA477 building a 10-class image classifier over dashboard-camera stills of driver behavior — safe driving vs. eight distraction categories plus talking to a passenger. My contribution centered on the modeling pipeline: after a from-scratch CNN stalled around 30% accuracy, I switched to transfer learning on a frozen ResNet50 backbone, grid-searched the classifier head across 50 trials, then fine-tuned the network's last layers end-to-end.",
+      sections: [
+        {
+          label: "The Dataset",
+          heading: "22,424 dashboard images, 10 behaviors",
+          body: `<p>The dataset — the classic distracted-driver detection task — contains <strong>22,424 labeled training images</strong> across ten roughly balanced classes: safe driving, texting or talking on the phone (left or right hand), operating the radio, drinking, reaching behind, doing hair/makeup, and talking to a passenger. A held-out Kaggle test set of nearly 80,000 unlabeled images scores the final submission.</p>
+          <div class="chart-wrap">
+            <div class="chart-title">Training Images per Class</div>
+            <svg class="chart-svg" viewBox="0 0 700 300" role="img" aria-label="Bar chart of training image counts across ten distracted-driving classes, ranging from 1550 for hair and makeup to 1984 for safe driving">
+              <line class="chart-gridline" x1="60" y1="240" x2="680" y2="240"/>
+              <line class="chart-gridline" x1="60" y1="185" x2="680" y2="185"/>
+              <line class="chart-gridline" x1="60" y1="130" x2="680" y2="130"/>
+              <line class="chart-gridline" x1="60" y1="75" x2="680" y2="75"/>
+              <line class="chart-gridline" x1="60" y1="20" x2="680" y2="20"/>
+              <text x="54" y="243" text-anchor="end" font-size="9">0</text>
+              <text x="54" y="188" text-anchor="end" font-size="9">500</text>
+              <text x="54" y="133" text-anchor="end" font-size="9">1000</text>
+              <text x="54" y="78" text-anchor="end" font-size="9">1500</text>
+              <text x="54" y="23" text-anchor="end" font-size="9">2000</text>
+              <rect x="68.5" y="21.76" width="45" height="218.24" fill="#4f98a3"><title>Safe Driving: 1,984 images</title></rect>
+              <rect x="130.5" y="38.37" width="45" height="201.63" fill="#4f98a3"><title>Texting (right): 1,833 images</title></rect>
+              <rect x="192.5" y="39.69" width="45" height="200.31" fill="#4f98a3"><title>Talking on Phone (right): 1,821 images</title></rect>
+              <rect x="254.5" y="34.41" width="45" height="205.59" fill="#4f98a3"><title>Texting (left): 1,869 images</title></rect>
+              <rect x="316.5" y="35.4" width="45" height="204.6" fill="#4f98a3"><title>Talking on Phone (left): 1,860 images</title></rect>
+              <rect x="378.5" y="35.73" width="45" height="204.27" fill="#4f98a3"><title>Radio: 1,857 images</title></rect>
+              <rect x="440.5" y="34.63" width="45" height="205.37" fill="#4f98a3"><title>Drinking: 1,867 images</title></rect>
+              <rect x="502.5" y="64.11" width="45" height="175.89" fill="#4f98a3"><title>Reaching Behind: 1,599 images</title></rect>
+              <rect x="564.5" y="69.5" width="45" height="170.5" fill="#4f98a3"><title>Hair/Makeup: 1,550 images</title></rect>
+              <rect x="626.5" y="53.0" width="45" height="187.0" fill="#4f98a3"><title>Talking to Passenger: 1,700 images</title></rect>
+              <text x="91" y="234" text-anchor="middle" font-size="8" fill="var(--bg)">1984</text>
+              <text x="153" y="234" text-anchor="middle" font-size="8" fill="var(--bg)">1833</text>
+              <text x="215" y="234" text-anchor="middle" font-size="8" fill="var(--bg)">1821</text>
+              <text x="277" y="234" text-anchor="middle" font-size="8" fill="var(--bg)">1869</text>
+              <text x="339" y="234" text-anchor="middle" font-size="8" fill="var(--bg)">1860</text>
+              <text x="401" y="234" text-anchor="middle" font-size="8" fill="var(--bg)">1857</text>
+              <text x="463" y="234" text-anchor="middle" font-size="8" fill="var(--bg)">1867</text>
+              <text x="525" y="234" text-anchor="middle" font-size="8" fill="var(--bg)">1599</text>
+              <text x="587" y="234" text-anchor="middle" font-size="8" fill="var(--bg)">1550</text>
+              <text x="649" y="234" text-anchor="middle" font-size="8" fill="var(--bg)">1700</text>
+              <text x="91" y="254" text-anchor="end" font-size="8.5" transform="rotate(-40 91 254)">Safe Driving</text>
+              <text x="153" y="254" text-anchor="end" font-size="8.5" transform="rotate(-40 153 254)">Text (R)</text>
+              <text x="215" y="254" text-anchor="end" font-size="8.5" transform="rotate(-40 215 254)">Phone (R)</text>
+              <text x="277" y="254" text-anchor="end" font-size="8.5" transform="rotate(-40 277 254)">Text (L)</text>
+              <text x="339" y="254" text-anchor="end" font-size="8.5" transform="rotate(-40 339 254)">Phone (L)</text>
+              <text x="401" y="254" text-anchor="end" font-size="8.5" transform="rotate(-40 401 254)">Radio</text>
+              <text x="463" y="254" text-anchor="end" font-size="8.5" transform="rotate(-40 463 254)">Drinking</text>
+              <text x="525" y="254" text-anchor="end" font-size="8.5" transform="rotate(-40 525 254)">Reaching</text>
+              <text x="587" y="254" text-anchor="end" font-size="8.5" transform="rotate(-40 587 254)">Hair/Makeup</text>
+              <text x="649" y="254" text-anchor="end" font-size="8.5" transform="rotate(-40 649 254)">Passenger</text>
+            </svg>
+            <div class="chart-caption">Classes are close enough to balanced (1,550–1,984 images) that plain accuracy is a defensible metric here, rather than needing precision/recall/F1 to correct for class imbalance.</div>
+          </div>`
+        },
+        {
+          label: "First Attempt",
+          heading: "A CNN from scratch tops out at 30%",
+          body: `<p>My first model was a convolutional neural network trained from random initialization directly on the image pixels. It trained slowly given the dataset size and plateaued around <strong>30% accuracy</strong> — barely better than guessing across ten classes. That result was the signal to stop building a network from nothing and start from one that already understood images.</p>`
+        },
+        {
+          label: "Transfer Learning",
+          heading: "Freezing ResNet50, tuning only the head",
+          body: `<p>Swapping in a <strong>ResNet50</strong> backbone pretrained on ImageNet — frozen, used purely as a fixed feature extractor — turned the problem from "learn to see" into "learn to classify a 2,048-dimensional feature vector." Every training and validation image was run through the frozen backbone once, the resulting features cached, and those cached features fed a grid search over the classifier head: dense-layer width and dropout rate, 50 trials total, scored by validation accuracy.</p>`,
+          code: {
+            lang: "Python",
+            filename: "resnet_transfer.py",
+            content: `<span class="code-var">base_model</span> = tf.keras.applications.<span class="code-func">ResNet50</span>(
+    input_shape=(<span class="code-num">224</span>, <span class="code-num">224</span>, <span class="code-num">3</span>), include_top=<span class="code-keyword">False</span>, weights=<span class="code-string">"imagenet"</span>, pooling=<span class="code-string">"avg"</span>
+)
+base_model.trainable = <span class="code-keyword">False</span>  <span class="code-comment"># frozen feature extractor</span>
+
+<span class="code-comment"># Extract 2048-d features once, reuse for every grid-search trial</span>
+<span class="code-var">train_features</span> = base_model.<span class="code-func">predict</span>(train_dataset)
+<span class="code-var">val_features</span>   = base_model.<span class="code-func">predict</span>(val_dataset)
+
+<span class="code-keyword">def</span> <span class="code-func">build_head</span>(hp):
+    model = tf.keras.<span class="code-func">Sequential</span>([
+        tf.keras.<span class="code-func">Input</span>(shape=(<span class="code-num">2048</span>,)),
+        layers.<span class="code-func">Dense</span>(hp.<span class="code-func">Int</span>(<span class="code-string">"neurons"</span>, <span class="code-num">128</span>, <span class="code-num">1024</span>, step=<span class="code-num">128</span>), activation=<span class="code-string">"relu"</span>),
+        layers.<span class="code-func">Dropout</span>(hp.<span class="code-func">Float</span>(<span class="code-string">"dropout"</span>, <span class="code-num">0.1</span>, <span class="code-num">0.3</span>, step=<span class="code-num">0.05</span>)),
+        layers.<span class="code-func">Dense</span>(num_classes, activation=<span class="code-string">"softmax"</span>)
+    ])
+    model.<span class="code-func">compile</span>(optimizer=<span class="code-string">"adam"</span>, loss=<span class="code-string">"categorical_crossentropy"</span>, metrics=[<span class="code-string">"accuracy"</span>])
+    <span class="code-keyword">return</span> model
+
+<span class="code-var">tuner</span> = kt.<span class="code-func">GridSearch</span>(build_head, objective=<span class="code-string">"val_accuracy"</span>, max_trials=<span class="code-num">50</span>)
+tuner.<span class="code-func">search</span>(train_features, train_labels, epochs=<span class="code-num">10</span>,
+             validation_data=(val_features, val_labels))
+<span class="code-comment"># Best trial: 512 neurons, 0.15 dropout -> val_accuracy = 0.9284</span>`
+          }
+        },
+        {
+          label: "Fine-Tuning",
+          heading: "Unfreezing the last layers",
+          body: `<p>The grid search's best head — a 512-neuron dense layer with 0.15 dropout — reached <strong>92.8% validation accuracy</strong> with the ResNet50 backbone still fully frozen. I then attached that head to the backbone, unfroze everything past the first N−20 layers, and fine-tuned the combined network end-to-end for 5 epochs at a much lower learning rate (1e-5) to avoid wrecking the pretrained features.</p>
+          <div class="chart-wrap">
+            <div class="chart-title">Fine-Tuning: Training vs. Validation Accuracy</div>
+            <svg class="chart-svg" viewBox="0 0 560 280" role="img" aria-label="Line chart of training and validation accuracy across 5 fine-tuning epochs. Training accuracy rises steadily from 85% to 94%. Validation accuracy starts at 84%, dips to 78% in epoch 2, then recovers to 88% by epoch 5">
+              <line class="chart-gridline" x1="70" y1="240" x2="500" y2="240"/>
+              <line class="chart-gridline" x1="70" y1="196" x2="500" y2="196"/>
+              <line class="chart-gridline" x1="70" y1="152" x2="500" y2="152"/>
+              <line class="chart-gridline" x1="70" y1="108" x2="500" y2="108"/>
+              <line class="chart-gridline" x1="70" y1="64" x2="500" y2="64"/>
+              <line class="chart-gridline" x1="70" y1="20" x2="500" y2="20"/>
+              <text x="64" y="243" text-anchor="end" font-size="9">75%</text>
+              <text x="64" y="199" text-anchor="end" font-size="9">80%</text>
+              <text x="64" y="155" text-anchor="end" font-size="9">85%</text>
+              <text x="64" y="111" text-anchor="end" font-size="9">90%</text>
+              <text x="64" y="67" text-anchor="end" font-size="9">95%</text>
+              <text x="64" y="23" text-anchor="end" font-size="9">100%</text>
+              <text x="70" y="256" text-anchor="middle" font-size="9">Epoch 1</text>
+              <text x="177.5" y="256" text-anchor="middle" font-size="9">Epoch 2</text>
+              <text x="285" y="256" text-anchor="middle" font-size="9">Epoch 3</text>
+              <text x="392.5" y="256" text-anchor="middle" font-size="9">Epoch 4</text>
+              <text x="500" y="256" text-anchor="middle" font-size="9">Epoch 5</text>
+              <polyline fill="none" stroke="#4f98a3" stroke-width="2" points="70,152.26 177.5,101.31 285,89.52 392.5,80.90 500,76.94"/>
+              <polyline fill="none" stroke="#c9a84c" stroke-width="2" stroke-dasharray="6,3" points="70,165.2 177.5,209.55 285,175.41 392.5,146.02 500,123.22"/>
+              <circle cx="70" cy="152.26" r="4" fill="#4f98a3"><title>Epoch 1 train accuracy: 84.97%</title></circle>
+              <circle cx="177.5" cy="101.31" r="4" fill="#4f98a3"><title>Epoch 2 train accuracy: 90.76%</title></circle>
+              <circle cx="285" cy="89.52" r="4" fill="#4f98a3"><title>Epoch 3 train accuracy: 92.10%</title></circle>
+              <circle cx="392.5" cy="80.90" r="4" fill="#4f98a3"><title>Epoch 4 train accuracy: 93.08%</title></circle>
+              <circle cx="500" cy="76.94" r="4" fill="#4f98a3"><title>Epoch 5 train accuracy: 93.53%</title></circle>
+              <rect x="66" y="161.2" width="8" height="8" fill="#c9a84c"><title>Epoch 1 val accuracy: 83.50%</title></rect>
+              <rect x="173.5" y="205.55" width="8" height="8" fill="#c9a84c"><title>Epoch 2 val accuracy: 78.46%</title></rect>
+              <rect x="281" y="171.41" width="8" height="8" fill="#c9a84c"><title>Epoch 3 val accuracy: 82.34%</title></rect>
+              <rect x="388.5" y="142.02" width="8" height="8" fill="#c9a84c"><title>Epoch 4 val accuracy: 85.68%</title></rect>
+              <rect x="496" y="119.22" width="8" height="8" fill="#c9a84c"><title>Epoch 5 val accuracy: 88.27%</title></rect>
+            </svg>
+            <div class="chart-legend">
+              <div class="chart-legend-item"><span class="chart-legend-dot" style="background:#4f98a3"></span>Training accuracy</div>
+              <div class="chart-legend-item"><span class="chart-legend-dot" style="background:#c9a84c; border-radius:2px;"></span>Validation accuracy</div>
+            </div>
+            <div class="chart-caption">Validation accuracy dipped to 78.5% in epoch 2 before recovering — a sign the newly-unfrozen layers were adjusting faster than the classifier head could stabilize against. By epoch 5 it had recovered to 88.3%, though still short of the 92.8% the frozen-head model reached with far less compute.</div>
+          </div>`,
+          code: {
+            lang: "Python",
+            filename: "fine_tune.py",
+            content: `<span class="code-var">final_model</span> = tf.keras.<span class="code-func">Sequential</span>([base_model, best_head])
+
+base_model.trainable = <span class="code-keyword">True</span>
+<span class="code-keyword">for</span> layer <span class="code-keyword">in</span> base_model.layers[:-<span class="code-num">20</span>]:
+    layer.trainable = <span class="code-keyword">False</span>   <span class="code-comment"># keep all but the last 20 layers frozen</span>
+
+final_model.<span class="code-func">compile</span>(
+    optimizer=tf.keras.optimizers.<span class="code-func">Adam</span>(<span class="code-num">1e-5</span>),
+    loss=<span class="code-string">"categorical_crossentropy"</span>, metrics=[<span class="code-string">"accuracy"</span>]
+)
+<span class="code-var">history</span> = final_model.<span class="code-func">fit</span>(train_dataset, validation_data=val_dataset, epochs=<span class="code-num">5</span>)
+<span class="code-comment"># Epoch 5/5 - accuracy: 0.9353 - val_accuracy: 0.8827</span>`
+          }
+        },
+        {
+          label: "Results",
+          heading: "88.3% — and a result worth being honest about",
+          body: `<p>Fine-tuning finished at <strong>88.3% validation accuracy</strong> — lower than the <strong>92.8%</strong> the grid-searched head alone reached with the backbone still frozen. That's a real, slightly uncomfortable finding: unfreezing more of the network gave it more capacity to overfit in just 5 epochs, and the run never caught back up to the frozen-head baseline in the time available. The qualitative error pattern was consistent with that — the model's most common mix-up was <strong>safe driving vs. talking to a passenger</strong>, the two classes with the least visually distinctive hand and head position.</p>`,
+          stats: [
+            { num: "88.3%", label: "Fine-tuned validation accuracy", gold: true },
+            { num: "92.8%", label: "Best frozen-head accuracy (grid search)", gold: false },
+            { num: "~30%", label: "From-scratch CNN accuracy", gold: false },
+            { num: "10 classes", label: "22,424 training images", gold: false }
+          ]
+        }
+      ],
+      reflection: `The most honest part of this project was reporting a fine-tuning run that didn't beat its own baseline. It would have been easy to just report the 92.8% frozen-head number as "the model's accuracy" and leave it there, but the fine-tuned model was the one I actually shipped, and its validation curve — dipping in epoch 2 before climbing back — told a more useful story than a single clean number would have: more trainable parameters bought more overfitting risk before it bought more accuracy, at least in the five epochs I had budget for. Splitting the work with a partner meant I could push hard on the modeling pipeline specifically, and comparing our two approaches afterward was its own lesson in how differently two people can reasonably solve the same problem.`
+    }
   }
 ];
 

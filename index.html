@@ -1,9 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Joseph Moran</title>
+  <meta name="description" content="Portfolio of Joseph Moran — Cadet, United States Military Academy at West Point (Class of 2027), studying Applied Statistics & Data Science with a Cyber track. Quantitative finance, cybersecurity, and data science projects.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Joseph Moran">
+  <meta property="og:description" content="West Point cadet by discipline, data scientist by design. Portfolio of quant finance, cybersecurity, and data science projects.">
+  <meta property="og:image" content="assets/headshot.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Joseph Moran">
+  <meta name="twitter:description" content="West Point cadet by discipline, data scientist by design. Portfolio of quant finance, cybersecurity, and data science projects.">
+  <meta name="twitter:image" content="assets/headshot.jpg">
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -872,10 +885,12 @@
         </a>
       </div>
     </div>
-    <form class="contact-form" onsubmit="handleForm(event)">
-      <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" placeholder="Your name" required /></div>
-      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" required /></div>
-      <div class="form-group"><label class="form-label">Message</label><textarea class="form-input" placeholder="What's on your mind?" required></textarea></div>
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form" onsubmit="handleForm(event)">
+      <input type="hidden" name="form-name" value="contact" />
+      <p style="position:absolute; left:-9999px;"><label>Leave this field blank: <input name="bot-field" /></label></p>
+      <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" name="name" placeholder="Your name" required /></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" name="email" placeholder="your@email.com" required /></div>
+      <div class="form-group"><label class="form-label">Message</label><textarea class="form-input" name="message" placeholder="What's on your mind?" required></textarea></div>
       <button type="submit" class="form-submit">Send Message</button>
     </form>
   </div>
@@ -2144,10 +2159,32 @@ function closeDetail() {
 
 function handleForm(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('.form-submit');
-  btn.textContent = 'Message sent ✓';
-  btn.style.background = '#437a22';
-  setTimeout(() => { btn.textContent = 'Send Message'; btn.style.background = ''; }, 3000);
+  const form = e.target;
+  const btn = form.querySelector('.form-submit');
+  const originalLabel = btn.textContent;
+  const body = new URLSearchParams(new FormData(form)).toString();
+
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error('Form submission failed');
+      btn.textContent = 'Message sent ✓';
+      btn.style.background = '#437a22';
+      form.reset();
+    })
+    .catch(() => {
+      btn.textContent = 'Something went wrong — try again';
+      btn.style.background = '#b23b3b';
+    })
+    .finally(() => {
+      setTimeout(() => { btn.textContent = originalLabel; btn.style.background = ''; btn.disabled = false; }, 3000);
+    });
 }
 
 lucide.createIcons();

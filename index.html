@@ -1083,44 +1083,102 @@ const projects = [
     desc: "Full mathematical derivation of the Black-Scholes PDE from stochastic calculus via Itô's Lemma, transformed to the heat equation and solved with Fourier methods. Verified in MATLAB.",
     tags: ["MATLAB","Stochastic Calculus","PDEs","Options","Mathematical Finance"],
     detail: {
-      summary: "Derived the Black-Scholes partial differential equation from first principles using Itô's Lemma, transformed it to the classical heat equation via change of variables, and solved it analytically using Fourier transform methods. Implemented and verified in MATLAB.",
+      summary: "Derived the Black-Scholes partial differential equation from first principles — starting with geometric Brownian motion for stock prices, applying Itô's Lemma to build the equation of motion for an option's value, and eliminating risk through a delta-hedged, no-arbitrage portfolio. Reduced the resulting terminal boundary-value problem to the classical heat equation via a change of variables, solved it analytically with Fourier transform methods, and verified the closed-form solution numerically in MATLAB against real market option prices.",
       sections: [
         {
           label: "The Foundation",
-          heading: "From Brownian motion to a PDE",
-          body: `<p>The Black-Scholes equation starts with geometric Brownian motion for stock prices. To price an option V(S,t), we need Itô's Lemma — the stochastic calculus chain rule — which adds a second-order correction term absent in ordinary calculus.</p>`
+          heading: "What an option is actually worth",
+          body: `<p>An <strong>option</strong> is a contract giving its holder the right — not the obligation — to buy (a <strong>call</strong>) or sell (a <strong>put</strong>) an asset at a fixed <strong>strike price</strong> on or before an <strong>expiry</strong> date. European options can only be exercised at expiry; American options at any point before it. The buyer pays a premium up front, hoping the underlying swings far enough in their favor to profit once that premium is netted out.</p><p>A simple example from the paper: a stock trading at <strong>$258.80</strong> has a two-month call with strike <strong>$270</strong> priced at <strong>$13</strong>. If the stock rises to $288 at expiry, exercising nets an $18 profit on the trade, or <strong>$5</strong> once the $13 premium is subtracted. Had the stock stayed below $283, the breakeven point, the option would have expired worthless and the buyer would lose the premium. This asymmetry — capped downside, uncapped upside — is what makes pricing the option correctly, not just the underlying stock, the central problem.</p>`
+        },
+        {
+          label: "Modeling the Asset",
+          heading: "Geometric Brownian motion",
+          body: `<p>The <strong>Efficient Market Hypothesis</strong> assumes all past information is already reflected in the current price, so the asset's next move is independent of its history (a Markov process). Under this assumption, the asset price S is modeled as a stochastic differential equation combining a deterministic drift and a random shock scaled by volatility.</p>`,
+          code: {
+            lang: "Stochastic Calculus",
+            filename: "asset_dynamics.tex",
+            content: `<span class="code-comment">// Geometric Brownian motion for the asset price S</span>
+dS/S = σ dX + μ dt
+
+<span class="code-comment">// σ dX: random shock (volatility)   μ dt: deterministic drift</span>
+<span class="code-comment">// Setting σ = 0 and integrating recovers exponential growth:</span>
+dS/dt = μS   ⟹   S = S₀ e^{μ(t−t₀)}`
+          }
+        },
+        {
+          label: "Itô's Lemma",
+          heading: "Why stochastic calculus needs a second-order term",
+          body: `<p>To price an option V(S,t) written on a random asset S, ordinary calculus isn't enough. A Taylor expansion of df keeps the (dS)² term — normally negligible as dt → 0 — because for a stochastic process (dS)² scales with dt itself rather than vanishing faster than it. Substituting dS² = σ²S² dt (a consequence of the Wiener process) produces <strong>Itô's Lemma</strong>: the stochastic chain rule, and the reason option-pricing PDEs carry a second-order curvature term that deterministic PDEs don't.</p>`,
+          code: {
+            lang: "Stochastic Calculus",
+            filename: "itos_lemma.tex",
+            content: `<span class="code-comment">// Taylor expansion of f(S,t), retaining (dS)²</span>
+df = (∂f/∂S) dS + (∂f/∂t) dt + ½ (∂²f/∂S²)(dS)²
+
+<span class="code-comment">// Since dS² = σ²S² dt (Itô's isometry), regroup by dX and dt:</span>
+df = σS(∂f/∂S) dX + [μS(∂f/∂S) + ∂f/∂t + ½σ²S²(∂²f/∂S²)] dt`
+          }
         },
         {
           label: "The Derivation",
-          heading: "Itô's Lemma → Black-Scholes PDE",
-          body: `<p>Constructing a delta-hedged portfolio eliminates the stochastic dW term. Under no-arbitrage, the portfolio must earn the risk-free rate, yielding the Black-Scholes PDE.</p>`,
+          heading: "No-arbitrage → the Black-Scholes PDE",
+          body: `<p>Apply Itô's Lemma to the option value V(S,t) itself, then construct a portfolio Π = V − ΔS that holds the option against a short position in Δ shares of the underlying. Choosing Δ = ∂V/∂S exactly cancels the random dX term, leaving a portfolio with <em>no</em> exposure to the stock's randomness. Under no-arbitrage, a riskless portfolio can only earn the risk-free rate r — forcing V to satisfy the Black-Scholes PDE. Because the payoff is known at expiry rather than at t = 0, this is a <strong>terminal</strong> boundary-value problem, not the initial-value problem PDEs usually are: it's solved backward from T.</p>`,
           code: {
             lang: "Mathematical Derivation",
             filename: "black_scholes.tex",
             content: `<span class="code-comment">// Itô's Lemma applied to V(S,t)</span>
-dV = (∂V/∂t + μS·∂V/∂S + ½σ²S²·∂²V/∂S²) dt + σS·∂V/∂S dW
+dV = (∂V/∂t + μS·∂V/∂S + ½σ²S²·∂²V/∂S²) dt + σS·∂V/∂S dX
 
-<span class="code-comment">// Delta-hedge: Π = V - Δ·S  →  dW cancels</span>
-<span class="code-comment">// No-arbitrage → Black-Scholes PDE:</span>
-∂V/∂t + ½σ²S²·∂²V/∂S² + rS·∂V/∂S - rV = 0
+<span class="code-comment">// Delta-hedge: Π = V - Δ·S, choose Δ = ∂V/∂S  →  dX cancels</span>
+<span class="code-comment">// No-arbitrage (portfolio earns r) → Black-Scholes PDE:</span>
+∂V/∂t + ½σ²S²·∂²V/∂S² + rS·∂V/∂S − rV = 0,    0 < S < ∞, 0 < t < T
 
-<span class="code-comment">// Change of variables → heat equation:</span>
-∂u/∂τ = ∂²u/∂x²`
+<span class="code-comment">// Terminal boundary-value problem:</span>
+V(0,t) = 0                 <span class="code-comment">// worthless if the stock hits zero</span>
+V(S,t) ~ S  as S → ∞       <span class="code-comment">// strike is irrelevant deep in the money</span>
+V(S,T) = max(S − E, 0)     <span class="code-comment">// terminal condition: the payoff at expiry</span>`
           }
         },
         {
-          label: "Solution",
+          label: "The Transformation",
+          heading: "Reducing the PDE to the heat equation",
+          body: `<p>The Black-Scholes PDE has variable coefficients (the σ²S² and rS terms depend on S), which blocks a direct Fourier approach. Substituting x = ln(S/E), τ = ½σ²(T−t), and v = V/E turns it into a constant-coefficient PDE; a further exponential ansatz v = e^{αx+βτ}u strips the remaining first-order and reaction terms, leaving exactly the <strong>classical heat equation</strong>. The terminal condition becomes an initial condition once time is reversed via τ, which is what makes the transform work.</p>`
+        },
+        {
+          label: "The Solution",
           heading: "Fourier transforms → closed form",
-          body: `<p>The heat equation yields the Black-Scholes formula via Fourier transforms, expressed through the cumulative normal distribution at d₁ and d₂. Implemented in MATLAB and verified against market option prices.</p>`,
+          body: `<p>With the PDE in heat-equation form on an infinite domain, the Fourier transform reduces it to a first-order ODE in τ, solved directly. Inverting the transform expresses the solution as a convolution of the initial condition with a Gaussian kernel — and completing the square in that Gaussian integral turns it into the cumulative normal distribution, N(·). Converting back through x, τ, and v recovers the standard closed-form Black-Scholes formula, with the put price following immediately from put-call parity.</p>`,
+          code: {
+            lang: "Mathematical Derivation",
+            filename: "heat_equation_solution.tex",
+            content: `<span class="code-comment">// Change of variables reduces B-S to the heat equation:</span>
+x = ln(S/E),  τ = ½σ²(T−t),  v(x,τ) = V(S,t)/E
+∂u/∂τ = ∂²u/∂x²
+
+<span class="code-comment">// Solve via Fourier transform → convolution with a Gaussian kernel,</span>
+<span class="code-comment">// complete the square → cumulative normal distribution N(·):</span>
+V(S,t) = S·N(d₁) − E·e^{−r(T−t)}·N(d₂)
+
+d₁ = [ln(S/E) + (r + ½σ²)(T−t)] / (σ√(T−t))
+d₂ = d₁ − σ√(T−t)
+
+<span class="code-comment">// Put-call parity gives the put price for free:</span>
+P(S,t) = E·e^{−r(T−t)}·N(−d₂) − S·N(−d₁)`
+          }
+        },
+        {
+          label: "The Greeks & Verification",
+          heading: "Delta, and checking the model against the market",
+          body: `<p>Differentiating the closed-form solution with respect to S gives the option's <strong>Delta</strong>, Δ = N(d₁) for a call — the instantaneous rate of change of the option price per one-dollar move in the underlying, and the hedge ratio the whole derivation was built around. The full pricing formula, Delta, and put-call parity were implemented in MATLAB and checked against real market option quotes to confirm the closed-form solution actually reproduces observed prices, not just the algebra.</p>`,
           stats: [
-            { num: "d₁, d₂", label: "Closed-form solution via CDF", gold: true },
-            { num: "Δ = N(d₁)", label: "Delta — first-order Greek", gold: false },
-            { num: "Heat Eq.", label: "PDE transformation used", gold: false },
-            { num: "MATLAB", label: "Verified against market prices", gold: false }
+            { num: "d₁, d₂", label: "Closed-form solution via the Gaussian CDF", gold: true },
+            { num: "Δ = N(d₁)", label: "Delta — hedge ratio vs. the underlying", gold: false },
+            { num: "Heat Eq.", label: "PDE reduced via Fourier transform", gold: false },
+            { num: "MATLAB", label: "Solution verified against market prices", gold: false }
           ]
         }
       ],
-      reflection: `This was the hardest project I've done academically — not because of the computation, but because of the conceptual density. Understanding why Itô's Lemma has a second-order term took days to fully internalize. The idea that you can hedge away randomness by holding the right portfolio is one of the most elegant results in all of applied mathematics.`
+      reflection: `This was the hardest project I've done academically — not because of the computation, but because of the conceptual density. Understanding why Itô's Lemma has a second-order term, and why (dS)² doesn't vanish the way it would in ordinary calculus, took days to fully internalize. The idea that you can hedge away all randomness just by holding Δ = ∂V/∂S shares of the underlying — and that no-arbitrage alone is enough to pin down the exact price of an option — is one of the most elegant results in all of applied mathematics. Reducing a terminal boundary-value problem to the heat equation and solving it with a 200-year-old Fourier technique tied the whole thing together: a finance problem, solved with tools built for heat flow.`
     }
   }
 ];

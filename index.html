@@ -152,9 +152,28 @@
     .about-bio strong { color: var(--text); font-weight: 500; }
     .about-bio em { color: var(--accent); font-style: normal; }
     .leadership-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
-    .leadership-card { padding: 1rem 1.25rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); }
+    .leadership-card {
+      padding: 1rem 1.25rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      cursor: pointer; transition: border-color var(--transition), background var(--transition);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .leadership-card:hover { border-color: rgba(79,152,163,0.35); }
+    .leadership-card.expanded { background: var(--surface2); border-color: rgba(79,152,163,0.35); }
+    .leadership-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
     .leadership-role { font-size: 0.8rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
     .leadership-org { font-size: 0.75rem; color: var(--muted); }
+    .leadership-chevron {
+      width: 15px; height: 15px; flex-shrink: 0; color: var(--faint);
+      transition: transform var(--transition), color var(--transition);
+      margin-top: 0.15rem;
+    }
+    .leadership-card.expanded .leadership-chevron { transform: rotate(180deg); color: var(--accent); }
+    .leadership-desc {
+      font-size: 0.78rem; line-height: 1.6; color: var(--muted);
+      max-height: 0; overflow: hidden; opacity: 0;
+      transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease;
+    }
+    .leadership-card.expanded .leadership-desc { max-height: 200px; opacity: 1; margin-top: 0.75rem; }
     .about-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
     .stat-card { padding: 1.25rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); text-align: center; }
     .stat-num { font-family: var(--font-display); font-size: 1.75rem; color: var(--accent); }
@@ -419,9 +438,10 @@
     }
 
     /* Pin styles */
-    .map-pin-group { cursor: pointer; }
+    .map-pin-group { cursor: pointer; transition: opacity 0.25s ease; }
     .map-pin-group:hover .pin-shadow { opacity: 0.7; }
     .map-pin-group:hover .pin-circle { filter: brightness(1.3); }
+    .map-pin-group.dimmed { opacity: 0.12; }
 
     .pin-circle {
       transition: filter 0.2s ease, r 0.2s ease;
@@ -463,10 +483,31 @@
       display: flex; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap;
       position: relative; z-index: 2;
     }
-    .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--muted); }
+    .legend-item {
+      display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--muted);
+      cursor: pointer; padding: 0.3rem 0.55rem; margin: -0.3rem -0.55rem; border-radius: 0.5rem;
+      transition: background 0.15s ease, color 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .legend-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+    .legend-item.active { background: rgba(201,168,76,0.12); color: var(--text); }
     .legend-pin {
       width: 10px; height: 10px; border-radius: 50%;
     }
+
+    /* Expanding place list under the legend */
+    .legend-list {
+      max-height: 0; overflow: hidden; opacity: 0;
+      transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease;
+      position: relative; z-index: 2;
+    }
+    .legend-list.visible { max-height: 260px; opacity: 1; margin-top: 1.25rem; overflow-y: auto; }
+    .legend-list-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.4rem 1rem;
+      border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.9rem;
+    }
+    .legend-list-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--muted); padding: 0.15rem 0; }
+    .legend-list-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
     /* Decorative string lines across board */
     .board-strings {
@@ -591,21 +632,33 @@
       </p>
 
       <div class="leadership-grid">
-        <div class="leadership-card">
-          <div class="leadership-role">S1 · S3 — Company</div>
-          <div class="leadership-org">Personnel &amp; Operations</div>
+        <div class="leadership-card" tabindex="0" role="button" aria-expanded="false">
+          <div class="leadership-card-head">
+            <div><div class="leadership-role">S1 · S3 — Company</div><div class="leadership-org">Personnel &amp; Operations</div></div>
+            <i data-lucide="chevron-down" class="leadership-chevron"></i>
+          </div>
+          <div class="leadership-desc">S1 (Personnel) manages the company's strength reports, awards, and personnel actions; S3 (Operations) builds training schedules and coordinates exercises. Together, they're the two staff roles that keep a company staffed, trained, and on schedule.</div>
         </div>
-        <div class="leadership-card">
-          <div class="leadership-role">S4 — Basic Training</div>
-          <div class="leadership-org">Logistics &amp; Supply</div>
+        <div class="leadership-card" tabindex="0" role="button" aria-expanded="false">
+          <div class="leadership-card-head">
+            <div><div class="leadership-role">S4 — Basic Training</div><div class="leadership-org">Logistics &amp; Supply</div></div>
+            <i data-lucide="chevron-down" class="leadership-chevron"></i>
+          </div>
+          <div class="leadership-desc">S4 (Logistics) owns supply — issuing, tracking, and accounting for equipment and gear for incoming cadets throughout Cadet Basic Training.</div>
         </div>
-        <div class="leadership-card">
-          <div class="leadership-role">Glee Club S4 · Spitivities</div>
-          <div class="leadership-org">West Point Glee Club</div>
+        <div class="leadership-card" tabindex="0" role="button" aria-expanded="false">
+          <div class="leadership-card-head">
+            <div><div class="leadership-role">Glee Club S4 · Spitivities</div><div class="leadership-org">West Point Glee Club</div></div>
+            <i data-lucide="chevron-down" class="leadership-chevron"></i>
+          </div>
+          <div class="leadership-desc">Organizes spirit events and team-building activities for the club, working to build a positive, collaborative culture across the roster — alongside the standard S4 logistics duties for Glee Club tours and events.</div>
         </div>
-        <div class="leadership-card">
-          <div class="leadership-role">Combatives</div>
-          <div class="leadership-org">Modern Army Combatives</div>
+        <div class="leadership-card" tabindex="0" role="button" aria-expanded="false">
+          <div class="leadership-card-head">
+            <div><div class="leadership-role">Combatives</div><div class="leadership-org">Modern Army Combatives</div></div>
+            <i data-lucide="chevron-down" class="leadership-chevron"></i>
+          </div>
+          <div class="leadership-desc">Served as a referee and competitor in the Modern Army Combatives Program — officiating bouts and competing in tournament-style matches.</div>
         </div>
       </div>
 
@@ -693,12 +746,13 @@
       </svg>
     </div>
 
-    <div class="board-legend">
-      <div class="legend-item"><div class="legend-pin" style="background:var(--pin-red)"></div> Home / USA</div>
-      <div class="legend-item"><div class="legend-pin" style="background:var(--pin-yellow)"></div> Glee Club Tour</div>
-      <div class="legend-item"><div class="legend-pin" style="background:var(--pin-teal)"></div> Work / AIAD</div>
-      <div class="legend-item"><div class="legend-pin" style="background:var(--pin-purple)"></div> Vacation</div>
+    <div class="board-legend" id="board-legend">
+      <div class="legend-item" data-type="home" tabindex="0" role="button" aria-expanded="false"><div class="legend-pin" style="background:var(--pin-red)"></div> Home / USA</div>
+      <div class="legend-item" data-type="glee" tabindex="0" role="button" aria-expanded="false"><div class="legend-pin" style="background:var(--pin-yellow)"></div> Glee Club Tour</div>
+      <div class="legend-item" data-type="work" tabindex="0" role="button" aria-expanded="false"><div class="legend-pin" style="background:var(--pin-teal)"></div> Work / AIAD</div>
+      <div class="legend-item" data-type="vacation" tabindex="0" role="button" aria-expanded="false"><div class="legend-pin" style="background:var(--pin-purple)"></div> Vacation</div>
     </div>
+    <div class="legend-list" id="legend-list"></div>
   </div>
 </section>
 
@@ -778,7 +832,6 @@ const pins = [
   { name: "Thessaloniki, Greece", note: "Glee Club Tour 🎵", lat: 40.6401, lon: 22.9444, color: "var(--pin-yellow)", type: "glee", pulse: false, tourGroup: "greece" },
   { name: "Volos, Greece", note: "Glee Club Tour 🎵", lat: 39.3622, lon: 22.9422, color: "var(--pin-yellow)", type: "glee", pulse: false, tourGroup: "greece" },
   // Glee Club — domestic outreach tours
-  { name: "Cedar Rapids, IA", note: "Knight Caps Outreach Tour 🎵", lat: 41.9779, lon: -91.6656, color: "var(--pin-yellow)", type: "glee", pulse: false },
   { name: "Minneapolis, MN", note: "Veterans Day Outreach Tour 🎵", lat: 44.9778, lon: -93.2650, color: "var(--pin-yellow)", type: "glee", pulse: false },
   { name: "Sacramento, CA", note: "President's Day Outreach Tour 🎵", lat: 38.5816, lon: -121.4944, color: "var(--pin-yellow)", type: "glee", pulse: false },
   { name: "Bethesda, MD", note: "Joint Service Academies Concert, Strathmore 🎵", lat: 39.0392, lon: -77.1197, color: "var(--pin-yellow)", type: "glee", pulse: false },
@@ -802,6 +855,8 @@ const pins = [
   { name: "Vatican City", note: "Vacation", lat: 41.9029, lon: 12.4534, color: "var(--pin-purple)", type: "vacation", pulse: false },
   { name: "Niagara Falls, NY", note: "Vacation", lat: 43.0962, lon: -79.0377, color: "var(--pin-purple)", type: "vacation", pulse: false, tourGroup: "niagara" },
   { name: "Niagara Falls, ON", note: "Vacation", lat: 43.0896, lon: -79.0849, color: "var(--pin-purple)", type: "vacation", pulse: false, tourGroup: "niagara" },
+  { name: "Scottsdale, AZ", note: "Vacation", lat: 33.4942, lon: -111.9261, color: "var(--pin-purple)", type: "vacation", pulse: false },
+  { name: "Calabasas, CA", note: "Vacation", lat: 34.1367, lon: -118.6386, color: "var(--pin-purple)", type: "vacation", pulse: false },
 ];
 
 // ─────────────────────────────────────────────────────────────────
@@ -896,6 +951,7 @@ pins.forEach((pin, i) => {
   g.appendChild(stem);
   g.appendChild(circle);
   pinsLayer.appendChild(g);
+  pin._el = g;
 
   // Hover events
   g.addEventListener('mouseenter', (e) => {
@@ -916,6 +972,65 @@ pins.forEach((pin, i) => {
   });
   g.addEventListener('mouseleave', () => {
     tooltip.classList.remove('visible');
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────
+// LEGEND FILTER — click a legend category to list every place in it
+// and dim the other pins on the map. Click again (or a different
+// category) to change or clear the selection.
+// ─────────────────────────────────────────────────────────────────
+const legendItems = document.querySelectorAll('.legend-item[data-type]');
+const legendList = document.getElementById('legend-list');
+let activeLegendType = null;
+
+function clearLegendFilter() {
+  activeLegendType = null;
+  legendItems.forEach(li => { li.classList.remove('active'); li.setAttribute('aria-expanded', 'false'); });
+  legendList.classList.remove('visible');
+  legendList.innerHTML = '';
+  pins.forEach(p => p._el && p._el.classList.remove('dimmed'));
+}
+
+function applyLegendFilter(type) {
+  activeLegendType = type;
+  legendItems.forEach(li => {
+    const isActive = li.dataset.type === type;
+    li.classList.toggle('active', isActive);
+    li.setAttribute('aria-expanded', String(isActive));
+  });
+  pins.forEach(p => p._el && p._el.classList.toggle('dimmed', p.type !== type));
+
+  const matches = pins.filter(p => p.type === type);
+  legendList.innerHTML = '<div class="legend-list-grid">' +
+    matches.map(p => `<div class="legend-list-item"><span class="legend-list-dot" style="background:${p.color}"></span>${p.name}</div>`).join('') +
+    '</div>';
+  legendList.classList.add('visible');
+}
+
+legendItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const type = item.dataset.type;
+    if (activeLegendType === type) clearLegendFilter();
+    else applyLegendFilter(type);
+  });
+  item.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────
+// LEADERSHIP CARDS — click a role to reveal a plain-English
+// description of what it actually involves.
+// ─────────────────────────────────────────────────────────────────
+document.querySelectorAll('.leadership-card').forEach(card => {
+  const toggle = () => {
+    const expanded = card.classList.toggle('expanded');
+    card.setAttribute('aria-expanded', String(expanded));
+  };
+  card.addEventListener('click', toggle);
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
   });
 });
 

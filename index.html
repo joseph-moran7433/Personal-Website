@@ -663,24 +663,58 @@
       <path d="M840,600 Q840,650 880,705 Q940,785 980,900" fill="none" stroke="#0d0f12" stroke-width="2" opacity="0.6"/>
       <path d="M820,610 Q818,655 800,700 Q765,782 820,900" fill="none" stroke="#d9bb6c" stroke-width="3" stroke-dasharray="10,14" opacity="0.5" stroke-linecap="round"/>
 
-      <!-- waypoints along the way: music, travel, West Point, home -->
-      <g stroke="#d9bb6c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.8">
-        <g transform="translate(560,745)">
-          <circle cx="0" cy="20" r="7" fill="#d9bb6c" stroke="none"/>
-          <line x1="7" y1="20" x2="7" y2="-14"/>
-          <path d="M7,-14 Q20,-18 22,-4"/>
+      <!-- West Point / Army — the summit marker at the pass -->
+      <g transform="translate(800,545)">
+        <path d="M0,-12 L3,-3 L12,-3 L4.5,2.5 L7,12 L0,6 L-7,12 L-4.5,2.5 L-12,-3 L-3,-3 Z" fill="#d9bb6c"/>
+      </g>
+
+      <!-- roadside medallions — stops along the way: travel, food, music, data, finance -->
+      <g font-family="Georgia, 'Times New Roman', serif">
+        <!-- Travel -->
+        <g transform="translate(540,830)">
+          <ellipse cx="1" cy="32" rx="17" ry="5" fill="#000" opacity="0.35"/>
+          <circle r="25" fill="#161b23" stroke="#d9bb6c" stroke-width="1.5" opacity="0.95"/>
+          <circle r="11" fill="none" stroke="#d9bb6c" stroke-width="1.4"/>
+          <path d="M0,-9 L3.5,0 L-3.5,0 Z" fill="#d9bb6c"/>
+          <path d="M0,9 L3.5,0 L-3.5,0 Z" fill="none" stroke="#d9bb6c" stroke-width="1.2"/>
         </g>
-        <g transform="translate(1080,655)">
-          <circle cx="0" cy="0" r="15"/>
-          <path d="M0,-9 L4,0 L0,9 L-4,0 Z" fill="#d9bb6c" stroke="none"/>
+        <!-- Food / Cooking -->
+        <g transform="translate(1000,790)">
+          <ellipse cx="1" cy="32" rx="17" ry="5" fill="#000" opacity="0.35"/>
+          <circle r="25" fill="#161b23" stroke="#d9bb6c" stroke-width="1.5" opacity="0.95"/>
+          <g stroke="#d9bb6c" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="0" y1="-15" x2="0" y2="-7"/>
+            <path d="M0,-7 C8,-7 8,11 0,11 C-8,11 -8,-7 0,-7 Z"/>
+            <path d="M-5,-4 L5,8 M5,-4 L-5,8 M-7,2 L7,2"/>
+          </g>
         </g>
-        <g transform="translate(800,545)">
-          <path d="M0,-12 L3,-3 L12,-3 L4.5,2.5 L7,12 L0,6 L-7,12 L-4.5,2.5 L-12,-3 L-3,-3 Z" fill="#d9bb6c" stroke="none"/>
+        <!-- Music (Glee Club) -->
+        <g transform="translate(600,700)">
+          <ellipse cx="1" cy="32" rx="17" ry="5" fill="#000" opacity="0.35"/>
+          <circle r="25" fill="#161b23" stroke="#d9bb6c" stroke-width="1.5" opacity="0.95"/>
+          <g stroke="#d9bb6c" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="4" cy="8" r="5" fill="#d9bb6c" stroke="none"/>
+            <line x1="9" y1="8" x2="9" y2="-11"/>
+            <path d="M9,-11 Q17,-14 18,-4"/>
+          </g>
         </g>
-        <g transform="translate(420,815)">
-          <line x1="0" y1="-20" x2="0" y2="-4"/>
-          <path d="M-8,-4 Q0,20 8,-4"/>
-          <path d="M-5,-4 Q0,14 5,-4"/>
+        <!-- Math / Data Science -->
+        <g transform="translate(960,655)">
+          <ellipse cx="1" cy="32" rx="17" ry="5" fill="#000" opacity="0.35"/>
+          <circle r="25" fill="#161b23" stroke="#d9bb6c" stroke-width="1.5" opacity="0.95"/>
+          <text x="0" y="8" font-size="22" fill="#d9bb6c" text-anchor="middle">&#931;</text>
+        </g>
+        <!-- Finance -->
+        <g transform="translate(700,615)">
+          <ellipse cx="1" cy="32" rx="17" ry="5" fill="#000" opacity="0.35"/>
+          <circle r="25" fill="#161b23" stroke="#d9bb6c" stroke-width="1.5" opacity="0.95"/>
+          <polyline points="-10,8 -3,0 4,3 11,-9" fill="none" stroke="#d9bb6c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <g fill="#d9bb6c">
+            <circle cx="-10" cy="8" r="1.8"/>
+            <circle cx="-3" cy="0" r="1.8"/>
+            <circle cx="4" cy="3" r="1.8"/>
+            <circle cx="11" cy="-9" r="1.8"/>
+          </g>
         </g>
       </g>
     </svg>

@@ -575,7 +575,7 @@
        doodle accents. Full-page overlay, same open/close mechanics
        as #project-detail but its own visual identity throughout.
        ═══════════════════════════════════════════════════════════════ */
-    #recipes {
+    #recipes, #food-hub, #restaurant-finder, #restaurant-submit {
       position: fixed; inset: 0; z-index: 150;
       background:
         radial-gradient(rgba(75,107,63,0.07) 1px, transparent 1px) 0 0/22px 22px,
@@ -586,7 +586,131 @@
       transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1);
       font-family: var(--font-body-fun);
     }
-    #recipes.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+    #recipes.open, #food-hub.open, #restaurant-finder.open, #restaurant-submit.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+    /* #food-hub sits "above" the tools in the nav hierarchy (Kitchen -> tool -> sub-page),
+       so give it a slightly higher z-index; #restaurant-submit sits one level below
+       #restaurant-finder — otherwise identical overlay mechanics throughout. */
+    #food-hub { z-index: 151; }
+    #restaurant-submit { z-index: 149; }
+
+    .food-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.5rem; }
+    .food-tool-card {
+      background: var(--rf-surface); border: 1px solid var(--rf-border); border-radius: 1.1rem;
+      padding: 2rem; cursor: pointer; transition: all var(--transition);
+      box-shadow: 0 2px 0 var(--rf-border); position: relative; overflow: hidden;
+    }
+    .food-tool-card:nth-child(odd) { transform: rotate(-0.5deg); }
+    .food-tool-card:nth-child(even) { transform: rotate(0.4deg); }
+    .food-tool-card:hover { border-color: var(--rf-tomato); transform: translateY(-3px) rotate(0deg); box-shadow: 0 12px 28px rgba(47,58,38,0.14); }
+    .food-tool-icon {
+      width: 56px; height: 56px; border-radius: 50%; background: var(--rf-bg);
+      display: flex; align-items: center; justify-content: center; font-size: 1.75rem; margin-bottom: 1.25rem;
+    }
+    .food-tool-title { font-family: var(--font-display-fun); font-weight: 700; font-size: 1.4rem; color: var(--rf-basil-deep); margin-bottom: 0.5rem; }
+    .food-tool-desc { font-size: 0.9rem; color: var(--rf-muted); line-height: 1.65; margin-bottom: 1.25rem; }
+    .food-tool-arrow { font-family: var(--font-body-fun); font-weight: 700; font-size: 0.85rem; color: var(--rf-tomato); display: inline-flex; align-items: center; gap: 0.4rem; }
+    .food-tool-card:hover .food-tool-arrow { text-decoration: underline; }
+    .food-tool-card.coming-soon { cursor: default; opacity: 0.55; }
+    .food-tool-card.coming-soon:hover { transform: none; border-color: var(--rf-border); box-shadow: 0 2px 0 var(--rf-border); }
+    .food-tool-badge { position: absolute; top: 1.25rem; right: 1.25rem; font-family: var(--font-body-fun); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rf-mustard); }
+
+    /* An always-idling animated cookbook — the entry point into Recipe Finder.
+       Pure CSS 3D (no images): a stack of "page" layers behind a cover that
+       gently rotates open and closed on a loop, like it's inviting a click. */
+    /* Tools are scattered around the page like objects set down on a
+       counter, not lined up in a tidy centered stack — each item gets
+       its own tilt and vertical offset so the layout feels placed,
+       not arranged. Wraps to a single centered column on narrow screens. */
+    .food-hub-scatter { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2.5rem 7rem; padding: 2rem 0 4rem; }
+    .food-hub-item { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 280px; }
+    .food-hub-item.item-book { transform: rotate(-2deg); }
+    .food-hub-item.item-pin { margin-top: 4rem; transform: rotate(2deg); }
+    @media (max-width: 900px) {
+      .food-hub-item.item-pin { margin-top: 0; }
+    }
+    .cookbook-stage {
+      perspective: 1200px; width: 210px; height: 270px; margin-bottom: 2rem;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .cookbook-stage:focus-visible { outline: 2px solid var(--rf-basil); outline-offset: 8px; border-radius: 0.75rem; }
+    .cookbook { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
+    .cookbook-page {
+      position: absolute; top: 0; bottom: 0; left: 10px; right: -10px;
+      background: var(--rf-surface); border: 1px solid var(--rf-border);
+      border-radius: 0.3rem 0.9rem 0.9rem 0.3rem;
+      box-shadow: 3px 6px 14px rgba(47,58,38,0.15);
+    }
+    .cookbook-page-2 { left: 16px; right: -16px; opacity: 0.65; }
+    .cookbook-page-1 { left: 13px; right: -13px; opacity: 0.85; }
+    .cookbook-cover {
+      position: absolute; inset: 0;
+      background: linear-gradient(150deg, var(--rf-tomato) 0%, var(--rf-tomato-hover) 100%);
+      border-radius: 0.35rem 0.9rem 0.9rem 0.35rem;
+      box-shadow: inset -3px 0 0 rgba(0,0,0,0.15), 5px 8px 20px rgba(47,58,38,0.3);
+      transform-origin: left center;
+      backface-visibility: hidden;
+      animation: cookbook-breathe 4.5s ease-in-out infinite;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem;
+      padding: 1rem;
+    }
+    .cookbook-stage:hover .cookbook-cover,
+    .cookbook-stage:focus-visible .cookbook-cover {
+      animation-play-state: paused;
+      transform: rotateY(-58deg);
+    }
+    .cookbook-cover-doodle { width: 34px; height: auto; }
+    .cookbook-cover-title {
+      font-family: var(--font-display-fun); font-style: italic; font-weight: 700;
+      font-size: 1.35rem; line-height: 1.15; color: #fff8ea;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    }
+    @keyframes cookbook-breathe {
+      0%, 100% { transform: rotateY(-6deg); }
+      50% { transform: rotateY(-30deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cookbook-cover { animation: none; transform: rotateY(-18deg); }
+    }
+    .cookbook-label-title { font-family: var(--font-display-fun); font-weight: 700; font-size: 1.7rem; color: var(--rf-basil-deep); margin-bottom: 0.5rem; }
+    .cookbook-label-sub { font-size: 0.95rem; color: var(--rf-muted); max-width: 400px; }
+
+    /* A map pin that idly bounces onto a little street map with a
+       radar "ping" — the entry point into Nearby Eats. Distinct motion
+       from the cookbook's hinge-open (vertical bounce + radial pulse
+       vs. a rotating cover) so the two feel like different objects. */
+    .pin-stage {
+      position: relative; width: 210px; height: 190px; margin-bottom: 1.5rem;
+      display: flex; align-items: flex-end; justify-content: center;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .pin-stage:focus-visible { outline: 2px solid var(--rf-basil); outline-offset: 8px; border-radius: 0.75rem; }
+    .pin-map { position: absolute; bottom: 0; left: 0; width: 100%; height: auto; }
+    .pin-ping {
+      position: absolute; bottom: 32px; left: 50%; width: 26px; height: 26px; margin-left: -13px;
+      border-radius: 50%; background: var(--rf-tomato); opacity: 0.35;
+      animation: pin-ping-anim 2.4s ease-out infinite;
+    }
+    .pin-drop {
+      position: relative; width: 58px; transform-origin: bottom center;
+      animation: pin-bounce 2.4s ease-in-out infinite;
+    }
+    .pin-drop svg { width: 100%; height: auto; filter: drop-shadow(0 6px 8px rgba(47,58,38,0.3)); }
+    .pin-stage:hover .pin-drop,
+    .pin-stage:focus-visible .pin-drop { animation-play-state: paused; transform: translateY(-22px); }
+    .pin-stage:hover .pin-ping,
+    .pin-stage:focus-visible .pin-ping { animation-play-state: paused; opacity: 0; }
+    @keyframes pin-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+    @keyframes pin-ping-anim {
+      0% { transform: scale(0.5); opacity: 0.5; }
+      70%, 100% { transform: scale(2.4); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pin-drop { animation: none; }
+      .pin-ping { animation: none; opacity: 0; }
+    }
 
     .rf-nav {
       position: sticky; top: 0; z-index: 10;
@@ -720,6 +844,39 @@
     .recipe-modal-subhead:first-child { margin-top: 0; }
     .recipe-modal-source { font-size: 0.8rem; color: var(--rf-faint); margin-top: 0.5rem; font-weight: 600; }
 
+    /* ── NEARBY EATS (restaurant recommendations) ── */
+    .rf-submit-restaurant-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.75rem;
+      padding: 0.7rem 1.4rem; background: transparent; border: 2px solid var(--rf-basil); color: var(--rf-basil);
+      border-radius: 2rem; font-family: var(--font-body-fun); font-weight: 700; font-size: 0.85rem; cursor: pointer;
+      transition: all var(--transition);
+    }
+    .rf-submit-restaurant-btn:hover { background: var(--rf-basil); color: #fff; }
+
+    .rf-zip-input, .rf-textarea {
+      width: 100%; max-width: 320px; padding: 0.75rem 1rem;
+      background: var(--rf-surface); border: 2px solid var(--rf-border);
+      border-radius: 0.6rem; color: var(--rf-text); font-family: var(--font-body-fun); font-size: 0.95rem;
+      transition: border-color var(--transition); outline: none;
+    }
+    .rf-zip-input:focus, .rf-textarea:focus { border-color: var(--rf-tomato); }
+    .rf-textarea { max-width: 100%; resize: vertical; min-height: 90px; }
+    .rf-field-hint { font-size: 0.78rem; color: var(--rf-faint); margin-top: 0.5rem; }
+
+    .restaurant-results-label { font-family: var(--font-display-fun); font-weight: 600; font-style: italic; font-size: 1.15rem; color: var(--rf-basil-deep); margin: 2rem 0 1.25rem; }
+    .restaurant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.25rem; }
+    .restaurant-card { background: var(--rf-surface); border: 1px solid var(--rf-border); border-radius: 1rem; padding: 1.5rem; box-shadow: 0 2px 0 var(--rf-border); }
+    .restaurant-card:nth-child(odd) { transform: rotate(-0.5deg); }
+    .restaurant-card:nth-child(even) { transform: rotate(0.4deg); }
+    .restaurant-card-name { font-family: var(--font-display-fun); font-weight: 700; font-size: 1.2rem; color: var(--rf-basil-deep); margin-bottom: 0.35rem; }
+    .restaurant-card-meta { font-size: 0.78rem; color: var(--rf-faint); font-weight: 700; margin-bottom: 0.85rem; }
+    .restaurant-card-note { font-size: 0.88rem; color: var(--rf-muted); line-height: 1.65; }
+
+    .restaurant-message { margin-top: 1.5rem; padding: 1.1rem 1.4rem; border-radius: 0.7rem; font-weight: 600; font-size: 0.92rem; line-height: 1.6; }
+    .restaurant-message.success { background: rgba(75,107,63,0.1); border: 1px solid rgba(75,107,63,0.3); color: var(--rf-basil-deep); }
+    .restaurant-message.error { background: rgba(217,96,63,0.1); border: 1px solid rgba(217,96,63,0.3); color: var(--rf-tomato-hover); }
+    .restaurant-message.loading { background: var(--rf-card); border: 1px solid var(--rf-border); color: var(--rf-muted); }
+
     /* ── CONTACT ── */
     #contact { background: var(--bg); }
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; max-width: 1100px; align-items: start; }
@@ -770,7 +927,7 @@
     <li><a href="#about" onclick="closeDetail()">About</a></li>
     <li><a href="#projects" onclick="closeDetail()">Projects</a></li>
     <li><a href="#travel" onclick="closeDetail()">Travel</a></li>
-    <li><a href="javascript:void(0)" onclick="openRecipeFinder()">Recipe Finder</a></li>
+    <li><a href="javascript:void(0)" onclick="openFoodHub()">Kitchen</a></li>
     <li><a href="#contact" onclick="closeDetail()">Contact</a></li>
   </ul>
   <a href="#contact" class="nav-cta" onclick="closeDetail()">Get in Touch</a>
@@ -1140,14 +1297,84 @@
   <div id="detail-content"></div>
 </div>
 
+<!-- ═══════════════════════════════════════ THE KITCHEN (food tools hub) ═══════════════════════════════════════ -->
+<div id="food-hub">
+  <div class="rf-nav">
+    <button class="rf-back" onclick="closeFoodHub()">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Site</span>
+    </button>
+    <div class="rf-breadcrumb"><span>/</span><span>The Kitchen</span></div>
+  </div>
+
+  <div class="rf-hero">
+    <svg class="rf-hero-doodle" viewBox="0 0 140 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M35 15 L55 75" stroke="#4b6b3f" stroke-width="3" stroke-linecap="round"/>
+      <path d="M28 15 Q28 30 35 30 Q42 30 42 15" stroke="#4b6b3f" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <path d="M35 15 L35 30" stroke="#4b6b3f" stroke-width="3" stroke-linecap="round"/>
+      <path d="M95 12 L75 78" stroke="#d9603f" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="100" cy="18" rx="9" ry="13" transform="rotate(20 100 18)" stroke="#d9603f" stroke-width="3" fill="none"/>
+      <circle cx="20" cy="90" r="3" fill="#e0a530"/>
+      <circle cx="115" cy="95" r="2.5" fill="#4b6b3f"/>
+      <circle cx="65" cy="100" r="2" fill="#d9603f"/>
+    </svg>
+    <div class="rf-eyebrow">✎ Whisk around and see what's cooking</div>
+    <h1 class="rf-title">The Kitchen</h1>
+    <p class="rf-summary">A little corner of the site for food tools — dig through the family recipe box, or find real restaurant recommendations from real people. More on the way.</p>
+  </div>
+
+  <div class="rf-body">
+    <div class="food-hub-scatter">
+      <div class="food-hub-item item-book">
+        <div class="cookbook-stage" onclick="openRecipeFinder()" role="button" tabindex="0" aria-label="Open the Recipe Finder" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecipeFinder();}">
+          <div class="cookbook">
+            <div class="cookbook-page cookbook-page-2" aria-hidden="true"></div>
+            <div class="cookbook-page cookbook-page-1" aria-hidden="true"></div>
+            <div class="cookbook-cover" aria-hidden="true">
+              <svg class="cookbook-cover-doodle" viewBox="0 0 40 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 4v14M5 4v6c0 2 1.5 3 3 3s3-1 3-3V4" stroke="#fff8ea" stroke-width="1.6" stroke-linecap="round" opacity="0.85"/>
+                <path d="M32 4c-3 0-5 3-5 7s2 3 5 3v9" stroke="#fff8ea" stroke-width="1.6" stroke-linecap="round" opacity="0.85"/>
+              </svg>
+              <span class="cookbook-cover-title">Recipe<br>Finder</span>
+            </div>
+          </div>
+        </div>
+        <h2 class="cookbook-label-title">📖 Recipe Finder</h2>
+        <p class="cookbook-label-sub">Give the cookbook a click — it'll dig through the family recipe box for something to cook tonight.</p>
+      </div>
+
+      <div class="food-hub-item item-pin">
+        <div class="pin-stage" onclick="openRestaurantFinder()" role="button" tabindex="0" aria-label="Open Nearby Eats" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRestaurantFinder();}">
+          <svg class="pin-map" viewBox="0 0 200 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M0 58 Q60 38 110 53 T200 43" stroke="#a3ab8f" stroke-width="3" stroke-linecap="round"/>
+            <path d="M40 90 Q60 68 92 78" stroke="#a3ab8f" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="18" y="64" width="18" height="15" rx="2" fill="#e0a530" opacity="0.5"/>
+            <rect x="142" y="55" width="24" height="20" rx="2" fill="#4b6b3f" opacity="0.35"/>
+            <rect x="102" y="68" width="15" height="13" rx="2" fill="#d9603f" opacity="0.3"/>
+          </svg>
+          <div class="pin-ping" aria-hidden="true"></div>
+          <div class="pin-drop" aria-hidden="true">
+            <svg viewBox="0 0 40 52" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 0C9 0 0 9 0 20c0 15 20 32 20 32s20-17 20-32C40 9 31 0 20 0z" fill="#d9603f"/>
+              <circle cx="20" cy="20" r="9" fill="#fff8ea"/>
+            </svg>
+          </div>
+        </div>
+        <h2 class="cookbook-label-title">📍 Nearby Eats</h2>
+        <p class="cookbook-label-sub">Drop a pin on your zip code — see what's been recommended nearby, from real people, not an algorithm.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════ RECIPE FINDER (full-page) ═══════════════════════════════════════ -->
 <div id="recipes">
   <div class="rf-nav">
     <button class="rf-back" onclick="closeRecipeFinder()">
       <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
-      <span>Back to Site</span>
+      <span>Back to Kitchen</span>
     </button>
-    <div class="rf-breadcrumb"><span>/</span><span>Recipe Finder</span></div>
+    <div class="rf-breadcrumb"><span>Kitchen</span><span>/</span><span>Recipe Finder</span></div>
   </div>
 
   <div class="rf-hero">
@@ -1190,6 +1417,89 @@
       <div class="recipe-grid-label" id="recipe-grid-label"></div>
       <div class="recipe-grid" id="recipe-grid"></div>
     </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ NEARBY EATS (restaurant recommendations) ═══════════════════════════════════════ -->
+<div id="restaurant-finder">
+  <div class="rf-nav">
+    <button class="rf-back" onclick="closeRestaurantFinder()">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Kitchen</span>
+    </button>
+    <div class="rf-breadcrumb"><span>Kitchen</span><span>/</span><span>Nearby Eats</span></div>
+  </div>
+
+  <div class="rf-hero">
+    <div class="rf-eyebrow">✎ Crowdsourced, not algorithm-sourced</div>
+    <h1 class="rf-title">Nearby Eats</h1>
+    <p class="rf-summary">Real recommendations from real people. Punch in a zip code and a cuisine — or leave cuisine blank for anything — and see what's been recommended within 15 miles of you.</p>
+    <button type="button" class="rf-submit-restaurant-btn" onclick="openRestaurantSubmit()">
+      <i data-lucide="plus" style="width:16px;height:16px;"></i>
+      Submit a Restaurant
+    </button>
+  </div>
+
+  <div class="rf-body">
+    <form class="recipe-form" onsubmit="handleRestaurantSearch(event)">
+      <div class="recipe-form-row">
+        <label class="recipe-form-label">📍 Your zip code</label>
+        <input type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" class="rf-zip-input" id="restaurant-search-zip" placeholder="e.g. 10996" required>
+      </div>
+      <div class="recipe-form-row">
+        <label class="recipe-form-label">🌍 Cuisine <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional — leave every box unchecked for anything)</span></label>
+        <div class="checkbox-pills" id="restaurant-cuisine-pills"></div>
+      </div>
+      <div class="recipe-form-actions">
+        <button type="submit" class="rf-submit-btn">Find Nearby Spots</button>
+      </div>
+    </form>
+
+    <div id="restaurant-results"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SUBMIT A RESTAURANT ═══════════════════════════════════════ -->
+<div id="restaurant-submit">
+  <div class="rf-nav">
+    <button class="rf-back" onclick="closeRestaurantSubmit()">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Nearby Eats</span>
+    </button>
+    <div class="rf-breadcrumb"><span>Kitchen</span><span>/</span><span>Nearby Eats</span><span>/</span><span>Submit</span></div>
+  </div>
+
+  <div class="rf-hero">
+    <div class="rf-eyebrow">✎ Pay it forward</div>
+    <h1 class="rf-title">Submit a Restaurant</h1>
+    <p class="rf-summary">Know a place worth the drive? Add it so it turns up for anyone searching near it.</p>
+  </div>
+
+  <div class="rf-body">
+    <form class="recipe-form" id="restaurant-submit-form" onsubmit="handleRestaurantSubmit(event)">
+      <p style="position:absolute; left:-9999px;"><label>Leave this field blank: <input type="text" id="restaurant-website-trap" tabindex="-1" autocomplete="off"></label></p>
+      <div class="recipe-form-row">
+        <label class="recipe-form-label">🍽️ Restaurant name</label>
+        <input type="text" class="rf-zip-input" id="restaurant-name" maxlength="120" placeholder="e.g. Rosie's Diner" required>
+      </div>
+      <div class="recipe-form-row">
+        <label class="recipe-form-label">📍 Zip code</label>
+        <input type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" class="rf-zip-input" id="restaurant-zip" placeholder="e.g. 10996" required>
+        <div class="rf-field-hint">Where the restaurant is located, not where you live.</div>
+      </div>
+      <div class="recipe-form-row">
+        <label class="recipe-form-label">🌍 Cuisine <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(check at least one)</span></label>
+        <div class="checkbox-pills" id="restaurant-submit-cuisine-pills"></div>
+      </div>
+      <div class="recipe-form-row">
+        <label class="recipe-form-label">📝 What do you recommend there? <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional)</span></label>
+        <textarea class="rf-textarea" id="restaurant-note" maxlength="400" rows="3" placeholder="The chicken parm, and get there early on weekends."></textarea>
+      </div>
+      <div class="recipe-form-actions">
+        <button type="submit" class="rf-submit-btn" id="restaurant-submit-btn">Submit Restaurant</button>
+      </div>
+    </form>
+    <div id="restaurant-submit-message"></div>
   </div>
 </div>
 
@@ -2385,7 +2695,7 @@ function openDetail(id) {
   if (!p) return;
   const d = p.detail;
 
-  document.getElementById('recipes').classList.remove('open');
+  closeAllFoodOverlays();
 
   document.getElementById('detail-breadcrumb-title').textContent = p.title;
 
@@ -2440,15 +2750,39 @@ function openDetail(id) {
   lucide.createIcons();
 }
 
+// All full-page food overlays, kept in a list so opening one can reliably
+// close the rest — only one of these (and #project-detail) is ever open
+// at a time, no matter which nav path got you there.
+const FOOD_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'restaurant-submit'];
+function closeAllFoodOverlays() {
+  FOOD_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
+}
+
 function closeDetail() {
   document.getElementById('project-detail').classList.remove('open');
-  document.getElementById('recipes').classList.remove('open');
+  closeAllFoodOverlays();
+  document.getElementById('main-site').classList.remove('hidden');
+  closeRecipeModal();
+}
+
+function openFoodHub() {
+  document.getElementById('project-detail').classList.remove('open');
+  closeAllFoodOverlays();
+  document.getElementById('food-hub').classList.add('open');
+  document.getElementById('main-site').classList.add('hidden');
+  window.scrollTo(0, 0);
+  lucide.createIcons();
+}
+
+function closeFoodHub() {
+  document.getElementById('food-hub').classList.remove('open');
   document.getElementById('main-site').classList.remove('hidden');
   closeRecipeModal();
 }
 
 function openRecipeFinder() {
   document.getElementById('project-detail').classList.remove('open');
+  closeAllFoodOverlays();
   document.getElementById('recipes').classList.add('open');
   document.getElementById('main-site').classList.add('hidden');
   window.scrollTo(0, 0);
@@ -2457,8 +2791,39 @@ function openRecipeFinder() {
 
 function closeRecipeFinder() {
   document.getElementById('recipes').classList.remove('open');
-  document.getElementById('main-site').classList.remove('hidden');
+  document.getElementById('food-hub').classList.add('open');
+  window.scrollTo(0, 0);
   closeRecipeModal();
+}
+
+function openRestaurantFinder() {
+  document.getElementById('project-detail').classList.remove('open');
+  closeAllFoodOverlays();
+  document.getElementById('restaurant-finder').classList.add('open');
+  document.getElementById('main-site').classList.add('hidden');
+  window.scrollTo(0, 0);
+  lucide.createIcons();
+}
+
+function closeRestaurantFinder() {
+  document.getElementById('restaurant-finder').classList.remove('open');
+  document.getElementById('food-hub').classList.add('open');
+  window.scrollTo(0, 0);
+  closeRecipeModal();
+}
+
+function openRestaurantSubmit() {
+  closeAllFoodOverlays();
+  document.getElementById('restaurant-submit').classList.add('open');
+  document.getElementById('main-site').classList.add('hidden');
+  window.scrollTo(0, 0);
+  lucide.createIcons();
+}
+
+function closeRestaurantSubmit() {
+  document.getElementById('restaurant-submit').classList.remove('open');
+  document.getElementById('restaurant-finder').classList.add('open');
+  window.scrollTo(0, 0);
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -2641,6 +3006,113 @@ document.addEventListener('keydown', (e) => {
 });
 
 initRecipeFinder();
+
+// ─────────────────────────────────────────────────────────────────
+// NEARBY EATS — crowdsourced restaurant recommendations.
+// Backed by two Netlify Functions (netlify/functions/) that read and
+// write a single shared Netlify Blobs store, so a submission from any
+// visitor is immediately searchable by anyone else. Starts empty —
+// there's nothing to recommend until someone submits the first spot.
+// ─────────────────────────────────────────────────────────────────
+function initRestaurantTool() {
+  buildCheckboxPills('restaurant-cuisine-pills', CUISINE_OPTIONS, 'restaurant-cuisine');
+  buildCheckboxPills('restaurant-submit-cuisine-pills', CUISINE_OPTIONS, 'restaurant-submit-cuisine');
+}
+
+function restaurantCardHTML(r) {
+  const cuisineLabels = r.cuisines.map(c => (CUISINE_OPTIONS.find(o => o.value === c) || {}).label || c).join(', ');
+  return `
+    <div class="restaurant-card">
+      <div class="restaurant-card-name">${r.name}</div>
+      <div class="restaurant-card-meta">${r.city ? `${r.city}, ${r.state} · ` : ''}${r.distance} mi away · ${cuisineLabels}</div>
+      ${r.note ? `<div class="restaurant-card-note">"${r.note}"</div>` : ''}
+    </div>`;
+}
+
+async function handleRestaurantSearch(e) {
+  e.preventDefault();
+  const zip = document.getElementById('restaurant-search-zip').value.trim();
+  const cuisines = Array.from(document.querySelectorAll('#restaurant-cuisine-pills input:checked')).map(el => el.value);
+  const resultsEl = document.getElementById('restaurant-results');
+
+  if (!/^\d{5}$/.test(zip)) {
+    resultsEl.innerHTML = `<div class="restaurant-message error">That doesn't look like a valid 5-digit zip code — give it another try.</div>`;
+    return;
+  }
+
+  resultsEl.innerHTML = `<div class="restaurant-message loading">🔍 Checking what's nearby…</div>`;
+
+  try {
+    const params = new URLSearchParams({ zip, cuisines: cuisines.join(',') });
+    const res = await fetch(`/.netlify/functions/get-recommendations?${params.toString()}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      resultsEl.innerHTML = `<div class="restaurant-message error">${data.error || 'Something went wrong — try again in a moment.'}</div>`;
+      return;
+    }
+
+    if (!data.results || data.results.length === 0) {
+      const reasonMsg = data.reason === 'no-cuisine-match'
+        ? "We've got recommendations near you, but none for that cuisine yet — try another cuisine, or leave it unchecked for anything nearby."
+        : "Sorry, there are no recommendations near you yet.";
+      resultsEl.innerHTML = `
+        <div class="restaurant-message error">${reasonMsg}</div>
+        <p style="margin-top:1rem; color:var(--rf-muted); font-size:0.9rem;">Know a good spot? <a href="javascript:void(0)" onclick="openRestaurantSubmit()" style="color:var(--rf-tomato); font-weight:700;">Be the first to submit one nearby.</a></p>`;
+      return;
+    }
+
+    resultsEl.innerHTML = `
+      <div class="restaurant-results-label">${data.results.length} spot${data.results.length === 1 ? '' : 's'} near ${zip}</div>
+      <div class="restaurant-grid">${data.results.map(restaurantCardHTML).join('')}</div>`;
+  } catch (err) {
+    resultsEl.innerHTML = `<div class="restaurant-message error">Couldn't reach the recommendation list — check your connection and try again.</div>`;
+  }
+}
+
+async function handleRestaurantSubmit(e) {
+  e.preventDefault();
+  const btn = document.getElementById('restaurant-submit-btn');
+  const messageEl = document.getElementById('restaurant-submit-message');
+  const website = document.getElementById('restaurant-website-trap').value;
+  const name = document.getElementById('restaurant-name').value.trim();
+  const zip = document.getElementById('restaurant-zip').value.trim();
+  const cuisines = Array.from(document.querySelectorAll('#restaurant-submit-cuisine-pills input:checked')).map(el => el.value);
+  const note = document.getElementById('restaurant-note').value.trim();
+
+  if (!name || !/^\d{5}$/.test(zip) || cuisines.length === 0) {
+    messageEl.innerHTML = `<div class="restaurant-message error">Please include a restaurant name, a valid 5-digit zip code, and at least one cuisine.</div>`;
+    return;
+  }
+
+  btn.disabled = true;
+  const originalLabel = btn.textContent;
+  btn.textContent = 'Submitting…';
+  messageEl.innerHTML = '';
+
+  try {
+    const res = await fetch('/.netlify/functions/submit-restaurant', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, zip, cuisines, note, website })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      messageEl.innerHTML = `<div class="restaurant-message error">${data.error || 'Something went wrong — try again in a moment.'}</div>`;
+    } else {
+      messageEl.innerHTML = `<div class="restaurant-message success">🎉 Thanks! ${name}${data.city ? ` in ${data.city}, ${data.state}` : ''} is now in the list.</div>`;
+      document.getElementById('restaurant-submit-form').reset();
+    }
+  } catch (err) {
+    messageEl.innerHTML = `<div class="restaurant-message error">Couldn't submit that — check your connection and try again.</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalLabel;
+  }
+}
+
+initRestaurantTool();
 
 function handleForm(e) {
   e.preventDefault();

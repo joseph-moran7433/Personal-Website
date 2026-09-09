@@ -28,6 +28,7 @@
   <script src="assets/world-topo.js"></script>
   <script src="assets/recipes-data.js"></script>
   <script src="assets/restaurants-data.js"></script>
+  <script src="assets/riddles-data.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -594,7 +595,7 @@
        doodle accents. Full-page overlay, same open/close mechanics
        as #project-detail but its own visual identity throughout.
        ═══════════════════════════════════════════════════════════════ */
-    #recipes, #food-hub, #restaurant-finder {
+    #recipes, #food-hub, #restaurant-finder, #ingredient-game {
       position: fixed; inset: 0; z-index: 150;
       background:
         radial-gradient(rgba(75,107,63,0.07) 1px, transparent 1px) 0 0/22px 22px,
@@ -605,7 +606,7 @@
       transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1);
       font-family: var(--font-body-fun);
     }
-    #recipes.open, #food-hub.open, #restaurant-finder.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+    #recipes.open, #food-hub.open, #restaurant-finder.open, #ingredient-game.open { opacity: 1; transform: translateX(0); pointer-events: all; }
     /* #food-hub sits "above" the tools in the nav hierarchy (Kitchen -> tool),
        so give it a slightly higher z-index — otherwise identical overlay mechanics. */
     #food-hub { z-index: 151; }
@@ -808,8 +809,10 @@
     .food-hub-item { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 280px; }
     .food-hub-item.item-book { transform: rotate(-2deg); }
     .food-hub-item.item-pin { margin-top: 4rem; transform: rotate(2deg); }
+    .food-hub-item.item-riddle { margin-top: 1.5rem; transform: rotate(-1.5deg); }
     @media (max-width: 900px) {
       .food-hub-item.item-pin { margin-top: 0; }
+      .food-hub-item.item-riddle { margin-top: 0; }
     }
     .cookbook-stage {
       perspective: 1200px; width: 210px; height: 270px; margin-bottom: 2rem;
@@ -894,6 +897,93 @@
       .pin-drop { animation: none; }
       .pin-ping { animation: none; opacity: 0; }
     }
+
+    /* A cloche (serving dome) that idly wobbles with a "?" peeking out
+       from underneath — the entry point into Riddle Me This. Distinct
+       motion again: a side-to-side rock instead of the cookbook's
+       hinge or the pin's bounce. */
+    .cloche-stage {
+      position: relative; width: 190px; height: 170px; margin-bottom: 1.5rem;
+      display: flex; align-items: flex-end; justify-content: center;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .cloche-stage:focus-visible { outline: 2px solid var(--rf-basil); outline-offset: 8px; border-radius: 0.75rem; }
+    .cloche-question {
+      position: absolute; top: 6px; left: 50%; margin-left: -17px;
+      font-family: var(--font-display-fun); font-weight: 700; font-style: italic;
+      font-size: 2.1rem; color: var(--rf-tomato); opacity: 0;
+      animation: cloche-peek 3.6s ease-in-out infinite;
+    }
+    .cloche-wrap {
+      position: relative; width: 150px; transform-origin: bottom center;
+      animation: cloche-wobble 3.6s ease-in-out infinite;
+    }
+    .cloche-wrap svg { width: 100%; height: auto; filter: drop-shadow(0 8px 10px rgba(47,58,38,0.28)); }
+    .cloche-stage:hover .cloche-wrap,
+    .cloche-stage:focus-visible .cloche-wrap { animation-play-state: paused; transform: rotate(-8deg) translateY(-4px); }
+    .cloche-stage:hover .cloche-question,
+    .cloche-stage:focus-visible .cloche-question { animation-play-state: paused; opacity: 1; }
+    @keyframes cloche-wobble {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-4deg); }
+      75% { transform: rotate(4deg); }
+    }
+    @keyframes cloche-peek {
+      0%, 55% { opacity: 0; transform: translateY(6px) scale(0.8); }
+      68%, 85% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(6px) scale(0.8); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cloche-wrap { animation: none; }
+      .cloche-question { animation: none; opacity: 1; }
+    }
+
+    /* ── Riddle Me This game UI ── */
+    .riddle-card {
+      background: var(--rf-card); border: 2px dashed var(--rf-cream-line);
+      border-radius: 1.25rem; padding: 2.5rem; max-width: 640px;
+      position: relative;
+    }
+    .riddle-score {
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--rf-faint); margin-bottom: 1.25rem;
+    }
+    .riddle-attempts { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .riddle-attempt-icon { font-size: 1.6rem; transition: all var(--transition); filter: grayscale(0); }
+    .riddle-attempt-icon.used { filter: grayscale(1); opacity: 0.3; transform: scale(0.85) rotate(-12deg); }
+    .riddle-text {
+      font-family: var(--font-display-fun); font-weight: 600; font-size: 1.35rem;
+      color: var(--rf-basil-deep); line-height: 1.5; margin-bottom: 1.75rem;
+    }
+    .riddle-form { display: flex; gap: 0.75rem; margin-bottom: 1rem; }
+    .riddle-guess-input {
+      flex: 1; padding: 0.85rem 1.1rem; font-size: 1rem; font-family: var(--font-body-fun);
+      background: var(--rf-surface); border: 2px solid var(--rf-border); border-radius: 0.6rem;
+      transition: border-color var(--transition);
+    }
+    .riddle-guess-input:focus { outline: none; border-color: var(--rf-tomato); }
+    .riddle-guess-btn {
+      font-family: var(--font-body-fun); font-weight: 700; font-size: 0.95rem;
+      background: var(--rf-tomato); color: #fff8ea; border: none; border-radius: 0.6rem;
+      padding: 0.85rem 1.5rem; cursor: pointer; transition: background var(--transition);
+    }
+    .riddle-guess-btn:hover { background: var(--rf-tomato-hover); }
+    .riddle-feedback { font-weight: 700; font-size: 0.95rem; min-height: 1.4rem; margin-bottom: 0.5rem; }
+    .riddle-feedback.wrong { color: var(--rf-tomato); }
+    .riddle-feedback.hint { color: var(--rf-faint); font-weight: 500; }
+    .riddle-reveal { text-align: center; padding-top: 1rem; border-top: 2px dashed var(--rf-cream-line); margin-top: 1rem; }
+    .riddle-reveal-emoji { font-size: 4rem; line-height: 1; margin-bottom: 0.75rem; animation: riddle-pop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes riddle-pop { 0% { transform: scale(0.3); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .riddle-reveal-headline { font-family: var(--font-display-fun); font-weight: 700; font-size: 1.3rem; margin-bottom: 0.35rem; }
+    .riddle-reveal-headline.win { color: var(--rf-basil-deep); }
+    .riddle-reveal-headline.lose { color: var(--rf-tomato); }
+    .riddle-reveal-answer { font-size: 1rem; color: var(--rf-muted); margin-bottom: 1.5rem; }
+    .riddle-next-btn {
+      font-family: var(--font-body-fun); font-weight: 700; font-size: 0.95rem;
+      background: var(--rf-basil); color: #fff8ea; border: none; border-radius: 0.6rem;
+      padding: 0.85rem 1.75rem; cursor: pointer; transition: background var(--transition);
+    }
+    .riddle-next-btn:hover { background: var(--rf-basil-deep); }
 
     .rf-nav {
       position: sticky; top: 0; z-index: 10;
@@ -1590,6 +1680,23 @@
         <h2 class="cookbook-label-title">📍 Nearby Eats</h2>
         <p class="cookbook-label-sub">Drop a pin on your zip code — see which of my favorite spots are nearby.</p>
       </div>
+
+      <div class="food-hub-item item-riddle">
+        <div class="cloche-stage" onclick="openIngredientGame()" role="button" tabindex="0" aria-label="Open Riddle Me This" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openIngredientGame();}">
+          <span class="cloche-question" aria-hidden="true">?</span>
+          <div class="cloche-wrap" aria-hidden="true">
+            <svg viewBox="0 0 150 110" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="75" cy="100" rx="66" ry="9" fill="#e0a530" opacity="0.55"/>
+              <path d="M20 88 Q20 30 75 22 Q130 30 130 88 Z" fill="#d9603f"/>
+              <path d="M20 88 Q75 100 130 88" fill="none" stroke="#c14e30" stroke-width="3" opacity="0.5"/>
+              <circle cx="75" cy="16" r="8" fill="#fff8ea"/>
+              <rect x="71" y="8" width="8" height="10" rx="3" fill="#fff8ea"/>
+            </svg>
+          </div>
+        </div>
+        <h2 class="cookbook-label-title">🔍 Riddle Me This</h2>
+        <p class="cookbook-label-sub">Lift the lid on a mystery ingredient — 3 lives per riddle, and 5 right wins the game.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -1757,6 +1864,50 @@
     </form>
 
     <div id="weather-results"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ RIDDLE ME THIS (full-page) ═══════════════════════════════════════ -->
+<div id="ingredient-game">
+  <div class="rf-nav">
+    <button class="rf-back" onclick="closeIngredientGame()">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Kitchen</span>
+    </button>
+    <div class="rf-breadcrumb"><span>Kitchen</span><span>/</span><span>Riddle Me This</span></div>
+  </div>
+
+  <div class="rf-hero">
+    <svg class="rf-hero-doodle" viewBox="0 0 140 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M35 20 Q35 5 55 8" stroke="#4b6b3f" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <circle cx="60" cy="30" r="16" stroke="#d9603f" stroke-width="3" fill="none"/>
+      <path d="M60 30 L60 46" stroke="#d9603f" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="100" cy="70" r="3" fill="#e0a530"/>
+      <circle cx="20" cy="90" r="2.5" fill="#4b6b3f"/>
+      <circle cx="110" cy="20" r="2" fill="#d9603f"/>
+    </svg>
+    <div class="rf-eyebrow">🔍 Lift the lid, name the ingredient</div>
+    <h1 class="rf-title">Riddle Me This</h1>
+    <p class="rf-summary">I'll describe a common cooking ingredient without naming it — you've got 3 lives per riddle to figure out what's hiding under the cloche. Get 5 right and you win the whole game.</p>
+  </div>
+
+  <div class="rf-body">
+    <div class="riddle-card">
+      <div class="riddle-score">Score: <span id="riddle-score">0 / 0</span></div>
+      <div class="riddle-attempts" id="riddle-attempts"></div>
+      <div class="riddle-text" id="riddle-text"></div>
+      <form class="riddle-form" id="riddle-form" onsubmit="handleIngredientGuess(event)">
+        <input type="text" class="riddle-guess-input" id="riddle-guess-input" placeholder="Type your guess..." autocomplete="off" autocapitalize="off">
+        <button type="submit" class="riddle-guess-btn">Guess</button>
+      </form>
+      <div class="riddle-feedback" id="riddle-feedback"></div>
+      <div class="riddle-reveal" id="riddle-reveal" hidden>
+        <div class="riddle-reveal-emoji" id="riddle-reveal-emoji"></div>
+        <div class="riddle-reveal-headline" id="riddle-reveal-headline"></div>
+        <div class="riddle-reveal-answer" id="riddle-reveal-answer"></div>
+        <button type="button" class="riddle-next-btn" id="riddle-next-btn" onclick="nextIngredientRound()">Next Riddle →</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -3010,7 +3161,7 @@ function openDetail(id) {
 // All full-page food overlays, kept in a list so opening one can reliably
 // close the rest — only one of these (and #project-detail) is ever open
 // at a time, no matter which nav path got you there.
-const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool'];
+const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game'];
 function closeAllToolOverlays() {
   TOOL_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
 }
@@ -3097,6 +3248,22 @@ function openWeatherTool() {
 function closeWeatherTool() {
   document.getElementById('weather-tool').classList.remove('open');
   document.getElementById('tactical-hub').classList.add('open');
+  window.scrollTo(0, 0);
+}
+
+function openIngredientGame() {
+  document.getElementById('project-detail').classList.remove('open');
+  closeAllToolOverlays();
+  document.getElementById('ingredient-game').classList.add('open');
+  document.getElementById('main-site').classList.add('hidden');
+  window.scrollTo(0, 0);
+  lucide.createIcons();
+  startIngredientRound();
+}
+
+function closeIngredientGame() {
+  document.getElementById('ingredient-game').classList.remove('open');
+  document.getElementById('food-hub').classList.add('open');
   window.scrollTo(0, 0);
 }
 
@@ -4054,6 +4221,147 @@ async function handleWeatherTool(e) {
   } catch (err) {
     resultsEl.innerHTML = `<div class="wx-message error">NWS only covers US locations — if ${geo.label} is outside the US (or the feed is down), that's why this failed.</div>`;
   }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// RIDDLE ME THIS — a hangman-style ingredient guessing game. Picks a
+// random riddle from INGREDIENT_RIDDLES (assets/riddles-data.js),
+// gives 3 lives per riddle to type the correct ingredient (case/
+// plural/punctuation-insensitive, plus each entry's own narrow alias
+// list), and always reveals the answer + emoji at the end whether
+// you got it or not. Reach RIDDLE_WIN_TARGET correct answers across
+// the session and the whole game is won, with a "Play Again" reset.
+// ─────────────────────────────────────────────────────────────────
+const RIDDLE_MAX_ATTEMPTS = 3;
+const RIDDLE_WIN_TARGET = 5;
+const RIDDLE_ATTEMPT_ICON = '🍅';
+const riddleGameState = { current: null, attemptsLeft: RIDDLE_MAX_ATTEMPTS, finished: false, recentIndexes: [], awaitingRestart: false };
+let riddleScore = { correct: 0, played: 0 };
+
+function normalizeIngredientGuess(s) {
+  return s.toLowerCase().trim().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ');
+}
+
+function ingredientMatches(guess, entry) {
+  const norm = normalizeIngredientGuess(guess);
+  if (!norm) return false;
+  const candidates = [entry.answer, ...(entry.aliases || [])].map(normalizeIngredientGuess);
+  return candidates.some(c => c === norm || c === norm.replace(/s$/, '') || `${c}s` === norm);
+}
+
+function pickIngredientRiddle() {
+  // Avoid repeating recent riddles in a session; reset the "seen" list
+  // once it's grown close to exhausting the whole pool.
+  const recent = riddleGameState.recentIndexes;
+  if (recent.length >= INGREDIENT_RIDDLES.length - 1) recent.length = 0;
+  let idx;
+  do {
+    idx = Math.floor(Math.random() * INGREDIENT_RIDDLES.length);
+  } while (recent.includes(idx));
+  recent.push(idx);
+  return idx;
+}
+
+function renderRiddleAttempts() {
+  const el = document.getElementById('riddle-attempts');
+  const used = RIDDLE_MAX_ATTEMPTS - riddleGameState.attemptsLeft;
+  el.innerHTML = Array.from({ length: RIDDLE_MAX_ATTEMPTS }).map((_, i) =>
+    `<span class="riddle-attempt-icon${i < used ? ' used' : ''}">${RIDDLE_ATTEMPT_ICON}</span>`
+  ).join('');
+}
+
+function updateRiddleScore() {
+  document.getElementById('riddle-score').textContent = `${riddleScore.correct} / ${riddleScore.played}`;
+}
+
+function startIngredientRound() {
+  const idx = pickIngredientRiddle();
+  riddleGameState.current = INGREDIENT_RIDDLES[idx];
+  riddleGameState.attemptsLeft = RIDDLE_MAX_ATTEMPTS;
+  riddleGameState.finished = false;
+
+  document.getElementById('riddle-text').textContent = riddleGameState.current.riddle;
+  const feedbackEl = document.getElementById('riddle-feedback');
+  feedbackEl.textContent = '';
+  feedbackEl.className = 'riddle-feedback';
+  document.getElementById('riddle-reveal').hidden = true;
+  document.getElementById('riddle-form').hidden = false;
+  document.getElementById('riddle-next-btn').textContent = 'Next Riddle →';
+  const input = document.getElementById('riddle-guess-input');
+  input.value = '';
+  input.disabled = false;
+  renderRiddleAttempts();
+  updateRiddleScore();
+  input.focus();
+}
+
+function finishIngredientRound(won) {
+  riddleGameState.finished = true;
+  riddleScore.played++;
+  if (won) riddleScore.correct++;
+  updateRiddleScore();
+
+  document.getElementById('riddle-form').hidden = true;
+  document.getElementById('riddle-guess-input').disabled = true;
+
+  const entry = riddleGameState.current;
+  const answerLabel = entry.answer.charAt(0).toUpperCase() + entry.answer.slice(1);
+  const headline = document.getElementById('riddle-reveal-headline');
+  const nextBtn = document.getElementById('riddle-next-btn');
+  const gameWon = won && riddleScore.correct >= RIDDLE_WIN_TARGET;
+
+  if (gameWon) {
+    document.getElementById('riddle-reveal-emoji').textContent = '🏆';
+    headline.textContent = '🏆 You win Riddle Me This!';
+    headline.className = 'riddle-reveal-headline win';
+    document.getElementById('riddle-reveal-answer').textContent = `It was ${answerLabel} — that's ${riddleScore.correct} correct. You beat the game!`;
+    nextBtn.textContent = 'Play Again';
+    riddleGameState.awaitingRestart = true;
+  } else {
+    document.getElementById('riddle-reveal-emoji').textContent = entry.emoji;
+    headline.textContent = won ? '🎉 Got it!' : '😬 Out of lives!';
+    headline.className = 'riddle-reveal-headline ' + (won ? 'win' : 'lose');
+    document.getElementById('riddle-reveal-answer').textContent = `It was ${answerLabel}.`;
+    riddleGameState.awaitingRestart = false;
+  }
+  document.getElementById('riddle-reveal').hidden = false;
+}
+
+function handleIngredientGuess(e) {
+  e.preventDefault();
+  if (riddleGameState.finished) return;
+  const input = document.getElementById('riddle-guess-input');
+  const guess = input.value;
+  if (!guess.trim()) return;
+
+  const entry = riddleGameState.current;
+  if (ingredientMatches(guess, entry)) {
+    finishIngredientRound(true);
+    return;
+  }
+
+  riddleGameState.attemptsLeft--;
+  renderRiddleAttempts();
+  input.value = '';
+  input.focus();
+
+  if (riddleGameState.attemptsLeft <= 0) {
+    finishIngredientRound(false);
+    return;
+  }
+
+  const feedbackEl = document.getElementById('riddle-feedback');
+  const left = riddleGameState.attemptsLeft;
+  feedbackEl.textContent = `Not quite — ${left} ${left === 1 ? 'life' : 'lives'} left.`;
+  feedbackEl.className = 'riddle-feedback wrong';
+}
+
+function nextIngredientRound() {
+  if (riddleGameState.awaitingRestart) {
+    riddleScore = { correct: 0, played: 0 };
+    riddleGameState.awaitingRestart = false;
+  }
+  startIngredientRound();
 }
 
 function handleForm(e) {

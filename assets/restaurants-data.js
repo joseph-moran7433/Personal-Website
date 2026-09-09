@@ -2188,5 +2188,397 @@ const restaurants = [
     hours: "Mon–Thu, Sun 5–10pm, Fri 5–10:30pm, Sat 4–10:30pm",
     knownFor: "Legendary NYC steakhouse import known for dry-aged prime beef inside Borgata",
     lat: 39.3785, lon: -74.4349, city: "Atlantic City", state: "NJ"
+  },
+  {
+    name: "Maureen's Kitchen", zip: "11787", cuisines: ["american"],
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily ~6am–3pm",
+    knownFor: "Diner-style breakfast platters and bottomless coffee",
+    lat: 40.8551, lon: -73.2001, city: "Smithtown", state: "NY"
+  },
+  {
+    name: "Buttermilk's Farmhouse", zip: "11772", cuisines: ["american"],
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily ~7am–3pm",
+    knownFor: "Farmhouse-style brunch plates and buttermilk pancakes",
+    lat: 40.7659, lon: -73.0154, city: "Patchogue", state: "NY"
+  },
+  {
+    name: "Peter's Clam Bar", zip: "11558", cuisines: ["seafood"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Seasonal, roughly daily 11am–10pm in-season",
+    knownFor: "Waterfront clams, shrimp, and a rowdy summer raw bar scene",
+    lat: 40.5945, lon: -73.6579, city: "Island Park", state: "NY"
+  },
+  {
+    name: "Limani Restaurant", zip: "11576", cuisines: ["greek"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily ~12pm–10pm",
+    knownFor: "Whole grilled fish and upscale Greek seafood",
+    lat: 40.7987, lon: -73.6468, city: "Roslyn", state: "NY"
+  },
+  {
+    name: "Avra 48th Street", zip: "10036", cuisines: ["greek"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon–Fri 12–11pm, Sat–Sun 5–11pm",
+    knownFor: "Mediterranean whole fish sold by the pound and grilled octopus",
+    lat: 40.7593, lon: -73.9797, city: "New York (Midtown)", state: "NY"
+  },
+  {
+    name: "John's Pizzeria", zip: "10036", cuisines: ["italian"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily ~11:30am–midnight",
+    knownFor: "Coal-fired brick-oven pies in a converted Times Square church",
+    lat: 40.7577, lon: -73.9903, city: "New York (Times Square)", state: "NY"
+  },
+  {
+    name: "The Barking Dog", zip: "10128", cuisines: ["american"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–11pm",
+    knownFor: "All-day comfort food in a dog-themed Upper East Side diner",
+    lat: 40.7825, lon: -73.9505, city: "New York (Upper East Side)", state: "NY"
+  },
+  {
+    name: "Dock's Oyster House", zip: "08401", cuisines: ["seafood"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily ~4–10pm (varies by day)",
+    knownFor: "Atlantic City raw bar institution open since 1897",
+    lat: 39.3712, lon: -74.4229, city: "Atlantic City", state: "NJ"
+  },
+  {
+    name: "Waterzooi", zip: "11530", cuisines: ["seafood"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon–Thu 11:30am–10pm, Fri–Sat 11:30am–11pm, Sun 11:30am–9pm",
+    knownFor: "Belgian mussels by the pot and a huge beer list",
+    lat: 40.7268, lon: -73.6343, city: "Garden City", state: "NY"
+  },
+  {
+    name: "Pace's Steakhouse", zip: "11788", cuisines: ["american"],
+    mealTypes: ["dinner"],
+    hours: "Mon–Sat 5–10pm, closed Sun",
+    knownFor: "Old-school Long Island steakhouse dry-aged beef",
+    lat: 40.8226, lon: -73.2018, city: "Hauppauge", state: "NY"
+  },
+  {
+    name: "Becco", zip: "10036", cuisines: ["italian"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily ~11:30am–11pm",
+    knownFor: "Lidia Bastianich's Restaurant Row pasta trio, all-you-can-eat",
+    lat: 40.7601, lon: -73.9895, city: "New York (Theater District)", state: "NY"
+  },
+  {
+    name: "Dario's", zip: "11570", cuisines: ["italian"],
+    mealTypes: ["dinner"],
+    hours: "Tue–Sun 5–10pm, closed Mon",
+    knownFor: "Neighborhood Italian dinner spot in Rockville Centre",
+    lat: 40.6631, lon: -73.6412, city: "Rockville Centre", state: "NY"
+  },
+  {
+    name: "American Burrito", zip: "10928", cuisines: ["mexican"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily ~11am–9pm",
+    knownFor: "Cadet-favorite burritos and bowls near West Point",
+    lat: 41.3684, lon: -73.9668, city: "Highland Falls", state: "NY"
+  },
+  {
+    name: "Butters Pancakes & Café", zip: "85054", cuisines: ["american"],
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily 6:30am–2:30pm",
+    knownFor: "Scratch-made breakfast and lunch fare in a from-scratch kitchen",
+    lat: 33.6706, lon: -111.9701, city: "Phoenix", state: "AZ"
+  },
+  {
+    name: "Mastro's Steakhouse", zip: "85260", cuisines: ["american"],
+    mealTypes: ["dinner"],
+    hours: "Daily from 4:30pm (varies by day)",
+    knownFor: "Upscale prime steaks and a piano bar scene",
+    lat: 33.6142, lon: -111.9159, city: "Scottsdale", state: "AZ"
+  },
+  {
+    name: "Dominick's Steak House", zip: "85254", cuisines: ["american"],
+    mealTypes: ["dinner"],
+    hours: "Daily from 4pm (varies by day)",
+    knownFor: "North Scottsdale steakhouse classics",
+    lat: 33.6142, lon: -112.0198, city: "Scottsdale", state: "AZ"
+  },
+  {
+    name: "Husk", zip: "29401", cuisines: ["american"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Dinner nightly 5–10pm, Brunch Sat–Sun 10am–2pm",
+    knownFor: "Modern Southern cooking built entirely around what local farms have that day",
+    lat: 32.7765, lon: -79.9311, city: "Charleston", state: "SC"
+  },
+  {
+    name: "The Zero George", zip: "29401", cuisines: ["american"],
+    mealTypes: ["dinner"],
+    hours: "Dinner nightly (hours vary — reservation recommended)",
+    knownFor: "Seasonal, locally-sourced fine dining inside a boutique Charleston hotel",
+    lat: 32.7765, lon: -79.9311, city: "Charleston", state: "SC"
+  },
+  {
+    name: "Tsunami", zip: "30601", cuisines: ["asian"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (hours vary by day)",
+    knownFor: "Sushi and Japanese fare in downtown Athens",
+    lat: 33.9519, lon: -83.3576, city: "Athens", state: "GA"
+  },
+  {
+    name: "Mama's Boy", zip: "30601", cuisines: ["american"],
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily, breakfast and brunch hours",
+    knownFor: "Georgia peach French toast and made-from-scratch Southern breakfast",
+    lat: 33.9519, lon: -83.3576, city: "Athens", state: "GA"
+  },
+  {
+    name: "White Tiger Gourmet BBQ", zip: "30601", cuisines: ["bbq"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (hours vary by day)",
+    knownFor: "Gourmet Southern BBQ in downtown Athens",
+    lat: 33.9519, lon: -83.3576, city: "Athens", state: "GA"
+  },
+  {
+    name: "Ryleigh's Oyster", zip: "21093", cuisines: ["seafood"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily from 11am",
+    knownFor: "Baltimore-style raw bar with daily rotating oysters and a sushi bar",
+    lat: 39.4276, lon: -76.6386, city: "Lutherville-Timonium", state: "MD"
+  },
+  {
+    name: "Henrietta's Table", zip: "02138", cuisines: ["american"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Breakfast daily 7–11am, Lunch Mon–Fri 12–2pm, Supper daily 5–9pm, Sat/Sun Brunch",
+    knownFor: "New England farm-to-table cooking and an award-winning Sunday brunch buffet",
+    lat: 42.3736, lon: -71.1190, city: "Cambridge", state: "MA"
+  },
+  {
+    name: "Ebbitt Room", zip: "08204", cuisines: ["american"],
+    mealTypes: ["dinner"],
+    hours: "Dinner Sun–Thu 5–9pm, Fri–Sat 5–10pm",
+    knownFor: "Farm-to-table fine dining sourced from a nearby Cape May farm",
+    lat: 38.9351, lon: -74.9060, city: "Cape May", state: "NJ"
+  },
+  {
+    name: "The Pearl", zip: "43215", cuisines: ["american"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Brunch Sat–Sun 10am–3pm, Dinner Mon–Thu 4–9pm, Fri–Sat till 10/11pm, Sun 3–9pm",
+    knownFor: "Polished seafood, shareables, and handcrafted cocktails in the Short North",
+    lat: 39.9695, lon: -83.0048, city: "Columbus", state: "OH"
+  },
+  {
+    name: "Lupe Tortilla", zip: "77024", cuisines: ["mexican"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 11am–10pm (varies by location)",
+    knownFor: "Sizzling mesquite-grilled fajitas and handmade tortillas",
+    lat: 29.7860, lon: -95.4838, city: "Houston", state: "TX"
+  },
+  {
+    name: "George's Restaurant", zip: "76706", cuisines: ["american"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Mon–Sat 6:30am–close, closed Sun",
+    knownFor: "Waco institution since 1963 — chicken-fried steak and cold beer near Baylor",
+    lat: 31.5493, lon: -97.1197, city: "Waco", state: "TX"
+  },
+  {
+    name: "Terry Black's Barbecue", zip: "76701", cuisines: ["bbq"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 11am–9pm or until sold out",
+    knownFor: "Central Texas smoked brisket and beef ribs by the pound",
+    lat: 31.5504, lon: -97.1462, city: "Waco", state: "TX"
+  },
+  {
+    name: "Arnaud's Restaurant", zip: "70112", cuisines: ["french"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon–Sat 5:30–9pm, Fri lunch 11:30am–1:30pm, Sun jazz brunch 10am–1:30pm",
+    knownFor: "Century-old French Creole fine dining and its famous Sunday jazz brunch",
+    lat: 29.9558, lon: -90.0708, city: "New Orleans", state: "LA"
+  },
+  {
+    name: "Saddle", zip: "28009", cuisines: ["spanish"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily ~1–4pm, 8pm–midnight (varies by day)",
+    knownFor: "Grilled meats and seafood cooked over embers on a leafy terrace near Retiro Park",
+    lat: 40.4153, lon: -3.6809, city: "Madrid", state: "Spain"
+  },
+  {
+    name: "Hôtel Particulier Montmartre", zip: "75018", cuisines: ["french"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Wed–Sat, roughly 12–2:30pm and 7–11pm (bar open later)",
+    knownFor: "Secluded garden dining and cocktails behind a private Montmartre mansion",
+    lat: 48.8867, lon: 2.3350, city: "Paris", state: "France"
+  },
+  {
+    name: "Aqua al 2", zip: "50122", cuisines: ["italian"],
+    mealTypes: ["dinner"],
+    hours: "Daily ~7:30pm–1am, dinner only",
+    knownFor: "Tegamaccio mixed-meat skillet and steak tartare near the Bargello",
+    lat: 43.7696, lon: 11.2558, city: "Florence", state: "Italy"
+  },
+  {
+    name: "Saint James Paris", zip: "75116", cuisines: ["french"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily ~12–2:30pm, 7–10:30pm",
+    knownFor: "Elegant hotel dining and a storied library bar near Trocadéro",
+    lat: 48.8687, lon: 2.2765, city: "Paris", state: "France"
+  },
+  {
+    name: "Mama's Fish House", zip: "96779", cuisines: ["seafood"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 11am–2:30pm, 4:30–8:45pm",
+    knownFor: "Oceanfront Hawaiian seafood with the catching fisherman credited on the menu",
+    lat: 20.9309, lon: -156.3559, city: "Paia", state: "HI"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "77024", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 29.7861, lon: -95.4849, city: "Houston (City Centre)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "77546", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 29.5518, lon: -95.1380, city: "Friendswood (Baybrook Mall)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "77027", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 29.7434, lon: -95.4390, city: "Houston (Highland Village)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "77494", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 29.7350, lon: -95.7910, city: "Katy (Cinco Ranch)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "77005", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 29.7175, lon: -95.4160, city: "Houston (Rice Village)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "77478", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 29.6197, lon: -95.6349, city: "Sugar Land (Town Square)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "77380", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 30.1737, lon: -95.4652, city: "The Woodlands (Market Street)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "77433", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 29.9430, lon: -95.7290, city: "Cypress (Bridgeland)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "76092", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 32.9412, lon: -97.1342, city: "Southlake (Town Square)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "75071", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 33.2223, lon: -96.6664, city: "McKinney", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "75205", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 32.8362, lon: -96.7887, city: "University Park (Snider Plaza)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "78758", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 30.4021, lon: -97.7250, city: "Austin (The Domain)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "77840", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 30.6013, lon: -96.3144, city: "College Station (Century Square)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "78256", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 29.5988, lon: -98.6142, city: "San Antonio (La Cantera)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "78503", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 26.2159, lon: -98.2247, city: "McAllen (La Plaza Mall)", state: "TX"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "33178", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 25.8195, lon: -80.3553, city: "Doral (Downtown Doral)", state: "FL"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "33134", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 25.7497, lon: -80.2581, city: "Miami (Coral Gables)", state: "FL"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "33132", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 25.7842, lon: -80.1936, city: "Miami (Worldcenter)", state: "FL"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "55125", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 44.9239, lon: -92.9594, city: "Woodbury", state: "MN"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "55425", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 44.8548, lon: -93.2422, city: "Bloomington (Mall of America)", state: "MN"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "55435", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 44.8752, lon: -93.3238, city: "Edina (Galleria)", state: "MN"
+  },
+  {
+    name: "Sweet Paris Creperie & Café", zip: "85254", cuisines: ["french"],
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily ~8am–9pm (varies by location)",
+    knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
+    lat: 33.6217, lon: -111.9236, city: "Scottsdale (Scottsdale Quarter)", state: "AZ"
   }
 ];

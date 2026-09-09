@@ -844,6 +844,38 @@
     }
     @media (prefers-reduced-motion: reduce) { .wx-card.severe { animation: none; } }
 
+    /* Forecast Trust Score — headline accuracy readout + per-lead-day
+       error chart, built from Joseph's own logged prediction-vs-actual
+       data on the Pi that sends this same advisory every morning. */
+    .trust-score-panel {
+      background: var(--tac-card); border: 1px solid var(--tac-border);
+      border-radius: 0.6rem; padding: 1.75rem 2rem; margin-bottom: 2.75rem;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4), inset 0 0 40px rgba(57,255,143,0.03);
+    }
+    .trust-score-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .trust-score-label { font-family: var(--font-body-tac); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tac-green); }
+    .trust-score-sub { font-size: 0.78rem; color: var(--tac-faint); margin-top: 0.4rem; max-width: 42ch; line-height: 1.5; }
+    .trust-score-number { font-family: var(--font-display-tac); font-weight: 800; font-size: 2.6rem; color: var(--tac-green); text-shadow: 0 0 18px rgba(57,255,143,0.4); line-height: 1; text-align: right; }
+    .trust-score-number .unit { font-size: 1.1rem; color: var(--tac-muted); font-weight: 700; margin-left: 0.15rem; }
+    .trust-score-warming { display: flex; align-items: center; gap: 0.85rem; }
+    .trust-score-warming-ring { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--tac-green-dim); border-top-color: var(--tac-amber); flex-shrink: 0; animation: trust-spin 2.4s linear infinite; }
+    @keyframes trust-spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .trust-score-warming-ring { animation: none; } }
+    .trust-score-warming-text { text-align: right; }
+    .trust-score-warming-headline { color: var(--tac-amber); font-family: var(--font-display-tac); font-weight: 700; font-size: 1rem; }
+    .trust-score-warming-count { color: var(--tac-faint); font-size: 0.78rem; margin-top: 0.2rem; }
+    .trust-score-chart-wrap svg text { font-family: var(--font-body-tac); fill: var(--tac-faint); font-size: 11px; }
+    .tsc-gridline { stroke: var(--tac-border); stroke-width: 1; }
+    .tsc-bar { fill: var(--tac-green); }
+    .tsc-bar.insufficient { fill: var(--tac-green-dim); opacity: 0.55; }
+    .tsc-bar-value { fill: var(--tac-text); font-weight: 700; }
+    .tsc-bar-value.insufficient { fill: var(--tac-faint); font-weight: 400; }
+    .trust-score-legend { display: flex; gap: 1.5rem; margin-top: 0.9rem; flex-wrap: wrap; }
+    .trust-score-legend-item { display: flex; align-items: center; gap: 0.45rem; font-size: 0.72rem; color: var(--tac-faint); }
+    .trust-score-legend-swatch { width: 10px; height: 10px; border-radius: 2px; background: var(--tac-green); }
+    .trust-score-legend-swatch.insufficient { background: var(--tac-green-dim); opacity: 0.55; }
+    .trust-score-error { font-size: 0.8rem; color: var(--tac-faint); }
+
     .wx-card-top { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
     .wx-day { font-family: var(--font-display-tac); font-weight: 700; font-size: 1.05rem; color: var(--tac-text); letter-spacing: 0.04em; }
     .wx-temp { font-family: var(--font-body-tac); font-size: 1.3rem; color: var(--tac-green); font-weight: 700; margin-bottom: 0.5rem; }
@@ -1961,6 +1993,8 @@
   </div>
 
   <div class="tac-body">
+    <div id="trust-score-panel"></div>
+
     <form class="tac-form" onsubmit="handleWeatherTool(event)">
       <div class="tac-form-row">
         <label class="tac-form-label">Zip code or city</label>
@@ -3421,6 +3455,91 @@ function openWeatherTool() {
   document.getElementById('main-site').classList.add('hidden');
   window.scrollTo(0, 0);
   lucide.createIcons();
+  loadTrustScore();
+}
+
+// Forecast Trust Score: pulled straight from the JSON that trust_score.py
+// writes on the Pi and pushes to GitHub each morning right after the
+// advisory itself runs. No backend on this site to route through — this
+// site is static-assets-only on Cloudflare, so, same as the NWS pull
+// above, the browser fetches the public data directly.
+const TRUST_SCORE_URL = 'https://raw.githubusercontent.com/joseph-moran7433/Morning-Text/main/data/trust_score.json';
+
+function loadTrustScore() {
+  const panel = document.getElementById('trust-score-panel');
+  panel.innerHTML = `<div class="trust-score-panel"><div class="trust-score-error">Loading trust score…</div></div>`;
+
+  fetch(TRUST_SCORE_URL, { cache: 'no-store' })
+    .then(res => { if (!res.ok) throw new Error('not found'); return res.json(); })
+    .then(renderTrustScore)
+    .catch(() => {
+      panel.innerHTML = `<div class="trust-score-panel"><div class="trust-score-error">Trust score data isn't available right now — the log is either still initializing or GitHub is unreachable from here.</div></div>`;
+    });
+}
+
+function renderTrustScore(data) {
+  const panel = document.getElementById('trust-score-panel');
+  const byDay = data.by_lead_day || [];
+
+  const headlineHtml = data.warming_up
+    ? `<div class="trust-score-warming">
+        <div class="trust-score-warming-ring"></div>
+        <div class="trust-score-warming-text">
+          <div class="trust-score-warming-headline">Still warming up</div>
+          <div class="trust-score-warming-count">${data.days_logged} / ${data.warming_up_threshold_days} days logged</div>
+        </div>
+      </div>`
+    : `<div class="trust-score-number">${data.trust_score}<span class="unit">/ 100</span></div>`;
+
+  panel.innerHTML = `
+    <div class="trust-score-panel">
+      <div class="trust-score-head">
+        <div>
+          <div class="trust-score-label">🎯 Forecast Trust Score</div>
+          <div class="trust-score-sub">How accurate the daily forecast that texts me every morning has actually been — measured against real logged outcomes, not the calculator above (which runs a different heat model).</div>
+        </div>
+        ${headlineHtml}
+      </div>
+      <div class="trust-score-chart-wrap">${buildTrustScoreChart(byDay)}</div>
+      <div class="trust-score-legend">
+        <div class="trust-score-legend-item"><span class="trust-score-legend-swatch"></span>Enough history to trust</div>
+        <div class="trust-score-legend-item"><span class="trust-score-legend-swatch insufficient"></span>Not enough data yet</div>
+      </div>
+    </div>`;
+}
+
+function buildTrustScoreChart(byDay) {
+  const w = 640, h = 200, top = 20, baseline = 160, left = 40, right = 620;
+  const slot = (right - left) / 7;
+  const barW = slot * 0.55;
+
+  const maes = byDay.map(d => d.high_mae != null && d.low_mae != null ? (d.high_mae + d.low_mae) / 2 : null);
+  const maxMae = Math.max(4, ...maes.filter(m => m != null));
+
+  const gridlines = [0, 0.25, 0.5, 0.75, 1].map(t => {
+    const y = baseline - t * (baseline - top);
+    return `<line class="tsc-gridline" x1="${left}" y1="${y}" x2="${right}" y2="${y}"/>`;
+  }).join('');
+
+  const bars = byDay.map((d, i) => {
+    const mae = maes[i];
+    const cx = left + slot * i + slot / 2;
+    const barH = mae != null ? Math.max(4, (mae / maxMae) * (baseline - top)) : 3;
+    const y = baseline - barH;
+    const cls = d.insufficient_data ? 'tsc-bar insufficient' : 'tsc-bar';
+    const valCls = d.insufficient_data ? 'tsc-bar-value insufficient' : 'tsc-bar-value';
+    const valueLabel = mae != null ? `${mae.toFixed(1)}°` : '—';
+    const dayLabel = i === 0 ? 'Today' : `Day ${i}`;
+    return `
+      <rect class="${cls}" x="${cx - barW / 2}" y="${y}" width="${barW}" height="${barH}" rx="3"/>
+      <text class="${valCls}" x="${cx}" y="${y - 8}" text-anchor="middle">${valueLabel}</text>
+      <text x="${cx}" y="${baseline + 20}" text-anchor="middle">${dayLabel}</text>`;
+  }).join('');
+
+  return `<svg class="chart-svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="Bar chart of mean absolute temperature error in degrees Fahrenheit by forecast lead time, Today through Day 6">
+    ${gridlines}
+    ${bars}
+  </svg>`;
 }
 
 function closeWeatherTool() {

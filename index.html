@@ -1878,7 +1878,7 @@
   <div class="tac-hero">
     <div class="tac-eyebrow">Systems Online</div>
     <h1 class="tac-title">Tactical Tools</h1>
-    <p class="tac-summary">Field-built utilities. Starting with a 7-day formation weather &amp; uniform advisory — the same feed that texts me every night before PT, pulled live from the National Weather Service and run through the Army's heat-category and cold-injury tables.</p>
+    <p class="tac-summary">Field-built utilities. Starting with a 7-day weather &amp; uniform advisory — the same feed that texts me every night before formation, pulled live from the National Weather Service and run through the Army's heat-category and cold-injury tables.</p>
   </div>
 
   <div class="tac-body">
@@ -4169,7 +4169,7 @@ initRestaurantTool();
 // night. Same logic, just re-run here for whatever zip/city a visitor
 // types in instead of one hardcoded location: pull a live NWS
 // forecast, approximate WBGT from temp+humidity, map it to the Army's
-// Heat Category table, and call the PT uniform / cold-injury risk
+// Heat Category table, and call the ACU cold-weather layer / cold-injury risk
 // from the overnight-before-formation low.
 // ─────────────────────────────────────────────────────────────────
 const NWS_HEADERS = { "Accept": "application/geo+json" };
@@ -4192,29 +4192,40 @@ function estimateWbgtF(tempF, relativeHumidityPct) {
 
 function heatCategoryFor(tempF, relativeHumidityPct) {
   const wbgtF = estimateWbgtF(tempF, relativeHumidityPct);
-  const row = HEAT_CATEGORY_TABLE.find(r => wbgtF >= r.low && wbgtF <= r.high)
-    || (wbgtF > 90 ? HEAT_CATEGORY_TABLE[HEAT_CATEGORY_TABLE.length - 1] : null);
-  if (!row) return null;
-  return { wbgtF: Math.round(wbgtF * 10) / 10, category: row.category, flag: row.flag, easy: row.easy, moderate: row.moderate, hard: row.hard };
+  if (wbgtF < HEAT_CATEGORY_TABLE[0].low) return null;
+  // Walk from the most severe category down and take the first row
+  // whose floor the WBGT clears. Matching on each row's `low` bound
+  // only (rather than a closed [low, high] range) matters because the
+  // table's own published bounds (...,89.9) / (90.0,...) leave a real
+  // float gap right at the nastiest threshold — e.g. 89.97°F used to
+  // match no row at all and silently drop the flag on some of the
+  // most dangerous days.
+  for (let i = HEAT_CATEGORY_TABLE.length - 1; i >= 0; i--) {
+    const row = HEAT_CATEGORY_TABLE[i];
+    if (wbgtF >= row.low) {
+      return { wbgtF: Math.round(wbgtF * 10) / 10, category: row.category, flag: row.flag, easy: row.easy, moderate: row.moderate, hard: row.hard };
+    }
+  }
+  return null;
 }
 
 const UNIFORM_BANDS = [
-  { low: 76, high: 999, short: "shorts+tee", full: "shorts + t-shirt" },
-  { low: 60, high: 75, short: "std IPFU", full: "standard IPFU (shorts + t-shirt, jacket optional)" },
-  { low: 40, high: 59, short: "IPFU+jacket", full: "IPFU pants + jacket" },
-  { low: 25, high: 39, short: "IPFU+fleece/gloves", full: "IPFU + fleece cap + gloves" },
-  { low: 0, high: 24, short: "+balaclava/ECWCS", full: "IPFU + fleece cap + gloves + balaclava, ECWCS layer" },
-  { low: -999, high: -1, short: "full ECWCS/arctic", full: "full ECWCS + arctic mittens + balaclava" }
+  { low: 76, high: 999, short: "ACU only", full: "ACU, no jacket — sleeves per unit SOP" },
+  { low: 60, high: 75, short: "ACU, no jacket", full: "Standard ACU, jacket optional" },
+  { low: 40, high: 59, short: "ACU+fleece", full: "ACU + Gen III fleece jacket (Level 3)" },
+  { low: 25, high: 39, short: "ACU+Gore-Tex", full: "ACU + fleece + Gen III Gore-Tex/soft-shell jacket, gloves and watch cap" },
+  { low: 0, high: 24, short: "ACU+poly-pro", full: "ACU + poly-pro base layer, fleece, Gore-Tex jacket, balaclava, glove shells" },
+  { low: -999, high: -1, short: "Full ECWCS", full: "Full ECWCS Gen III system — extreme cold parka, bibs, mittens, face protection" }
 ];
 
 function uniformForTemp(tempF) {
   const row = UNIFORM_BANDS.find(r => tempF >= r.low && tempF <= r.high);
-  return row ? row.short : "std IPFU";
+  return row ? row.short : "ACU, no jacket";
 }
 
 function uniformFullForTemp(tempF) {
   const row = UNIFORM_BANDS.find(r => tempF >= r.low && tempF <= r.high);
-  return row ? row.full : "standard IPFU";
+  return row ? row.full : "Standard ACU, jacket optional";
 }
 
 function coldRiskFor(tempF) {
@@ -4264,11 +4275,22 @@ function buildDailySummaries(periods, hourlyPeriods, maxDays = 7) {
     const dayLabel = ["Today", "Tonight", "Tomorrow"].includes(firstWord) ? firstWord : firstWord.slice(0, 3);
     const rh = humidityNear(hourlyPeriods, period.startTime);
     const morningTemp = morningLow !== null ? morningLow : highTemp;
-
-    const uniform = uniformForTemp(morningTemp);
-    const uniformFull = uniformFullForTemp(morningTemp);
-    const cold = coldRiskFor(morningTemp);
     const heat = highTemp >= 76 ? heatCategoryFor(highTemp, rh) : null;
+
+    // Uniform is normally called off the pre-dawn low (coldest part of
+    // the day) while heat category is called off the afternoon high —
+    // on a cool-morning/hot-afternoon day that split can otherwise
+    // recommend a cold-weather layer on a day serious enough to flag
+    // real heat danger. Cat 1 ("none") is barely a flag at all — it
+    // doesn't touch the uniform call — but Cat 2 and up (green through
+    // black, i.e. an actual colored flag) floors the uniform basis at
+    // the "no jacket" band, since no one should be told to add a
+    // fleece on a day serious enough to earn a real heat-category flag.
+    const heatOverride = heat && heat.flag !== "none";
+    const uniformBasisTemp = heatOverride ? Math.max(morningTemp, 60) : morningTemp;
+    const uniform = uniformForTemp(uniformBasisTemp);
+    const uniformFull = uniformFullForTemp(uniformBasisTemp);
+    const cold = coldRiskFor(morningTemp);
 
     summaries.push({
       day: dayLabel,

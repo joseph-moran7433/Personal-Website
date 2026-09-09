@@ -4240,14 +4240,23 @@ async function nwsFetch(url) {
   return res.json();
 }
 
-function humidityNear(hourlyPeriods, targetIso) {
-  const target = new Date(targetIso).getTime();
-  if (Number.isNaN(target)) return 50;
+// Heat category needs the humidity that co-occurs with the day's
+// HIGH temperature (usually mid-afternoon), not the humidity at the
+// forecast period's start time. A "daytime" period from NWS starts at
+// ~6-8am — the most humid, coolest part of the day — so pairing the
+// afternoon high with that morning humidity systematically overstates
+// WBGT (RH drops sharply as temps climb through the day). Instead,
+// scan every hourly reading on that calendar date and use the
+// humidity from whichever hour's temperature is closest to the
+// reported high — i.e. the hour the high actually happened.
+function humidityAtHigh(hourlyPeriods, periodStartIso, highTemp) {
+  const dateStr = (periodStartIso || "").slice(0, 10);
+  if (!dateStr) return 50;
   let best = null, bestDiff = Infinity;
   for (const hour of hourlyPeriods) {
-    const t = new Date(hour.startTime).getTime();
-    if (Number.isNaN(t)) continue;
-    const diff = Math.abs(t - target);
+    if (!hour.startTime || !hour.startTime.startsWith(dateStr)) continue;
+    if (typeof hour.temperature !== "number") continue;
+    const diff = Math.abs(hour.temperature - highTemp);
     if (diff < bestDiff) { best = hour; bestDiff = diff; }
   }
   if (best && best.relativeHumidity && typeof best.relativeHumidity.value === "number") {
@@ -4273,7 +4282,7 @@ function buildDailySummaries(periods, hourlyPeriods, maxDays = 7) {
     // to 3 letters ("Tod"), so leave those alone.
     const firstWord = period.name.split(" ")[0];
     const dayLabel = ["Today", "Tonight", "Tomorrow"].includes(firstWord) ? firstWord : firstWord.slice(0, 3);
-    const rh = humidityNear(hourlyPeriods, period.startTime);
+    const rh = humidityAtHigh(hourlyPeriods, period.startTime, highTemp);
     const morningTemp = morningLow !== null ? morningLow : highTemp;
     const heat = highTemp >= 76 ? heatCategoryFor(highTemp, rh) : null;
 

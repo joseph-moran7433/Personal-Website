@@ -21,6 +21,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Nunito:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
@@ -77,6 +78,23 @@
       --rf-cream-line: rgba(217,96,63,0.35);
       --font-display-fun: 'Fraunces', Georgia, serif;
       --font-body-fun: 'Nunito', system-ui, sans-serif;
+
+      /* Tactical Tools gets its own night-vision-scope palette & type
+         pairing — dark, phosphor green, monospace readouts. */
+      --tac-bg: #050e09;
+      --tac-surface: #0a1a10;
+      --tac-card: #0d2115;
+      --tac-text: #b9ffd0;
+      --tac-green: #39ff8f;
+      --tac-green-dim: #1f6b3f;
+      --tac-muted: #6fae85;
+      --tac-faint: #3d6650;
+      --tac-border: rgba(57,255,143,0.22);
+      --tac-glow: rgba(57,255,143,0.35);
+      --tac-amber: #ffb84d;
+      --tac-red: #ff5c5c;
+      --font-display-tac: 'Orbitron', 'Share Tech Mono', monospace;
+      --font-body-tac: 'Share Tech Mono', 'Courier New', monospace;
     }
     html { scroll-behavior: smooth; }
     body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -592,6 +610,172 @@
        so give it a slightly higher z-index — otherwise identical overlay mechanics. */
     #food-hub { z-index: 151; }
 
+    /* ═══════════════════════════════════════════════════════════════
+       TACTICAL TOOLS — a second "room" of the site, opposite in every
+       way from the Kitchen's warm palette: near-black, phosphor green,
+       monospace HUD type, a scanline + vignette treatment so it reads
+       like a night-vision scope rather than a reskinned form page.
+       Same open/close overlay mechanics as the rest of the site.
+       ═══════════════════════════════════════════════════════════════ */
+    #tactical-hub, #weather-tool {
+      position: fixed; inset: 0; z-index: 150;
+      background:
+        repeating-linear-gradient(0deg, rgba(57,255,143,0.035) 0px, rgba(57,255,143,0.035) 1px, transparent 1px, transparent 3px),
+        radial-gradient(ellipse at 50% 0%, rgba(57,255,143,0.09), transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.6), transparent 70%),
+        var(--tac-bg);
+      overflow-y: auto;
+      opacity: 0; transform: translateX(60px);
+      pointer-events: none;
+      transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1);
+      font-family: var(--font-body-tac);
+      color: var(--tac-text);
+    }
+    #tactical-hub.open, #weather-tool.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+    #tactical-hub { z-index: 151; }
+
+    .tac-nav {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1.25rem 3rem;
+      background: rgba(5,14,9,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--tac-border);
+    }
+    .tac-back {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--tac-green); background: none; border: none; cursor: pointer;
+      transition: text-shadow var(--transition), color var(--transition); padding: 0.4rem 0;
+      font-family: var(--font-body-tac);
+    }
+    .tac-back:hover { text-shadow: 0 0 8px var(--tac-glow); }
+    .tac-breadcrumb { font-size: 0.75rem; color: var(--tac-faint); display: flex; align-items: center; gap: 0.5rem; letter-spacing: 0.04em; text-transform: uppercase; }
+    .tac-breadcrumb span:last-child { color: var(--tac-muted); }
+
+    .tac-hero { padding: 4.5rem 3rem 2.5rem; max-width: 980px; position: relative; }
+    .tac-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-family: var(--font-body-tac);
+      font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--tac-green); margin-bottom: 0.75rem;
+    }
+    .tac-eyebrow::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--tac-green); box-shadow: 0 0 8px var(--tac-glow); animation: tac-blink 1.6s ease-in-out infinite; }
+    @keyframes tac-blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .tac-title {
+      font-family: var(--font-display-tac); font-weight: 800;
+      font-size: clamp(2rem, 4.4vw, 3.2rem); color: var(--tac-text);
+      letter-spacing: 0.02em; line-height: 1.1; margin-bottom: 1rem; max-width: 700px;
+      text-shadow: 0 0 18px var(--tac-glow);
+    }
+    .tac-summary { font-size: 1rem; color: var(--tac-muted); max-width: 560px; line-height: 1.75; }
+    .tac-body { max-width: 1100px; padding: 0 3rem 6rem; position: relative; }
+
+    .tac-hub-scatter { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 2.5rem 7rem; padding: 3rem 0 4rem; }
+    .tac-hub-item { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 300px; }
+    .tac-hub-label-title {
+      font-family: var(--font-display-tac); font-weight: 700; font-size: 1.4rem; color: var(--tac-green);
+      margin-bottom: 0.5rem; letter-spacing: 0.03em;
+    }
+    .tac-hub-label-sub { font-size: 0.88rem; color: var(--tac-muted); max-width: 320px; line-height: 1.65; }
+
+    /* Radar scope — the entry point into the Weather tool. Pure CSS: a
+       conic-gradient sweep rotating over concentric rings, with a
+       couple of blip dots that fade in/out to sell "live scope". */
+    .radar-stage {
+      position: relative; width: 190px; height: 190px; margin-bottom: 1.75rem;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+      border-radius: 50%;
+    }
+    .radar-stage:focus-visible { outline: 2px solid var(--tac-green); outline-offset: 8px; }
+    .radar-scope {
+      position: absolute; inset: 0; border-radius: 50%;
+      background: radial-gradient(circle, rgba(57,255,143,0.06) 0%, rgba(5,20,12,0.9) 72%);
+      border: 2px solid var(--tac-green-dim);
+      box-shadow: 0 0 30px rgba(57,255,143,0.18), inset 0 0 30px rgba(0,0,0,0.6);
+      overflow: hidden;
+    }
+    .radar-ring { position: absolute; border: 1px solid rgba(57,255,143,0.28); border-radius: 50%; }
+    .radar-ring-1 { inset: 15%; }
+    .radar-ring-2 { inset: 32%; }
+    .radar-ring-3 { inset: 49%; }
+    .radar-crosshair { position: absolute; inset: 0; }
+    .radar-crosshair::before, .radar-crosshair::after { content: ''; position: absolute; background: rgba(57,255,143,0.28); }
+    .radar-crosshair::before { top: 0; bottom: 0; left: 50%; width: 1px; }
+    .radar-crosshair::after { left: 0; right: 0; top: 50%; height: 1px; }
+    .radar-sweep {
+      position: absolute; inset: 0; border-radius: 50%;
+      background: conic-gradient(from 0deg, rgba(57,255,143,0.55), transparent 28%, transparent 100%);
+      animation: radar-spin 3.4s linear infinite;
+    }
+    @keyframes radar-spin { to { transform: rotate(360deg); } }
+    .radar-blip { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--tac-green); box-shadow: 0 0 8px var(--tac-glow); animation: radar-blip-fade 3.4s ease-in-out infinite; }
+    .radar-blip-1 { top: 32%; left: 62%; animation-delay: 0.4s; }
+    .radar-blip-2 { top: 66%; left: 38%; animation-delay: 1.7s; }
+    .radar-blip-3 { top: 44%; left: 30%; animation-delay: 2.6s; }
+    @keyframes radar-blip-fade { 0%, 78%, 100% { opacity: 0; } 84%, 92% { opacity: 1; } }
+    .radar-stage:hover .radar-sweep, .radar-stage:focus-visible .radar-sweep { animation-play-state: paused; }
+    .radar-stage:hover .radar-scope, .radar-stage:focus-visible .radar-scope { box-shadow: 0 0 44px rgba(57,255,143,0.32), inset 0 0 30px rgba(0,0,0,0.6); }
+    @media (prefers-reduced-motion: reduce) {
+      .radar-sweep { animation: none; }
+      .radar-blip { animation: none; opacity: 0.6; }
+      .tac-eyebrow::before { animation: none; }
+    }
+
+    .tac-form {
+      background: var(--tac-card);
+      border: 1px solid var(--tac-border);
+      border-radius: 0.6rem; padding: 2rem;
+      margin-bottom: 2.75rem; position: relative;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4), inset 0 0 40px rgba(57,255,143,0.03);
+    }
+    .tac-form-row { margin-bottom: 1.5rem; }
+    .tac-form-row:last-child { margin-bottom: 0; }
+    .tac-form-label {
+      font-family: var(--font-body-tac); font-weight: 700; font-size: 0.85rem;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--tac-green);
+      display: block; margin-bottom: 0.75rem;
+    }
+    .tac-zip-input {
+      width: 100%; padding: 0.85rem 1rem; font-size: 1rem; font-family: var(--font-body-tac);
+      background: var(--tac-bg); color: var(--tac-text);
+      border: 1px solid var(--tac-border); border-radius: 0.4rem;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .tac-zip-input:focus { outline: none; border-color: var(--tac-green); box-shadow: 0 0 0 3px rgba(57,255,143,0.15); }
+    .tac-zip-input::placeholder { color: var(--tac-faint); }
+    .tac-field-hint { font-size: 0.78rem; color: var(--tac-faint); margin-top: 0.5rem; }
+    .tac-submit-btn {
+      font-family: var(--font-body-tac); font-weight: 700; font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase;
+      background: var(--tac-green); color: #04140a; border: none; border-radius: 0.4rem;
+      padding: 0.9rem 1.8rem; cursor: pointer;
+      box-shadow: 0 0 18px rgba(57,255,143,0.35);
+      transition: all var(--transition);
+    }
+    .tac-submit-btn:hover { box-shadow: 0 0 28px rgba(57,255,143,0.55); transform: translateY(-1px); }
+
+    .wx-message { padding: 2rem; text-align: center; color: var(--tac-muted); font-family: var(--font-body-tac); }
+    .wx-message.error { color: var(--tac-amber); }
+    .wx-results-label { font-family: var(--font-display-tac); font-weight: 700; letter-spacing: 0.03em; color: var(--tac-green); font-size: 1.1rem; margin-bottom: 1.25rem; }
+    .wx-notable { font-size: 0.85rem; color: var(--tac-amber); margin-bottom: 1.25rem; padding: 0.75rem 1rem; border: 1px solid rgba(255,184,77,0.3); border-radius: 0.4rem; background: rgba(255,184,77,0.06); }
+    .wx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1rem; }
+    .wx-card {
+      background: var(--tac-card); border: 1px solid var(--tac-border); border-radius: 0.5rem;
+      padding: 1.25rem; position: relative; overflow: hidden;
+    }
+    .wx-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(57,255,143,0.06), transparent 40%); pointer-events: none; }
+    .wx-day { font-family: var(--font-display-tac); font-weight: 700; font-size: 1.05rem; color: var(--tac-text); letter-spacing: 0.04em; margin-bottom: 0.5rem; }
+    .wx-temp { font-family: var(--font-body-tac); font-size: 1.3rem; color: var(--tac-green); font-weight: 700; margin-bottom: 0.65rem; }
+    .wx-uniform { font-size: 0.82rem; color: var(--tac-muted); margin-bottom: 0.9rem; line-height: 1.5; }
+    .wx-flag { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.3rem 0.6rem; border-radius: 999px; }
+    .wx-flag::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 6px currentColor; }
+    .wx-flag-ok { color: var(--tac-green); background: rgba(57,255,143,0.1); }
+    .wx-flag-yellow { color: #f2d24a; background: rgba(242,210,74,0.1); }
+    .wx-flag-red { color: var(--tac-red); background: rgba(255,92,92,0.1); }
+    .wx-flag-black { color: #cfd6d2; background: rgba(207,214,210,0.12); }
+    .wx-flag-cold-mod { color: var(--tac-amber); background: rgba(255,184,77,0.1); }
+    .wx-flag-cold-high { color: var(--tac-red); background: rgba(255,92,92,0.1); }
+
     .food-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.5rem; }
     .food-tool-card {
       background: var(--rf-surface); border: 1px solid var(--rf-border); border-radius: 1.1rem;
@@ -970,6 +1154,7 @@
     <li><a href="#projects" onclick="closeDetail()">Projects</a></li>
     <li><a href="#travel" onclick="closeDetail()">Travel</a></li>
     <li><a href="javascript:void(0)" onclick="openFoodHub()">Kitchen</a></li>
+    <li><a href="javascript:void(0)" onclick="openTacticalHub()">Tactical Tools</a></li>
     <li><a href="#contact" onclick="closeDetail()">Contact</a></li>
   </ul>
   <a href="#contact" class="nav-cta" onclick="closeDetail()">Get in Touch</a>
@@ -1502,6 +1687,76 @@
     </form>
 
     <div id="restaurant-results"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ TACTICAL TOOLS HUB ═══════════════════════════════════════ -->
+<div id="tactical-hub">
+  <div class="tac-nav">
+    <button class="tac-back" onclick="closeTacticalHub()">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Site</span>
+    </button>
+    <div class="tac-breadcrumb"><span>/</span><span>Tactical Tools</span></div>
+  </div>
+
+  <div class="tac-hero">
+    <div class="tac-eyebrow">Systems Online</div>
+    <h1 class="tac-title">Tactical Tools</h1>
+    <p class="tac-summary">Field-built utilities. Starting with a 7-day formation weather &amp; uniform advisory — the same feed that texts me every night before PT, pulled live from the National Weather Service and run through the Army's heat-category and cold-injury tables.</p>
+  </div>
+
+  <div class="tac-body">
+    <div class="tac-hub-scatter">
+      <div class="tac-hub-item">
+        <div class="radar-stage" onclick="openWeatherTool()" role="button" tabindex="0" aria-label="Open the WX / Uniform Advisory tool" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openWeatherTool();}">
+          <div class="radar-scope">
+            <div class="radar-ring radar-ring-1"></div>
+            <div class="radar-ring radar-ring-2"></div>
+            <div class="radar-ring radar-ring-3"></div>
+            <div class="radar-crosshair"></div>
+            <div class="radar-sweep"></div>
+            <div class="radar-blip radar-blip-1"></div>
+            <div class="radar-blip radar-blip-2"></div>
+            <div class="radar-blip radar-blip-3"></div>
+          </div>
+        </div>
+        <h2 class="tac-hub-label-title">WX / UNIFORM ADVISORY</h2>
+        <p class="tac-hub-label-sub">Punch in a zip code — get a 7-day forecast with the PT uniform call, heat category, and cold-injury risk for each day.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ WX / UNIFORM ADVISORY (full-page) ═══════════════════════════════════════ -->
+<div id="weather-tool">
+  <div class="tac-nav">
+    <button class="tac-back" onclick="closeWeatherTool()">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Tactical Tools</span>
+    </button>
+    <div class="tac-breadcrumb"><span>Tactical Tools</span><span>/</span><span>WX / Uniform</span></div>
+  </div>
+
+  <div class="tac-hero">
+    <div class="tac-eyebrow">Live NWS Feed</div>
+    <h1 class="tac-title">WX / Uniform Advisory</h1>
+    <p class="tac-summary">Same logic that texts me every night before formation: pull a real 7-day forecast, run it through the Army's heat-category and cold-injury thresholds, and call the uniform for each day.</p>
+  </div>
+
+  <div class="tac-body">
+    <form class="tac-form" onsubmit="handleWeatherTool(event)">
+      <div class="tac-form-row">
+        <label class="tac-form-label">Zip code or city</label>
+        <input type="text" class="tac-zip-input" id="weather-search-zip" placeholder="e.g. 10996 or West Point, NY" required>
+        <div class="tac-field-hint">US locations only — the National Weather Service doesn't cover outside the US.</div>
+      </div>
+      <div class="tac-form-row">
+        <button type="submit" class="tac-submit-btn">Pull Forecast</button>
+      </div>
+    </form>
+
+    <div id="weather-results"></div>
   </div>
 </div>
 
@@ -2697,7 +2952,7 @@ function openDetail(id) {
   if (!p) return;
   const d = p.detail;
 
-  closeAllFoodOverlays();
+  closeAllToolOverlays();
 
   document.getElementById('detail-breadcrumb-title').textContent = p.title;
 
@@ -2755,21 +3010,21 @@ function openDetail(id) {
 // All full-page food overlays, kept in a list so opening one can reliably
 // close the rest — only one of these (and #project-detail) is ever open
 // at a time, no matter which nav path got you there.
-const FOOD_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder'];
-function closeAllFoodOverlays() {
-  FOOD_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
+const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool'];
+function closeAllToolOverlays() {
+  TOOL_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
 }
 
 function closeDetail() {
   document.getElementById('project-detail').classList.remove('open');
-  closeAllFoodOverlays();
+  closeAllToolOverlays();
   document.getElementById('main-site').classList.remove('hidden');
   closeRecipeModal();
 }
 
 function openFoodHub() {
   document.getElementById('project-detail').classList.remove('open');
-  closeAllFoodOverlays();
+  closeAllToolOverlays();
   document.getElementById('food-hub').classList.add('open');
   document.getElementById('main-site').classList.add('hidden');
   window.scrollTo(0, 0);
@@ -2784,7 +3039,7 @@ function closeFoodHub() {
 
 function openRecipeFinder() {
   document.getElementById('project-detail').classList.remove('open');
-  closeAllFoodOverlays();
+  closeAllToolOverlays();
   document.getElementById('recipes').classList.add('open');
   document.getElementById('main-site').classList.add('hidden');
   window.scrollTo(0, 0);
@@ -2800,7 +3055,7 @@ function closeRecipeFinder() {
 
 function openRestaurantFinder() {
   document.getElementById('project-detail').classList.remove('open');
-  closeAllFoodOverlays();
+  closeAllToolOverlays();
   document.getElementById('restaurant-finder').classList.add('open');
   document.getElementById('main-site').classList.add('hidden');
   resetScenery();
@@ -2814,6 +3069,35 @@ function closeRestaurantFinder() {
   resetScenery();
   window.scrollTo(0, 0);
   closeRecipeModal();
+}
+
+function openTacticalHub() {
+  document.getElementById('project-detail').classList.remove('open');
+  closeAllToolOverlays();
+  document.getElementById('tactical-hub').classList.add('open');
+  document.getElementById('main-site').classList.add('hidden');
+  window.scrollTo(0, 0);
+  lucide.createIcons();
+}
+
+function closeTacticalHub() {
+  document.getElementById('tactical-hub').classList.remove('open');
+  document.getElementById('main-site').classList.remove('hidden');
+}
+
+function openWeatherTool() {
+  document.getElementById('project-detail').classList.remove('open');
+  closeAllToolOverlays();
+  document.getElementById('weather-tool').classList.add('open');
+  document.getElementById('main-site').classList.add('hidden');
+  window.scrollTo(0, 0);
+  lucide.createIcons();
+}
+
+function closeWeatherTool() {
+  document.getElementById('weather-tool').classList.remove('open');
+  document.getElementById('tactical-hub').classList.add('open');
+  window.scrollTo(0, 0);
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -3584,6 +3868,193 @@ async function handleRestaurantSearch(e) {
 }
 
 initRestaurantTool();
+
+// ─────────────────────────────────────────────────────────────────
+// WX / UNIFORM ADVISORY — client-side port of a Python project
+// (Weather/advisory.py, heat_category.py, uniform_chart.py in this
+// repo) that texts a 7-day formation weather + uniform advisory every
+// night. Same logic, just re-run here for whatever zip/city a visitor
+// types in instead of one hardcoded location: pull a live NWS
+// forecast, approximate WBGT from temp+humidity, map it to the Army's
+// Heat Category table, and call the PT uniform / cold-injury risk
+// from the overnight-before-formation low.
+// ─────────────────────────────────────────────────────────────────
+const NWS_HEADERS = { "Accept": "application/geo+json" };
+
+const HEAT_CATEGORY_TABLE = [
+  { low: 78.0, high: 81.9, category: 1, flag: "none",   hard: "40/20 min" },
+  { low: 82.0, high: 84.9, category: 2, flag: "green",  hard: "30/30 min" },
+  { low: 85.0, high: 87.9, category: 3, flag: "yellow", hard: "30/30 min" },
+  { low: 88.0, high: 89.9, category: 4, flag: "red",    hard: "20/40 min" },
+  { low: 90.0, high: 999.0, category: 5, flag: "black", hard: "10/50 min" }
+];
+
+function estimateWbgtF(tempF, relativeHumidityPct) {
+  const ta = (tempF - 32) * 5 / 9;
+  const rh = Math.max(0, Math.min(100, relativeHumidityPct));
+  const e = (rh / 100) * 6.105 * Math.exp((17.27 * ta) / (237.7 + ta));
+  const wbgtC = 0.567 * ta + 0.393 * e + 3.94;
+  return wbgtC * 9 / 5 + 32;
+}
+
+function heatCategoryFor(tempF, relativeHumidityPct) {
+  const wbgtF = estimateWbgtF(tempF, relativeHumidityPct);
+  const row = HEAT_CATEGORY_TABLE.find(r => wbgtF >= r.low && wbgtF <= r.high);
+  if (row) return { wbgtF: Math.round(wbgtF * 10) / 10, category: row.category, flag: row.flag, hard: row.hard };
+  if (wbgtF > 90) {
+    const top = HEAT_CATEGORY_TABLE[HEAT_CATEGORY_TABLE.length - 1];
+    return { wbgtF: Math.round(wbgtF * 10) / 10, category: top.category, flag: top.flag, hard: top.hard };
+  }
+  return null;
+}
+
+const UNIFORM_BANDS = [
+  { low: 76, high: 999, short: "shorts+tee" },
+  { low: 60, high: 75, short: "std IPFU" },
+  { low: 40, high: 59, short: "IPFU+jacket" },
+  { low: 25, high: 39, short: "IPFU+fleece/gloves" },
+  { low: 0, high: 24, short: "+balaclava/ECWCS" },
+  { low: -999, high: -1, short: "full ECWCS/arctic" }
+];
+
+function uniformForTemp(tempF) {
+  const row = UNIFORM_BANDS.find(r => tempF >= r.low && tempF <= r.high);
+  return row ? row.short : "std IPFU";
+}
+
+function coldRiskFor(tempF) {
+  if (tempF <= 0) return { level: "High", note: "inspect for cold injuries" };
+  if (tempF <= 25) return { level: "Moderate", note: "inspect cold weather clothing" };
+  return { level: "Low", note: null };
+}
+
+async function nwsFetch(url) {
+  const res = await fetch(url, { headers: NWS_HEADERS });
+  if (!res.ok) throw new Error(`NWS request failed (${res.status})`);
+  return res.json();
+}
+
+function humidityNear(hourlyPeriods, targetIso) {
+  const target = new Date(targetIso).getTime();
+  if (Number.isNaN(target)) return 50;
+  let best = null, bestDiff = Infinity;
+  for (const hour of hourlyPeriods) {
+    const t = new Date(hour.startTime).getTime();
+    if (Number.isNaN(t)) continue;
+    const diff = Math.abs(t - target);
+    if (diff < bestDiff) { best = hour; bestDiff = diff; }
+  }
+  if (best && best.relativeHumidity && typeof best.relativeHumidity.value === "number") {
+    return best.relativeHumidity.value;
+  }
+  return 50;
+}
+
+function buildDailySummaries(periods, hourlyPeriods, maxDays = 7) {
+  const summaries = [];
+  for (let i = 0; i < periods.length && summaries.length < maxDays; i++) {
+    const period = periods[i];
+    if (!period.isDaytime) continue;
+
+    const highTemp = period.temperature;
+    const eveningLow = (i + 1 < periods.length && !periods[i + 1].isDaytime) ? periods[i + 1].temperature : null;
+    const morningLow = (i - 1 >= 0 && !periods[i - 1].isDaytime) ? periods[i - 1].temperature : null;
+    const displayLow = eveningLow !== null ? eveningLow : morningLow;
+
+    // Weekday names ("Tuesday") get abbreviated for the compact card;
+    // the special first-period names ("Today", "Tonight", "This
+    // Afternoon") read fine in full and look truncated-weird chopped
+    // to 3 letters ("Tod"), so leave those alone.
+    const firstWord = period.name.split(" ")[0];
+    const dayLabel = ["Today", "Tonight", "Tomorrow"].includes(firstWord) ? firstWord : firstWord.slice(0, 3);
+    const rh = humidityNear(hourlyPeriods, period.startTime);
+    const morningTemp = morningLow !== null ? morningLow : highTemp;
+
+    const uniform = uniformForTemp(morningTemp);
+    const cold = coldRiskFor(morningTemp);
+    const heat = highTemp >= 76 ? heatCategoryFor(highTemp, rh) : null;
+
+    summaries.push({ day: dayLabel, high: highTemp, low: displayLow, uniform, cold, heat });
+  }
+  return summaries;
+}
+
+function weatherFlagHTML(s) {
+  if (s.heat) {
+    const label = s.heat.flag === "none" ? `Cat ${s.heat.category}` : `Cat ${s.heat.category} ${s.heat.flag}`;
+    const cls = { none: "ok", green: "ok", yellow: "yellow", red: "red", black: "black" }[s.heat.flag] || "ok";
+    return `<span class="wx-flag wx-flag-${cls}">${label}</span>`;
+  }
+  if (s.cold.level !== "Low") {
+    const cls = s.cold.level === "High" ? "cold-high" : "cold-mod";
+    return `<span class="wx-flag wx-flag-${cls}">${s.cold.level} cold risk</span>`;
+  }
+  return `<span class="wx-flag wx-flag-ok">Low risk</span>`;
+}
+
+function weatherCardHTML(s) {
+  const tempRange = s.low !== null ? `${s.low}&ndash;${s.high}&deg;F` : `${s.high}&deg;F`;
+  return `
+    <div class="wx-card">
+      <div class="wx-day">${s.day}</div>
+      <div class="wx-temp">${tempRange}</div>
+      <div class="wx-uniform">${s.uniform}</div>
+      ${weatherFlagHTML(s)}
+    </div>`;
+}
+
+async function handleWeatherTool(e) {
+  e.preventDefault();
+  const rawInput = document.getElementById('weather-search-zip').value;
+  const resultsEl = document.getElementById('weather-results');
+
+  if (!rawInput.trim()) {
+    resultsEl.innerHTML = `<div class="wx-message error">Enter a zip code or city to pull a forecast for.</div>`;
+    return;
+  }
+
+  resultsEl.innerHTML = `<div class="wx-message">&gt; ACQUIRING TARGET COORDINATES...</div>`;
+
+  let geo;
+  try {
+    geo = await geocodeLocationClient(rawInput);
+  } catch (err) {
+    resultsEl.innerHTML = `<div class="wx-message error">Couldn't look that up — check your connection and try again.</div>`;
+    return;
+  }
+  if (!geo) {
+    resultsEl.innerHTML = `<div class="wx-message error">Couldn't find that zip code or city — double check the spelling and try again.</div>`;
+    return;
+  }
+
+  resultsEl.innerHTML = `<div class="wx-message">&gt; PULLING NWS FORECAST FOR ${geo.label.toUpperCase()}...</div>`;
+
+  try {
+    const lat = Math.round(geo.lat * 10000) / 10000;
+    const lon = Math.round(geo.lon * 10000) / 10000;
+    const points = await nwsFetch(`https://api.weather.gov/points/${lat},${lon}`);
+    const { forecast, forecastHourly } = points.properties;
+
+    const [forecastData, hourlyData] = await Promise.all([nwsFetch(forecast), nwsFetch(forecastHourly)]);
+    const summaries = buildDailySummaries(forecastData.properties.periods, hourlyData.properties.periods);
+
+    if (!summaries.length) {
+      resultsEl.innerHTML = `<div class="wx-message error">NWS didn't return a usable forecast for ${geo.label}.</div>`;
+      return;
+    }
+
+    const notable = summaries
+      .filter(s => (s.heat && s.heat.category >= 3) || (!s.heat && s.cold.level !== "Low"))
+      .map(s => s.heat ? `${s.day} trending ${s.heat.flag} — hydrate` : `${s.day}: ${s.cold.note}`);
+
+    resultsEl.innerHTML = `
+      <div class="wx-results-label">7-DAY ADVISORY — ${geo.label.toUpperCase()}</div>
+      ${notable.length ? `<div class="wx-notable">&#9888; ${notable.join(' &middot; ')}</div>` : ''}
+      <div class="wx-grid">${summaries.map(weatherCardHTML).join('')}</div>`;
+  } catch (err) {
+    resultsEl.innerHTML = `<div class="wx-message error">NWS only covers US locations — if ${geo.label} is outside the US (or the feed is down), that's why this failed.</div>`;
+  }
+}
 
 function handleForm(e) {
   e.preventDefault();

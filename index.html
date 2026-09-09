@@ -26,6 +26,7 @@
   <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
   <script src="assets/world-topo.js"></script>
   <script src="assets/recipes-data.js"></script>
+  <script src="assets/restaurants-data.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -575,7 +576,7 @@
        doodle accents. Full-page overlay, same open/close mechanics
        as #project-detail but its own visual identity throughout.
        ═══════════════════════════════════════════════════════════════ */
-    #recipes, #food-hub, #restaurant-finder, #restaurant-submit {
+    #recipes, #food-hub, #restaurant-finder {
       position: fixed; inset: 0; z-index: 150;
       background:
         radial-gradient(rgba(75,107,63,0.07) 1px, transparent 1px) 0 0/22px 22px,
@@ -586,12 +587,10 @@
       transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1);
       font-family: var(--font-body-fun);
     }
-    #recipes.open, #food-hub.open, #restaurant-finder.open, #restaurant-submit.open { opacity: 1; transform: translateX(0); pointer-events: all; }
-    /* #food-hub sits "above" the tools in the nav hierarchy (Kitchen -> tool -> sub-page),
-       so give it a slightly higher z-index; #restaurant-submit sits one level below
-       #restaurant-finder — otherwise identical overlay mechanics throughout. */
+    #recipes.open, #food-hub.open, #restaurant-finder.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+    /* #food-hub sits "above" the tools in the nav hierarchy (Kitchen -> tool),
+       so give it a slightly higher z-index — otherwise identical overlay mechanics. */
     #food-hub { z-index: 151; }
-    #restaurant-submit { z-index: 149; }
 
     .food-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.5rem; }
     .food-tool-card {
@@ -845,23 +844,13 @@
     .recipe-modal-source { font-size: 0.8rem; color: var(--rf-faint); margin-top: 0.5rem; font-weight: 600; }
 
     /* ── NEARBY EATS (restaurant recommendations) ── */
-    .rf-submit-restaurant-btn {
-      display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.75rem;
-      padding: 0.7rem 1.4rem; background: transparent; border: 2px solid var(--rf-basil); color: var(--rf-basil);
-      border-radius: 2rem; font-family: var(--font-body-fun); font-weight: 700; font-size: 0.85rem; cursor: pointer;
-      transition: all var(--transition);
-    }
-    .rf-submit-restaurant-btn:hover { background: var(--rf-basil); color: #fff; }
-
-    .rf-zip-input, .rf-textarea {
+    .rf-zip-input {
       width: 100%; max-width: 320px; padding: 0.75rem 1rem;
       background: var(--rf-surface); border: 2px solid var(--rf-border);
       border-radius: 0.6rem; color: var(--rf-text); font-family: var(--font-body-fun); font-size: 0.95rem;
       transition: border-color var(--transition); outline: none;
     }
-    .rf-zip-input:focus, .rf-textarea:focus { border-color: var(--rf-tomato); }
-    .rf-textarea { max-width: 100%; resize: vertical; min-height: 90px; }
-    .rf-field-hint { font-size: 0.78rem; color: var(--rf-faint); margin-top: 0.5rem; }
+    .rf-zip-input:focus { border-color: var(--rf-tomato); }
 
     .restaurant-results-label { font-family: var(--font-display-fun); font-weight: 600; font-style: italic; font-size: 1.15rem; color: var(--rf-basil-deep); margin: 2rem 0 1.25rem; }
     .restaurant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.25rem; }
@@ -1320,7 +1309,7 @@
     </svg>
     <div class="rf-eyebrow">✎ Whisk around and see what's cooking</div>
     <h1 class="rf-title">The Kitchen</h1>
-    <p class="rf-summary">A little corner of the site for food tools — dig through the family recipe box, or find real restaurant recommendations from real people. More on the way.</p>
+    <p class="rf-summary">A little corner of the site for food tools — dig through the family recipe box, or find a restaurant I actually recommend nearby. More on the way.</p>
   </div>
 
   <div class="rf-body">
@@ -1361,7 +1350,7 @@
           </div>
         </div>
         <h2 class="cookbook-label-title">📍 Nearby Eats</h2>
-        <p class="cookbook-label-sub">Drop a pin on your zip code — see what's been recommended nearby, from real people, not an algorithm.</p>
+        <p class="cookbook-label-sub">Drop a pin on your zip code — see which of my favorite spots are nearby.</p>
       </div>
     </div>
   </div>
@@ -1431,13 +1420,9 @@
   </div>
 
   <div class="rf-hero">
-    <div class="rf-eyebrow">✎ Crowdsourced, not algorithm-sourced</div>
+    <div class="rf-eyebrow">✎ Spots I actually vouch for</div>
     <h1 class="rf-title">Nearby Eats</h1>
-    <p class="rf-summary">Real recommendations from real people. Punch in a zip code and a cuisine — or leave cuisine blank for anything — and see what's been recommended within 15 miles of you.</p>
-    <button type="button" class="rf-submit-restaurant-btn" onclick="openRestaurantSubmit()">
-      <i data-lucide="plus" style="width:16px;height:16px;"></i>
-      Submit a Restaurant
-    </button>
+    <p class="rf-summary">A hand-picked list, not a crowdsourced one. Punch in a zip code and a cuisine — or leave cuisine blank for anything — and see which of my recommendations are within 15 miles of you.</p>
   </div>
 
   <div class="rf-body">
@@ -1456,50 +1441,6 @@
     </form>
 
     <div id="restaurant-results"></div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════ SUBMIT A RESTAURANT ═══════════════════════════════════════ -->
-<div id="restaurant-submit">
-  <div class="rf-nav">
-    <button class="rf-back" onclick="closeRestaurantSubmit()">
-      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
-      <span>Back to Nearby Eats</span>
-    </button>
-    <div class="rf-breadcrumb"><span>Kitchen</span><span>/</span><span>Nearby Eats</span><span>/</span><span>Submit</span></div>
-  </div>
-
-  <div class="rf-hero">
-    <div class="rf-eyebrow">✎ Pay it forward</div>
-    <h1 class="rf-title">Submit a Restaurant</h1>
-    <p class="rf-summary">Know a place worth the drive? Add it so it turns up for anyone searching near it.</p>
-  </div>
-
-  <div class="rf-body">
-    <form class="recipe-form" id="restaurant-submit-form" onsubmit="handleRestaurantSubmit(event)">
-      <p style="position:absolute; left:-9999px;"><label>Leave this field blank: <input type="text" id="restaurant-website-trap" tabindex="-1" autocomplete="off"></label></p>
-      <div class="recipe-form-row">
-        <label class="recipe-form-label">🍽️ Restaurant name</label>
-        <input type="text" class="rf-zip-input" id="restaurant-name" maxlength="120" placeholder="e.g. Rosie's Diner" required>
-      </div>
-      <div class="recipe-form-row">
-        <label class="recipe-form-label">📍 Zip code</label>
-        <input type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" class="rf-zip-input" id="restaurant-zip" placeholder="e.g. 10996" required>
-        <div class="rf-field-hint">Where the restaurant is located, not where you live.</div>
-      </div>
-      <div class="recipe-form-row">
-        <label class="recipe-form-label">🌍 Cuisine <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(check at least one)</span></label>
-        <div class="checkbox-pills" id="restaurant-submit-cuisine-pills"></div>
-      </div>
-      <div class="recipe-form-row">
-        <label class="recipe-form-label">📝 What do you recommend there? <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional)</span></label>
-        <textarea class="rf-textarea" id="restaurant-note" maxlength="400" rows="3" placeholder="The chicken parm, and get there early on weekends."></textarea>
-      </div>
-      <div class="recipe-form-actions">
-        <button type="submit" class="rf-submit-btn" id="restaurant-submit-btn">Submit Restaurant</button>
-      </div>
-    </form>
-    <div id="restaurant-submit-message"></div>
   </div>
 </div>
 
@@ -2753,7 +2694,7 @@ function openDetail(id) {
 // All full-page food overlays, kept in a list so opening one can reliably
 // close the rest — only one of these (and #project-detail) is ever open
 // at a time, no matter which nav path got you there.
-const FOOD_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'restaurant-submit'];
+const FOOD_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder'];
 function closeAllFoodOverlays() {
   FOOD_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
 }
@@ -2810,20 +2751,6 @@ function closeRestaurantFinder() {
   document.getElementById('food-hub').classList.add('open');
   window.scrollTo(0, 0);
   closeRecipeModal();
-}
-
-function openRestaurantSubmit() {
-  closeAllFoodOverlays();
-  document.getElementById('restaurant-submit').classList.add('open');
-  document.getElementById('main-site').classList.add('hidden');
-  window.scrollTo(0, 0);
-  lucide.createIcons();
-}
-
-function closeRestaurantSubmit() {
-  document.getElementById('restaurant-submit').classList.remove('open');
-  document.getElementById('restaurant-finder').classList.add('open');
-  window.scrollTo(0, 0);
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -3008,15 +2935,16 @@ document.addEventListener('keydown', (e) => {
 initRecipeFinder();
 
 // ─────────────────────────────────────────────────────────────────
-// NEARBY EATS — crowdsourced restaurant recommendations.
-// Backed by two Netlify Functions (netlify/functions/) that read and
-// write a single shared Netlify Blobs store, so a submission from any
-// visitor is immediately searchable by anyone else. Starts empty —
-// there's nothing to recommend until someone submits the first spot.
+// NEARBY EATS — a hand-curated restaurant list (assets/restaurants-data.js),
+// no backend, no submissions. Each entry carries its own pre-geocoded
+// lat/lon, so a search only needs to geocode the visitor's zip
+// (client-side, via the free Zippopotam.us API) and do distance math
+// against the static list.
 // ─────────────────────────────────────────────────────────────────
+const RESTAURANT_MAX_DISTANCE_MILES = 15;
+
 function initRestaurantTool() {
   buildCheckboxPills('restaurant-cuisine-pills', CUISINE_OPTIONS, 'restaurant-cuisine');
-  buildCheckboxPills('restaurant-submit-cuisine-pills', CUISINE_OPTIONS, 'restaurant-submit-cuisine');
 }
 
 function restaurantCardHTML(r) {
@@ -3027,6 +2955,24 @@ function restaurantCardHTML(r) {
       <div class="restaurant-card-meta">${r.city ? `${r.city}, ${r.state} · ` : ''}${r.distance} mi away · ${cuisineLabels}</div>
       ${r.note ? `<div class="restaurant-card-note">"${r.note}"</div>` : ''}
     </div>`;
+}
+
+async function geocodeZipClient(zip) {
+  const res = await fetch(`https://api.zippopotam.us/us/${encodeURIComponent(zip)}`);
+  if (!res.ok) return null;
+  const data = await res.json();
+  const place = data.places && data.places[0];
+  if (!place) return null;
+  return { lat: parseFloat(place.latitude), lon: parseFloat(place.longitude) };
+}
+
+function haversineMilesClient(lat1, lon1, lat2, lon2) {
+  const toRad = (d) => (d * Math.PI) / 180;
+  const R = 3958.8;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 async function handleRestaurantSearch(e) {
@@ -3042,74 +2988,41 @@ async function handleRestaurantSearch(e) {
 
   resultsEl.innerHTML = `<div class="restaurant-message loading">🔍 Checking what's nearby…</div>`;
 
+  let geo;
   try {
-    const params = new URLSearchParams({ zip, cuisines: cuisines.join(',') });
-    const res = await fetch(`/.netlify/functions/get-recommendations?${params.toString()}`);
-    const data = await res.json();
-
-    if (!res.ok) {
-      resultsEl.innerHTML = `<div class="restaurant-message error">${data.error || 'Something went wrong — try again in a moment.'}</div>`;
-      return;
-    }
-
-    if (!data.results || data.results.length === 0) {
-      const reasonMsg = data.reason === 'no-cuisine-match'
-        ? "We've got recommendations near you, but none for that cuisine yet — try another cuisine, or leave it unchecked for anything nearby."
-        : "Sorry, there are no recommendations near you yet.";
-      resultsEl.innerHTML = `
-        <div class="restaurant-message error">${reasonMsg}</div>
-        <p style="margin-top:1rem; color:var(--rf-muted); font-size:0.9rem;">Know a good spot? <a href="javascript:void(0)" onclick="openRestaurantSubmit()" style="color:var(--rf-tomato); font-weight:700;">Be the first to submit one nearby.</a></p>`;
-      return;
-    }
-
-    resultsEl.innerHTML = `
-      <div class="restaurant-results-label">${data.results.length} spot${data.results.length === 1 ? '' : 's'} near ${zip}</div>
-      <div class="restaurant-grid">${data.results.map(restaurantCardHTML).join('')}</div>`;
+    geo = await geocodeZipClient(zip);
   } catch (err) {
-    resultsEl.innerHTML = `<div class="restaurant-message error">Couldn't reach the recommendation list — check your connection and try again.</div>`;
+    resultsEl.innerHTML = `<div class="restaurant-message error">Couldn't look up that zip code — check your connection and try again.</div>`;
+    return;
   }
-}
-
-async function handleRestaurantSubmit(e) {
-  e.preventDefault();
-  const btn = document.getElementById('restaurant-submit-btn');
-  const messageEl = document.getElementById('restaurant-submit-message');
-  const website = document.getElementById('restaurant-website-trap').value;
-  const name = document.getElementById('restaurant-name').value.trim();
-  const zip = document.getElementById('restaurant-zip').value.trim();
-  const cuisines = Array.from(document.querySelectorAll('#restaurant-submit-cuisine-pills input:checked')).map(el => el.value);
-  const note = document.getElementById('restaurant-note').value.trim();
-
-  if (!name || !/^\d{5}$/.test(zip) || cuisines.length === 0) {
-    messageEl.innerHTML = `<div class="restaurant-message error">Please include a restaurant name, a valid 5-digit zip code, and at least one cuisine.</div>`;
+  if (!geo) {
+    resultsEl.innerHTML = `<div class="restaurant-message error">We couldn't find that zip code — double check it and try again.</div>`;
     return;
   }
 
-  btn.disabled = true;
-  const originalLabel = btn.textContent;
-  btn.textContent = 'Submitting…';
-  messageEl.innerHTML = '';
+  const withDistance = restaurants.map(r => ({ ...r, distance: haversineMilesClient(geo.lat, geo.lon, r.lat, r.lon) }));
+  const nearby = withDistance.filter(r => r.distance <= RESTAURANT_MAX_DISTANCE_MILES);
 
-  try {
-    const res = await fetch('/.netlify/functions/submit-restaurant', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, zip, cuisines, note, website })
-    });
-    const data = await res.json();
-
-    if (!res.ok) {
-      messageEl.innerHTML = `<div class="restaurant-message error">${data.error || 'Something went wrong — try again in a moment.'}</div>`;
-    } else {
-      messageEl.innerHTML = `<div class="restaurant-message success">🎉 Thanks! ${name}${data.city ? ` in ${data.city}, ${data.state}` : ''} is now in the list.</div>`;
-      document.getElementById('restaurant-submit-form').reset();
-    }
-  } catch (err) {
-    messageEl.innerHTML = `<div class="restaurant-message error">Couldn't submit that — check your connection and try again.</div>`;
-  } finally {
-    btn.disabled = false;
-    btn.textContent = originalLabel;
+  if (nearby.length === 0) {
+    resultsEl.innerHTML = `<div class="restaurant-message error">Sorry, there are no recommendations near you yet — the list is still growing.</div>`;
+    return;
   }
+
+  const matches = cuisines.length === 0
+    ? nearby
+    : nearby.filter(r => r.cuisines.some(c => cuisines.includes(c)));
+
+  if (matches.length === 0) {
+    resultsEl.innerHTML = `<div class="restaurant-message error">I've got recommendations near you, but none for that cuisine yet — try another cuisine, or leave it unchecked for anything nearby.</div>`;
+    return;
+  }
+
+  matches.sort((a, b) => a.distance - b.distance);
+  const displayResults = matches.map(r => ({ ...r, distance: Math.round(r.distance * 10) / 10 }));
+
+  resultsEl.innerHTML = `
+    <div class="restaurant-results-label">${displayResults.length} spot${displayResults.length === 1 ? '' : 's'} near ${zip}</div>
+    <div class="restaurant-grid">${displayResults.map(restaurantCardHTML).join('')}</div>`;
 }
 
 initRestaurantTool();

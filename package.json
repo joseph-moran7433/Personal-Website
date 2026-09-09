@@ -1,8 +1,0 @@
-{
-  "name": "personal-website",
-  "private": true,
-  "description": "Joseph Moran's personal website — a static site plus a couple of Netlify Functions backing the Nearby Eats recommendation tool.",
-  "dependencies": {
-    "@netlify/blobs": "^10.7.13"
-  }
-}

@@ -776,17 +776,21 @@
     }
     .rf-scenery.fading { opacity: 0; }
     .rf-scenery-icon {
-      position: absolute; opacity: 0.5;
+      position: absolute; opacity: 0.92;
       animation: rf-scenery-float 8s ease-in-out infinite;
-      filter: drop-shadow(0 6px 14px rgba(47,58,38,0.12));
+      filter: drop-shadow(0 8px 16px rgba(47,58,38,0.18));
     }
     .rf-scenery-icon svg { width: 100%; height: 100%; display: block; }
     @keyframes rf-scenery-float {
       0%, 100% { transform: rotate(var(--rf-icon-rot, 0deg)) translateY(0); }
       50% { transform: rotate(var(--rf-icon-rot, 0deg)) translateY(-14px); }
     }
-    @media (max-width: 900px) {
-      .rf-scenery-icon { opacity: 0.22; }
+    @media (max-width: 1300px) {
+      /* Below this width .rf-body has no real right margin left to sit
+         in (it's a left-aligned column, not centered), so the flanking
+         icons would land on top of the form/results instead of beside
+         them — hide rather than let them collide with real content. */
+      .rf-scenery-icon { display: none; }
     }
     @media (prefers-reduced-motion: reduce) {
       .rf-scenery-icon { animation: none; }
@@ -3021,28 +3025,165 @@ const US_STATE_ABBRS = new Set(['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA
 // trio regardless of theme — only the background "wash" hue changes,
 // so every state still feels like part of the same sketchbook.
 // ─────────────────────────────────────────────────────────────────
-const SCENERY_ICON_PATHS = {
-  skyline: `<path d="M10 90 V55 H24 V90"/><path d="M24 90 V35 H40 V90"/><path d="M40 90 V50 H54 V90"/><path d="M54 90 V25 H72 V90"/><path d="M72 90 V45 H88 V90"/><line x1="8" y1="90" x2="90" y2="90"/>`,
-  statue: `<path d="M50 90 V55"/><path d="M38 90 Q50 50 62 90"/><circle cx="50" cy="42" r="9"/><path d="M50 33 L45 25 M50 33 L50 22 M50 33 L55 25 M50 33 L58 30 M50 33 L42 30"/><path d="M62 55 Q75 45 72 30"/><path d="M72 30 L72 18"/><path d="M68 18 Q72 8 76 18 Q72 22 68 18Z"/>`,
-  palm: `<path d="M50 90 Q46 60 52 40"/><path d="M52 40 Q30 30 20 40"/><path d="M52 40 Q35 22 24 24"/><path d="M52 40 Q55 20 48 12"/><path d="M52 40 Q68 20 80 26"/><path d="M52 40 Q72 32 82 44"/>`,
-  mountain: `<path d="M8 85 L32 40 L48 62 L62 35 L92 85 Z"/><path d="M62 35 L68 48 L58 48 Z" fill="currentColor"/>`,
-  cactus: `<path d="M50 90 V35"/><path d="M50 55 Q32 55 32 40 Q32 30 42 30"/><path d="M50 65 Q70 65 70 48 Q70 38 60 38"/><line x1="46" y1="45" x2="54" y2="45"/><line x1="46" y1="60" x2="54" y2="60"/><line x1="46" y1="75" x2="54" y2="75"/>`,
-  wave: `<path d="M6 40 Q20 30 34 40 T62 40 T90 40"/><path d="M6 60 Q20 50 34 60 T62 60 T90 60"/><path d="M6 80 Q20 70 34 80 T62 80 T90 80"/>`,
-  lighthouse: `<path d="M42 90 L46 30 L54 30 L58 90 Z"/><line x1="40" y1="45" x2="60" y2="45"/><line x1="41" y1="60" x2="59" y2="60"/><line x1="42" y1="75" x2="58" y2="75"/><path d="M44 30 L50 15 L56 30 Z"/><path d="M50 15 L36 8 M50 15 L64 8" opacity="0.7"/>`,
-  lobster: `<ellipse cx="50" cy="55" rx="14" ry="20"/><path d="M40 38 L28 22 M32 30 L20 30"/><path d="M60 38 L72 22 M68 30 L80 30"/><path d="M40 68 L30 78 M45 74 L38 86 M55 74 L62 86 M60 68 L70 78"/>`,
-  peach: `<path d="M50 30 Q28 30 28 55 Q28 78 50 82 Q72 78 72 55 Q72 30 50 30 Z"/><path d="M50 32 V50" opacity="0.6"/><path d="M52 28 Q58 18 68 20" opacity="0.8"/>`,
-  citrus: `<circle cx="50" cy="55" r="24"/><path d="M50 31 Q56 20 66 22"/><path d="M50 31 V79 M28 55 H72 M35 40 L65 70 M65 40 L35 70" opacity="0.5"/>`,
-  cowboyhat: `<path d="M14 62 Q50 78 86 62 Q78 68 50 68 Q22 68 14 62 Z"/><path d="M32 62 Q34 30 50 30 Q66 30 68 62"/><path d="M40 42 Q50 38 60 42" opacity="0.6"/>`,
-  corn: `<path d="M50 90 Q34 70 40 40 Q50 20 60 40 Q66 70 50 90 Z"/><line x1="44" y1="42" x2="56" y2="42"/><line x1="42" y1="54" x2="58" y2="54"/><line x1="42" y1="66" x2="58" y2="66"/><line x1="44" y1="78" x2="56" y2="78"/><path d="M40 42 Q22 34 18 18" opacity="0.7"/><path d="M60 42 Q78 34 82 18" opacity="0.7"/>`,
-  maple: `<path d="M50 20 L56 38 L72 30 L64 46 L82 50 L64 56 L70 74 L54 64 L50 88 L46 64 L30 74 L36 56 L18 50 L36 46 L28 30 L44 38 Z"/>`,
-  guitar: `<circle cx="46" cy="68" r="18"/><circle cx="54" cy="42" r="12"/><line x1="50" y1="30" x2="50" y2="10"/><line x1="44" y1="12" x2="56" y2="12"/><circle cx="46" cy="68" r="6" opacity="0.6"/>`,
-  horseshoe: `<path d="M32 30 Q22 45 22 60 Q22 82 50 82 Q78 82 78 60 Q78 45 68 30"/><circle cx="30" cy="26" r="2.5" fill="currentColor"/><circle cx="70" cy="26" r="2.5" fill="currentColor"/><circle cx="34" cy="80" r="2.5" fill="currentColor"/><circle cx="66" cy="80" r="2.5" fill="currentColor"/>`,
-  dice: `<rect x="20" y="45" width="34" height="34" rx="6" transform="rotate(-8 37 62)"/><rect x="46" y="30" width="34" height="34" rx="6" transform="rotate(10 63 47)"/><circle cx="30" cy="55" r="2" fill="currentColor" transform="rotate(-8 37 62)"/><circle cx="44" cy="69" r="2" fill="currentColor" transform="rotate(-8 37 62)"/><circle cx="56" cy="38" r="2" fill="currentColor" transform="rotate(10 63 47)"/><circle cx="70" cy="38" r="2" fill="currentColor" transform="rotate(10 63 47)"/><circle cx="63" cy="47" r="2" fill="currentColor" transform="rotate(10 63 47)"/>`,
-  pine: `<path d="M50 15 L30 42 H42 L22 66 H40 L18 90 H82 L60 66 H78 L58 42 H70 Z"/><line x1="50" y1="90" x2="50" y2="98" opacity="0.6"/>`,
-  capitol: `<path d="M40 40 Q50 20 60 40"/><line x1="50" y1="14" x2="50" y2="20"/><rect x="36" y="40" width="28" height="6"/><line x1="30" y1="90" x2="70" y2="90"/><line x1="34" y1="50" x2="34" y2="88"/><line x1="42" y1="50" x2="42" y2="88"/><line x1="50" y1="50" x2="50" y2="88"/><line x1="58" y1="50" x2="58" y2="88"/><line x1="66" y1="50" x2="66" y2="88"/>`,
-  alligator: `<path d="M10 65 Q30 55 50 62 Q70 68 90 58"/><path d="M10 65 Q6 60 4 62 M10 65 Q6 70 4 70" opacity="0.7"/><path d="M25 60 L25 52 M35 58 L35 50 M45 60 L45 52" opacity="0.7"/><path d="M85 58 Q92 56 94 50" opacity="0.7"/>`,
-  crab: `<ellipse cx="50" cy="55" rx="24" ry="16"/><path d="M30 48 L14 34 M22 55 L6 55"/><path d="M70 48 L86 34 M78 55 L94 55"/><path d="M36 68 L28 82 M46 70 L42 86 M54 70 L58 86 M64 68 L72 82"/>`,
-  sailboat: `<path d="M20 78 L80 78 L68 90 L32 90 Z"/><line x1="50" y1="78" x2="50" y2="20"/><path d="M50 24 L76 70 L50 70 Z"/><path d="M50 34 L32 66 L50 66 Z" opacity="0.7"/>`
+// ─────────────────────────────────────────────────────────────────
+// FEATURE ICONS — each of these renders as a small self-contained
+// filled illustration (its own 2-3 realistic tones, not a single
+// currentColor outline), so it reads as an actual object rather than
+// a thin scribble at the ~200-260px display size these show up at.
+// ─────────────────────────────────────────────────────────────────
+const ICON_GENERATORS = {
+  skyline: () => `
+    <rect x="8" y="52" width="14" height="38" fill="#2f3a4a"/>
+    <rect x="24" y="34" width="16" height="56" fill="#455166"/>
+    <rect x="42" y="46" width="13" height="44" fill="#2f3a4a"/>
+    <rect x="57" y="20" width="17" height="70" fill="#556274"/>
+    <rect x="76" y="42" width="14" height="48" fill="#2f3a4a"/>
+    <rect x="60" y="10" width="3" height="12" fill="#556274"/>
+    ${[[11,60],[11,72],[11,82],[27,42],[27,54],[27,66],[27,78],[45,54],[45,66],[45,78],[61,30],[61,42],[61,54],[61,66],[61,78],[79,50],[79,62],[79,74]]
+      .map(([x,y]) => `<rect x="${x}" y="${y}" width="4" height="5" fill="#ffe9b0"/>`).join('')}
+  `,
+  statue: () => `
+    <path d="M40 90 L38 62 Q37 50 50 48 Q63 50 62 62 L60 90 Z" fill="#7fa895"/>
+    <path d="M42 90 L41 66 Q45 58 50 58 Q55 58 59 66 L58 90 Z" fill="#699280" opacity="0.6"/>
+    <circle cx="50" cy="38" r="10" fill="#8fb6a2"/>
+    <path d="M50 27 L46 20 L50 24 L54 20 L50 27" fill="#8fb6a2"/>
+    <path d="M43 22 L46 15 M50 21 L50 12 M57 22 L54 15" stroke="#8fb6a2" stroke-width="3" stroke-linecap="round"/>
+    <path d="M61 52 Q74 44 73 30" stroke="#7fa895" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <path d="M40 52 Q30 56 28 66" stroke="#7fa895" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <rect x="26" y="62" width="10" height="14" rx="1" fill="#d8cba3"/>
+    <rect x="70" y="16" width="6" height="16" fill="#8a8a86"/>
+    <path d="M64 8 Q73 2 82 8 Q76 18 73 18 Q70 18 64 8Z" fill="#f2a13a"/>
+  `,
+  palm: () => `
+    <path d="M52 90 Q46 66 51 46 Q53 40 50 34" stroke="#8a5a34" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <g fill="#4b6b3f">
+      <path d="M50 34 Q26 24 14 34 Q30 36 50 40 Z"/>
+      <path d="M50 34 Q34 14 20 14 Q30 26 50 40 Z"/>
+      <path d="M50 34 Q48 10 40 4 Q42 20 50 40 Z"/>
+      <path d="M50 34 Q64 12 78 14 Q66 24 50 40 Z"/>
+      <path d="M50 34 Q78 24 88 36 Q68 34 50 40 Z"/>
+    </g>
+    <circle cx="47" cy="40" r="3" fill="#8a5a34"/><circle cx="53" cy="42" r="3" fill="#8a5a34"/>
+  `,
+  mountain: () => `
+    <polygon points="4,88 30,34 48,60 66,26 96,88" fill="#7c8aa0"/>
+    <polygon points="30,34 40,52 20,52" fill="#eef2f5"/>
+    <polygon points="66,26 76,44 56,44" fill="#eef2f5"/>
+    <polygon points="48,60 66,26 96,88 60,88" fill="#5c6a80"/>
+  `,
+  cactus: () => `
+    <rect x="43" y="24" width="14" height="66" rx="7" fill="#4f8c5b"/>
+    <path d="M28 70 Q28 50 43 48 L43 60 Q34 62 34 70 Z" fill="#4f8c5b"/>
+    <path d="M72 56 Q72 40 57 38 L57 50 Q66 52 66 56 Z" fill="#4f8c5b"/>
+    <rect x="43" y="24" width="14" height="66" rx="7" fill="#356140" opacity="0.35"/>
+    <circle cx="50" cy="22" r="6" fill="#e07fae"/>
+    ${[30,42,54,66,78].map(y => `<line x1="45" y1="${y}" x2="41" y2="${y-2}" stroke="#dff0e2" stroke-width="1.5"/><line x1="55" y1="${y}" x2="59" y2="${y-2}" stroke="#dff0e2" stroke-width="1.5"/>`).join('')}
+  `,
+  wave: () => `
+    <path d="M2 46 Q18 32 34 46 T66 46 T98 46 V98 H2 Z" fill="#bfe3e6"/>
+    <path d="M2 62 Q18 48 34 62 T66 62 T98 62 V98 H2 Z" fill="#7bc0c9"/>
+    <path d="M2 78 Q18 64 34 78 T66 78 T98 78 V98 H2 Z" fill="#3f8f9c"/>
+  `,
+  lighthouse: () => `
+    <path d="M40 92 L44 30 Q50 26 56 30 L60 92 Z" fill="#fff8ea"/>
+    <path d="M42.8 54 L57.2 54 L58 68 L42 68 Z" fill="#d9603f"/>
+    <path d="M44.4 30 L55.6 30 L56.5 42 L43.5 42 Z" fill="#d9603f"/>
+    <rect x="38" y="16" width="24" height="12" rx="1" fill="#3a4658"/>
+    <rect x="41" y="9" width="18" height="8" fill="#2f3a4a"/>
+    <path d="M38 9 L50 -1 L62 9 Z" fill="#8a3b2a"/>
+    <circle cx="50" cy="22" r="3" fill="#ffe9a8"/>
+    <path d="M56 20 L76 12 M56 22 L78 22 M56 24 L76 32" stroke="#ffd98a" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+    <rect x="28" y="92" width="44" height="6" rx="1" fill="#8a8a86"/>
+  `,
+  lobster: () => `
+    <ellipse cx="50" cy="56" rx="13" ry="22" fill="#c0392b"/>
+    <path d="M50 34 Q46 24 50 16 Q54 24 50 34" fill="#c0392b"/>
+    <path d="M38 30 Q26 20 18 22 Q22 30 32 34 Q22 34 16 40 Q26 40 36 36" fill="#c0392b"/>
+    <path d="M62 30 Q74 20 82 22 Q78 30 68 34 Q78 34 84 40 Q74 40 64 36" fill="#c0392b"/>
+    ${[[38,72,30,84],[45,76,40,90],[55,76,60,90],[62,72,70,84]].map(([x1,y1,x2,y2])=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#8e2a1f" stroke-width="4" stroke-linecap="round"/>`).join('')}
+    <ellipse cx="50" cy="56" rx="13" ry="22" fill="none" stroke="#8e2a1f" stroke-width="2" opacity="0.4"/>
+  `,
+  peach: () => `
+    <circle cx="41" cy="55" r="24" fill="#f2a65a"/>
+    <circle cx="60" cy="55" r="24" fill="#e8895c"/>
+    <path d="M50 32 V56" stroke="#c8683e" stroke-width="2" opacity="0.5"/>
+    <path d="M52 30 Q60 18 72 20" stroke="#4b6b3f" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <ellipse cx="63" cy="21" rx="8" ry="4" fill="#5f8a4d" transform="rotate(-20 63 21)"/>
+  `,
+  citrus: () => `
+    <circle cx="50" cy="55" r="26" fill="#f39c3e"/>
+    <circle cx="50" cy="55" r="19" fill="#ffc873"/>
+    ${Array.from({length:8}).map((_,i)=>{const a=i*Math.PI/4; return `<line x1="50" y1="55" x2="${(50+19*Math.cos(a)).toFixed(1)}" y2="${(55+19*Math.sin(a)).toFixed(1)}" stroke="#f39c3e" stroke-width="1.5"/>`;}).join('')}
+    <path d="M50 29 Q56 18 68 20" stroke="#4b6b3f" stroke-width="4" stroke-linecap="round" fill="none"/>
+  `,
+  cowboyhat: () => `
+    <ellipse cx="50" cy="66" rx="42" ry="11" fill="#8a5f34"/>
+    <ellipse cx="50" cy="63" rx="38" ry="9" fill="#b8834a"/>
+    <path d="M28 63 Q30 26 50 24 Q70 26 72 63 Q61 68 50 68 Q39 68 28 63Z" fill="#b8834a"/>
+    <path d="M28 63 Q30 26 50 24 Q34 30 32 63Z" fill="#a5723e" opacity="0.6"/>
+    <rect x="30" y="52" width="40" height="7" rx="2" fill="#5c3d20"/>
+  `,
+  corn: () => `
+    <path d="M50 88 Q32 66 38 36 Q50 14 62 36 Q68 66 50 88 Z" fill="#f2c94c"/>
+    ${[38,48,58,68,78].map((y,i)=>`<g>${[0,1,2,3].map(c=>`<circle cx="${41+((i%2)?3:0)+c*6}" cy="${y}" r="2.6" fill="#e0ac2e"/>`).join('')}</g>`).join('')}
+    <path d="M38 40 Q18 30 14 10 Q26 18 40 34Z" fill="#6b9c4f"/>
+    <path d="M62 40 Q82 30 86 10 Q74 18 60 34Z" fill="#84b869"/>
+  `,
+  maple: () => `
+    <path d="M50 12 L57 34 L76 24 L66 42 L88 48 L66 54 L74 76 L54 62 L50 92 L46 62 L26 76 L34 54 L12 48 L34 42 L24 24 L43 34 Z" fill="#d9603f"/>
+    <path d="M50 12 L57 34 L76 24 L66 42 L88 48 L66 54 L74 76 L54 62 L50 92" fill="none" stroke="#a83f27" stroke-width="1.5" opacity="0.5"/>
+  `,
+  guitar: () => `
+    <path d="M40 42 Q26 46 26 62 Q26 82 46 84 Q66 82 66 62 Q66 50 56 44 Q64 40 64 30 Q64 18 52 16 Q40 18 40 30 Q40 36 46 42Z" fill="#a9723c"/>
+    <ellipse cx="46" cy="66" rx="9" ry="9" fill="#5c3a20"/>
+    <rect x="49" y="8" width="6" height="24" fill="#5c3a20"/>
+    <rect x="45" y="6" width="14" height="7" rx="2" fill="#3d2814"/>
+    <line x1="52" y1="13" x2="52" y2="82" stroke="#e8dcc4" stroke-width="1"/>
+  `,
+  horseshoe: () => `
+    <path d="M30 28 Q18 42 18 60 Q18 86 50 86 Q82 86 82 60 Q82 42 70 28" fill="none" stroke="#9aa3ac" stroke-width="13" stroke-linecap="round"/>
+    <path d="M30 28 Q18 42 18 60 Q18 86 50 86 Q82 86 82 60 Q82 42 70 28" fill="none" stroke="#c7ced4" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+    ${[[28,25],[72,25],[32,84],[68,84]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3" fill="#5c636b"/>`).join('')}
+  `,
+  dice: () => `
+    <g transform="rotate(-8 37 62)"><rect x="20" y="45" width="34" height="34" rx="6" fill="#fff8ea" stroke="#c9bfa0" stroke-width="1.5"/>
+      <circle cx="30" cy="55" r="2.6" fill="#b23b3b"/><circle cx="44" cy="69" r="2.6" fill="#b23b3b"/><circle cx="30" cy="69" r="2.6" fill="#b23b3b"/><circle cx="44" cy="55" r="2.6" fill="#b23b3b"/></g>
+    <g transform="rotate(10 63 47)"><rect x="46" y="30" width="34" height="34" rx="6" fill="#fff8ea" stroke="#c9bfa0" stroke-width="1.5"/>
+      <circle cx="56" cy="38" r="2.6" fill="#2f3a4a"/><circle cx="70" cy="38" r="2.6" fill="#2f3a4a"/><circle cx="63" cy="47" r="2.6" fill="#2f3a4a"/><circle cx="56" cy="56" r="2.6" fill="#2f3a4a"/><circle cx="70" cy="56" r="2.6" fill="#2f3a4a"/></g>
+  `,
+  pine: () => `
+    <rect x="46" y="80" width="8" height="10" fill="#5c4326"/>
+    <polygon points="50,10 26,46 74,46" fill="#5c8a52"/>
+    <polygon points="50,30 20,64 80,64" fill="#43704a"/>
+    <polygon points="50,50 16,88 84,88" fill="#2f5238"/>
+  `,
+  capitol: () => `
+    <path d="M32 40 Q50 12 68 40 Z" fill="#cfc9b8"/>
+    <rect x="47" y="6" width="6" height="10" fill="#e0a530"/>
+    <rect x="34" y="40" width="32" height="8" fill="#e8e3d5"/>
+    <rect x="22" y="86" width="56" height="6" fill="#a39d8a"/>
+    ${[28,38,48,58,68].map(x=>`<rect x="${x}" y="50" width="6" height="36" fill="#e8e3d5"/>`).join('')}
+  `,
+  alligator: () => `
+    <path d="M6 60 Q20 48 40 52 Q34 44 40 38 L48 46 Q60 42 74 50 Q86 46 96 34 Q90 52 74 58 Q60 66 40 62 Q22 68 6 60Z" fill="#5c7a4a"/>
+    <circle cx="44" cy="44" r="2.4" fill="#2f3a28"/>
+    ${[26,34,42].map(x=>`<polygon points="${x},52 ${x+5},44 ${x+10},52" fill="#3d5530"/>`).join('')}
+    <path d="M40 60 L46 56 L52 60 L58 56 L64 60" stroke="#eef0e0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  `,
+  crab: () => `
+    <ellipse cx="50" cy="58" rx="26" ry="17" fill="#d9603f"/>
+    <path d="M28 46 Q12 34 6 38 Q12 48 24 52Q12 52 6 60 Q16 62 28 56" fill="#c0432a"/>
+    <path d="M72 46 Q88 34 94 38 Q88 48 76 52 Q88 52 94 60 Q84 62 72 56" fill="#c0432a"/>
+    ${[[34,72,26,86],[44,74,40,90],[56,74,60,90],[66,72,74,86]].map(([x1,y1,x2,y2])=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#b23b22" stroke-width="4" stroke-linecap="round"/>`).join('')}
+    <circle cx="42" cy="52" r="2.2" fill="#2f1a12"/><circle cx="58" cy="52" r="2.2" fill="#2f1a12"/>
+  `,
+  sailboat: () => `
+    <path d="M14 76 L86 76 L70 92 L30 92 Z" fill="#2f3a4a"/>
+    <rect x="48" y="14" width="4" height="64" fill="#5c3a20"/>
+    <path d="M50 18 L79 70 L50 70 Z" fill="#fff8ea"/>
+    <path d="M50 30 L28 66 L50 66 Z" fill="#e8dcc4"/>
+    <path d="M50 14 L60 20 L50 24 Z" fill="#d9603f"/>
+  `
 };
 
 const SCENERY_WASH = {
@@ -3265,23 +3406,26 @@ function horizonBannerSVG(stateAbbr, washHex) {
   return `<svg viewBox="0 0 1200 240" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">${gen(washHex)}</svg>`;
 }
 
+// Positioned to run down the right side of the search-preferences card
+// (not clustered near the hero) — px offsets calibrated to where that
+// card actually sits (banner + hero put it a bit past the first
+// viewport-height, so these land beside its upper and lower halves).
 const SCENERY_SLOTS = [
-  { top: '6%', left: '2%', size: 190, rot: -7 },
-  { top: '9%', right: '3%', size: 260, rot: 6 }
+  { top: '760px', right: '4%', size: 210, rot: -6 },
+  { top: '1040px', right: '5%', size: 210, rot: 5 }
 ];
-const SCENERY_ICON_COLORS = ['var(--rf-basil)', 'var(--rf-tomato)', 'var(--rf-mustard)'];
 
-function sceneryIconHTML(key, slot, colorVar) {
-  const inner = SCENERY_ICON_PATHS[key];
-  if (!inner) return '';
+function sceneryIconHTML(key, slot) {
+  const gen = ICON_GENERATORS[key];
+  if (!gen) return '';
   const pos = [
     slot.top ? `top:${slot.top}` : '', slot.bottom ? `bottom:${slot.bottom}` : '',
     slot.left ? `left:${slot.left}` : '', slot.right ? `right:${slot.right}` : '',
-    `width:${slot.size}px`, `height:${slot.size}px`, `color:${colorVar}`,
+    `width:${slot.size}px`, `height:${slot.size}px`,
     `--rf-icon-rot:${slot.rot}deg`, `transform:rotate(${slot.rot}deg)`,
     `animation-delay:${Math.abs(slot.rot) * 0.15}s`
   ].filter(Boolean).join(';');
-  return `<div class="rf-scenery-icon" style="${pos}"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">${inner}</svg></div>`;
+  return `<div class="rf-scenery-icon" style="${pos}"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">${gen()}</svg></div>`;
 }
 
 function renderSceneryTheme(stateAbbr) {
@@ -3291,7 +3435,7 @@ function renderSceneryTheme(stateAbbr) {
   const theme = (stateAbbr && STATE_SCENERY[stateAbbr]) || SCENERY_DEFAULT;
   const wash = SCENERY_WASH[theme.wash] || SCENERY_WASH.slate;
   el.style.background = `radial-gradient(ellipse at 12% 8%, ${wash}26, transparent 55%), radial-gradient(ellipse at 88% 88%, ${wash}1c, transparent 60%)`;
-  el.innerHTML = theme.icons.slice(0, 2).map((key, i) => sceneryIconHTML(key, SCENERY_SLOTS[i], SCENERY_ICON_COLORS[i % SCENERY_ICON_COLORS.length])).join('');
+  el.innerHTML = theme.icons.slice(0, 2).map((key, i) => sceneryIconHTML(key, SCENERY_SLOTS[i])).join('');
   banner.innerHTML = horizonBannerSVG(stateAbbr, wash);
 }
 

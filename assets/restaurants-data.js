@@ -2580,5 +2580,59 @@ const restaurants = [
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
     lat: 33.6217, lon: -111.9236, city: "Scottsdale (Scottsdale Quarter)", state: "AZ"
+  },
+  {
+    name: "JZ Steakhouse", zip: "33021", cuisines: ["american"],
+    mealTypes: ["dinner"],
+    hours: "Sun 4pm–12am, Mon–Thu 5pm–12am; closed Fri–Sat",
+    knownFor: "Kosher steakhouse — dry-aged cuts and a full bar",
+    note: "Closed Fri–Sat for Shabbat.",
+    lat: 26.0218, lon: -80.1891, city: "Hollywood", state: "FL"
+  },
+  {
+    name: "Pita Plus", zip: "33312", cuisines: ["greek"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily ~11am–9pm (varies by day)",
+    knownFor: "Glatt kosher Israeli shawarma and Middle Eastern plates",
+    lat: 26.0968, lon: -80.1810, city: "Dania Beach", state: "FL"
+  },
+
+  // ── Cooper's Old Time Pit Bar-B-Que: all 5 Texas locations. No
+  // location in Houston itself — the closest one (Katy) permanently
+  // closed in Nov 2022. ──
+  {
+    name: "Cooper's Old Time Pit Bar-B-Que", zip: "78643", cuisines: ["bbq"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Sun–Thu 11am–8pm, Fri–Sat 11am–9pm",
+    knownFor: "The original location — open-pit, order-by-pointing Texas BBQ since 1953",
+    lat: 30.7151, lon: -98.6109, city: "Llano", state: "TX"
+  },
+  {
+    name: "Cooper's Old Time Pit Bar-B-Que", zip: "78130", cuisines: ["bbq"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Sun–Thu 11am–8pm, Fri–Sat 11am–9pm",
+    knownFor: "Open-pit Texas BBQ on the Guadalupe River",
+    lat: 29.7229, lon: -98.0742, city: "New Braunfels", state: "TX"
+  },
+  {
+    name: "Cooper's Old Time Pit Bar-B-Que", zip: "77845", cuisines: ["bbq"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 11am–9pm",
+    knownFor: "Open-pit Texas BBQ near Texas A&M",
+    lat: 30.5118, lon: -96.3171, city: "College Station", state: "TX"
+  },
+  {
+    name: "Cooper's Old Time Pit Bar-B-Que", zip: "76164", cuisines: ["bbq"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Sun–Thu 11am–8pm, Fri–Sat 11am–9pm",
+    knownFor: "Open-pit Texas BBQ in the Fort Worth Stockyards",
+    lat: 32.7811, lon: -97.3546, city: "Fort Worth", state: "TX"
+  },
+  {
+    name: "Cooper's Old Time Pit Bar-B-Que", zip: "78701", cuisines: ["bbq"],
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 11am–10pm",
+    knownFor: "Open-pit Texas BBQ in downtown Austin",
+    lat: 30.2713, lon: -97.7426, city: "Austin", state: "TX"
   }
 ];

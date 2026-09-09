@@ -776,22 +776,76 @@
     .wx-results-label { font-family: var(--font-display-tac); font-weight: 700; letter-spacing: 0.03em; color: var(--tac-green); font-size: 1.1rem; margin-bottom: 1.25rem; }
     .wx-notable { font-size: 0.85rem; color: var(--tac-amber); margin-bottom: 1.25rem; padding: 0.75rem 1rem; border: 1px solid rgba(255,184,77,0.3); border-radius: 0.4rem; background: rgba(255,184,77,0.06); }
     .wx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1rem; }
+
+    /* Each card carries a --wx-accent custom property set inline per
+       severity (safe/yellow/red/black for heat, blue tones for cold),
+       so the single most important fact — how bad is today — reads
+       instantly from color before anyone reads a word. Cards are
+       buttons: click any one for the full breakdown in a modal. */
     .wx-card {
-      background: var(--tac-card); border: 1px solid var(--tac-border); border-radius: 0.5rem;
-      padding: 1.25rem; position: relative; overflow: hidden;
+      background: var(--tac-card); border: 1px solid var(--tac-border);
+      border-top: 3px solid var(--wx-accent, var(--tac-green));
+      border-radius: 0.5rem; padding: 1.1rem; position: relative; overflow: hidden;
+      cursor: pointer; text-align: left; font-family: inherit; width: 100%;
+      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+    }
+    .wx-card:hover, .wx-card:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35), 0 0 0 1px var(--wx-accent, var(--tac-green));
+      outline: none;
     }
     .wx-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(57,255,143,0.06), transparent 40%); pointer-events: none; }
-    .wx-day { font-family: var(--font-display-tac); font-weight: 700; font-size: 1.05rem; color: var(--tac-text); letter-spacing: 0.04em; margin-bottom: 0.5rem; }
-    .wx-temp { font-family: var(--font-body-tac); font-size: 1.3rem; color: var(--tac-green); font-weight: 700; margin-bottom: 0.65rem; }
-    .wx-uniform { font-size: 0.82rem; color: var(--tac-muted); margin-bottom: 0.9rem; line-height: 1.5; }
-    .wx-flag { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.3rem 0.6rem; border-radius: 999px; }
+    .wx-card.severe { animation: wx-card-pulse 2.2s ease-in-out infinite; }
+    @keyframes wx-card-pulse {
+      0%, 100% { box-shadow: 0 0 0 1px var(--wx-accent), 0 0 14px rgba(255,45,45,0.25); }
+      50% { box-shadow: 0 0 0 1px var(--wx-accent), 0 0 22px rgba(255,45,45,0.55); }
+    }
+    @media (prefers-reduced-motion: reduce) { .wx-card.severe { animation: none; } }
+
+    .wx-card-top { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .wx-day { font-family: var(--font-display-tac); font-weight: 700; font-size: 1.05rem; color: var(--tac-text); letter-spacing: 0.04em; }
+    .wx-temp { font-family: var(--font-body-tac); font-size: 1.3rem; color: var(--tac-green); font-weight: 700; margin-bottom: 0.5rem; }
+    .wx-uniform { font-size: 0.82rem; color: var(--tac-muted); margin-bottom: 0.85rem; line-height: 1.5; }
+    .wx-card-hint { font-size: 0.7rem; color: var(--tac-faint); letter-spacing: 0.04em; text-transform: uppercase; }
+
+    .wx-flag { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.3rem 0.6rem; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
+    .wx-card-top { flex-wrap: wrap; }
     .wx-flag::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 6px currentColor; }
     .wx-flag-ok { color: var(--tac-green); background: rgba(57,255,143,0.1); }
     .wx-flag-yellow { color: #f2d24a; background: rgba(242,210,74,0.1); }
-    .wx-flag-red { color: var(--tac-red); background: rgba(255,92,92,0.1); }
-    .wx-flag-black { color: #cfd6d2; background: rgba(207,214,210,0.12); }
-    .wx-flag-cold-mod { color: var(--tac-amber); background: rgba(255,184,77,0.1); }
-    .wx-flag-cold-high { color: var(--tac-red); background: rgba(255,92,92,0.1); }
+    .wx-flag-red { color: var(--tac-red); background: rgba(255,92,92,0.15); }
+    /* Cat 5/Black is the single most dangerous reading on the whole
+       chart — it needs to look like the worst one, not the palest. */
+    .wx-flag-black { color: #fff; background: #3a0000; border: 1px solid #ff2d2d; box-shadow: 0 0 10px rgba(255,45,45,0.5); }
+    .wx-flag-black::before { background: #ff2d2d; box-shadow: 0 0 8px #ff2d2d; }
+    .wx-flag-cold-mod { color: #7ec8ff; background: rgba(126,200,255,0.12); }
+    .wx-flag-cold-high { color: #fff; background: #001a3a; border: 1px solid #4fb8ff; box-shadow: 0 0 10px rgba(79,184,255,0.5); }
+    .wx-flag-cold-high::before { background: #4fb8ff; box-shadow: 0 0 8px #4fb8ff; }
+
+    /* Day detail modal — dark tactical twin of #recipe-modal */
+    #wx-day-modal { position: fixed; inset: 0; z-index: 200; display: none; align-items: flex-start; justify-content: center; padding: 4rem 1.5rem; overflow-y: auto; font-family: var(--font-body-tac); }
+    #wx-day-modal.open { display: flex; }
+    .wx-modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); }
+    .wx-modal-dialog {
+      position: relative; background: var(--tac-card); border: 1px solid var(--tac-border);
+      border-top: 4px solid var(--wx-accent, var(--tac-green));
+      border-radius: 0.6rem; max-width: 560px; width: 100%; padding: 2.25rem 2.25rem 2.5rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .wx-modal-close { position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: none; cursor: pointer; color: var(--tac-faint); transition: color var(--transition); }
+    .wx-modal-close:hover { color: var(--tac-green); }
+    .wx-modal-day { font-family: var(--font-display-tac); font-weight: 700; font-size: 1.5rem; color: var(--tac-text); margin: 0.25rem 2.5rem 0.5rem 0; }
+    .wx-modal-temp { font-family: var(--font-body-tac); font-size: 1.6rem; color: var(--tac-green); font-weight: 700; margin-bottom: 0.75rem; }
+    .wx-modal-forecast { font-size: 0.92rem; color: var(--tac-muted); line-height: 1.6; margin-bottom: 0.5rem; }
+    .wx-modal-wind { font-size: 0.82rem; color: var(--tac-faint); margin-bottom: 1.5rem; }
+    .wx-modal-section { border-top: 1px dashed var(--tac-border); padding-top: 1.1rem; margin-top: 1.1rem; }
+    .wx-modal-section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tac-green); margin-bottom: 0.5rem; }
+    .wx-modal-section-body { font-size: 0.88rem; color: var(--tac-text); line-height: 1.65; }
+    .wx-modal-workrest { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-top: 0.75rem; }
+    .wx-modal-workrest-item { background: var(--tac-bg); border: 1px solid var(--tac-border); border-radius: 0.4rem; padding: 0.6rem; text-align: center; }
+    .wx-modal-workrest-label { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--tac-faint); margin-bottom: 0.3rem; }
+    .wx-modal-workrest-value { font-size: 0.82rem; font-weight: 700; color: var(--tac-text); }
 
     .food-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.5rem; }
     .food-tool-card {
@@ -1878,6 +1932,17 @@
     </form>
 
     <div id="weather-results"></div>
+  </div>
+</div>
+
+<!-- Day detail modal for WX / Uniform Advisory -->
+<div id="wx-day-modal">
+  <div class="wx-modal-backdrop" onclick="closeWxDayModal()"></div>
+  <div class="wx-modal-dialog" id="wx-modal-dialog">
+    <button class="wx-modal-close" onclick="closeWxDayModal()" aria-label="Close">
+      <i data-lucide="x" style="width:22px;height:22px;"></i>
+    </button>
+    <div id="wx-modal-content"></div>
   </div>
 </div>
 
@@ -3308,6 +3373,7 @@ function openWeatherTool() {
 function closeWeatherTool() {
   document.getElementById('weather-tool').classList.remove('open');
   document.getElementById('tactical-hub').classList.add('open');
+  closeWxDayModal();
   window.scrollTo(0, 0);
 }
 
@@ -4109,11 +4175,11 @@ initRestaurantTool();
 const NWS_HEADERS = { "Accept": "application/geo+json" };
 
 const HEAT_CATEGORY_TABLE = [
-  { low: 78.0, high: 81.9, category: 1, flag: "none",   hard: "40/20 min" },
-  { low: 82.0, high: 84.9, category: 2, flag: "green",  hard: "30/30 min" },
-  { low: 85.0, high: 87.9, category: 3, flag: "yellow", hard: "30/30 min" },
-  { low: 88.0, high: 89.9, category: 4, flag: "red",    hard: "20/40 min" },
-  { low: 90.0, high: 999.0, category: 5, flag: "black", hard: "10/50 min" }
+  { low: 78.0, high: 81.9, category: 1, flag: "none",   easy: "No Limit",  moderate: "No Limit",  hard: "40/20 min" },
+  { low: 82.0, high: 84.9, category: 2, flag: "green",  easy: "No Limit",  moderate: "50/10 min", hard: "30/30 min" },
+  { low: 85.0, high: 87.9, category: 3, flag: "yellow", easy: "No Limit",  moderate: "40/20 min", hard: "30/30 min" },
+  { low: 88.0, high: 89.9, category: 4, flag: "red",    easy: "No Limit",  moderate: "30/30 min", hard: "20/40 min" },
+  { low: 90.0, high: 999.0, category: 5, flag: "black", easy: "50/10 min", moderate: "20/40 min", hard: "10/50 min" }
 ];
 
 function estimateWbgtF(tempF, relativeHumidityPct) {
@@ -4126,27 +4192,29 @@ function estimateWbgtF(tempF, relativeHumidityPct) {
 
 function heatCategoryFor(tempF, relativeHumidityPct) {
   const wbgtF = estimateWbgtF(tempF, relativeHumidityPct);
-  const row = HEAT_CATEGORY_TABLE.find(r => wbgtF >= r.low && wbgtF <= r.high);
-  if (row) return { wbgtF: Math.round(wbgtF * 10) / 10, category: row.category, flag: row.flag, hard: row.hard };
-  if (wbgtF > 90) {
-    const top = HEAT_CATEGORY_TABLE[HEAT_CATEGORY_TABLE.length - 1];
-    return { wbgtF: Math.round(wbgtF * 10) / 10, category: top.category, flag: top.flag, hard: top.hard };
-  }
-  return null;
+  const row = HEAT_CATEGORY_TABLE.find(r => wbgtF >= r.low && wbgtF <= r.high)
+    || (wbgtF > 90 ? HEAT_CATEGORY_TABLE[HEAT_CATEGORY_TABLE.length - 1] : null);
+  if (!row) return null;
+  return { wbgtF: Math.round(wbgtF * 10) / 10, category: row.category, flag: row.flag, easy: row.easy, moderate: row.moderate, hard: row.hard };
 }
 
 const UNIFORM_BANDS = [
-  { low: 76, high: 999, short: "shorts+tee" },
-  { low: 60, high: 75, short: "std IPFU" },
-  { low: 40, high: 59, short: "IPFU+jacket" },
-  { low: 25, high: 39, short: "IPFU+fleece/gloves" },
-  { low: 0, high: 24, short: "+balaclava/ECWCS" },
-  { low: -999, high: -1, short: "full ECWCS/arctic" }
+  { low: 76, high: 999, short: "shorts+tee", full: "shorts + t-shirt" },
+  { low: 60, high: 75, short: "std IPFU", full: "standard IPFU (shorts + t-shirt, jacket optional)" },
+  { low: 40, high: 59, short: "IPFU+jacket", full: "IPFU pants + jacket" },
+  { low: 25, high: 39, short: "IPFU+fleece/gloves", full: "IPFU + fleece cap + gloves" },
+  { low: 0, high: 24, short: "+balaclava/ECWCS", full: "IPFU + fleece cap + gloves + balaclava, ECWCS layer" },
+  { low: -999, high: -1, short: "full ECWCS/arctic", full: "full ECWCS + arctic mittens + balaclava" }
 ];
 
 function uniformForTemp(tempF) {
   const row = UNIFORM_BANDS.find(r => tempF >= r.low && tempF <= r.high);
   return row ? row.short : "std IPFU";
+}
+
+function uniformFullForTemp(tempF) {
+  const row = UNIFORM_BANDS.find(r => tempF >= r.low && tempF <= r.high);
+  return row ? row.full : "standard IPFU";
 }
 
 function coldRiskFor(tempF) {
@@ -4198,42 +4266,129 @@ function buildDailySummaries(periods, hourlyPeriods, maxDays = 7) {
     const morningTemp = morningLow !== null ? morningLow : highTemp;
 
     const uniform = uniformForTemp(morningTemp);
+    const uniformFull = uniformFullForTemp(morningTemp);
     const cold = coldRiskFor(morningTemp);
     const heat = highTemp >= 76 ? heatCategoryFor(highTemp, rh) : null;
 
-    summaries.push({ day: dayLabel, high: highTemp, low: displayLow, uniform, cold, heat });
+    summaries.push({
+      day: dayLabel,
+      fullName: period.name,
+      date: period.startTime,
+      high: highTemp,
+      low: displayLow,
+      uniform, uniformFull, cold, heat,
+      rh: Math.round(rh),
+      shortForecast: period.shortForecast || "",
+      windSpeed: period.windSpeed || "",
+      windDirection: period.windDirection || ""
+    });
   }
   return summaries;
 }
 
-function weatherFlagHTML(s) {
+// One severity read per day drives three things at once: the card's
+// accent color/glow, the flag pill's label+class, and the modal's
+// header color — so "how bad is today" is answered by color alone
+// before anyone reads a word, same idea as a real threat-level scope.
+function wxSeverity(s) {
   if (s.heat) {
-    const label = s.heat.flag === "none" ? `Cat ${s.heat.category}` : `Cat ${s.heat.category} ${s.heat.flag}`;
     const cls = { none: "ok", green: "ok", yellow: "yellow", red: "red", black: "black" }[s.heat.flag] || "ok";
-    return `<span class="wx-flag wx-flag-${cls}">${label}</span>`;
+    const label = s.heat.flag === "none" ? `Cat ${s.heat.category}` : `Cat ${s.heat.category} ${s.heat.flag}`;
+    const accent = { ok: "var(--tac-green)", yellow: "#f2d24a", red: "var(--tac-red)", black: "#ff2d2d" }[cls];
+    return { cls, label, accent, severe: cls === "black" };
   }
   if (s.cold.level !== "Low") {
     const cls = s.cold.level === "High" ? "cold-high" : "cold-mod";
-    return `<span class="wx-flag wx-flag-${cls}">${s.cold.level} cold risk</span>`;
+    return { cls, label: `${s.cold.level} Cold`, accent: cls === "cold-high" ? "#4fb8ff" : "#7ec8ff", severe: cls === "cold-high" };
   }
-  return `<span class="wx-flag wx-flag-ok">Low risk</span>`;
+  return { cls: "ok", label: "Low Risk", accent: "var(--tac-green)", severe: false };
 }
 
-function weatherCardHTML(s) {
+function weatherFlagHTML(sev) {
+  return `<span class="wx-flag wx-flag-${sev.cls}">${sev.label}</span>`;
+}
+
+function weatherCardHTML(s, idx) {
+  const sev = wxSeverity(s);
   const tempRange = s.low !== null ? `${s.low}&ndash;${s.high}&deg;F` : `${s.high}&deg;F`;
   return `
-    <div class="wx-card">
-      <div class="wx-day">${s.day}</div>
+    <button type="button" class="wx-card${sev.severe ? " severe" : ""}" style="--wx-accent:${sev.accent}" onclick="openWxDayModal(${idx})">
+      <div class="wx-card-top">
+        <div class="wx-day">${s.day}</div>
+        ${weatherFlagHTML(sev)}
+      </div>
       <div class="wx-temp">${tempRange}</div>
       <div class="wx-uniform">${s.uniform}</div>
-      ${weatherFlagHTML(s)}
-    </div>`;
+      <div class="wx-card-hint">Tap for details &rarr;</div>
+    </button>`;
+}
+
+function formatWxDate(iso) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+}
+
+let currentWeatherSummaries = [];
+
+function openWxDayModal(idx) {
+  const s = currentWeatherSummaries[idx];
+  if (!s) return;
+  const sev = wxSeverity(s);
+  const tempRange = s.low !== null ? `${s.low}&ndash;${s.high}&deg;F` : `${s.high}&deg;F`;
+  document.getElementById('wx-modal-dialog').style.setProperty('--wx-accent', sev.accent);
+
+  let riskHTML;
+  if (s.heat) {
+    riskHTML = `
+      <div class="wx-modal-section">
+        <div class="wx-modal-section-label">Heat Category &mdash; ${weatherFlagHTML(sev)}</div>
+        <div class="wx-modal-section-body">Approx. WBGT ${s.heat.wbgtF}&deg;F, from a ${s.high}&deg;F high at roughly ${s.rh}% humidity.</div>
+        <div class="wx-modal-workrest">
+          <div class="wx-modal-workrest-item"><div class="wx-modal-workrest-label">Easy Work</div><div class="wx-modal-workrest-value">${s.heat.easy}</div></div>
+          <div class="wx-modal-workrest-item"><div class="wx-modal-workrest-label">Moderate</div><div class="wx-modal-workrest-value">${s.heat.moderate}</div></div>
+          <div class="wx-modal-workrest-item"><div class="wx-modal-workrest-label">Hard Work</div><div class="wx-modal-workrest-value">${s.heat.hard}</div></div>
+        </div>
+      </div>`;
+  } else if (s.cold.level !== "Low") {
+    riskHTML = `
+      <div class="wx-modal-section">
+        <div class="wx-modal-section-label">Cold Injury Risk &mdash; ${weatherFlagHTML(sev)}</div>
+        <div class="wx-modal-section-body">${s.cold.note}, based on a projected morning low of ${s.low !== null ? s.low : s.high}&deg;F.</div>
+      </div>`;
+  } else {
+    riskHTML = `
+      <div class="wx-modal-section">
+        <div class="wx-modal-section-label">Risk &mdash; ${weatherFlagHTML(sev)}</div>
+        <div class="wx-modal-section-body">Neither the heat category nor cold-injury thresholds are a factor on this day.</div>
+      </div>`;
+  }
+
+  const prefix = ["Today", "Tonight", "Tomorrow"].includes(s.fullName) ? `${s.fullName} &mdash; ` : "";
+  document.getElementById('wx-modal-content').innerHTML = `
+    <div class="wx-modal-day">${prefix}${formatWxDate(s.date)}</div>
+    <div class="wx-modal-temp">${tempRange}</div>
+    ${s.shortForecast ? `<div class="wx-modal-forecast">${s.shortForecast}</div>` : ""}
+    ${s.windSpeed ? `<div class="wx-modal-wind">&#128168; Wind ${s.windSpeed}${s.windDirection ? " " + s.windDirection : ""}</div>` : ""}
+    <div class="wx-modal-section">
+      <div class="wx-modal-section-label">Uniform</div>
+      <div class="wx-modal-section-body">${s.uniformFull}</div>
+    </div>
+    ${riskHTML}`;
+
+  document.getElementById('wx-day-modal').classList.add('open');
+  lucide.createIcons();
+}
+
+function closeWxDayModal() {
+  document.getElementById('wx-day-modal').classList.remove('open');
 }
 
 async function handleWeatherTool(e) {
   e.preventDefault();
   const rawInput = document.getElementById('weather-search-zip').value;
   const resultsEl = document.getElementById('weather-results');
+  closeWxDayModal();
 
   if (!rawInput.trim()) {
     resultsEl.innerHTML = `<div class="wx-message error">Enter a zip code or city to pull a forecast for.</div>`;
@@ -4270,14 +4425,25 @@ async function handleWeatherTool(e) {
       return;
     }
 
+    currentWeatherSummaries = summaries;
+
     const notable = summaries
       .filter(s => (s.heat && s.heat.category >= 3) || (!s.heat && s.cold.level !== "Low"))
       .map(s => s.heat ? `${s.day} trending ${s.heat.flag} — hydrate` : `${s.day}: ${s.cold.note}`);
 
+    // A handful of flagged days is worth spelling out; when most of the
+    // week is flagged, a full list is just noise — condense to a count.
+    let notableHTML = "";
+    if (notable.length > 3) {
+      notableHTML = `<div class="wx-notable">&#9888; ${notable.length} of ${summaries.length} days trending high heat/cold risk this week — check each card's flag before you plan PT.</div>`;
+    } else if (notable.length > 0) {
+      notableHTML = `<div class="wx-notable">&#9888; ${notable.join(' &middot; ')}</div>`;
+    }
+
     resultsEl.innerHTML = `
       <div class="wx-results-label">7-DAY ADVISORY — ${geo.label.toUpperCase()}</div>
-      ${notable.length ? `<div class="wx-notable">&#9888; ${notable.join(' &middot; ')}</div>` : ''}
-      <div class="wx-grid">${summaries.map(weatherCardHTML).join('')}</div>`;
+      ${notableHTML}
+      <div class="wx-grid">${summaries.map((s, i) => weatherCardHTML(s, i)).join('')}</div>`;
   } catch (err) {
     resultsEl.innerHTML = `<div class="wx-message error">NWS only covers US locations — if ${geo.label} is outside the US (or the feed is down), that's why this failed.</div>`;
   }

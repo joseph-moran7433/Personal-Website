@@ -744,7 +744,39 @@
     }
     .rf-summary { font-size: 1.05rem; color: var(--rf-muted); max-width: 560px; line-height: 1.75; font-weight: 500; }
 
-    .rf-body { max-width: 1100px; padding: 0 3rem 6rem; }
+    .rf-body { max-width: 1100px; padding: 0 3rem 6rem; position: relative; }
+
+    /* Nearby Eats' location-themed backdrop — a handful of doodle icons
+       + a soft color wash that swap in based on the state resolved from
+       the visitor's search (NYC gets skyscrapers + the Statue of
+       Liberty, Texas gets a cowboy hat + cactus, etc). Fixed relative to
+       the overlay itself (its ancestor's `transform` makes it the
+       containing block — see #restaurant-finder above) so it stays put
+       as a backdrop while results scroll over it, and sits behind
+       .rf-nav/.rf-hero/.rf-body via plain DOM order + their own
+       positioning, never behind the dot-grid #restaurant-finder
+       background itself which needs no z-index games since scenery
+       paints on top of that flat color. */
+    .rf-scenery {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      overflow: hidden; transition: opacity 0.32s ease;
+    }
+    .rf-scenery.fading { opacity: 0; }
+    .rf-scenery-icon {
+      position: absolute; opacity: 0.16;
+      animation: rf-scenery-float 7s ease-in-out infinite;
+    }
+    .rf-scenery-icon svg { width: 100%; height: 100%; display: block; }
+    @keyframes rf-scenery-float {
+      0%, 100% { transform: rotate(var(--rf-icon-rot, 0deg)) translateY(0); }
+      50% { transform: rotate(var(--rf-icon-rot, 0deg)) translateY(-10px); }
+    }
+    @media (max-width: 900px) {
+      .rf-scenery-icon { opacity: 0.09; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rf-scenery-icon { animation: none; }
+    }
 
     .recipe-form {
       background: var(--rf-card);
@@ -859,7 +891,9 @@
     .restaurant-card:nth-child(odd) { transform: rotate(-0.5deg); }
     .restaurant-card:nth-child(even) { transform: rotate(0.4deg); }
     .restaurant-card-name { font-family: var(--font-display-fun); font-weight: 700; font-size: 1.2rem; color: var(--rf-basil-deep); margin-bottom: 0.35rem; }
-    .restaurant-card-meta { font-size: 0.78rem; color: var(--rf-faint); font-weight: 700; margin-bottom: 0.85rem; }
+    .restaurant-card-meta { font-size: 0.78rem; color: var(--rf-faint); font-weight: 700; margin-bottom: 0.6rem; }
+    .restaurant-card-known-for { font-size: 0.88rem; color: var(--rf-basil-deep); font-weight: 600; margin-bottom: 0.5rem; }
+    .restaurant-card-hours { font-size: 0.78rem; color: var(--rf-muted); margin-bottom: 0.65rem; }
     .restaurant-card-note { font-size: 0.88rem; color: var(--rf-muted); line-height: 1.65; }
 
     .restaurant-message { margin-top: 1.5rem; padding: 1.1rem 1.4rem; border-radius: 0.7rem; font-weight: 600; font-size: 0.92rem; line-height: 1.6; }
@@ -1412,6 +1446,7 @@
 
 <!-- ═══════════════════════════════════════ NEARBY EATS (restaurant recommendations) ═══════════════════════════════════════ -->
 <div id="restaurant-finder">
+  <div class="rf-scenery" id="rf-scenery" aria-hidden="true"></div>
   <div class="rf-nav">
     <button class="rf-back" onclick="closeRestaurantFinder()">
       <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
@@ -1432,6 +1467,10 @@
         <label class="recipe-form-label">📍 Your zip code or city</label>
         <input type="text" class="rf-zip-input" id="restaurant-search-zip" placeholder="e.g. 10996 or Greenwich, CT" required>
         <div class="rf-field-hint">Close enough spellings are fine — I'll show what I searched for.</div>
+      </div>
+      <div class="recipe-form-row">
+        <label class="recipe-form-label">⏰ Meal <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional — leave every box unchecked for anything)</span></label>
+        <div class="checkbox-pills" id="restaurant-meal-pills"></div>
       </div>
       <div class="recipe-form-row">
         <label class="recipe-form-label">🌍 Cuisine <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional — leave every box unchecked for anything)</span></label>
@@ -2744,6 +2783,7 @@ function openRestaurantFinder() {
   closeAllFoodOverlays();
   document.getElementById('restaurant-finder').classList.add('open');
   document.getElementById('main-site').classList.add('hidden');
+  resetScenery();
   window.scrollTo(0, 0);
   lucide.createIcons();
 }
@@ -2751,6 +2791,7 @@ function openRestaurantFinder() {
 function closeRestaurantFinder() {
   document.getElementById('restaurant-finder').classList.remove('open');
   document.getElementById('food-hub').classList.add('open');
+  resetScenery();
   window.scrollTo(0, 0);
   closeRecipeModal();
 }
@@ -2953,7 +2994,164 @@ initRecipeFinder();
 const RESTAURANT_MAX_DISTANCE_MILES = 15;
 const US_STATE_ABBRS = new Set(['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC']);
 
+// ─────────────────────────────────────────────────────────────────
+// NEARBY EATS SCENERY — a handful of hand-drawn doodle icons (same
+// loose line-art style as the rest of Recipe Finder/Nearby Eats) plus
+// a soft color wash, swapped in based on the state Nominatim resolves
+// the visitor's search to. Purely decorative and low-opacity so it
+// never competes with the actual results; resets to a plain backdrop
+// whenever the tool is (re)opened or closed back to the Kitchen hub.
+// Icon colors always cycle through the site's own basil/tomato/mustard
+// trio regardless of theme — only the background "wash" hue changes,
+// so every state still feels like part of the same sketchbook.
+// ─────────────────────────────────────────────────────────────────
+const SCENERY_ICON_PATHS = {
+  skyline: `<path d="M10 90 V55 H24 V90"/><path d="M24 90 V35 H40 V90"/><path d="M40 90 V50 H54 V90"/><path d="M54 90 V25 H72 V90"/><path d="M72 90 V45 H88 V90"/><line x1="8" y1="90" x2="90" y2="90"/>`,
+  statue: `<path d="M50 90 V55"/><path d="M38 90 Q50 50 62 90"/><circle cx="50" cy="42" r="9"/><path d="M50 33 L45 25 M50 33 L50 22 M50 33 L55 25 M50 33 L58 30 M50 33 L42 30"/><path d="M62 55 Q75 45 72 30"/><path d="M72 30 L72 18"/><path d="M68 18 Q72 8 76 18 Q72 22 68 18Z"/>`,
+  palm: `<path d="M50 90 Q46 60 52 40"/><path d="M52 40 Q30 30 20 40"/><path d="M52 40 Q35 22 24 24"/><path d="M52 40 Q55 20 48 12"/><path d="M52 40 Q68 20 80 26"/><path d="M52 40 Q72 32 82 44"/>`,
+  mountain: `<path d="M8 85 L32 40 L48 62 L62 35 L92 85 Z"/><path d="M62 35 L68 48 L58 48 Z" fill="currentColor"/>`,
+  cactus: `<path d="M50 90 V35"/><path d="M50 55 Q32 55 32 40 Q32 30 42 30"/><path d="M50 65 Q70 65 70 48 Q70 38 60 38"/><line x1="46" y1="45" x2="54" y2="45"/><line x1="46" y1="60" x2="54" y2="60"/><line x1="46" y1="75" x2="54" y2="75"/>`,
+  wave: `<path d="M6 40 Q20 30 34 40 T62 40 T90 40"/><path d="M6 60 Q20 50 34 60 T62 60 T90 60"/><path d="M6 80 Q20 70 34 80 T62 80 T90 80"/>`,
+  lighthouse: `<path d="M42 90 L46 30 L54 30 L58 90 Z"/><line x1="40" y1="45" x2="60" y2="45"/><line x1="41" y1="60" x2="59" y2="60"/><line x1="42" y1="75" x2="58" y2="75"/><path d="M44 30 L50 15 L56 30 Z"/><path d="M50 15 L36 8 M50 15 L64 8" opacity="0.7"/>`,
+  lobster: `<ellipse cx="50" cy="55" rx="14" ry="20"/><path d="M40 38 L28 22 M32 30 L20 30"/><path d="M60 38 L72 22 M68 30 L80 30"/><path d="M40 68 L30 78 M45 74 L38 86 M55 74 L62 86 M60 68 L70 78"/>`,
+  peach: `<path d="M50 30 Q28 30 28 55 Q28 78 50 82 Q72 78 72 55 Q72 30 50 30 Z"/><path d="M50 32 V50" opacity="0.6"/><path d="M52 28 Q58 18 68 20" opacity="0.8"/>`,
+  citrus: `<circle cx="50" cy="55" r="24"/><path d="M50 31 Q56 20 66 22"/><path d="M50 31 V79 M28 55 H72 M35 40 L65 70 M65 40 L35 70" opacity="0.5"/>`,
+  cowboyhat: `<path d="M14 62 Q50 78 86 62 Q78 68 50 68 Q22 68 14 62 Z"/><path d="M32 62 Q34 30 50 30 Q66 30 68 62"/><path d="M40 42 Q50 38 60 42" opacity="0.6"/>`,
+  corn: `<path d="M50 90 Q34 70 40 40 Q50 20 60 40 Q66 70 50 90 Z"/><line x1="44" y1="42" x2="56" y2="42"/><line x1="42" y1="54" x2="58" y2="54"/><line x1="42" y1="66" x2="58" y2="66"/><line x1="44" y1="78" x2="56" y2="78"/><path d="M40 42 Q22 34 18 18" opacity="0.7"/><path d="M60 42 Q78 34 82 18" opacity="0.7"/>`,
+  maple: `<path d="M50 20 L56 38 L72 30 L64 46 L82 50 L64 56 L70 74 L54 64 L50 88 L46 64 L30 74 L36 56 L18 50 L36 46 L28 30 L44 38 Z"/>`,
+  guitar: `<circle cx="46" cy="68" r="18"/><circle cx="54" cy="42" r="12"/><line x1="50" y1="30" x2="50" y2="10"/><line x1="44" y1="12" x2="56" y2="12"/><circle cx="46" cy="68" r="6" opacity="0.6"/>`,
+  horseshoe: `<path d="M32 30 Q22 45 22 60 Q22 82 50 82 Q78 82 78 60 Q78 45 68 30"/><circle cx="30" cy="26" r="2.5" fill="currentColor"/><circle cx="70" cy="26" r="2.5" fill="currentColor"/><circle cx="34" cy="80" r="2.5" fill="currentColor"/><circle cx="66" cy="80" r="2.5" fill="currentColor"/>`,
+  dice: `<rect x="20" y="45" width="34" height="34" rx="6" transform="rotate(-8 37 62)"/><rect x="46" y="30" width="34" height="34" rx="6" transform="rotate(10 63 47)"/><circle cx="30" cy="55" r="2" fill="currentColor" transform="rotate(-8 37 62)"/><circle cx="44" cy="69" r="2" fill="currentColor" transform="rotate(-8 37 62)"/><circle cx="56" cy="38" r="2" fill="currentColor" transform="rotate(10 63 47)"/><circle cx="70" cy="38" r="2" fill="currentColor" transform="rotate(10 63 47)"/><circle cx="63" cy="47" r="2" fill="currentColor" transform="rotate(10 63 47)"/>`,
+  pine: `<path d="M50 15 L30 42 H42 L22 66 H40 L18 90 H82 L60 66 H78 L58 42 H70 Z"/><line x1="50" y1="90" x2="50" y2="98" opacity="0.6"/>`,
+  capitol: `<path d="M40 40 Q50 20 60 40"/><line x1="50" y1="14" x2="50" y2="20"/><rect x="36" y="40" width="28" height="6"/><line x1="30" y1="90" x2="70" y2="90"/><line x1="34" y1="50" x2="34" y2="88"/><line x1="42" y1="50" x2="42" y2="88"/><line x1="50" y1="50" x2="50" y2="88"/><line x1="58" y1="50" x2="58" y2="88"/><line x1="66" y1="50" x2="66" y2="88"/>`,
+  alligator: `<path d="M10 65 Q30 55 50 62 Q70 68 90 58"/><path d="M10 65 Q6 60 4 62 M10 65 Q6 70 4 70" opacity="0.7"/><path d="M25 60 L25 52 M35 58 L35 50 M45 60 L45 52" opacity="0.7"/><path d="M85 58 Q92 56 94 50" opacity="0.7"/>`,
+  crab: `<ellipse cx="50" cy="55" rx="24" ry="16"/><path d="M30 48 L14 34 M22 55 L6 55"/><path d="M70 48 L86 34 M78 55 L94 55"/><path d="M36 68 L28 82 M46 70 L42 86 M54 70 L58 86 M64 68 L72 82"/>`,
+  sailboat: `<path d="M20 78 L80 78 L68 90 L32 90 Z"/><line x1="50" y1="78" x2="50" y2="20"/><path d="M50 24 L76 70 L50 70 Z"/><path d="M50 34 L32 66 L50 66 Z" opacity="0.7"/>`
+};
+
+const SCENERY_WASH = {
+  teal: '#4f98a3', forest: '#4b6b3f', desert: '#e0a530',
+  slate: '#6b7f95', plum: '#8a5a7a'
+};
+
+const STATE_SCENERY = {
+  ME: { icons: ['lobster','lighthouse','pine'], wash: 'teal' },
+  NH: { icons: ['mountain','pine','maple'], wash: 'forest' },
+  VT: { icons: ['maple','mountain','pine'], wash: 'forest' },
+  MA: { icons: ['lobster','sailboat','lighthouse'], wash: 'teal' },
+  RI: { icons: ['sailboat','lighthouse','wave'], wash: 'teal' },
+  CT: { icons: ['sailboat','maple','lighthouse'], wash: 'teal' },
+  NY: { icons: ['skyline','statue','maple'], wash: 'slate' },
+  NJ: { icons: ['skyline','wave','lighthouse'], wash: 'teal' },
+  PA: { icons: ['skyline','maple','mountain'], wash: 'forest' },
+  DE: { icons: ['wave','sailboat','lighthouse'], wash: 'teal' },
+  MD: { icons: ['crab','sailboat','wave'], wash: 'teal' },
+  DC: { icons: ['capitol','skyline','wave'], wash: 'slate' },
+  VA: { icons: ['capitol','mountain','wave'], wash: 'forest' },
+  WV: { icons: ['mountain','pine','maple'], wash: 'forest' },
+  NC: { icons: ['wave','mountain','pine'], wash: 'forest' },
+  SC: { icons: ['palm','wave','alligator'], wash: 'teal' },
+  GA: { icons: ['peach','wave','pine'], wash: 'desert' },
+  FL: { icons: ['palm','citrus','alligator'], wash: 'teal' },
+  KY: { icons: ['horseshoe','mountain','corn'], wash: 'forest' },
+  TN: { icons: ['guitar','mountain','corn'], wash: 'desert' },
+  AL: { icons: ['peach','corn','wave'], wash: 'desert' },
+  MS: { icons: ['wave','corn','alligator'], wash: 'teal' },
+  LA: { icons: ['alligator','guitar','crab'], wash: 'plum' },
+  AR: { icons: ['corn','mountain','pine'], wash: 'forest' },
+  OK: { icons: ['cowboyhat','corn','mountain'], wash: 'desert' },
+  TX: { icons: ['cowboyhat','cactus','corn'], wash: 'desert' },
+  OH: { icons: ['corn','skyline','maple'], wash: 'forest' },
+  IN: { icons: ['corn','skyline','maple'], wash: 'forest' },
+  IL: { icons: ['skyline','corn','wave'], wash: 'slate' },
+  MI: { icons: ['pine','wave','maple'], wash: 'teal' },
+  WI: { icons: ['corn','pine','wave'], wash: 'forest' },
+  MN: { icons: ['pine','wave','corn'], wash: 'teal' },
+  IA: { icons: ['corn','pine','maple'], wash: 'desert' },
+  MO: { icons: ['corn','skyline','wave'], wash: 'slate' },
+  KS: { icons: ['corn','cowboyhat','wave'], wash: 'desert' },
+  NE: { icons: ['corn','cowboyhat','wave'], wash: 'desert' },
+  SD: { icons: ['mountain','cowboyhat','corn'], wash: 'desert' },
+  ND: { icons: ['corn','mountain','pine'], wash: 'desert' },
+  MT: { icons: ['mountain','pine','cowboyhat'], wash: 'slate' },
+  WY: { icons: ['mountain','cowboyhat','pine'], wash: 'slate' },
+  CO: { icons: ['mountain','pine','skyline'], wash: 'slate' },
+  UT: { icons: ['mountain','cactus','pine'], wash: 'slate' },
+  ID: { icons: ['mountain','pine','corn'], wash: 'forest' },
+  NV: { icons: ['dice','cactus','mountain'], wash: 'plum' },
+  AZ: { icons: ['cactus','mountain','citrus'], wash: 'desert' },
+  NM: { icons: ['cactus','mountain','pine'], wash: 'desert' },
+  WA: { icons: ['pine','mountain','wave'], wash: 'teal' },
+  OR: { icons: ['pine','mountain','wave'], wash: 'teal' },
+  CA: { icons: ['palm','wave','skyline'], wash: 'teal' },
+  AK: { icons: ['pine','mountain','wave'], wash: 'slate' },
+  HI: { icons: ['palm','wave','sailboat'], wash: 'teal' }
+};
+const SCENERY_DEFAULT = { icons: ['sailboat','mountain','wave'], wash: 'slate' };
+
+const STATE_NAME_TO_ABBR = {
+  'alabama':'AL','alaska':'AK','arizona':'AZ','arkansas':'AR','california':'CA','colorado':'CO',
+  'connecticut':'CT','delaware':'DE','florida':'FL','georgia':'GA','hawaii':'HI','idaho':'ID',
+  'illinois':'IL','indiana':'IN','iowa':'IA','kansas':'KS','kentucky':'KY','louisiana':'LA',
+  'maine':'ME','maryland':'MD','massachusetts':'MA','michigan':'MI','minnesota':'MN',
+  'mississippi':'MS','missouri':'MO','montana':'MT','nebraska':'NE','nevada':'NV',
+  'new hampshire':'NH','new jersey':'NJ','new mexico':'NM','new york':'NY','north carolina':'NC',
+  'north dakota':'ND','ohio':'OH','oklahoma':'OK','oregon':'OR','pennsylvania':'PA',
+  'rhode island':'RI','south carolina':'SC','south dakota':'SD','tennessee':'TN','texas':'TX',
+  'utah':'UT','vermont':'VT','virginia':'VA','washington':'WA','west virginia':'WV',
+  'wisconsin':'WI','wyoming':'WY','district of columbia':'DC'
+};
+function resolveStateAbbr(regionName) {
+  if (!regionName) return null;
+  return STATE_NAME_TO_ABBR[regionName.trim().toLowerCase()] || null;
+}
+
+const SCENERY_SLOTS = [
+  { top: '8%', left: '2.5%', size: 120, rot: -8 },
+  { top: '10%', right: '4%', size: 150, rot: 7 },
+  { top: '46%', right: '7%', size: 130, rot: -6 }
+];
+const SCENERY_ICON_COLORS = ['var(--rf-basil)', 'var(--rf-tomato)', 'var(--rf-mustard)'];
+
+function sceneryIconHTML(key, slot, colorVar) {
+  const inner = SCENERY_ICON_PATHS[key];
+  if (!inner) return '';
+  const pos = [
+    slot.top ? `top:${slot.top}` : '', slot.bottom ? `bottom:${slot.bottom}` : '',
+    slot.left ? `left:${slot.left}` : '', slot.right ? `right:${slot.right}` : '',
+    `width:${slot.size}px`, `height:${slot.size}px`, `color:${colorVar}`,
+    `--rf-icon-rot:${slot.rot}deg`, `transform:rotate(${slot.rot}deg)`,
+    `animation-delay:${Math.abs(slot.rot) * 0.15}s`
+  ].filter(Boolean).join(';');
+  return `<div class="rf-scenery-icon" style="${pos}"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">${inner}</svg></div>`;
+}
+
+function applyLocationTheme(stateAbbr) {
+  const el = document.getElementById('rf-scenery');
+  if (!el) return;
+  const theme = (stateAbbr && STATE_SCENERY[stateAbbr]) || SCENERY_DEFAULT;
+  el.classList.add('fading');
+  setTimeout(() => {
+    const wash = SCENERY_WASH[theme.wash] || SCENERY_WASH.slate;
+    el.style.background = `radial-gradient(ellipse at 12% 8%, ${wash}26, transparent 55%), radial-gradient(ellipse at 88% 88%, ${wash}1c, transparent 60%)`;
+    el.innerHTML = theme.icons.map((key, i) => sceneryIconHTML(key, SCENERY_SLOTS[i], SCENERY_ICON_COLORS[i % SCENERY_ICON_COLORS.length])).join('');
+    el.classList.remove('fading');
+  }, 300);
+}
+
+function resetScenery() {
+  const el = document.getElementById('rf-scenery');
+  if (!el) return;
+  el.classList.add('fading');
+  setTimeout(() => {
+    el.style.background = '';
+    el.innerHTML = '';
+    el.classList.remove('fading');
+  }, 300);
+}
+
 function initRestaurantTool() {
+  buildCheckboxPills('restaurant-meal-pills', RESTAURANT_MEAL_OPTIONS, 'restaurant-meal');
   buildCheckboxPills('restaurant-cuisine-pills', RESTAURANT_CUISINE_OPTIONS, 'restaurant-cuisine');
 }
 
@@ -2963,6 +3161,8 @@ function restaurantCardHTML(r) {
     <div class="restaurant-card">
       <div class="restaurant-card-name">${r.name}</div>
       <div class="restaurant-card-meta">${r.city ? `${r.city}, ${r.state} · ` : ''}${r.distance} mi away · ${cuisineLabels}</div>
+      ${r.knownFor ? `<div class="restaurant-card-known-for">${r.knownFor}</div>` : ''}
+      ${r.hours ? `<div class="restaurant-card-hours">🕒 ${r.hours}</div>` : ''}
       ${r.note ? `<div class="restaurant-card-note">"${r.note}"</div>` : ''}
     </div>`;
 }
@@ -2978,7 +3178,7 @@ async function nominatimSearch(params) {
   const locality = a.city || a.town || a.village || a.hamlet || a.county;
   const region = a.state || a.state_district;
   const label = [locality, region || a.country].filter(Boolean).join(', ') || place.display_name.split(',').slice(0, 2).join(',').trim();
-  return { lat: parseFloat(place.lat), lon: parseFloat(place.lon), label };
+  return { lat: parseFloat(place.lat), lon: parseFloat(place.lon), label, region };
 }
 
 async function geocodeLocationClient(rawInput) {
@@ -3021,6 +3221,7 @@ function haversineMilesClient(lat1, lon1, lat2, lon2) {
 async function handleRestaurantSearch(e) {
   e.preventDefault();
   const rawInput = document.getElementById('restaurant-search-zip').value;
+  const meals = Array.from(document.querySelectorAll('#restaurant-meal-pills input:checked')).map(el => el.value);
   const cuisines = Array.from(document.querySelectorAll('#restaurant-cuisine-pills input:checked')).map(el => el.value);
   const resultsEl = document.getElementById('restaurant-results');
 
@@ -3043,6 +3244,8 @@ async function handleRestaurantSearch(e) {
     return;
   }
 
+  applyLocationTheme(resolveStateAbbr(geo.region));
+
   const withDistance = restaurants.map(r => ({ ...r, distance: haversineMilesClient(geo.lat, geo.lon, r.lat, r.lon) }));
   const nearby = withDistance.filter(r => r.distance <= RESTAURANT_MAX_DISTANCE_MILES);
 
@@ -3051,12 +3254,14 @@ async function handleRestaurantSearch(e) {
     return;
   }
 
-  const matches = cuisines.length === 0
-    ? nearby
-    : nearby.filter(r => r.cuisines.some(c => cuisines.includes(c)));
+  const matches = nearby.filter(r => {
+    const mealOK = meals.length === 0 || r.mealTypes.some(m => meals.includes(m));
+    const cuisineOK = cuisines.length === 0 || r.cuisines.some(c => cuisines.includes(c));
+    return mealOK && cuisineOK;
+  });
 
   if (matches.length === 0) {
-    resultsEl.innerHTML = `<div class="restaurant-message error">I've got recommendations near ${geo.label}, but none for that cuisine yet — try another cuisine, or leave it unchecked for anything nearby.</div>`;
+    resultsEl.innerHTML = `<div class="restaurant-message error">I've got recommendations near ${geo.label}, but none match those filters — try loosening the meal or cuisine, or leave them unchecked for anything nearby.</div>`;
     return;
   }
 

@@ -851,6 +851,7 @@
       transition: border-color var(--transition); outline: none;
     }
     .rf-zip-input:focus { border-color: var(--rf-tomato); }
+    .rf-field-hint { font-size: 0.78rem; color: var(--rf-faint); margin-top: 0.5rem; }
 
     .restaurant-results-label { font-family: var(--font-display-fun); font-weight: 600; font-style: italic; font-size: 1.15rem; color: var(--rf-basil-deep); margin: 2rem 0 1.25rem; }
     .restaurant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.25rem; }
@@ -1422,14 +1423,15 @@
   <div class="rf-hero">
     <div class="rf-eyebrow">✎ Spots I actually vouch for</div>
     <h1 class="rf-title">Nearby Eats</h1>
-    <p class="rf-summary">A hand-picked list, not a crowdsourced one. Punch in a zip code and a cuisine — or leave cuisine blank for anything — and see which of my recommendations are within 15 miles of you.</p>
+    <p class="rf-summary">A hand-picked list, not a crowdsourced one. Punch in a zip code or a city and a cuisine — or leave cuisine blank for anything — and see which of my recommendations are within 15 miles of you.</p>
   </div>
 
   <div class="rf-body">
     <form class="recipe-form" onsubmit="handleRestaurantSearch(event)">
       <div class="recipe-form-row">
-        <label class="recipe-form-label">📍 Your zip code</label>
-        <input type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" class="rf-zip-input" id="restaurant-search-zip" placeholder="e.g. 10996" required>
+        <label class="recipe-form-label">📍 Your zip code or city</label>
+        <input type="text" class="rf-zip-input" id="restaurant-search-zip" placeholder="e.g. 10996 or Greenwich, CT" required>
+        <div class="rf-field-hint">Close enough spellings are fine — I'll show what I searched for.</div>
       </div>
       <div class="recipe-form-row">
         <label class="recipe-form-label">🌍 Cuisine <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional — leave every box unchecked for anything)</span></label>
@@ -2937,18 +2939,26 @@ initRecipeFinder();
 // ─────────────────────────────────────────────────────────────────
 // NEARBY EATS — a hand-curated restaurant list (assets/restaurants-data.js),
 // no backend, no submissions. Each entry carries its own pre-geocoded
-// lat/lon, so a search only needs to geocode the visitor's zip
-// (client-side, via the free Zippopotam.us API) and do distance math
-// against the static list.
+// lat/lon, so a search only needs to geocode whatever the visitor typed
+// (client-side, via the free OpenStreetMap Nominatim API — no key
+// needed) and do distance math against the static list.
+//
+// Nominatim's free-text search is decent but not a real spell-checker
+// (it can even confidently mismatch, e.g. "CT" as an abbreviation for
+// "Court" instead of Connecticut) — so geocodeLocationClient() tries a
+// few layered lookups from most to least precise before ever falling
+// back to raw free text, and the resolved place name is always shown
+// in the results header so a bad match is visible, not silently wrong.
 // ─────────────────────────────────────────────────────────────────
 const RESTAURANT_MAX_DISTANCE_MILES = 15;
+const US_STATE_ABBRS = new Set(['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC']);
 
 function initRestaurantTool() {
-  buildCheckboxPills('restaurant-cuisine-pills', CUISINE_OPTIONS, 'restaurant-cuisine');
+  buildCheckboxPills('restaurant-cuisine-pills', RESTAURANT_CUISINE_OPTIONS, 'restaurant-cuisine');
 }
 
 function restaurantCardHTML(r) {
-  const cuisineLabels = r.cuisines.map(c => (CUISINE_OPTIONS.find(o => o.value === c) || {}).label || c).join(', ');
+  const cuisineLabels = r.cuisines.map(c => (RESTAURANT_CUISINE_OPTIONS.find(o => o.value === c) || {}).label || c).join(', ');
   return `
     <div class="restaurant-card">
       <div class="restaurant-card-name">${r.name}</div>
@@ -2957,13 +2967,46 @@ function restaurantCardHTML(r) {
     </div>`;
 }
 
-async function geocodeZipClient(zip) {
-  const res = await fetch(`https://api.zippopotam.us/us/${encodeURIComponent(zip)}`);
+async function nominatimSearch(params) {
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&${params}`;
+  const res = await fetch(url);
   if (!res.ok) return null;
   const data = await res.json();
-  const place = data.places && data.places[0];
-  if (!place) return null;
-  return { lat: parseFloat(place.latitude), lon: parseFloat(place.longitude) };
+  if (!data || !data.length) return null;
+  const place = data[0];
+  const a = place.address || {};
+  const locality = a.city || a.town || a.village || a.hamlet || a.county;
+  const region = a.state || a.state_district;
+  const label = [locality, region || a.country].filter(Boolean).join(', ') || place.display_name.split(',').slice(0, 2).join(',').trim();
+  return { lat: parseFloat(place.lat), lon: parseFloat(place.lon), label };
+}
+
+async function geocodeLocationClient(rawInput) {
+  const input = rawInput.trim().replace(/\s+/g, ' ');
+  if (!input) return null;
+
+  if (/^\d{5}$/.test(input)) {
+    const byZip = await nominatimSearch(`postalcode=${encodeURIComponent(input)}&country=us`);
+    if (byZip) return byZip;
+  }
+
+  const stateMatch = input.match(/,?\s*([A-Za-z]{2})$/);
+  const possibleState = stateMatch ? stateMatch[1].toUpperCase() : null;
+  if (possibleState && US_STATE_ABBRS.has(possibleState)) {
+    const city = input.slice(0, stateMatch.index).replace(/,\s*$/, '').trim();
+    if (city) {
+      const byCityState = await nominatimSearch(`city=${encodeURIComponent(city)}&state=${possibleState}&country=us`);
+      if (byCityState) return byCityState;
+    }
+  }
+
+  const byCity = await nominatimSearch(`city=${encodeURIComponent(input)}&country=us`);
+  if (byCity) return byCity;
+
+  // Last resort: unrestricted free text — covers non-US searches and gives
+  // typo tolerance a shot. Less reliable, which is exactly why the caller
+  // always displays the resolved label rather than trusting it blindly.
+  return await nominatimSearch(`q=${encodeURIComponent(input)}`);
 }
 
 function haversineMilesClient(lat1, lon1, lat2, lon2) {
@@ -2977,12 +3020,12 @@ function haversineMilesClient(lat1, lon1, lat2, lon2) {
 
 async function handleRestaurantSearch(e) {
   e.preventDefault();
-  const zip = document.getElementById('restaurant-search-zip').value.trim();
+  const rawInput = document.getElementById('restaurant-search-zip').value;
   const cuisines = Array.from(document.querySelectorAll('#restaurant-cuisine-pills input:checked')).map(el => el.value);
   const resultsEl = document.getElementById('restaurant-results');
 
-  if (!/^\d{5}$/.test(zip)) {
-    resultsEl.innerHTML = `<div class="restaurant-message error">That doesn't look like a valid 5-digit zip code — give it another try.</div>`;
+  if (!rawInput.trim()) {
+    resultsEl.innerHTML = `<div class="restaurant-message error">Enter a zip code or city to search near.</div>`;
     return;
   }
 
@@ -2990,13 +3033,13 @@ async function handleRestaurantSearch(e) {
 
   let geo;
   try {
-    geo = await geocodeZipClient(zip);
+    geo = await geocodeLocationClient(rawInput);
   } catch (err) {
-    resultsEl.innerHTML = `<div class="restaurant-message error">Couldn't look up that zip code — check your connection and try again.</div>`;
+    resultsEl.innerHTML = `<div class="restaurant-message error">Couldn't look that up — check your connection and try again.</div>`;
     return;
   }
   if (!geo) {
-    resultsEl.innerHTML = `<div class="restaurant-message error">We couldn't find that zip code — double check it and try again.</div>`;
+    resultsEl.innerHTML = `<div class="restaurant-message error">We couldn't find that zip code or city — double check the spelling and try again.</div>`;
     return;
   }
 
@@ -3004,7 +3047,7 @@ async function handleRestaurantSearch(e) {
   const nearby = withDistance.filter(r => r.distance <= RESTAURANT_MAX_DISTANCE_MILES);
 
   if (nearby.length === 0) {
-    resultsEl.innerHTML = `<div class="restaurant-message error">Sorry, there are no recommendations near you yet — the list is still growing.</div>`;
+    resultsEl.innerHTML = `<div class="restaurant-message error">Sorry, there are no recommendations near ${geo.label} yet — the list is still growing.</div>`;
     return;
   }
 
@@ -3013,7 +3056,7 @@ async function handleRestaurantSearch(e) {
     : nearby.filter(r => r.cuisines.some(c => cuisines.includes(c)));
 
   if (matches.length === 0) {
-    resultsEl.innerHTML = `<div class="restaurant-message error">I've got recommendations near you, but none for that cuisine yet — try another cuisine, or leave it unchecked for anything nearby.</div>`;
+    resultsEl.innerHTML = `<div class="restaurant-message error">I've got recommendations near ${geo.label}, but none for that cuisine yet — try another cuisine, or leave it unchecked for anything nearby.</div>`;
     return;
   }
 
@@ -3021,7 +3064,7 @@ async function handleRestaurantSearch(e) {
   const displayResults = matches.map(r => ({ ...r, distance: Math.round(r.distance * 10) / 10 }));
 
   resultsEl.innerHTML = `
-    <div class="restaurant-results-label">${displayResults.length} spot${displayResults.length === 1 ? '' : 's'} near ${zip}</div>
+    <div class="restaurant-results-label">${displayResults.length} spot${displayResults.length === 1 ? '' : 's'} near ${geo.label}</div>
     <div class="restaurant-grid">${displayResults.map(restaurantCardHTML).join('')}</div>`;
 }
 

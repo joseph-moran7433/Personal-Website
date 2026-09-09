@@ -349,6 +349,22 @@
       display: flex; flex-direction: column; gap: 3.5rem;
     }
     .detail-section {}
+
+    /* Launch buttons for live, in-site tools (used by the Kitchen &
+       Tactical Tools project write-up) — opens the actual overlay
+       rather than just linking out, since these live on this site. */
+    .detail-cta-row { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 1.5rem; }
+    .detail-cta-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.4rem; border-radius: 2rem;
+      background: var(--accent); color: #fff; font-size: 0.85rem; font-weight: 500;
+      border: none; cursor: pointer; transition: background var(--transition), transform var(--transition);
+    }
+    .detail-cta-btn:hover { background: #245f69; transform: translateY(-1px); }
+    .detail-cta-btn.ghost {
+      background: transparent; color: var(--text); border: 1px solid var(--border);
+    }
+    .detail-cta-btn.ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
     .detail-section-label {
       font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
       color: var(--accent); margin-bottom: 0.75rem;
@@ -1243,8 +1259,6 @@
     <li><a href="#about" onclick="closeDetail()">About</a></li>
     <li><a href="#projects" onclick="closeDetail()">Projects</a></li>
     <li><a href="#travel" onclick="closeDetail()">Travel</a></li>
-    <li><a href="javascript:void(0)" onclick="openFoodHub()">Kitchen</a></li>
-    <li><a href="javascript:void(0)" onclick="openTacticalHub()">Tactical Tools</a></li>
     <li><a href="#contact" onclick="closeDetail()">Contact</a></li>
   </ul>
   <a href="#contact" class="nav-cta" onclick="closeDetail()">Get in Touch</a>
@@ -2152,6 +2166,52 @@ document.querySelectorAll('.leadership-card').forEach(card => {
 // PROJECT DATA
 // ─────────────────────────────────────────────────────────────────
 const projects = [
+  {
+    id: 8,
+    date: "Currently working on it",
+    sortKey: 202609,
+    title: "The Kitchen & Tactical Tools",
+    desc: "An always-growing sandbox of standalone mini-tools built directly into this site — a family recipe finder, a live restaurant map, an ingredient-guessing game, and a night-vision-themed weather advisory that ports real Army heat-category math to the browser.",
+    tags: ["JavaScript", "HTML/CSS", "Live APIs", "Game Design", "UI/UX"],
+    detail: {
+      summary: "Unlike the numbered projects below, this one doesn't have a finish line. It's a running collection of small, fully client-side tools I keep adding to this site — no backend, no build step, just vanilla JavaScript talking directly to public APIs in the visitor's own browser.",
+      sections: [
+        {
+          label: "The Idea",
+          heading: "A sandbox, not a single project",
+          body: `<p>Most of what's below this on the page is a finished analysis with a date and a conclusion. This is the opposite — it's the place I actually ship things to instead of letting them rot in a repo. Every tool here is real, live, and interactive right now, not a screenshot.</p>
+          <p>Two rooms live under this umbrella so far, each with its own visual identity: <strong>The Kitchen</strong> (warm, hand-drawn, food-themed) and <strong>Tactical Tools</strong> (dark, phosphor-green, night-vision-scope themed).</p>`
+        },
+        {
+          label: "What's Live Right Now",
+          heading: "Four tools, zero backend",
+          body: `<p><strong>Recipe Finder</strong> digs through my family's actual recipe collection and suggests something to cook based on mood, meal, and what's in season. <strong>Nearby Eats</strong> geocodes whatever zip code or city you type and finds real restaurants I vouch for within 15 miles — the backdrop even redecorates itself with a state-specific illustrated skyline. <strong>Riddle Me This</strong> is a hangman-style game with 108 hand-written ingredient riddles. And <strong>WX / Uniform Advisory</strong> is a JavaScript port of a Python project I built that texts a formation weather forecast every night — same Army heat-category math, run live against the National Weather Service for any US location.</p>`,
+          code: {
+            lang: "JavaScript",
+            filename: "heat_category.js",
+            content: `<span class="code-comment">// Simplified WBGT approximation — ported from the original</span>
+<span class="code-comment">// Python advisory bot to run client-side, live, in the browser</span>
+<span class="code-keyword">function</span> <span class="code-func">estimateWbgtF</span>(tempF, rh) {
+  <span class="code-keyword">const</span> <span class="code-var">ta</span> = (tempF - 32) * 5 / 9;
+  <span class="code-keyword">const</span> <span class="code-var">e</span> = (rh / 100) * 6.105 * Math.<span class="code-func">exp</span>((17.27 * ta) / (237.7 + ta));
+  <span class="code-keyword">const</span> <span class="code-var">wbgtC</span> = 0.567 * ta + 0.393 * e + 3.94;
+  <span class="code-keyword">return</span> wbgtC * 9 / 5 + 32;
+}`
+          }
+        },
+        {
+          label: "Launch It",
+          heading: "See it live",
+          body: `<p>These are full-page tools, not embedded widgets — clicking either button below takes you into the site's own Kitchen or Tactical Tools section.</p>
+          <div class="detail-cta-row">
+            <button class="detail-cta-btn" onclick="openFoodHub()">🍳 Open The Kitchen</button>
+            <button class="detail-cta-btn ghost" onclick="openTacticalHub()">🎯 Open Tactical Tools</button>
+          </div>`
+        }
+      ],
+      reflection: `This one doesn't wrap up neatly because it's not done — it's the part of the site I keep coming back to when I want to build something and see it working the same day, instead of writing it up after the fact. Next up is probably another Tactical Tool; I'll add it here when it's live instead of starting a new entry.`
+    }
+  },
   {
     id: 0,
     date: "Summer 2025",

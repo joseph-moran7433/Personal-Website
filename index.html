@@ -296,6 +296,62 @@
     .tag { font-size: 0.7rem; padding: 0.25rem 0.75rem; border-radius: 2rem; background: rgba(79,152,163,0.08); border: 1px solid rgba(79,152,163,0.18); color: var(--accent); letter-spacing: 0.04em; }
     .tag.gold { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.2); color: var(--gold); }
 
+    /* The Kitchen & Tactical Tools card/detail is a hub, not a case
+       study — every other project here is a finished write-up, this
+       one is the base you launch other live sites from. A two-tone
+       badge (tomato from Kitchen, phosphor green from Tactical Tools)
+       marks it as different at a glance, on both the timeline card
+       and the detail page. */
+    .project-card.hub {
+      border-color: rgba(217,96,63,0.22);
+      background: linear-gradient(135deg, rgba(217,96,63,0.05), rgba(57,255,143,0.05));
+    }
+    .project-card.hub::before { background: linear-gradient(135deg, rgba(217,96,63,0.09), rgba(57,255,143,0.09)); }
+    .project-card.hub:hover { border-color: rgba(217,96,63,0.4); box-shadow: 0 4px 28px rgba(217,96,63,0.14), 0 4px 28px rgba(57,255,143,0.1); }
+    .hub-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+      padding: 0.3rem 0.75rem; border-radius: 2rem; margin-bottom: 0.9rem;
+      background: linear-gradient(90deg, rgba(217,96,63,0.14), rgba(57,255,143,0.14));
+      border: 1px solid rgba(217,96,63,0.3); color: var(--text);
+    }
+
+    /* Big portal tiles — each one previews the actual visual identity
+       of the site it leads to, so picking a destination feels like a
+       real navigation choice, not a form-page button. */
+    .portal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1.5rem; margin: 1.5rem 0 0.5rem; }
+    .portal-tile {
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
+      min-height: 220px; padding: 2rem 1.85rem; border-radius: 1rem; border: none;
+      cursor: pointer; text-align: left; position: relative; overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .portal-tile:hover { transform: translateY(-5px); }
+    .portal-tile::after { content: ''; position: absolute; inset: 0; pointer-events: none; }
+    .portal-tile-icon { font-size: 2.5rem; line-height: 1; margin-bottom: 0.6rem; }
+    .portal-tile-title { font-size: 1.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.35rem; }
+    .portal-tile-desc { font-size: 0.86rem; opacity: 0.82; line-height: 1.5; margin-bottom: 1.1rem; }
+    .portal-tile-cta { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.03em; }
+
+    .portal-tile.kitchen {
+      background: linear-gradient(155deg, var(--rf-tomato) 0%, var(--rf-tomato-hover) 100%);
+      color: #fff8ea; font-family: var(--font-body-fun);
+      box-shadow: 0 10px 26px rgba(217,96,63,0.25);
+    }
+    .portal-tile.kitchen::after { background: radial-gradient(circle at 88% 12%, rgba(255,255,255,0.2), transparent 55%); }
+    .portal-tile.kitchen .portal-tile-title { font-family: var(--font-display-fun); font-style: italic; }
+    .portal-tile.kitchen:hover { box-shadow: 0 18px 36px rgba(217,96,63,0.35); }
+
+    .portal-tile.tactical {
+      background: linear-gradient(155deg, #0a1a10 0%, #04140a 100%);
+      color: var(--tac-text); font-family: var(--font-body-tac);
+      border: 1px solid var(--tac-border);
+      box-shadow: 0 10px 26px rgba(57,255,143,0.14);
+    }
+    .portal-tile.tactical::after { background: radial-gradient(circle at 88% 12%, rgba(57,255,143,0.18), transparent 55%); }
+    .portal-tile.tactical .portal-tile-title { font-family: var(--font-display-tac); color: var(--tac-green); text-shadow: 0 0 14px rgba(57,255,143,0.4); }
+    .portal-tile.tactical:hover { box-shadow: 0 18px 36px rgba(57,255,143,0.24); }
+
     /* ── PROJECT DETAIL VIEW ── */
     #project-detail {
       position: fixed; inset: 0; z-index: 150;
@@ -350,21 +406,6 @@
     }
     .detail-section {}
 
-    /* Launch buttons for live, in-site tools (used by the Kitchen &
-       Tactical Tools project write-up) — opens the actual overlay
-       rather than just linking out, since these live on this site. */
-    .detail-cta-row { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 1.5rem; }
-    .detail-cta-btn {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.7rem 1.4rem; border-radius: 2rem;
-      background: var(--accent); color: #fff; font-size: 0.85rem; font-weight: 500;
-      border: none; cursor: pointer; transition: background var(--transition), transform var(--transition);
-    }
-    .detail-cta-btn:hover { background: #245f69; transform: translateY(-1px); }
-    .detail-cta-btn.ghost {
-      background: transparent; color: var(--text); border: 1px solid var(--border);
-    }
-    .detail-cta-btn.ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
     .detail-section-label {
       font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
       color: var(--accent); margin-bottom: 0.75rem;
@@ -2233,23 +2274,42 @@ document.querySelectorAll('.leadership-card').forEach(card => {
 const projects = [
   {
     id: 8,
+    isHub: true,
     date: "Currently working on it",
     sortKey: 202609,
     title: "The Kitchen & Tactical Tools",
-    desc: "An always-growing sandbox of standalone mini-tools built directly into this site — a family recipe finder, a live restaurant map, an ingredient-guessing game, and a night-vision-themed weather advisory that ports real Army heat-category math to the browser.",
+    desc: "The home base for my MA491 coursework builds — click through to whichever live site you're after. Right now that's a family recipe finder, a live restaurant map, an ingredient-guessing game, and a night-vision-themed weather advisory. More sites land here as I build them.",
     tags: ["JavaScript", "HTML/CSS", "Live APIs", "Game Design", "UI/UX"],
     detail: {
-      summary: "Unlike the numbered projects below, this one doesn't have a finish line. It's a running collection of small, fully client-side tools I keep adding to this site — no backend, no build step, just vanilla JavaScript talking directly to public APIs in the visitor's own browser.",
+      summary: "This isn't a write-up of one finished thing — it's the base I'm building all of my MA491 coursework projects on top of. Each one gets its own fully separate site with its own visual identity; this page is just the front door. Pick one below.",
       sections: [
         {
           label: "The Idea",
-          heading: "A sandbox, not a single project",
-          body: `<p>Most of what's below this on the page is a finished analysis with a date and a conclusion. This is the opposite — it's the place I actually ship things to instead of letting them rot in a repo. Every tool here is real, live, and interactive right now, not a screenshot.</p>
-          <p>Two rooms live under this umbrella so far, each with its own visual identity: <strong>The Kitchen</strong> (warm, hand-drawn, food-themed) and <strong>Tactical Tools</strong> (dark, phosphor-green, night-vision-scope themed).</p>`
+          heading: "A base, not a single project",
+          body: `<p>Every other entry on this page is a finished analysis with a date and a conclusion. This one is the opposite — it's the launcher I keep coming back to every time I build something new for this class, instead of starting a fresh write-up each time. No backend, no build step: just vanilla JavaScript talking directly to public APIs in your own browser.</p>`
+        },
+        {
+          label: "Where To Go",
+          heading: "Pick a site",
+          body: `<p>Each one below is a fully separate room of the site with its own visual identity, on purpose — this hub doesn't try to unify them, it just gets you there.</p>
+          <div class="portal-grid">
+            <button type="button" class="portal-tile kitchen" onclick="openFoodHub()">
+              <div class="portal-tile-icon">🍳</div>
+              <div class="portal-tile-title">The Kitchen</div>
+              <div class="portal-tile-desc">Recipe Finder &middot; Nearby Eats &middot; Riddle Me This</div>
+              <div class="portal-tile-cta">Enter the Kitchen &rarr;</div>
+            </button>
+            <button type="button" class="portal-tile tactical" onclick="openTacticalHub()">
+              <div class="portal-tile-icon">🎯</div>
+              <div class="portal-tile-title">Tactical Tools</div>
+              <div class="portal-tile-desc">WX / Uniform Advisory</div>
+              <div class="portal-tile-cta">Enter Tactical Tools &rarr;</div>
+            </button>
+          </div>`
         },
         {
           label: "What's Live Right Now",
-          heading: "Four tools, zero backend",
+          heading: "Four tools so far",
           body: `<p><strong>Recipe Finder</strong> digs through my family's actual recipe collection and suggests something to cook based on mood, meal, and what's in season. <strong>Nearby Eats</strong> geocodes whatever zip code or city you type and finds real restaurants I vouch for within 15 miles — the backdrop even redecorates itself with a state-specific illustrated skyline. <strong>Riddle Me This</strong> is a hangman-style game with 108 hand-written ingredient riddles. And <strong>WX / Uniform Advisory</strong> is a JavaScript port of a Python project I built that texts a formation weather forecast every night — same Army heat-category math, run live against the National Weather Service for any US location.</p>`,
           code: {
             lang: "JavaScript",
@@ -2263,18 +2323,9 @@ const projects = [
   <span class="code-keyword">return</span> wbgtC * 9 / 5 + 32;
 }`
           }
-        },
-        {
-          label: "Launch It",
-          heading: "See it live",
-          body: `<p>These are full-page tools, not embedded widgets — clicking either button below takes you into the site's own Kitchen or Tactical Tools section.</p>
-          <div class="detail-cta-row">
-            <button class="detail-cta-btn" onclick="openFoodHub()">🍳 Open The Kitchen</button>
-            <button class="detail-cta-btn ghost" onclick="openTacticalHub()">🎯 Open Tactical Tools</button>
-          </div>`
         }
       ],
-      reflection: `This one doesn't wrap up neatly because it's not done — it's the part of the site I keep coming back to when I want to build something and see it working the same day, instead of writing it up after the fact. Next up is probably another Tactical Tool; I'll add it here when it's live instead of starting a new entry.`
+      reflection: `This one doesn't wrap up neatly because it's not done — it's the base every future MA491 build lands on. Next up is probably another Tactical Tool or a third room entirely; when it's live, it'll show up as another tile above instead of a new entry on this page.`
     }
   },
   {
@@ -3208,11 +3259,12 @@ projects.forEach((p) => {
   item.className = 'timeline-item';
   item.innerHTML = `
     <div class="timeline-dot"></div>
-    <div class="project-card" onclick="openDetail(${p.id})">
+    <div class="project-card${p.isHub ? ' hub' : ''}" onclick="openDetail(${p.id})">
       <div class="project-card-top">
         <div class="project-date">${p.date}</div>
         <div class="project-arrow"><i data-lucide="arrow-up-right" style="width:18px;height:18px;"></i></div>
       </div>
+      ${p.isHub ? `<div class="hub-badge">🧭 Live Hub</div>` : ''}
       <h3 class="project-title">${p.title}</h3>
       <p class="project-desc">${p.desc}</p>
       <div class="project-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
@@ -3263,6 +3315,7 @@ function openDetail(id) {
 
   document.getElementById('detail-content').innerHTML = `
     <div class="detail-hero">
+      ${p.isHub ? `<div class="hub-badge">🧭 Live Hub — not a case study</div>` : ''}
       <div class="detail-date">${p.date}</div>
       <h1 class="detail-title">${p.title}</h1>
       <p class="detail-summary">${d.summary}</p>

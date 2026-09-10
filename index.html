@@ -1322,9 +1322,12 @@
 
     .restaurant-results-label { font-family: var(--font-display-fun); font-weight: 600; font-style: italic; font-size: 1.15rem; color: var(--rf-basil-deep); margin: 2rem 0 1.25rem; }
     .restaurant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.25rem; }
-    .restaurant-card { background: var(--rf-surface); border: 1px solid var(--rf-border); border-radius: 1rem; padding: 1.5rem; box-shadow: 0 2px 0 var(--rf-border); }
+    .restaurant-card { background: var(--rf-surface); border: 1px solid var(--rf-border); border-radius: 1rem; padding: 1.5rem; box-shadow: 0 2px 0 var(--rf-border); cursor: pointer; transition: transform var(--transition), box-shadow var(--transition); }
+    .restaurant-card:hover { box-shadow: 0 5px 0 var(--rf-border); }
     .restaurant-card:nth-child(odd) { transform: rotate(-0.5deg); }
     .restaurant-card:nth-child(even) { transform: rotate(0.4deg); }
+    .restaurant-card:nth-child(odd):hover { transform: rotate(-0.5deg) translateY(-3px); }
+    .restaurant-card:nth-child(even):hover { transform: rotate(0.4deg) translateY(-3px); }
     .restaurant-card-name { font-family: var(--font-display-fun); font-weight: 700; font-size: 1.2rem; color: var(--rf-basil-deep); margin-bottom: 0.35rem; }
     .restaurant-card-meta { font-size: 0.78rem; color: var(--rf-faint); font-weight: 700; margin-bottom: 0.6rem; }
     .restaurant-card-known-for { font-size: 0.88rem; color: var(--rf-basil-deep); font-weight: 600; margin-bottom: 0.5rem; }
@@ -1339,6 +1342,24 @@
       background: rgba(217,96,63,0.1); border: 1px solid rgba(217,96,63,0.25);
       border-radius: 2rem; padding: 0.25rem 0.65rem; margin-bottom: 0.6rem;
     }
+
+    /* Restaurant detail modal — twin of #recipe-modal, opened by clicking a card. */
+    #restaurant-modal { position: fixed; inset: 0; z-index: 200; display: none; align-items: flex-start; justify-content: center; padding: 4rem 1.5rem; overflow-y: auto; font-family: var(--font-body-fun); }
+    #restaurant-modal.open { display: flex; }
+    .restaurant-modal-backdrop { position: fixed; inset: 0; background: rgba(43,42,20,0.5); backdrop-filter: blur(4px); }
+    .restaurant-modal-dialog { position: relative; background: var(--rf-surface); border-radius: 1.1rem; max-width: 560px; width: 100%; padding: 2.5rem 2.5rem 3rem; box-shadow: 0 20px 60px rgba(47,58,38,0.35); border-top: 6px solid var(--rf-tomato); }
+    .restaurant-modal-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; cursor: pointer; color: var(--rf-faint); transition: color var(--transition); }
+    .restaurant-modal-close:hover { color: var(--rf-tomato); }
+    .restaurant-modal-title { font-family: var(--font-display-fun); font-weight: 700; font-size: clamp(1.4rem,3vw,1.8rem); color: var(--rf-basil-deep); margin: 0.5rem 3rem 0.4rem 0; line-height: 1.2; }
+    .restaurant-modal-meta { font-size: 0.85rem; color: var(--rf-faint); font-weight: 700; margin-bottom: 0.5rem; }
+    .restaurant-modal-price { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 1rem; }
+    .restaurant-modal-price .filled { color: var(--rf-basil-deep); }
+    .restaurant-modal-price .empty { color: var(--rf-border); }
+    .restaurant-modal-address { font-size: 0.85rem; color: var(--rf-muted); margin-bottom: 1rem; }
+    .restaurant-modal-known-for { font-size: 0.95rem; color: var(--rf-basil-deep); font-weight: 600; line-height: 1.6; margin-bottom: 1rem; }
+    .restaurant-modal-hours { font-size: 0.85rem; color: var(--rf-muted); margin-bottom: 1.25rem; }
+    .restaurant-modal-tip { font-size: 0.92rem; color: var(--rf-basil-deep); line-height: 1.7; background: var(--rf-bg); border-left: 3px solid var(--rf-mustard); padding: 1rem 1.25rem; border-radius: 0 0.6rem 0.6rem 0; white-space: pre-line; }
+    .restaurant-modal-tip-label { font-family: var(--font-display-fun); font-weight: 600; font-style: italic; font-size: 0.95rem; color: var(--rf-tomato); margin-bottom: 0.5rem; display: block; }
 
     .restaurant-message { margin-top: 1.5rem; padding: 1.1rem 1.4rem; border-radius: 0.7rem; font-weight: 600; font-size: 0.92rem; line-height: 1.6; }
     .restaurant-message.success { background: rgba(75,107,63,0.1); border: 1px solid rgba(75,107,63,0.3); color: var(--rf-basil-deep); }
@@ -2082,6 +2103,16 @@
       <i data-lucide="x" style="width:22px;height:22px;"></i>
     </button>
     <div id="recipe-modal-content"></div>
+  </div>
+</div>
+
+<div id="restaurant-modal">
+  <div class="restaurant-modal-backdrop" onclick="closeRestaurantModal()"></div>
+  <div class="restaurant-modal-dialog">
+    <button class="restaurant-modal-close" onclick="closeRestaurantModal()" aria-label="Close">
+      <i data-lucide="x" style="width:22px;height:22px;"></i>
+    </button>
+    <div id="restaurant-modal-content"></div>
   </div>
 </div>
 
@@ -4223,13 +4254,13 @@ function initRestaurantTool() {
   buildCheckboxPills('restaurant-cuisine-pills', RESTAURANT_CUISINE_OPTIONS, 'restaurant-cuisine');
 }
 
-function restaurantCardHTML(r) {
+function restaurantCardHTML(r, i) {
   const cuisineLabels = r.cuisines.map(c => (RESTAURANT_CUISINE_OPTIONS.find(o => o.value === c) || {}).label || c).join(', ');
   const vettedBadge = r.source === 'vetted' && r.vetting
     ? `<div class="restaurant-card-vetted-badge">★ ${r.vetting.rating} (${r.vetting.reviewCount} on ${r.vetting.platform || 'Yelp'}) · Not personally visited</div>`
     : '';
   return `
-    <div class="restaurant-card">
+    <div class="restaurant-card" onclick="openRestaurantModal(${i})">
       <div class="restaurant-card-name">${r.name}</div>
       <div class="restaurant-card-meta">${r.city ? `${r.city}, ${r.state} · ` : ''}${r.distance} mi away · ${cuisineLabels}</div>
       ${vettedBadge}
@@ -4238,6 +4269,48 @@ function restaurantCardHTML(r) {
       ${r.note ? `<div class="restaurant-card-note">"${r.note}"</div>` : ''}
     </div>`;
 }
+
+// priceLevel is 1-5 (optional); renders as filled/empty $ marks out of 5.
+function restaurantPriceHTML(priceLevel) {
+  if (!priceLevel) return '';
+  let marks = '';
+  for (let i = 1; i <= 5; i++) {
+    marks += `<span class="${i <= priceLevel ? 'filled' : 'empty'}">$</span>`;
+  }
+  return `<div class="restaurant-modal-price">${marks}</div>`;
+}
+
+let lastRestaurantResults = [];
+
+function openRestaurantModal(i) {
+  const r = lastRestaurantResults[i];
+  if (!r) return;
+  const cuisineLabels = r.cuisines.map(c => (RESTAURANT_CUISINE_OPTIONS.find(o => o.value === c) || {}).label || c).join(', ');
+  const vettedBadge = r.source === 'vetted' && r.vetting
+    ? `<div class="restaurant-card-vetted-badge">★ ${r.vetting.rating} (${r.vetting.reviewCount} on ${r.vetting.platform || 'Yelp'}) · Not personally visited</div>`
+    : '';
+
+  document.getElementById('restaurant-modal-content').innerHTML = `
+    <h2 class="restaurant-modal-title">${r.name}</h2>
+    <div class="restaurant-modal-meta">${r.city ? `${r.city}, ${r.state} · ` : ''}${r.distance} mi away · ${cuisineLabels}</div>
+    ${vettedBadge}
+    ${restaurantPriceHTML(r.priceLevel)}
+    ${r.address ? `<div class="restaurant-modal-address">📍 ${r.address}${r.zip ? `, ${r.zip}` : ''}</div>` : ''}
+    ${r.knownFor ? `<div class="restaurant-modal-known-for">${r.knownFor}</div>` : ''}
+    ${r.hours ? `<div class="restaurant-modal-hours">🕒 ${r.hours}</div>` : ''}
+    ${r.tip ? `<div class="restaurant-modal-tip"><span class="restaurant-modal-tip-label">🍽️ What to order</span>${r.tip}</div>` : ''}`;
+
+  document.getElementById('restaurant-modal').classList.add('open');
+  lucide.createIcons();
+}
+
+function closeRestaurantModal() {
+  document.getElementById('restaurant-modal').classList.remove('open');
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeRestaurantModal();
+});
 
 async function nominatimSearch(params) {
   const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&${params}`;
@@ -4339,10 +4412,11 @@ async function handleRestaurantSearch(e) {
 
   matches.sort((a, b) => a.distance - b.distance);
   const displayResults = matches.map(r => ({ ...r, distance: Math.round(r.distance * 10) / 10 }));
+  lastRestaurantResults = displayResults;
 
   resultsEl.innerHTML = `
     <div class="restaurant-results-label">${displayResults.length} spot${displayResults.length === 1 ? '' : 's'} near ${geo.label}</div>
-    <div class="restaurant-grid">${displayResults.map(restaurantCardHTML).join('')}</div>`;
+    <div class="restaurant-grid">${displayResults.map((r, i) => restaurantCardHTML(r, i)).join('')}</div>`;
 }
 
 initRestaurantTool();

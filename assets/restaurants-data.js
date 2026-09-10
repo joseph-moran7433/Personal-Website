@@ -44,6 +44,17 @@
 //                restaurant is being sourced independently — if
 //                Joseph names a restaurant himself, it's "personal"
 //                regardless of its public rating.
+//
+// Optional fields, shown in the click-to-expand detail modal (all
+// three are omitted from most existing entries — the frontend just
+// skips whatever's missing):
+//   address    — street address, shown above the zip in the modal.
+//   priceLevel — 1-5 integer, rendered as filled/empty $ marks.
+//   tip        — a specific recommendation (what to order, an
+//                off-menu item, a reservation trick). Mostly makes
+//                sense on "personal" entries, where it's Joseph's own
+//                tip, but nothing stops a "vetted" entry from having
+//                one if a standout dish came up during sourcing.
 // ─────────────────────────────────────────────────────────────────
 
 const RESTAURANT_CUISINE_OPTIONS = [
@@ -5377,5 +5388,110 @@ const restaurants = [
     hours: "Closed varies, opens 11am (varies)",
     knownFor: "Best food in OKC, refined Southwestern bistro",
     lat: 35.491, lon: -97.5196, city: "Oklahoma City", state: "OK"
+  },
+  {
+    name: "Addison by William Bradley", zip: "92130", cuisines: ["french"],
+    source: "personal",
+    address: "5200 Grand Del Mar Way",
+    priceLevel: 5,
+    tip: "Get the tuna — the best tuna dish I've ever had, anywhere.",
+    mealTypes: ["dinner"],
+    hours: "Dinner nightly, opens 5pm (reservations required)",
+    knownFor: "3 Michelin stars — New French fine dining inside the Fairmont Grand Del Mar. Went with Wendy and Grace; beautiful food.",
+    lat: 32.9555, lon: -117.2252, city: "San Diego", state: "CA"
+  },
+  {
+    name: "Mélisse", zip: "90401", cuisines: ["french"],
+    source: "personal",
+    address: "1104 Wilshire Blvd",
+    priceLevel: 5,
+    mealTypes: ["dinner"],
+    hours: "Dinner nightly, opens 5:30pm (reservations required)",
+    knownFor: "2 Michelin stars — modern French gastronomy. Been several times with Wendy and clients.",
+    lat: 34.0176, lon: -118.4907, city: "Santa Monica", state: "CA"
+  },
+  {
+    name: "Spago", zip: "90210", cuisines: ["american"],
+    source: "personal",
+    address: "176 N Canon Dr",
+    priceLevel: 5,
+    mealTypes: ["dinner"],
+    hours: "Dinner nightly, opens 5:30pm (reservations required)",
+    knownFor: "Wolfgang Puck's flagship — 2 Michelin stars. Been there with many clients.",
+    lat: 34.0901, lon: -118.4065, city: "Beverly Hills", state: "CA"
+  },
+  {
+    name: "CUT by Wolfgang Puck", zip: "90212", cuisines: ["american"],
+    source: "personal",
+    address: "9500 Wilshire Blvd",
+    priceLevel: 5,
+    mealTypes: ["dinner"],
+    hours: "Dinner nightly, opens 5:30pm (reservations required)",
+    knownFor: "Wolfgang Puck steakhouse inside the Beverly Wilshire Hotel — he used to walk between here and Spago during service.",
+    lat: 34.0619, lon: -118.3995, city: "Beverly Hills", state: "CA"
+  },
+  {
+    name: "Mr Chow", zip: "90210", cuisines: ["asian"],
+    source: "personal",
+    address: "344 N Camden Dr",
+    priceLevel: 5,
+    tip: "The garlic noodles are the best-known dish, but ask for the tofu dumplings — they're off the printed menu.",
+    mealTypes: ["dinner"],
+    hours: "Dinner nightly, opens 5:30pm (reservations required)",
+    knownFor: "Famous for its secret kitchen and family recipes; the chicken satay is the best in the world. There's a great documentary about the founder. Used to go on Valentine's Day and for client lunches and dinners.",
+    lat: 34.0901, lon: -118.4065, city: "Beverly Hills", state: "CA"
+  },
+  {
+    name: "Matsuhisa", zip: "90211", cuisines: ["asian"],
+    source: "personal",
+    address: "129 N La Cienega Blvd",
+    priceLevel: 5,
+    tip: "Order the black cod — it's the dish that made this place famous.",
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, opens 11:45am (reservations recommended)",
+    knownFor: "Chef Nobu Matsuhisa's original restaurant — a distinct, separate brand from the Nobu chain. Legendary sushi.",
+    lat: 34.0652, lon: -118.383, city: "Beverly Hills", state: "CA"
+  },
+  {
+    name: "Nick + Stef's Steakhouse", zip: "90071", cuisines: ["american"],
+    source: "personal",
+    address: "330 S Hope St",
+    priceLevel: 4,
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, opens 11:30am",
+    knownFor: "Best steakhouse in Downtown LA other than CUT — usually with TV execs.",
+    lat: 34.0529, lon: -118.2549, city: "Los Angeles", state: "CA"
+  },
+  {
+    name: "Lawry's The Prime Rib", zip: "90211", cuisines: ["american"],
+    source: "personal",
+    address: "100 N La Cienega Blvd",
+    priceLevel: 3,
+    tip: "Pick your own cut and doneness when they carve it tableside — that's the whole point.",
+    mealTypes: ["dinner"],
+    hours: "Dinner nightly, opens 4:30pm",
+    knownFor: "The most famous prime rib in the country. Carved tableside, then they spin a salad bowl and pour in their famous dressing.",
+    lat: 34.0652, lon: -118.383, city: "Beverly Hills", state: "CA"
+  },
+  {
+    name: "Mastro's Steakhouse", zip: "90210", cuisines: ["american"],
+    source: "personal",
+    address: "246 N Canon Dr",
+    priceLevel: 5,
+    mealTypes: ["dinner"],
+    hours: "Dinner nightly, opens 5pm",
+    knownFor: "Beverly Hills steak-and-lobster institution — one of the original locations, before it grew into a nationwide chain.",
+    lat: 34.0901, lon: -118.4065, city: "Beverly Hills", state: "CA"
+  },
+  {
+    name: "The Apple Pan", zip: "90064", cuisines: ["american"],
+    source: "personal",
+    address: "10801 W Pico Blvd",
+    priceLevel: 1,
+    tip: "Get a Hickory Burger, and don't skip the pie — Banana Cream is the best in the city.",
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, opens 11am",
+    knownFor: "LA's most famous burger counter since 1947 — counter service only, no reservations, you wait for a seat. Even got its own SNL skit.",
+    lat: 34.0353, lon: -118.4259, city: "Los Angeles", state: "CA"
   }
 ];

@@ -4738,5 +4738,644 @@ const restaurants = [
     hours: "Closed Sun, opens 12pm (varies)",
     knownFor: "Turkish-run Mediterranean grill, baklava and Turkish coffee",
     lat: 44.484, lon: -73.2199, city: "Burlington", state: "VT"
+  },
+  {
+    name: "Jerry's Cakes & Donuts", zip: "57701", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 848, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Closed varies, opens 5am (varies)",
+    knownFor: "Family-run donuts, muffins, and custom cakes",
+    lat: 44.1415, lon: -103.2052, city: "Rapid City", state: "SD"
+  },
+  {
+    name: "Ironwood Steakhouse", zip: "57104", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 467, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 10pm (varies)",
+    knownFor: "Upscale-casual gourmet steakhouse",
+    lat: 43.5514, lon: -96.7375, city: "Sioux Falls", state: "SD"
+  },
+  {
+    name: "Minervas Restaurant", zip: "57104", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 2212, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Upmarket American dining since 1977, salad bar",
+    lat: 43.5514, lon: -96.7375, city: "Sioux Falls", state: "SD"
+  },
+  {
+    name: "Blarney Stone Pub - Sioux Falls", zip: "57104", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 2846, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 10pm (varies)",
+    knownFor: "Irish pub with grub and old-world charm",
+    lat: 43.5514, lon: -96.7375, city: "Sioux Falls", state: "SD"
+  },
+  {
+    name: "Roots of Brasil", zip: "57104", cuisines: ["latin"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 633, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "Brazilian steakhouse, hidden gem of Sioux Falls",
+    lat: 43.5514, lon: -96.7375, city: "Sioux Falls", state: "SD"
+  },
+  {
+    name: "Fantasy Donuts", zip: "39531", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 429, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Closed varies, opens 4:30am (varies)",
+    knownFor: "Fresh-baked donuts and kolaches daily",
+    lat: 30.4033, lon: -88.9605, city: "Biloxi", state: "MS"
+  },
+  {
+    name: "Chukis Deli Mexicano", zip: "38654", cuisines: ["mexican"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 327, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 10am (varies)",
+    knownFor: "Mexican deli near Memphis, tortas and birria",
+    lat: 34.9441, lon: -89.8544, city: "Olive Branch", state: "MS"
+  },
+  {
+    name: "The Pig & Pint", zip: "39216", cuisines: ["bbq"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 2994, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Creative BBQ and craft beer",
+    lat: 32.3386, lon: -90.1708, city: "Jackson", state: "MS"
+  },
+  {
+    name: "Boondocks", zip: "39202", cuisines: ["bbq"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 252, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 10pm (varies)",
+    knownFor: "Fall-off-the-bone ribs and brisket",
+    lat: 32.3149, lon: -90.1782, city: "Jackson", state: "MS"
+  },
+  {
+    name: "BRAVO! Italian Restaurant & Bar", zip: "39211", cuisines: ["italian"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 737, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9:30pm (varies)",
+    knownFor: "Stylish, upbeat Italian trattoria",
+    lat: 32.3739, lon: -90.1293, city: "Jackson", state: "MS"
+  },
+  {
+    name: "Congdon's Doughnuts", zip: "04090", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 4255, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Closed varies, opens hours vary",
+    knownFor: "Iconic handmade donuts and brunch cocktails since 1955",
+    lat: 43.3144, lon: -70.5969, city: "Wells", state: "ME"
+  },
+  {
+    name: "Li's Place", zip: "04032", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 308, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "Home-style Chinese food, no indoor seating",
+    lat: 43.857, lon: -70.1031, city: "Freeport", state: "ME"
+  },
+  {
+    name: "Central Provisions", zip: "04101", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1797, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "Eclectic small plates and cocktails",
+    lat: 43.6606, lon: -70.2589, city: "Portland", state: "ME"
+  },
+  {
+    name: "Fore Street Restaurant", zip: "04101", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 2166, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 4:30pm (varies)",
+    knownFor: "Acclaimed farm-to-table wood-fired cooking",
+    lat: 43.6606, lon: -70.2589, city: "Portland", state: "ME"
+  },
+  {
+    name: "Twelve", zip: "04101", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 823, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 5pm (varies)",
+    knownFor: "Upscale destination dining",
+    lat: 43.6606, lon: -70.2589, city: "Portland", state: "ME"
+  },
+  {
+    name: "Sandy's Donuts & Coffee Shop", zip: "58078", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1174, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Closed varies, opens 6am (varies)",
+    knownFor: "10,000+ donuts a day, 75 varieties",
+    lat: 46.8907, lon: -96.9258, city: "West Fargo", state: "ND"
+  },
+  {
+    name: "Mezzaluna", zip: "58102", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 863, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 10pm (varies)",
+    knownFor: "Upscale-casual gourmet eats, huge portions",
+    lat: 46.9209, lon: -96.8318, city: "Fargo", state: "ND"
+  },
+  {
+    name: "Würst Bier Hall Downtown", zip: "58102", cuisines: ["german"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 2314, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "German sausages and brews",
+    lat: 46.9209, lon: -96.8318, city: "Fargo", state: "ND"
+  },
+  {
+    name: "ThaiKota", zip: "58102", cuisines: ["thai"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 447, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "Best fried rice in Fargo",
+    lat: 46.9209, lon: -96.8318, city: "Fargo", state: "ND"
+  },
+  {
+    name: "New Hampshire Doughnut Co.", zip: "03301", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 201, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Closed varies, opens 7:30am (varies)",
+    knownFor: "Custom-decorated yeast-raised donuts",
+    lat: 43.2185, lon: -71.5277, city: "Concord", state: "NH"
+  },
+  {
+    name: "California Burritos", zip: "03060", cuisines: ["mexican"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1730, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "Mexican and Salvadoran counter-serve",
+    lat: 42.7564, lon: -71.4667, city: "Nashua", state: "NH"
+  },
+  {
+    name: "Cotton Restaurant", zip: "03101", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1430, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 5pm (varies)",
+    knownFor: "Hip, acclaimed New American kitchen",
+    lat: 42.9929, lon: -71.4633, city: "Manchester", state: "NH"
+  },
+  {
+    name: "Hanover Street Chophouse", zip: "03101", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1114, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 5pm (varies)",
+    knownFor: "Urbane steakhouse with deep wine list",
+    lat: 42.9929, lon: -71.4633, city: "Manchester", state: "NH"
+  },
+  {
+    name: "Deckhand Dave's Fish Tacos", zip: "99801", cuisines: ["seafood"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 1421, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Salmon, rockfish, and halibut Mexican-style tacos",
+    lat: 58.3628, lon: -134.5294, city: "Juneau", state: "AK"
+  },
+  {
+    name: "Club Paris", zip: "99501", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1893, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 10pm (varies)",
+    knownFor: "Long-running old-school steakhouse",
+    lat: 61.2116, lon: -149.8761, city: "Anchorage", state: "AK"
+  },
+  {
+    name: "49th State Brewing - Anchorage", zip: "99501", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 11752, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 11pm (varies)",
+    knownFor: "Upbeat spot for housemade beer and bites",
+    lat: 61.2116, lon: -149.8761, city: "Anchorage", state: "AK"
+  },
+  {
+    name: "Kincaid Grill", zip: "99502", cuisines: ["seafood"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 587, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "New American cuisine with seafood and game",
+    lat: 61.1661, lon: -149.96, city: "Anchorage", state: "AK"
+  },
+  {
+    name: "Firehole Bar-B-Que Co.", zip: "59758", cuisines: ["bbq"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 2934, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Seasonal, daily until sold out",
+    knownFor: "Smoked meats near Yellowstone's west entrance",
+    lat: 44.9125, lon: -111.186, city: "West Yellowstone", state: "MT"
+  },
+  {
+    name: "Bitterroot Bistro", zip: "59715", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 346, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 10pm (varies)",
+    knownFor: "Fine dining in downtown Bozeman",
+    lat: 45.6693, lon: -111.0431, city: "Bozeman", state: "MT"
+  },
+  {
+    name: "Brigade", zip: "59715", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1223, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Downtown Bozeman American dining",
+    lat: 45.6693, lon: -111.0431, city: "Bozeman", state: "MT"
+  },
+  {
+    name: "Montana Ale Works", zip: "59715", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 4329, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Upscale pub grub and 40+ draft beers",
+    lat: 45.6693, lon: -111.0431, city: "Bozeman", state: "MT"
+  },
+  {
+    name: "Casa Azul Taquería", zip: "02905", cuisines: ["mexican"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 622, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "Frida Kahlo-themed taqueria, birria and vegan tacos",
+    lat: 41.7845, lon: -71.3959, city: "Providence", state: "RI"
+  },
+  {
+    name: "Glaze 'n Daze Donuts", zip: "02919", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 444, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Closed varies, opens hours vary",
+    knownFor: "Gourmet donuts with creative toppings",
+    lat: 41.8274, lon: -71.52, city: "Johnston", state: "RI"
+  },
+  {
+    name: "Los Andes", zip: "02908", cuisines: ["latin"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 5322, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 5pm (varies)",
+    knownFor: "Bolivian meat, ceviche, and cocktails",
+    lat: 41.8383, lon: -71.4377, city: "Providence", state: "RI"
+  },
+  {
+    name: "Bayberry Garden Restaurant", zip: "02903", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 502, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11:30am (varies)",
+    knownFor: "Casual shared plates and drinks",
+    lat: 41.82, lon: -71.4158, city: "Providence", state: "RI"
+  },
+  {
+    name: "Maria's Taqueria", zip: "25443", cuisines: ["mexican"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 870, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens hours vary",
+    knownFor: "Colorful taqueria with chalkboard menu and canned craft beer",
+    lat: 39.4311, lon: -77.8158, city: "Shepherdstown", state: "WV"
+  },
+  {
+    name: "1010 Bridge", zip: "25301", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 552, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 4pm (varies)",
+    knownFor: "Fresh, quality American fare, top spot in Charleston",
+    lat: 38.349, lon: -81.6306, city: "Charleston", state: "WV"
+  },
+  {
+    name: "Hale House", zip: "25301", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 735, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 4pm (varies)",
+    knownFor: "One of the better dining experiences in WV",
+    lat: 38.349, lon: -81.6306, city: "Charleston", state: "WV"
+  },
+  {
+    name: "Laury's Restaurant", zip: "25304", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 445, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 5pm (varies)",
+    knownFor: "Contemporary American food with a view",
+    lat: 38.3173, lon: -81.5903, city: "Charleston", state: "WV"
+  },
+  {
+    name: "Pour Decisions", zip: "82001", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1332, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Best food and service in Cheyenne, casual grill",
+    lat: 41.1437, lon: -104.7962, city: "Cheyenne", state: "WY"
+  },
+  {
+    name: "L'Osteria Mondello", zip: "82001", cuisines: ["italian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1017, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "Cozy Italian bistro and pizzeria",
+    lat: 41.1437, lon: -104.7962, city: "Cheyenne", state: "WY"
+  },
+  {
+    name: "A Little Taste of Texas", zip: "82001", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 549, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 12pm (varies)",
+    knownFor: "Best food and service in Cheyenne",
+    lat: 41.1437, lon: -104.7962, city: "Cheyenne", state: "WY"
+  },
+  {
+    name: "Percy", zip: "83702", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 608, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9:30pm (varies)",
+    knownFor: "One of Boise's favorite dining rooms",
+    lat: 43.6322, lon: -116.2052, city: "Boise", state: "ID"
+  },
+  {
+    name: "Stardust", zip: "83702", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1639, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 10am (varies)",
+    knownFor: "One of Boise's best burgers",
+    lat: 43.6322, lon: -116.2052, city: "Boise", state: "ID"
+  },
+  {
+    name: "Alyonka Russian Cuisine", zip: "83702", cuisines: ["eastern-european"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 1010, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Quaint kitchen for Russian staples",
+    lat: 43.6322, lon: -116.2052, city: "Boise", state: "ID"
+  },
+  {
+    name: "La Fia Bistro", zip: "19801", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 476, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 5pm (varies)",
+    knownFor: "Artisanal bistro fare and sidewalk seating",
+    lat: 39.7378, lon: -75.5497, city: "Wilmington", state: "DE"
+  },
+  {
+    name: "DORCEA", zip: "19801", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 347, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 4pm (varies)",
+    knownFor: "Warm bistro with beer and casual bites",
+    lat: 39.7378, lon: -75.5497, city: "Wilmington", state: "DE"
+  },
+  {
+    name: "Snuff Mill Restaurant, Butchery & Wine Bar", zip: "19803", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 949, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11:30am (varies)",
+    knownFor: "Upscale restaurant and butchery",
+    lat: 39.7994, lon: -75.5317, city: "Wilmington", state: "DE"
+  },
+  {
+    name: "Au Courant Regional Kitchen", zip: "68104", cuisines: ["french"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 496, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 5pm (varies)",
+    knownFor: "Charming bistro for fine European fare",
+    lat: 41.2919, lon: -95.9999, city: "Omaha", state: "NE"
+  },
+  {
+    name: "Gather in Omaha for Food & Drink", zip: "68102", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 738, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 5pm (varies)",
+    knownFor: "Best food and service in Omaha",
+    lat: 41.259, lon: -95.9409, city: "Omaha", state: "NE"
+  },
+  {
+    name: "Ooh De Lally", zip: "68132", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 278, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "Highly rated Omaha dining room",
+    lat: 41.2657, lon: -95.996, city: "Omaha", state: "NE"
+  },
+  {
+    name: "Mesa Provisions", zip: "87106", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 505, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Some of the best food in all of Albuquerque",
+    lat: 35.079, lon: -106.6169, city: "Albuquerque", state: "NM"
+  },
+  {
+    name: "Campo at Los Poblanos", zip: "87107", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 2527, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Elegant farm-to-table dining at a historic ranch",
+    lat: 35.1347, lon: -106.6427, city: "Albuquerque", state: "NM"
+  },
+  {
+    name: "Antiquity Restaurant", zip: "87104", cuisines: ["steakhouse"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1204, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes hours vary",
+    knownFor: "Romantic chophouse in Old Town",
+    lat: 35.1038, lon: -106.6712, city: "Albuquerque", state: "NM"
+  },
+  {
+    name: "Georges French Bistro", zip: "67208", cuisines: ["french"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1983, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 10pm (varies)",
+    knownFor: "Classic French fare and cocktails",
+    lat: 37.7024, lon: -97.2811, city: "Wichita", state: "KS"
+  },
+  {
+    name: "Lottē", zip: "67202", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 405, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 10pm (varies)",
+    knownFor: "Best food in Wichita",
+    lat: 37.6899, lon: -97.3355, city: "Wichita", state: "KS"
+  },
+  {
+    name: "The Belmont", zip: "67202", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 900, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes hours vary",
+    knownFor: "Popular downtown Wichita dining room",
+    lat: 37.6899, lon: -97.3355, city: "Wichita", state: "KS"
+  },
+  {
+    name: "Hen of the Wood - Burlington", zip: "05401", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1429, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 4pm (varies)",
+    knownFor: "Stylish farm-to-table restaurant",
+    lat: 44.484, lon: -73.2199, city: "Burlington", state: "VT"
+  },
+  {
+    name: "Frankie's", zip: "05401", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 248, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 5pm (varies)",
+    knownFor: "Fantastic addition to Burlington's food scene",
+    lat: 44.484, lon: -73.2199, city: "Burlington", state: "VT"
+  },
+  {
+    name: "Honey Road", zip: "05401", cuisines: ["mediterranean"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 994, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 4pm (varies)",
+    knownFor: "Mediterranean tapas in a relaxed tavern",
+    lat: 44.484, lon: -73.2199, city: "Burlington", state: "VT"
+  },
+  {
+    name: "Lachele's Fine Foods", zip: "50312", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 1328, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "Some of the best burgers and hot dogs in Des Moines",
+    lat: 41.5855, lon: -93.6719, city: "Des Moines", state: "IA"
+  },
+  {
+    name: "Simon's", zip: "50310", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 1978, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 5pm (varies)",
+    knownFor: "Refined American and Italian fare",
+    lat: 41.6255, lon: -93.6736, city: "Des Moines", state: "IA"
+  },
+  {
+    name: "801 Chophouse", zip: "50309", cuisines: ["steakhouse"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1349, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 10pm (varies)",
+    knownFor: "Polished spot for steaks, seafood, and wine",
+    lat: 41.5887, lon: -93.6212, city: "Des Moines", state: "IA"
+  },
+  {
+    name: "Chez Fonfon", zip: "35205", cuisines: ["french"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 1002, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "French bistro with boules court",
+    lat: 33.4951, lon: -86.8059, city: "Birmingham", state: "AL"
+  },
+  {
+    name: "Bottega", zip: "35205", cuisines: ["italian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1087, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "Italian specialties in a suave space",
+    lat: 33.4951, lon: -86.8059, city: "Birmingham", state: "AL"
+  },
+  {
+    name: "Cochon Restaurant", zip: "70130", cuisines: ["cajun"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 10685, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 10pm (varies)",
+    knownFor: "Acclaimed spot for pork and Cajun fare",
+    lat: 29.9324, lon: -90.0739, city: "New Orleans", state: "LA"
+  },
+  {
+    name: "August", zip: "70130", cuisines: ["cajun"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1466, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens hours vary",
+    knownFor: "Elegant French-Louisianan fine dining",
+    lat: 29.9324, lon: -90.0739, city: "New Orleans", state: "LA"
+  },
+  {
+    name: "Swingin' Door Exchange", zip: "53202", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 2667, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, late-night hours",
+    knownFor: "Intimate saloon-style bar and grill",
+    lat: 43.0506, lon: -87.8968, city: "Milwaukee", state: "WI"
+  },
+  {
+    name: "Sanford", zip: "53202", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 601, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 5:30pm (varies)",
+    knownFor: "Upscale New American fare in chic digs",
+    lat: 43.0506, lon: -87.8968, city: "Milwaukee", state: "WI"
+  },
+  {
+    name: "Valter's Osteria", zip: "84101", cuisines: ["italian"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1881, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 10pm (varies)",
+    knownFor: "Loftlike, upscale Italian restaurant and bar",
+    lat: 40.7559, lon: -111.8967, city: "Salt Lake City", state: "UT"
+  },
+  {
+    name: "Cheever's Cafe", zip: "73103", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 2943, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed varies, opens 11am (varies)",
+    knownFor: "Best food in OKC, refined Southwestern bistro",
+    lat: 35.491, lon: -97.5196, city: "Oklahoma City", state: "OK"
   }
 ];

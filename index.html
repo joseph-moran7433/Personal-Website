@@ -1342,6 +1342,10 @@
       background: rgba(217,96,63,0.1); border: 1px solid rgba(217,96,63,0.25);
       border-radius: 2rem; padding: 0.25rem 0.65rem; margin-bottom: 0.6rem;
     }
+    .restaurant-card-recognition {
+      font-size: 0.78rem; font-weight: 700; color: var(--rf-basil-deep);
+      margin-top: -0.3rem; margin-bottom: 0.6rem;
+    }
 
     /* Restaurant detail modal — twin of #recipe-modal, opened by clicking a card. */
     #restaurant-modal { position: fixed; inset: 0; z-index: 200; display: none; align-items: flex-start; justify-content: center; padding: 4rem 1.5rem; overflow-y: auto; font-family: var(--font-body-fun); }
@@ -1954,6 +1958,10 @@
       <div class="recipe-form-row">
         <label class="recipe-form-label">⏰ Meal <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional — leave every box unchecked for anything)</span></label>
         <div class="checkbox-pills" id="restaurant-meal-pills"></div>
+      </div>
+      <div class="recipe-form-row">
+        <label class="recipe-form-label">🍽️ Style <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional — leave every box unchecked for anything)</span></label>
+        <div class="checkbox-pills" id="restaurant-style-pills"></div>
       </div>
       <div class="recipe-form-row">
         <label class="recipe-form-label">🌍 Cuisine <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional — leave every box unchecked for anything)</span></label>
@@ -4251,18 +4259,31 @@ function resetScenery() {
 
 function initRestaurantTool() {
   buildCheckboxPills('restaurant-meal-pills', RESTAURANT_MEAL_OPTIONS, 'restaurant-meal');
+  buildCheckboxPills('restaurant-style-pills', RESTAURANT_STYLE_OPTIONS, 'restaurant-style');
   buildCheckboxPills('restaurant-cuisine-pills', RESTAURANT_CUISINE_OPTIONS, 'restaurant-cuisine');
+}
+
+// Vetted badge: shows the James Beard recognition line when present (award is the
+// stronger quality signal), falling back to the star-rating line otherwise.
+function restaurantVettedBadgeHTML(r) {
+  if (r.source !== 'vetted' || !r.vetting) return '';
+  const ratingLine = `★ ${r.vetting.rating} (${r.vetting.reviewCount} on ${r.vetting.platform || 'Yelp'})`;
+  const recognitionLine = r.recognition ? `<div class="restaurant-card-recognition">🏅 ${r.recognition}</div>` : '';
+  return `<div class="restaurant-card-vetted-badge">${ratingLine} · Not personally visited</div>${recognitionLine}`;
+}
+
+function restaurantStyleLabel(r) {
+  return (RESTAURANT_STYLE_OPTIONS.find(o => o.value === r.diningStyle) || {}).label || '';
 }
 
 function restaurantCardHTML(r, i) {
   const cuisineLabels = r.cuisines.map(c => (RESTAURANT_CUISINE_OPTIONS.find(o => o.value === c) || {}).label || c).join(', ');
-  const vettedBadge = r.source === 'vetted' && r.vetting
-    ? `<div class="restaurant-card-vetted-badge">★ ${r.vetting.rating} (${r.vetting.reviewCount} on ${r.vetting.platform || 'Yelp'}) · Not personally visited</div>`
-    : '';
+  const vettedBadge = restaurantVettedBadgeHTML(r);
+  const styleLabel = restaurantStyleLabel(r);
   return `
     <div class="restaurant-card" onclick="openRestaurantModal(${i})">
       <div class="restaurant-card-name">${r.name}</div>
-      <div class="restaurant-card-meta">${r.city ? `${r.city}, ${r.state} · ` : ''}${r.distance} mi away · ${cuisineLabels}</div>
+      <div class="restaurant-card-meta">${r.city ? `${r.city}, ${r.state} · ` : ''}${r.distance} mi away · ${cuisineLabels}${styleLabel ? ` · ${styleLabel}` : ''}</div>
       ${vettedBadge}
       ${r.knownFor ? `<div class="restaurant-card-known-for">${r.knownFor}</div>` : ''}
       ${r.hours ? `<div class="restaurant-card-hours">🕒 ${r.hours}</div>` : ''}
@@ -4286,13 +4307,12 @@ function openRestaurantModal(i) {
   const r = lastRestaurantResults[i];
   if (!r) return;
   const cuisineLabels = r.cuisines.map(c => (RESTAURANT_CUISINE_OPTIONS.find(o => o.value === c) || {}).label || c).join(', ');
-  const vettedBadge = r.source === 'vetted' && r.vetting
-    ? `<div class="restaurant-card-vetted-badge">★ ${r.vetting.rating} (${r.vetting.reviewCount} on ${r.vetting.platform || 'Yelp'}) · Not personally visited</div>`
-    : '';
+  const vettedBadge = restaurantVettedBadgeHTML(r);
+  const styleLabel = restaurantStyleLabel(r);
 
   document.getElementById('restaurant-modal-content').innerHTML = `
     <h2 class="restaurant-modal-title">${r.name}</h2>
-    <div class="restaurant-modal-meta">${r.city ? `${r.city}, ${r.state} · ` : ''}${r.distance} mi away · ${cuisineLabels}</div>
+    <div class="restaurant-modal-meta">${r.city ? `${r.city}, ${r.state} · ` : ''}${r.distance} mi away · ${cuisineLabels}${styleLabel ? ` · ${styleLabel}` : ''}</div>
     ${vettedBadge}
     ${restaurantPriceHTML(r.priceLevel)}
     ${r.address ? `<div class="restaurant-modal-address">📍 ${r.address}${r.zip ? `, ${r.zip}` : ''}</div>` : ''}
@@ -4367,6 +4387,7 @@ async function handleRestaurantSearch(e) {
   e.preventDefault();
   const rawInput = document.getElementById('restaurant-search-zip').value;
   const meals = Array.from(document.querySelectorAll('#restaurant-meal-pills input:checked')).map(el => el.value);
+  const styles = Array.from(document.querySelectorAll('#restaurant-style-pills input:checked')).map(el => el.value);
   const cuisines = Array.from(document.querySelectorAll('#restaurant-cuisine-pills input:checked')).map(el => el.value);
   const resultsEl = document.getElementById('restaurant-results');
 
@@ -4401,8 +4422,9 @@ async function handleRestaurantSearch(e) {
 
   const matches = nearby.filter(r => {
     const mealOK = meals.length === 0 || r.mealTypes.some(m => meals.includes(m));
+    const styleOK = styles.length === 0 || styles.includes(r.diningStyle);
     const cuisineOK = cuisines.length === 0 || r.cuisines.some(c => cuisines.includes(c));
-    return mealOK && cuisineOK;
+    return mealOK && styleOK && cuisineOK;
   });
 
   if (matches.length === 0) {

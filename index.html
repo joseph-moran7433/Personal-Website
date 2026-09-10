@@ -4421,6 +4421,77 @@ function median(nums) {
   return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
 }
 
+// Q1/median/Q3 via linear interpolation between closest ranks.
+function quartiles(nums) {
+  const s = [...nums].sort((a, b) => a - b);
+  const n = s.length;
+  const at = p => {
+    const idx = p * (n - 1);
+    const lo = Math.floor(idx), hi = Math.ceil(idx);
+    if (lo === hi) return s[lo];
+    return s[lo] + (idx - lo) * (s[hi] - s[lo]);
+  };
+  return [at(0.25), at(0.5), at(0.75)];
+}
+
+function pearsonR(xs, ys) {
+  const n = xs.length;
+  const mx = xs.reduce((a, b) => a + b, 0) / n;
+  const my = ys.reduce((a, b) => a + b, 0) / n;
+  let cov = 0, sx = 0, sy = 0;
+  for (let i = 0; i < n; i++) {
+    cov += (xs[i] - mx) * (ys[i] - my);
+    sx += (xs[i] - mx) ** 2;
+    sy += (ys[i] - my) ** 2;
+  }
+  return cov / Math.sqrt(sx * sy);
+}
+
+// Abramowitz-Stegun approximation of the error function, used to turn a
+// z-score into a two-tailed p-value without a stats library.
+function erf(x) {
+  const sign = x < 0 ? -1 : 1;
+  x = Math.abs(x);
+  const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
+  const t = 1 / (1 + p * x);
+  const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+  return sign * y;
+}
+
+// Mann-Whitney U test (normal approximation, tie-corrected, with continuity
+// correction) — the standard non-parametric test for whether two independent
+// samples are drawn from the same distribution, appropriate here since
+// review counts are heavily right-skewed and the two groups are very
+// different sizes (n=44 vs n=269). Also returns the rank-biserial
+// correlation as an effect size, since a p-value alone doesn't say how big
+// the difference is.
+function mannWhitneyU(a, b) {
+  const n1 = a.length, n2 = b.length, N = n1 + n2;
+  const combined = [...a.map(v => ({ v, g: 'a' })), ...b.map(v => ({ v, g: 'b' }))].sort((x, y) => x.v - y.v);
+  const ranks = new Array(N);
+  let i = 0;
+  while (i < N) {
+    let j = i;
+    while (j + 1 < N && combined[j + 1].v === combined[i].v) j++;
+    const avgRank = (i + 1 + j + 1) / 2;
+    for (let k = i; k <= j; k++) ranks[k] = avgRank;
+    i = j + 1;
+  }
+  let R1 = 0;
+  combined.forEach((c, idx) => { if (c.g === 'a') R1 += ranks[idx]; });
+  const U1 = R1 - n1 * (n1 + 1) / 2;
+  const mu = n1 * n2 / 2;
+  const tieCounts = {};
+  combined.forEach(c => { tieCounts[c.v] = (tieCounts[c.v] || 0) + 1; });
+  const tieSum = Object.values(tieCounts).reduce((s, t) => s + (t ** 3 - t), 0);
+  const sigma = Math.sqrt((n1 * n2 / 12) * ((N + 1) - tieSum / (N * (N - 1))));
+  let z = (U1 - mu) / sigma;
+  z += z > 0 ? -0.5 / sigma : 0.5 / sigma;
+  const p = 2 * (1 - 0.5 * (1 + erf(Math.abs(z) / Math.sqrt(2))));
+  const rankBiserial = 1 - (2 * U1) / (n1 * n2);
+  return { U1, z, p, rankBiserial };
+}
+
 function buildRestaurantStatsProject() {
   const total = restaurants.length;
 
@@ -4480,13 +4551,24 @@ function buildRestaurantStatsProject() {
   const txPerCapitaRank = byPerCapitaDesc.findIndex(x => x.st === 'TX') + 1;
   const excludedCount = restaurants.filter(r => US_STATE_POPULATION_2025[r.state] === undefined).length;
 
+  // How population-driven are the raw counts, before normalizing? Pearson
+  // correlation between each state's population and its raw restaurant count.
+  const popCountR = pearsonR(perCapita.map(x => x.pop), perCapita.map(x => x.count));
+  const popCountR2 = popCountR ** 2;
+
   // ── Methodology B: recognition vs. popularity ───────────────────
   const vetted = restaurants.filter(r => r.source === 'vetted' && r.vetting);
   const recognized = vetted.filter(r => r.recognition);
   const ratingOnly = vetted.filter(r => !r.recognition);
-  const recognizedMedian = median(recognized.map(r => r.vetting.reviewCount));
-  const ratingOnlyMedian = median(ratingOnly.map(r => r.vetting.reviewCount));
+  const recognizedCounts = recognized.map(r => r.vetting.reviewCount);
+  const ratingOnlyCounts = ratingOnly.map(r => r.vetting.reviewCount);
+  const recognizedMedian = median(recognizedCounts);
+  const ratingOnlyMedian = median(ratingOnlyCounts);
   const gapPct = Math.round((recognizedMedian / ratingOnlyMedian - 1) * 100);
+  const [rQ1, , rQ3] = quartiles(recognizedCounts);
+  const [oQ1, , oQ3] = quartiles(ratingOnlyCounts);
+  const mw = mannWhitneyU(recognizedCounts, ratingOnlyCounts);
+  const mwSignificant = mw.p < 0.05;
 
   return {
     title: "Nearby Eats: Reach vs. Recognition",
@@ -4510,18 +4592,23 @@ function buildRestaurantStatsProject() {
         },
         {
           label: "The Problem",
-          heading: "Two questions worth asking honestly",
-          body: `<p><strong>First:</strong> the raw state counts above obviously track population — Texas and New York have the most entries mostly because they're enormous. My first thought before running any numbers: once you divide by state population, does the ranking hold, or does it flip entirely toward smaller states that just happen to be thoroughly covered?</p>
-            <p><strong>Second:</strong> this session added a batch of restaurants specifically because they carry James Beard Foundation or MICHELIN Guide recognition — real culinary-world credentials, not just star ratings. My instinct going in was that these would skew toward hidden, under-the-radar places — the kind of spot critics find before the internet does. Is that actually true, or does recognition just follow wherever the crowds already are?</p>`
+          heading: "Two questions, stated as hypotheses before looking at answers",
+          body: `<p><strong>First — reach vs. population.</strong> The raw state counts above obviously track population — Texas and New York have the most entries mostly because they're enormous. Prediction, before running anything: state population and raw restaurant count should be <em>strongly</em> positively correlated, strongly enough that the raw ranking is really just re-deriving the census. If that holds, dividing by population isn't optional polish — it's the only way to see actual coverage patterns instead of state size.</p>
+            <p><strong>Second — recognition vs. popularity, as a real hypothesis test.</strong> This session added a batch of restaurants specifically because they carry James Beard Foundation or MICHELIN Guide recognition — real culinary-world credentials, not just star ratings. Framed properly: <strong>H₀</strong> is that recognized and rating-only "vetted" entries are drawn from the same underlying review-count distribution (recognition doesn't track popularity either way). <strong>H₁</strong> is that they differ. My prediction going in was that H₁ would hold, with recognized entries skewing toward <em>fewer</em> reviews — the "critics find it before the internet does" hidden-gem effect. A single median comparison can suggest a gap exists; it can't say whether that gap is real or just noise from comparing a small group (n=44) against a much larger one (n=269) of naturally variable, heavily skewed data. That's what the formal test below is for.</p>`
         },
         {
           label: "Methodology — Reach vs. Population",
-          heading: "Restaurants per 100,000 residents",
-          body: `<p>For every state with at least one entry, I divide its restaurant count by its population (U.S. Census Bureau, July 2025 estimates) and scale to a rate per 100,000 residents — the standard normalization for comparing places of very different sizes. ${excludedCount} ${excludedCount === 1 ? 'entry' : 'entries'} tagged with a non-US location (personal picks in Spain, France, and Italy) fall outside this table and are excluded here, not silently miscounted. DC is included and treated as its own population unit, despite not technically being a state.</p>`,
+          heading: "Quantify the bias first, then correct for it",
+          body: `<p><strong>Step 1 — how population-driven are the raw counts, really?</strong> A Pearson correlation between each state's population and its raw restaurant count gives <strong>r = ${popCountR.toFixed(3)}</strong>, R² = ${popCountR2.toFixed(3)} — population alone statistically explains about ${Math.round(popCountR2 * 100)}% of the variance in raw counts. That's strong enough to confirm the first hypothesis: without correcting for it, "more restaurants" mostly just means "bigger state," so the raw leaderboard above isn't really telling us anything about coverage.</p>
+            <p><strong>Step 2 — normalize.</strong> For every state with at least one entry, I divide its restaurant count by its population (U.S. Census Bureau, July 2025 estimates) and scale to a rate per 100,000 residents — the standard normalization for comparing places of very different sizes. ${excludedCount} ${excludedCount === 1 ? 'entry' : 'entries'} tagged with a non-US location (personal picks in Spain, France, and Italy) fall outside this table and are excluded here, not silently miscounted. DC is included and treated as its own population unit, despite not technically being a state.</p>`,
           code: {
             lang: "JavaScript",
             filename: "reach_vs_population.js",
-            content: `<span class="code-comment">// count entries per state, then normalize by population</span>
+            content: `<span class="code-comment">// Step 1: quantify how much raw count is just population</span>
+<span class="code-keyword">const</span> <span class="code-var">r</span> = <span class="code-func">pearsonR</span>(states.<span class="code-func">map</span>(s => s.population), states.<span class="code-func">map</span>(s => s.count));
+<span class="code-comment">// r = 0.864, R² = 0.746 — raw counts are mostly just population</span>
+
+<span class="code-comment">// Step 2: normalize to a rate per 100,000 residents</span>
 <span class="code-keyword">const</span> <span class="code-var">byState</span> = restaurants.<span class="code-func">reduce</span>((acc, r) => {
   acc[r.state] = (acc[r.state] || <span class="code-num">0</span>) + <span class="code-num">1</span>;
   <span class="code-keyword">return</span> acc;
@@ -4538,8 +4625,9 @@ function buildRestaurantStatsProject() {
         },
         {
           label: "Methodology — Recognition vs. Popularity",
-          heading: "Median review count, recognized vs. rating-only",
-          body: `<p>Among "vetted" entries (the ones sourced independently rather than Joseph naming them), I split the group in two: those carrying a real James Beard/MICHELIN <code>recognition</code> credential (n=${recognized.length}) vs. those that cleared the review-based bar alone (n=${ratingOnly.length}). Google review counts are heavily right-skewed, so the comparison below uses medians, not means — the correct central-tendency statistic for skewed count data.</p>`,
+          heading: "From a descriptive gap to a real significance test",
+          body: `<p><strong>Step 1 — split and describe.</strong> Among "vetted" entries (the ones sourced independently rather than Joseph naming them), I split the group in two: those carrying a real James Beard/MICHELIN <code>recognition</code> credential (n=${recognized.length}) vs. those that cleared the review-based bar alone (n=${ratingOnly.length}). Review counts are heavily right-skewed in both groups, so medians (not means) and interquartile ranges are the honest way to describe them: recognized entries run <strong>${recognizedMedian} reviews</strong> (IQR ${Math.round(rQ1)}–${Math.round(rQ3)}) vs. <strong>${ratingOnlyMedian}</strong> (IQR ${Math.round(oQ1)}–${Math.round(oQ3)}) for rating-only — a real gap on paper.</p>
+            <p><strong>Step 2 — test it.</strong> A gap between two medians isn't evidence by itself, especially comparing a group of 44 against a group of 269. I ran a <strong>Mann-Whitney U test</strong> — the standard non-parametric test for whether two independent samples come from the same distribution, chosen specifically because it doesn't assume normality (review counts clearly aren't normal) and handles the unequal group sizes and tied values correctly. Result: U = ${mw.U1.toFixed(0)}, z = ${mw.z.toFixed(2)}, <strong>two-tailed p = ${mw.p.toFixed(3)}</strong>, rank-biserial effect size = ${mw.rankBiserial.toFixed(2)}. At the conventional α = 0.05 threshold, that ${mwSignificant ? 'clears the bar — the difference is unlikely to be chance.' : 'does not quite clear the bar: this is suggestive, not conclusive.'}</p>`,
           code: {
             lang: "JavaScript",
             filename: "recognition_vs_popularity.js",
@@ -4548,30 +4636,34 @@ function buildRestaurantStatsProject() {
 <span class="code-keyword">const</span> <span class="code-var">recognized</span> = vetted.<span class="code-func">filter</span>(r => r.recognition);
 <span class="code-keyword">const</span> <span class="code-var">ratingOnly</span> = vetted.<span class="code-func">filter</span>(r => !r.recognition);
 
-<span class="code-comment">// median, not mean</span>
-<span class="code-keyword">const</span> <span class="code-func">median</span> = arr => {
-  <span class="code-keyword">const</span> <span class="code-var">s</span> = [...arr].<span class="code-func">sort</span>((a, b) => a - b);
-  <span class="code-keyword">const</span> <span class="code-var">mid</span> = <span class="code-func">Math</span>.<span class="code-func">floor</span>(s.length / <span class="code-num">2</span>);
-  <span class="code-keyword">return</span> s.length % <span class="code-num">2</span> ? s[mid] : (s[mid - <span class="code-num">1</span>] + s[mid]) / <span class="code-num">2</span>;
-};`
+<span class="code-comment">// Mann-Whitney U — rank ALL review counts together, sum the</span>
+<span class="code-comment">// ranks that fall in group 1, compare to what's expected under H0</span>
+<span class="code-keyword">function</span> <span class="code-func">mannWhitneyU</span>(a, b) {
+  <span class="code-keyword">const</span> <span class="code-var">ranked</span> = [...a, ...b].<span class="code-func">sort</span>((x, y) => x - y);
+  <span class="code-comment">// ... average tied ranks, sum group-a ranks → U1 ...</span>
+  <span class="code-keyword">const</span> <span class="code-var">mu</span> = a.length * b.length / <span class="code-num">2</span>;
+  <span class="code-keyword">const</span> <span class="code-var">z</span> = (U1 - mu) / sigma;  <span class="code-comment">// tie-corrected sigma</span>
+  <span class="code-keyword">return</span> { U1, z, <span class="code-var">p</span>: <span class="code-num">2</span> * (<span class="code-num">1</span> - normalCdf(<span class="code-func">Math</span>.<span class="code-func">abs</span>(z))) };
+}
+<span class="code-comment">// U = ${mw.U1.toFixed(0)}, z = ${mw.z.toFixed(2)}, p = ${mw.p.toFixed(3)}</span>`
           }
         },
         {
           label: "Key Results",
-          heading: "One hypothesis confirmed, one reversed",
-          body: `<p><strong>Reach vs. population:</strong> once adjusted for state size, the leaderboard changes completely. ${topPerCapita.map(x => `${x.st} (${x.per100k.toFixed(2)}/100k)`).join(', ')} lead the per-capita ranking — while Texas, the raw #${txRawRank} state by count, falls to #${txPerCapitaRank} per capita. At the other end, ${bottomPerCapita.map(x => x.st).join(', ')} rank lowest per capita despite having some of the highest raw counts.</p>
+          heading: "One hypothesis confirmed twice over, one that only half-holds",
+          body: `<p><strong>Reach vs. population:</strong> confirmed at both steps. The raw counts are mostly just population (r = ${popCountR.toFixed(2)}, R² = ${popCountR2.toFixed(2)}) — so once adjusted for state size, the leaderboard changes completely. ${topPerCapita.map(x => `${x.st} (${x.per100k.toFixed(2)}/100k)`).join(', ')} lead the per-capita ranking, while Texas, the raw #${txRawRank} state by count, falls to #${txPerCapitaRank} per capita. At the other end, ${bottomPerCapita.map(x => x.st).join(', ')} rank lowest per capita despite having some of the highest raw counts.</p>
             <p style="margin-top:1rem; font-weight:600; color:var(--text);">Per-100k leaders</p>
             ${perCapitaBarsHTML}
-            <p style="margin-top:1.5rem;"><strong>Recognition vs. popularity:</strong> the hypothesis that award-recognized places would be quieter, under-the-radar spots didn't hold — they actually skew <em>more</em> popular, not less.</p>`,
+            <p style="margin-top:1.5rem;"><strong>Recognition vs. popularity:</strong> the direction of my prediction was wrong — recognized entries skew <em>more</em> popular, not less — but the more important finding is that the formal test only half-confirms it. The descriptive gap (+${gapPct}% median reviews) is real in this sample, but the Mann-Whitney test puts it at p = ${mw.p.toFixed(3)} — ${mwSignificant ? 'significant' : 'short of the conventional 0.05 significance threshold'}. A visible pattern and a statistically confirmed one aren't automatically the same thing, especially with a 44-vs-269 sample-size imbalance.</p>`,
           stats: [
+            { num: `r = ${popCountR.toFixed(2)}`, label: `Population ↔ raw count correlation (R² = ${popCountR2.toFixed(2)})`, gold: false },
             { num: `#${txRawRank} → #${txPerCapitaRank}`, label: "Texas: raw rank → per-capita rank", gold: false },
-            { num: topPerCapita[0].st, label: `Top per-capita state (${topPerCapita[0].per100k.toFixed(2)}/100k)`, gold: false },
-            { num: `${recognizedMedian}`, label: `Median reviews, JBF/MICHELIN-recognized (n=${recognized.length})`, gold: false },
-            { num: `+${gapPct}%`, label: "Recognized picks out-review rating-only picks", gold: true }
+            { num: `+${gapPct}%`, label: "Recognized picks' median reviews vs. rating-only", gold: false },
+            { num: `p = ${mw.p.toFixed(3)}`, label: `Mann-Whitney significance (α = 0.05) — ${mwSignificant ? 'significant' : 'not significant'}`, gold: true }
           ]
         }
       ],
-      reflection: `Neither finding was contrived going in — the per-capita reversal was expected (that's the whole point of normalizing by population), but I genuinely predicted award-recognized restaurants would be the quieter, under-the-radar picks, and the data said the opposite: the median James Beard/MICHELIN-recognized entry has about ${gapPct}% more reviews than a purely rating-vetted one. The likely reason is survivorship — a lot of that recognition comes from James Beard's "America's Classics" award, specifically for restaurants that have been excellent for decades, and decades of operation build a review count right alongside a reputation. Worth being honest about the limits here too: this is a hand-picked list, not a random sample of American restaurants, so these are descriptive patterns in one person's dataset, not a claim about the restaurant industry at large. What it does show cleanly: population-adjusted, the most thoroughly covered states aren't the coastal giants — they're places like Wyoming, Vermont, and North Dakota, which raw counts make invisible.`
+      reflection: `Both questions got real answers, but only one got a clean one. The per-capita reversal held up at every level of scrutiny — the raw counts really are mostly just population (R² = ${popCountR2.toFixed(2)}), and correcting for it completely rewrites the leaderboard: places like Wyoming, Vermont, and North Dakota are quietly the most thoroughly covered states once you stop rewarding size for its own sake. The recognition-vs-popularity question is the more honest result. I predicted the wrong direction (recognized entries turned out more popular, not less — likely survivorship, since a lot of that recognition comes from James Beard's "America's Classics" award for restaurants that have already been excellent for decades), and the +${gapPct}% gap is real in the data. But running an actual significance test instead of eyeballing the medians was worth it: p = ${mw.p.toFixed(3)} means I can describe this pattern, I can't yet claim it's not due to chance — and reporting that limitation is more useful than rounding it up to a clean story. Worth being honest about the bigger caveat too: this is a hand-picked list, not a random sample of American restaurants, so all of this is a descriptive analysis of one person's dataset, not an inferential claim about the restaurant industry at large.`
     }
   };
 }

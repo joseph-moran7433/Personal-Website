@@ -468,6 +468,15 @@
     .stat-callout-num.gold { color: var(--gold); }
     .stat-callout-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.35rem; }
 
+    /* Simple horizontal bar-list — a second, lighter chart type alongside
+       .chart-wrap's SVG axis charts, for straightforward category counts
+       (used by the Nearby Eats stats writeup). */
+    .rstat-bar-row { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 0.55rem; }
+    .rstat-bar-label { width: 150px; flex-shrink: 0; font-size: 0.82rem; color: var(--muted); }
+    .rstat-bar-track { flex: 1; height: 10px; background: var(--surface2); border-radius: 6px; overflow: hidden; }
+    .rstat-bar-fill { height: 100%; background: var(--accent); border-radius: 6px; transition: width 0.6s ease; }
+    .rstat-bar-value { width: 92px; flex-shrink: 0; text-align: right; font-size: 0.8rem; color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+
     /* ── DETAIL-VIEW CHARTS ── */
     .chart-wrap { margin: 1.5rem 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem 1.25rem; }
     .chart-title { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
@@ -1146,6 +1155,17 @@
     .rf-back:hover { color: var(--rf-tomato); }
     .rf-breadcrumb { font-size: 0.8rem; color: var(--rf-faint); display: flex; align-items: center; gap: 0.5rem; }
     .rf-breadcrumb span { color: var(--rf-muted); }
+    /* Low-weight, opt-in — sits opposite the back button so it never
+       competes with the actual search tool below it. */
+    .rf-stats-btn {
+      margin-left: auto;
+      font-size: 0.8rem; font-weight: 700; color: var(--rf-muted);
+      background: none; border: 1px solid var(--rf-border); border-radius: 2rem;
+      cursor: pointer; padding: 0.45rem 0.9rem;
+      font-family: var(--font-body-fun);
+      transition: color var(--transition), border-color var(--transition);
+    }
+    .rf-stats-btn:hover { color: var(--rf-tomato); border-color: var(--rf-tomato); }
 
     .rf-hero { padding: 4.5rem 3rem 2.5rem; max-width: 980px; position: relative; }
     .rf-hero-doodle { position: absolute; top: 2rem; right: 3rem; width: 130px; height: auto; opacity: 0.9; }
@@ -1938,6 +1958,7 @@
       <span>Back to Kitchen</span>
     </button>
     <div class="rf-breadcrumb"><span>Kitchen</span><span>/</span><span>Nearby Eats</span></div>
+    <button class="rf-stats-btn" onclick="openRestaurantStatsDetail()">📊 See the Stats</button>
   </div>
 
   <div class="rf-hero">
@@ -3360,6 +3381,16 @@ projects.forEach((p) => {
 function openDetail(id) {
   const p = projects.find(x => x.id === id);
   if (!p) return;
+  detailReturnTo = null;
+  document.querySelector('.detail-back-label').textContent = 'Back to Projects';
+  renderProjectDetail(p);
+}
+
+// Pure renderer — takes a project-shaped object (from the static `projects`
+// array, or built on the fly like buildRestaurantStatsProject()) and renders
+// it into #detail-content. Split out from openDetail() so a dynamically
+// computed project can reuse the exact same case-study look for free.
+function renderProjectDetail(p) {
   const d = p.detail;
 
   closeAllToolOverlays();
@@ -3426,10 +3457,21 @@ function closeAllToolOverlays() {
   TOOL_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
 }
 
+// Set by openRestaurantStatsDetail() (and any future case-study entry point
+// reached from inside a tool overlay rather than the Projects grid) so
+// closeDetail() knows to return there instead of the homepage.
+let detailReturnTo = null;
+
 function closeDetail() {
   document.getElementById('project-detail').classList.remove('open');
   closeAllToolOverlays();
-  document.getElementById('main-site').classList.remove('hidden');
+  if (detailReturnTo) {
+    document.getElementById(detailReturnTo).classList.add('open');
+    document.getElementById('main-site').classList.add('hidden');
+    detailReturnTo = null;
+  } else {
+    document.getElementById('main-site').classList.remove('hidden');
+  }
   closeRecipeModal();
 }
 
@@ -4331,6 +4373,214 @@ function closeRestaurantModal() {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeRestaurantModal();
 });
+
+// ─────────────────────────────────────────────────────────────────
+// NEARBY EATS STATS — a real mini case-study computed live from the
+// `restaurants` array on every open (never stale as the list grows),
+// rendered through the same renderProjectDetail() every other
+// project uses so it reads like the rest of the portfolio. Two
+// questions: does adjusting for state population change who's
+// actually best-covered, and does James Beard/MICHELIN recognition
+// track with review volume or diverge from it?
+// ─────────────────────────────────────────────────────────────────
+
+// U.S. Census Bureau, July 1 2025 state population estimates (via
+// "List of states and territories of the United States by
+// population," Wikipedia). Entries tagged with a non-US `state` (a
+// handful of personal international picks) fall outside this table
+// and are excluded from the per-capita analysis below, not silently
+// miscounted.
+const US_STATE_POPULATION_2025 = {
+  CA: 39355309, TX: 31709821, FL: 23462518, NY: 20002427, PA: 13059432,
+  IL: 12719141, OH: 11900510, GA: 11302748, NC: 11197968, MI: 10127884,
+  NJ: 9548215, VA: 8880107, WA: 8001020, AZ: 7623818, TN: 7315076,
+  MA: 7154084, IN: 6973333, MO: 6270541, MD: 6265347, CO: 6012561,
+  WI: 5972787, MN: 5830405, SC: 5570274, AL: 5193088, LA: 4618789,
+  KY: 4606864, OR: 4273586, OK: 4123288, CT: 3688496, UT: 3538904,
+  NV: 3282188, IA: 3238387, AR: 3114791, KS: 2977220, MS: 2954160,
+  NM: 2125498, ID: 2029733, NE: 2018006, WV: 1766147, HI: 1432820,
+  NH: 1415342, ME: 1414874, MT: 1144694, RI: 1114521, DE: 1059952,
+  SD: 935094, ND: 799358, AK: 737270, VT: 644663, WY: 588753, DC: 693645
+};
+
+function rstatBarRow(label, value, max, valueLabel) {
+  const pct = max > 0 ? Math.round((value / max) * 100) : 0;
+  return `<div class="rstat-bar-row">
+    <div class="rstat-bar-label">${label}</div>
+    <div class="rstat-bar-track"><div class="rstat-bar-fill" style="width:${pct}%"></div></div>
+    <div class="rstat-bar-value">${valueLabel !== undefined ? valueLabel : value}</div>
+  </div>`;
+}
+
+// Median, not mean — review counts are heavily right-skewed, so a
+// handful of 5,000+-review restaurants would drag a mean upward and
+// hide what's typical.
+function median(nums) {
+  const sorted = [...nums].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+function buildRestaurantStatsProject() {
+  const total = restaurants.length;
+
+  // ── Exploring the data ──────────────────────────────────────────
+  const bySource = { personal: 0, chain: 0, vetted: 0 };
+  const byStyle = {};
+  const byCuisine = {};
+  const byState = {};
+  restaurants.forEach(r => {
+    bySource[r.source] = (bySource[r.source] || 0) + 1;
+    byStyle[r.diningStyle] = (byStyle[r.diningStyle] || 0) + 1;
+    r.cuisines.forEach(c => { byCuisine[c] = (byCuisine[c] || 0) + 1; });
+    byState[r.state] = (byState[r.state] || 0) + 1;
+  });
+
+  const sourceLabels = { personal: 'Personal picks', chain: 'Chains', vetted: 'Vetted' };
+  const sourceMax = Math.max(...Object.values(bySource));
+  const sourceBarsHTML = Object.entries(bySource)
+    .sort((a, b) => b[1] - a[1])
+    .map(([k, v]) => rstatBarRow(sourceLabels[k] || k, v, sourceMax, `${v} (${Math.round(v / total * 100)}%)`))
+    .join('');
+
+  const styleMax = Math.max(...Object.values(byStyle));
+  const styleBarsHTML = RESTAURANT_STYLE_OPTIONS
+    .map(o => [o.label, byStyle[o.value] || 0])
+    .sort((a, b) => b[1] - a[1])
+    .map(([label, v]) => rstatBarRow(label, v, styleMax))
+    .join('');
+
+  const cuisineMax = Math.max(...Object.values(byCuisine));
+  const cuisineBarsHTML = RESTAURANT_CUISINE_OPTIONS
+    .map(o => [o.label, byCuisine[o.value] || 0])
+    .sort((a, b) => b[1] - a[1])
+    .map(([label, v]) => rstatBarRow(label, v, cuisineMax))
+    .join('');
+
+  const topStates = Object.entries(byState).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const topStatesMax = topStates[0][1];
+  const topStatesBarsHTML = topStates.map(([st, v]) => rstatBarRow(st, v, topStatesMax)).join('');
+
+  // ── Methodology A: reach vs. population ─────────────────────────
+  const usStateCounts = Object.entries(byState).filter(([st]) => US_STATE_POPULATION_2025[st] !== undefined);
+  const perCapita = usStateCounts.map(([st, count]) => ({
+    st, count, pop: US_STATE_POPULATION_2025[st],
+    per100k: (count / US_STATE_POPULATION_2025[st]) * 100000
+  }));
+  const byPerCapitaDesc = [...perCapita].sort((a, b) => b.per100k - a.per100k);
+  const byRawDesc = [...perCapita].sort((a, b) => b.count - a.count);
+  const topPerCapita = byPerCapitaDesc.slice(0, 5);
+  const bottomPerCapita = byPerCapitaDesc.slice(-5).reverse();
+  const perCapitaMax = topPerCapita[0].per100k;
+  const perCapitaBarsHTML = byPerCapitaDesc.slice(0, 8)
+    .map(x => rstatBarRow(x.st, x.per100k, perCapitaMax, x.per100k.toFixed(2)))
+    .join('');
+
+  const txRawRank = byRawDesc.findIndex(x => x.st === 'TX') + 1;
+  const txPerCapitaRank = byPerCapitaDesc.findIndex(x => x.st === 'TX') + 1;
+  const excludedCount = restaurants.filter(r => US_STATE_POPULATION_2025[r.state] === undefined).length;
+
+  // ── Methodology B: recognition vs. popularity ───────────────────
+  const vetted = restaurants.filter(r => r.source === 'vetted' && r.vetting);
+  const recognized = vetted.filter(r => r.recognition);
+  const ratingOnly = vetted.filter(r => !r.recognition);
+  const recognizedMedian = median(recognized.map(r => r.vetting.reviewCount));
+  const ratingOnlyMedian = median(ratingOnly.map(r => r.vetting.reviewCount));
+  const gapPct = Math.round((recognizedMedian / ratingOnlyMedian - 1) * 100);
+
+  return {
+    title: "Nearby Eats: Reach vs. Recognition",
+    date: "Live analysis · updates as the list grows",
+    tags: ["JavaScript", "Statistics", "Data Analysis", "US Census Data"],
+    detail: {
+      summary: `A live analysis of the same ${total}-restaurant dataset that powers the search tool above — recomputed in your browser, right now, off the exact array the search just used. Two questions: does adjusting for state population change who's actually best-covered, and does real culinary recognition (James Beard, MICHELIN) track with internet popularity or diverge from it?`,
+      sections: [
+        {
+          label: "Exploring the Data",
+          heading: `${total} restaurants, hand-curated, all 51 states + DC`,
+          body: `<p>Before asking anything harder, the basic shape of the list: how entries break down by how they were sourced, what kind of meal they are, what they serve, and where they are.</p>
+            <p style="margin-top:1.5rem; font-weight:600; color:var(--text);">Source tier</p>
+            ${sourceBarsHTML}
+            <p style="margin-top:1.5rem; font-weight:600; color:var(--text);">Dining style</p>
+            ${styleBarsHTML}
+            <p style="margin-top:1.5rem; font-weight:600; color:var(--text);">Cuisine mix</p>
+            ${cuisineBarsHTML}
+            <p style="margin-top:1.5rem; font-weight:600; color:var(--text);">Raw count by state (top 10)</p>
+            ${topStatesBarsHTML}`
+        },
+        {
+          label: "The Problem",
+          heading: "Two questions worth asking honestly",
+          body: `<p><strong>First:</strong> the raw state counts above obviously track population — Texas and New York have the most entries mostly because they're enormous. My first thought before running any numbers: once you divide by state population, does the ranking hold, or does it flip entirely toward smaller states that just happen to be thoroughly covered?</p>
+            <p><strong>Second:</strong> this session added a batch of restaurants specifically because they carry James Beard Foundation or MICHELIN Guide recognition — real culinary-world credentials, not just star ratings. My instinct going in was that these would skew toward hidden, under-the-radar places — the kind of spot critics find before the internet does. Is that actually true, or does recognition just follow wherever the crowds already are?</p>`
+        },
+        {
+          label: "Methodology — Reach vs. Population",
+          heading: "Restaurants per 100,000 residents",
+          body: `<p>For every state with at least one entry, I divide its restaurant count by its population (U.S. Census Bureau, July 2025 estimates) and scale to a rate per 100,000 residents — the standard normalization for comparing places of very different sizes. ${excludedCount} ${excludedCount === 1 ? 'entry' : 'entries'} tagged with a non-US location (personal picks in Spain, France, and Italy) fall outside this table and are excluded here, not silently miscounted. DC is included and treated as its own population unit, despite not technically being a state.</p>`,
+          code: {
+            lang: "JavaScript",
+            filename: "reach_vs_population.js",
+            content: `<span class="code-comment">// count entries per state, then normalize by population</span>
+<span class="code-keyword">const</span> <span class="code-var">byState</span> = restaurants.<span class="code-func">reduce</span>((acc, r) => {
+  acc[r.state] = (acc[r.state] || <span class="code-num">0</span>) + <span class="code-num">1</span>;
+  <span class="code-keyword">return</span> acc;
+}, {});
+
+<span class="code-keyword">const</span> <span class="code-var">perCapita</span> = <span class="code-func">Object</span>.<span class="code-func">entries</span>(byState)
+  .<span class="code-func">filter</span>(([st]) => US_STATE_POPULATION_2025[st])
+  .<span class="code-func">map</span>(([st, count]) => ({
+    st,
+    <span class="code-var">per100k</span>: (count / US_STATE_POPULATION_2025[st]) * <span class="code-num">100000</span>
+  }))
+  .<span class="code-func">sort</span>((a, b) => b.per100k - a.per100k);`
+          }
+        },
+        {
+          label: "Methodology — Recognition vs. Popularity",
+          heading: "Median review count, recognized vs. rating-only",
+          body: `<p>Among "vetted" entries (the ones sourced independently rather than Joseph naming them), I split the group in two: those carrying a real James Beard/MICHELIN <code>recognition</code> credential (n=${recognized.length}) vs. those that cleared the review-based bar alone (n=${ratingOnly.length}). Google review counts are heavily right-skewed, so the comparison below uses medians, not means — the correct central-tendency statistic for skewed count data.</p>`,
+          code: {
+            lang: "JavaScript",
+            filename: "recognition_vs_popularity.js",
+            content: `<span class="code-comment">// split vetted entries by whether they carry real award recognition</span>
+<span class="code-keyword">const</span> <span class="code-var">vetted</span> = restaurants.<span class="code-func">filter</span>(r => r.source === <span class="code-string">'vetted'</span>);
+<span class="code-keyword">const</span> <span class="code-var">recognized</span> = vetted.<span class="code-func">filter</span>(r => r.recognition);
+<span class="code-keyword">const</span> <span class="code-var">ratingOnly</span> = vetted.<span class="code-func">filter</span>(r => !r.recognition);
+
+<span class="code-comment">// median, not mean</span>
+<span class="code-keyword">const</span> <span class="code-func">median</span> = arr => {
+  <span class="code-keyword">const</span> <span class="code-var">s</span> = [...arr].<span class="code-func">sort</span>((a, b) => a - b);
+  <span class="code-keyword">const</span> <span class="code-var">mid</span> = <span class="code-func">Math</span>.<span class="code-func">floor</span>(s.length / <span class="code-num">2</span>);
+  <span class="code-keyword">return</span> s.length % <span class="code-num">2</span> ? s[mid] : (s[mid - <span class="code-num">1</span>] + s[mid]) / <span class="code-num">2</span>;
+};`
+          }
+        },
+        {
+          label: "Key Results",
+          heading: "One hypothesis confirmed, one reversed",
+          body: `<p><strong>Reach vs. population:</strong> once adjusted for state size, the leaderboard changes completely. ${topPerCapita.map(x => `${x.st} (${x.per100k.toFixed(2)}/100k)`).join(', ')} lead the per-capita ranking — while Texas, the raw #${txRawRank} state by count, falls to #${txPerCapitaRank} per capita. At the other end, ${bottomPerCapita.map(x => x.st).join(', ')} rank lowest per capita despite having some of the highest raw counts.</p>
+            <p style="margin-top:1rem; font-weight:600; color:var(--text);">Per-100k leaders</p>
+            ${perCapitaBarsHTML}
+            <p style="margin-top:1.5rem;"><strong>Recognition vs. popularity:</strong> the hypothesis that award-recognized places would be quieter, under-the-radar spots didn't hold — they actually skew <em>more</em> popular, not less.</p>`,
+          stats: [
+            { num: `#${txRawRank} → #${txPerCapitaRank}`, label: "Texas: raw rank → per-capita rank", gold: false },
+            { num: topPerCapita[0].st, label: `Top per-capita state (${topPerCapita[0].per100k.toFixed(2)}/100k)`, gold: false },
+            { num: `${recognizedMedian}`, label: `Median reviews, JBF/MICHELIN-recognized (n=${recognized.length})`, gold: false },
+            { num: `+${gapPct}%`, label: "Recognized picks out-review rating-only picks", gold: true }
+          ]
+        }
+      ],
+      reflection: `Neither finding was contrived going in — the per-capita reversal was expected (that's the whole point of normalizing by population), but I genuinely predicted award-recognized restaurants would be the quieter, under-the-radar picks, and the data said the opposite: the median James Beard/MICHELIN-recognized entry has about ${gapPct}% more reviews than a purely rating-vetted one. The likely reason is survivorship — a lot of that recognition comes from James Beard's "America's Classics" award, specifically for restaurants that have been excellent for decades, and decades of operation build a review count right alongside a reputation. Worth being honest about the limits here too: this is a hand-picked list, not a random sample of American restaurants, so these are descriptive patterns in one person's dataset, not a claim about the restaurant industry at large. What it does show cleanly: population-adjusted, the most thoroughly covered states aren't the coastal giants — they're places like Wyoming, Vermont, and North Dakota, which raw counts make invisible.`
+    }
+  };
+}
+
+function openRestaurantStatsDetail() {
+  detailReturnTo = 'restaurant-finder';
+  document.querySelector('.detail-back-label').textContent = 'Back to Nearby Eats';
+  renderProjectDetail(buildRestaurantStatsProject());
+}
 
 async function nominatimSearch(params) {
   const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&${params}`;

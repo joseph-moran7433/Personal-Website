@@ -929,6 +929,51 @@
     .wx-modal-workrest-label { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--tac-faint); margin-bottom: 0.3rem; }
     .wx-modal-workrest-value { font-size: 0.82rem; font-weight: 700; color: var(--tac-text); }
 
+    /* "Would You Call D-Day?" — runs entirely on currentWeatherSummaries,
+       the same real forecast already on screen above it. --dday-accent is
+       set inline per outcome (neutral green before a choice, green/red
+       after), same trick as --wx-accent. */
+    .dday-panel {
+      background: var(--tac-card); border: 1px solid var(--tac-border);
+      border-top: 3px solid var(--dday-accent, var(--tac-green));
+      border-radius: 0.6rem; padding: 1.75rem 2rem; margin-top: 2.75rem;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4), inset 0 0 40px rgba(57,255,143,0.03);
+    }
+    .dday-eyebrow { font-family: var(--font-body-tac); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tac-green); margin-bottom: 1.1rem; }
+    .dday-date { font-family: var(--font-display-tac); font-weight: 700; font-size: 1.3rem; color: var(--tac-text); margin-bottom: 0.75rem; }
+    .dday-conditions { font-size: 0.9rem; color: var(--tac-muted); line-height: 1.9; margin-bottom: 1.1rem; }
+    .dday-prompt-text { font-size: 0.92rem; color: var(--tac-text); line-height: 1.7; max-width: 60ch; margin-bottom: 1.5rem; }
+    .dday-choices { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .dday-btn {
+      font-family: var(--font-body-tac); font-weight: 700; font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase;
+      border-radius: 0.4rem; padding: 0.9rem 1.8rem; cursor: pointer; border: 1px solid transparent;
+      transition: all var(--transition);
+    }
+    .dday-btn.attack { background: var(--tac-green); color: #04140a; box-shadow: 0 0 18px rgba(57,255,143,0.35); }
+    .dday-btn.attack:hover { box-shadow: 0 0 28px rgba(57,255,143,0.55); transform: translateY(-1px); }
+    .dday-btn.postpone { background: transparent; color: var(--tac-amber); border-color: rgba(255,184,77,0.5); }
+    .dday-btn.postpone:hover { background: rgba(255,184,77,0.1); transform: translateY(-1px); }
+
+    .dday-reveal-verdict { font-family: var(--font-display-tac); font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .dday-reveal-verdict.correct { color: var(--tac-green); }
+    .dday-reveal-verdict.wrong { color: var(--tac-red); }
+    .dday-reveal-why { font-size: 0.88rem; color: var(--tac-muted); line-height: 1.7; margin-bottom: 1.5rem; }
+    .dday-next-btn {
+      font-family: var(--font-body-tac); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase;
+      background: transparent; color: var(--tac-green); border: 1px solid var(--tac-border);
+      border-radius: 0.4rem; padding: 0.75rem 1.4rem; cursor: pointer; transition: all var(--transition);
+    }
+    .dday-next-btn:hover { border-color: var(--tac-green); box-shadow: 0 0 14px rgba(57,255,143,0.25); }
+
+    .dday-stats { border-top: 1px dashed var(--tac-border); margin-top: 1.75rem; padding-top: 1.5rem; }
+    .dday-stats-label { font-family: var(--font-body-tac); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tac-green); margin-bottom: 1rem; }
+    .dday-stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+    .dday-stat { background: var(--tac-bg); border: 1px solid var(--tac-border); border-radius: 0.4rem; padding: 0.9rem; text-align: center; }
+    .dday-stat-num { font-family: var(--font-display-tac); font-weight: 800; font-size: 1.6rem; color: var(--tac-green); line-height: 1; }
+    .dday-stat-label { font-size: 0.68rem; color: var(--tac-faint); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.4rem; }
+    .dday-tendency { font-family: var(--font-display-tac); font-weight: 700; font-size: 1.05rem; color: var(--tac-amber); margin-bottom: 0.6rem; }
+    .dday-projection { font-size: 0.88rem; color: var(--tac-text); line-height: 1.75; max-width: 65ch; }
+
     .food-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.5rem; }
     .food-tool-card {
       background: var(--rf-surface); border: 1px solid var(--rf-border); border-radius: 1.1rem;
@@ -4981,7 +5026,10 @@ function buildDailySummaries(periods, hourlyPeriods, maxDays = 7) {
       rh: Math.round(rh),
       shortForecast: period.shortForecast || "",
       windSpeed: period.windSpeed || "",
-      windDirection: period.windDirection || ""
+      windDirection: period.windDirection || "",
+      precipChance: (period.probabilityOfPrecipitation && period.probabilityOfPrecipitation.value != null)
+        ? period.probabilityOfPrecipitation.value
+        : null
     });
   }
   return summaries;
@@ -5085,6 +5133,195 @@ function closeWxDayModal() {
   document.getElementById('wx-day-modal').classList.remove('open');
 }
 
+// ─────────────────────────────────────────────────────────────────
+// "WOULD YOU CALL D-DAY?" — runs entirely on currentWeatherSummaries,
+// the same real NWS forecast already fetched for the 7-day advisory
+// above it. There's no historical "correct answer" for today's real
+// weather, so ddayWouldGo() is a transparent, explainable go/no-go
+// rule — an invasion-style proxy (wind, precipitation, storm
+// language, extreme heat/cold risk) applied to real data, not a
+// claim about actual 1944 thresholds (those numbers aren't reliably
+// sourced). Every answer is stored in localStorage — the first use
+// of persistence anywhere on this site — so the stats keep building
+// across real visits, not just within one page load.
+// ─────────────────────────────────────────────────────────────────
+
+function parseWindMph(windSpeed) {
+  if (!windSpeed) return null;
+  const nums = windSpeed.match(/\d+/g);
+  if (!nums) return null;
+  return Math.max(...nums.map(Number)); // "10 to 15 mph" -> 15 (upper bound)
+}
+
+function ddayWouldGo(s) {
+  const windMph = parseWindMph(s.windSpeed);
+  const reasons = [];
+  let go = true;
+
+  if (windMph !== null && windMph >= 20) { go = false; reasons.push(`wind ${s.windSpeed}`); }
+  if (s.precipChance !== null && s.precipChance >= 50) { go = false; reasons.push(`${s.precipChance}% chance of precipitation`); }
+  if (/storm|thunder|snow/i.test(s.shortForecast)) { go = false; reasons.push(`forecast calling for ${s.shortForecast.toLowerCase()}`); }
+  if (s.heat && s.heat.flag === 'black') { go = false; reasons.push('extreme heat risk'); }
+  if (s.cold && s.cold.level === 'High') { go = false; reasons.push('high cold-injury risk'); }
+
+  return {
+    go,
+    verdict: go ? 'ATTACK' : 'POSTPONE',
+    reason: reasons.length ? reasons.join(', ') : 'manageable wind, low precipitation risk, no severe heat/cold flag'
+  };
+}
+
+const DDAY_STORAGE_KEY = 'dday-game-history';
+
+function loadDdayHistory() {
+  try {
+    const raw = localStorage.getItem(DDAY_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveDdayAnswer(entry) {
+  try {
+    const history = loadDdayHistory();
+    history.push(entry);
+    localStorage.setItem(DDAY_STORAGE_KEY, JSON.stringify(history));
+  } catch (e) {
+    // localStorage unavailable (private browsing, etc.) — the round still
+    // plays, it just won't contribute to the cross-visit stats.
+  }
+}
+
+let ddayCurrentIndex = 0;
+
+function ddayDateLabel(s) {
+  const prefix = ["Today", "Tonight", "Tomorrow"].includes(s.fullName) ? `${s.fullName} — ` : "";
+  return `${prefix}${formatWxDate(s.date)}`;
+}
+
+function renderDdaySection() {
+  const container = document.getElementById('dday-section');
+  if (!container) return;
+  if (!currentWeatherSummaries.length) { container.innerHTML = ''; return; }
+  container.innerHTML = `<div id="dday-panel-inner"></div>`;
+  renderDdayPrompt();
+}
+
+function renderDdayPrompt() {
+  const inner = document.getElementById('dday-panel-inner');
+  if (!inner) return;
+  const s = currentWeatherSummaries[ddayCurrentIndex];
+
+  inner.innerHTML = `
+    <div class="dday-panel" style="--dday-accent:var(--tac-green)">
+      <div class="dday-eyebrow">&#127894; Would You Call D-Day?</div>
+      <div class="dday-date">${ddayDateLabel(s)}</div>
+      <div class="dday-conditions">
+        ${s.shortForecast ? `<div>${s.shortForecast}</div>` : ''}
+        ${s.windSpeed ? `<div>&#128168; Wind ${s.windSpeed}${s.windDirection ? ' ' + s.windDirection : ''}</div>` : ''}
+        ${s.precipChance !== null ? `<div>&#127783;&#65039; ${s.precipChance}% chance of precipitation</div>` : ''}
+      </div>
+      <p class="dday-prompt-text">Eisenhower had to make this call with far less data than you've got right now. Given these real conditions where you're pulling this forecast, would you launch the invasion — or hold?</p>
+      <div class="dday-choices">
+        <button type="button" class="dday-btn attack" onclick="handleDdayChoice('ATTACK')">&#9876;&#65039; Attack</button>
+        <button type="button" class="dday-btn postpone" onclick="handleDdayChoice('POSTPONE')">&#128721; Postpone</button>
+      </div>
+    </div>`;
+}
+
+function handleDdayChoice(choice) {
+  const s = currentWeatherSummaries[ddayCurrentIndex];
+  const rule = ddayWouldGo(s);
+  const correct = choice === rule.verdict;
+
+  saveDdayAnswer({ date: s.date, choice, verdict: rule.verdict, correct, ts: Date.now() });
+  renderDdayReveal(s, choice, rule, correct);
+}
+
+function renderDdayReveal(s, choice, rule, correct) {
+  const inner = document.getElementById('dday-panel-inner');
+  if (!inner) return;
+  const accent = correct ? 'var(--tac-green)' : 'var(--tac-red)';
+
+  inner.innerHTML = `
+    <div class="dday-panel" style="--dday-accent:${accent}">
+      <div class="dday-eyebrow">&#127894; Would You Call D-Day?</div>
+      <div class="dday-date">${ddayDateLabel(s)}</div>
+      <div class="dday-reveal-verdict ${correct ? 'correct' : 'wrong'}">
+        ${correct ? '&#9989; Good call.' : '&#10060; Not quite.'} You called <strong>${choice}</strong> — conditions say <strong>${rule.verdict}</strong>.
+      </div>
+      <div class="dday-reveal-why">Why: ${rule.reason}.</div>
+      <button type="button" class="dday-next-btn" onclick="nextDdayRound()">Try a different day &rarr;</button>
+      <div id="dday-stats-mount"></div>
+    </div>`;
+
+  renderDdayStats();
+}
+
+function nextDdayRound() {
+  const n = currentWeatherSummaries.length;
+  if (n > 1) {
+    let next;
+    do { next = Math.floor(Math.random() * n); } while (next === ddayCurrentIndex);
+    ddayCurrentIndex = next;
+  }
+  renderDdayPrompt();
+}
+
+function computeDdayStats() {
+  const history = loadDdayHistory();
+  const total = history.length;
+  if (total < 5) return null;
+
+  const correct = history.filter(h => h.correct).length;
+  const goRounds = history.filter(h => h.verdict === 'ATTACK');
+  const noGoRounds = history.filter(h => h.verdict === 'POSTPONE');
+  const reckless = noGoRounds.filter(h => h.choice === 'ATTACK').length;   // attacked into a no-go
+  const overcautious = goRounds.filter(h => h.choice === 'POSTPONE').length; // held on a go day
+  const recklessRate = noGoRounds.length ? reckless / noGoRounds.length : 0;
+  const cautiousRate = goRounds.length ? overcautious / goRounds.length : 0;
+
+  let tendency;
+  if (recklessRate > cautiousRate + 0.15) tendency = 'Aggressive Commander';
+  else if (cautiousRate > recklessRate + 0.15) tendency = 'Cautious Commander';
+  else tendency = 'Steady-Handed Commander';
+
+  return {
+    total, correct, reckless, overcautious, tendency,
+    accuracy: Math.round((correct / total) * 100)
+  };
+}
+
+function ddayProjectionCopy(tendency) {
+  if (tendency === 'Aggressive Commander') {
+    return `Your calls lean toward launching through marginal conditions — the same instinct Eisenhower and Group Captain Stagg leaned on for the real window on June 6, 1944: a brief, imperfect break in the weather they chose to gamble on rather than wait out. Historically, that gamble was the right call.`;
+  }
+  if (tendency === 'Cautious Commander') {
+    return `Your calls lean toward waiting for safer conditions. On June 6, 1944, that instinct would have meant holding — and the next tide-and-moon window that fit the invasion's requirements, June 18&ndash;20, sat inside a major Channel storm (June 19&ndash;22) that would have made the beaches impossible. Eisenhower and Stagg gambled on the narrow window instead of waiting for a "safer" one that never came.`;
+  }
+  return `Your calls track closely with the invasion-style criteria — closer to how Eisenhower's team actually worked the problem than either a trigger-happy or overly cautious read would be. On June 6, 1944, that kind of judgment chose a brief, marginal window over waiting for perfect conditions — and it worked.`;
+}
+
+function renderDdayStats() {
+  const mount = document.getElementById('dday-stats-mount');
+  if (!mount) return;
+  const stats = computeDdayStats();
+  if (!stats) { mount.innerHTML = ''; return; }
+
+  mount.innerHTML = `
+    <div class="dday-stats">
+      <div class="dday-stats-label">Your Tendencies &mdash; ${stats.total} calls made</div>
+      <div class="dday-stats-row">
+        <div class="dday-stat"><div class="dday-stat-num">${stats.accuracy}%</div><div class="dday-stat-label">Accuracy</div></div>
+        <div class="dday-stat"><div class="dday-stat-num">${stats.reckless}</div><div class="dday-stat-label">Reckless calls</div></div>
+        <div class="dday-stat"><div class="dday-stat-num">${stats.overcautious}</div><div class="dday-stat-label">Overcautious calls</div></div>
+      </div>
+      <div class="dday-tendency">${stats.tendency}</div>
+      <div class="dday-projection">${ddayProjectionCopy(stats.tendency)}</div>
+    </div>`;
+}
+
 async function handleWeatherTool(e) {
   e.preventDefault();
   const rawInput = document.getElementById('weather-search-zip').value;
@@ -5127,6 +5364,7 @@ async function handleWeatherTool(e) {
     }
 
     currentWeatherSummaries = summaries;
+    ddayCurrentIndex = 0;
 
     const notable = summaries
       .filter(s => (s.heat && s.heat.category >= 3) || (!s.heat && s.cold.level !== "Low"))
@@ -5144,7 +5382,9 @@ async function handleWeatherTool(e) {
     resultsEl.innerHTML = `
       <div class="wx-results-label">7-DAY ADVISORY — ${geo.label.toUpperCase()}</div>
       ${notableHTML}
-      <div class="wx-grid">${summaries.map((s, i) => weatherCardHTML(s, i)).join('')}</div>`;
+      <div class="wx-grid">${summaries.map((s, i) => weatherCardHTML(s, i)).join('')}</div>
+      <div id="dday-section"></div>`;
+    renderDdaySection();
   } catch (err) {
     resultsEl.innerHTML = `<div class="wx-message error">NWS only covers US locations — if ${geo.label} is outside the US (or the feed is down), that's why this failed.</div>`;
   }

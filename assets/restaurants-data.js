@@ -29,12 +29,17 @@
 //   "vetted"   — a restaurant sourced independently (e.g. by Claude,
 //                filling a geographic gap) with no personal backing
 //                from Joseph. These must clear 4.6★+ AND 200+
-//                reviews, with recent reviews specifically checked
-//                for signs of decline (not just the all-time
+//                reviews on at least one of Yelp, Google, or
+//                Tripadvisor, with recent reviews specifically
+//                checked for signs of decline (not just the all-time
 //                average) before being added. Carries a
-//                `vetting: { rating, reviewCount, asOf }` object as
-//                the receipt for that check, and the frontend shows
-//                a "not personally visited" badge on these.
+//                `vetting: { rating, reviewCount, asOf, platform }`
+//                object as the receipt for that check — platform is
+//                whichever of "Yelp" | "Google" | "Tripadvisor"
+//                actually cleared the bar (checked in that order;
+//                Yelp preferred when it has enough data) — and the
+//                frontend shows a "not personally visited" badge
+//                naming that platform on these.
 //                IMPORTANT: this bar only applies when the
 //                restaurant is being sourced independently — if
 //                Joseph names a restaurant himself, it's "personal"
@@ -3027,7 +3032,7 @@ const restaurants = [
   {
     name: "Broken Mouth: Lee's Homestyle", zip: "90014", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 2454, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 2454, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Tue-Sun 12-6pm (varies), closed Mon",
     knownFor: "Hawaiian-Korean plate lunches inside a downtown LA food hall",
@@ -3036,7 +3041,7 @@ const restaurants = [
   {
     name: "NAM Kitchen - Gardena", zip: "90248", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 2629, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 2629, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Vietnamese-Peruvian fusion, 48-hour pho and lomo saltado",
@@ -3045,7 +3050,7 @@ const restaurants = [
   {
     name: "Greek Bistro", zip: "91206", cuisines: ["greek"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 1607, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 1607, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, kitchen closes ~9:30pm",
     knownFor: "Highest-rated Greek restaurant on Yelp nationally",
@@ -3054,7 +3059,7 @@ const restaurants = [
   {
     name: "Tsukiyo Sushi", zip: "90010", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 1379, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 1379, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11:30am-10pm (varies by day)",
     knownFor: "Upscale handcrafted sushi in Koreatown",
@@ -3063,7 +3068,7 @@ const restaurants = [
   {
     name: "Fat Of The Land", zip: "92701", cuisines: ["french"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 446, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 446, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon-Tue 5-10pm (varies)",
     knownFor: "Intimate 25-seat European small-plates spot, Yelp Top 100 #19",
@@ -3072,7 +3077,7 @@ const restaurants = [
   {
     name: "Thanh Tinh Chay", zip: "92115", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.9, reviewCount: 1443, asOf: "2026-09-09" },
+    vetting: { rating: 4.9, reviewCount: 1443, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am-9pm",
     knownFor: "Vietnamese vegan restaurant, City Heights",
@@ -3081,7 +3086,7 @@ const restaurants = [
   {
     name: "Zen Curry and Grill", zip: "92591", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.9, reviewCount: 1048, asOf: "2026-09-09" },
+    vetting: { rating: 4.9, reviewCount: 1048, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-9:30pm (varies)",
     knownFor: "Yelp Top 100 #22 nationwide, top Indian curry in Southern CA",
@@ -3090,7 +3095,7 @@ const restaurants = [
   {
     name: "Lapisara Eatery", zip: "94109", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 2072, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 2072, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon 8am-2pm, 5-9pm (varies)",
     knownFor: "Top-rated brunch spot in Lower Nob Hill",
@@ -3099,7 +3104,7 @@ const restaurants = [
   {
     name: "Board and Drink", zip: "94109", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 281, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 281, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily, brunch hours",
     knownFor: "Fisherman's Wharf brunch spot, pancakes and shakshuka",
@@ -3108,7 +3113,7 @@ const restaurants = [
   {
     name: "RJ Skillets", zip: "97211", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 4.9, reviewCount: 350, asOf: "2026-09-09" },
+    vetting: { rating: 4.9, reviewCount: 350, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily 9am-3pm",
     knownFor: "Yelp #14 nationally, scratch-made Mexican breakfast",
@@ -3117,7 +3122,7 @@ const restaurants = [
   {
     name: "Yuubi Sushi", zip: "97005", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 358, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 358, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 4:30-8:30pm (varies)",
     knownFor: "Hidden-gem omakase and sushi in downtown Beaverton",
@@ -3126,7 +3131,7 @@ const restaurants = [
   {
     name: "Khao Moo Dang", zip: "97214", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 628, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 628, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Authentic Thai street food since 1999, namesake red pork rice",
@@ -3135,7 +3140,7 @@ const restaurants = [
   {
     name: "Meesh Meesh", zip: "40202", cuisines: ["greek"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 250, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 250, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Tue-Sat 5-10pm, closed Mon",
     knownFor: "Levantine small plates in NuLu, Yelp Top 100 #3 nationally in 2024",
@@ -3144,7 +3149,7 @@ const restaurants = [
   {
     name: "Georgetown Seafood", zip: "20007", cuisines: ["seafood"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 545, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 545, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Yelp Top 100 #16 nationally, Georgetown seafood spot",
@@ -3153,7 +3158,7 @@ const restaurants = [
   {
     name: "Umai Nori", zip: "20036", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 290, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 290, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-3pm (varies)",
     knownFor: "Sushi bar in Downtown DC, praised sashimi platters",
@@ -3162,7 +3167,7 @@ const restaurants = [
   {
     name: "Jayd Bun", zip: "02879", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 646, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 646, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon-Tue (check listing)",
     knownFor: "Award-winning handmade Tianjin Chinese buns and dumplings, Yelp Top 100 #2 in 2024",
@@ -3171,7 +3176,7 @@ const restaurants = [
   {
     name: "Memoir", zip: "68102", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 302, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 302, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am-10pm",
     knownFor: "Trendy downtown small plates, potato puffs and pork potstickers",
@@ -3180,7 +3185,7 @@ const restaurants = [
   {
     name: "Room Service", zip: "53207", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 248, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 248, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 4:30-10pm (varies)",
     knownFor: "Japanese-Thai-Asian fusion in Bay View, Yelp Top 100 #88",
@@ -3189,7 +3194,7 @@ const restaurants = [
   {
     name: "Joe's Kansas City Bar-B-Que", zip: "66103", cuisines: ["bbq"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 5334, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 5334, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am-9pm",
     knownFor: "Famous original gas-station BBQ, Yelp Top 100 #15",
@@ -3198,7 +3203,7 @@ const restaurants = [
   {
     name: "Vida", zip: "46202", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 556, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 556, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue-Sat 5-10pm",
     knownFor: "Top fine dining in the Circle City, Yelp Top 100 alum",
@@ -3207,7 +3212,7 @@ const restaurants = [
   {
     name: "Waffle and Berry", zip: "96815", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 4.9, reviewCount: 1400, asOf: "2026-09-09" },
+    vetting: { rating: 4.9, reviewCount: 1400, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily (check listing)",
     knownFor: "Yelp Top 100 #4, hand-crafted waffles and acai bowls in Waikiki",
@@ -3216,7 +3221,7 @@ const restaurants = [
   {
     name: "Adela's Country Eatery", zip: "96744", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 3861, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 3861, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 10:30am-8pm (varies)",
     knownFor: "Customizable Filipino-Hawaiian noodle bowls, 3-time Yelp Top 100 alum",
@@ -3225,7 +3230,7 @@ const restaurants = [
   {
     name: "Papi's Ohana", zip: "96761", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 921, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 921, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily, early close once sold out",
     knownFor: "Best of Maui bakery, scratch-made pastries and pizza",
@@ -3234,7 +3239,7 @@ const restaurants = [
   {
     name: "Butcher's Union", zip: "49504", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 1474, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 1474, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 4-11pm",
     knownFor: "Yelp Top 100 #11 nationally, butcher-driven American fare",
@@ -3243,7 +3248,7 @@ const restaurants = [
   {
     name: "Porzana", zip: "55401", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 407, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 407, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 5-10pm",
     knownFor: "North Loop steakhouse, Yelp Top 100 #12",
@@ -3252,7 +3257,7 @@ const restaurants = [
   {
     name: "Leven Deli", zip: "80204", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 917, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 917, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 8am-7pm (varies)",
     knownFor: "Highest-ranked CO restaurant on Yelp Top 100 (#13), classic deli sandwiches",
@@ -3261,7 +3266,7 @@ const restaurants = [
   {
     name: "GW Fins", zip: "70112", cuisines: ["seafood"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 3524, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 3524, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 5-9:30pm",
     knownFor: "Fine-dining French Quarter seafood, dry-aged fish, Yelp Top 100 #8",
@@ -3270,7 +3275,7 @@ const restaurants = [
   {
     name: "Slackwater - Salt Lake City", zip: "84101", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 932, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 932, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am-10pm",
     knownFor: "Pop-culture-themed pizza and huge beer menu, Yelp Top 100 #9",
@@ -3279,7 +3284,7 @@ const restaurants = [
   {
     name: "Rock N' Potato", zip: "89109", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 1153, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 1153, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Loaded baked potatoes on the Strip",
@@ -3288,7 +3293,7 @@ const restaurants = [
   {
     name: "Noko Nashville", zip: "37206", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 608, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 608, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Tue-Sun 5-9pm, closed Mon",
     knownFor: "Award-winning wood-fire Japanese, Yelp Top 100 #24",
@@ -3297,7 +3302,7 @@ const restaurants = [
   {
     name: "Ludi's Restaurant & Lounge", zip: "98101", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 847, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 847, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily 7am-2:30pm",
     knownFor: "Classic all-day breakfast diner near Pike Place, Yelp Top 100 #25",
@@ -3306,7 +3311,7 @@ const restaurants = [
   {
     name: "Von's 1000Spirits", zip: "98072", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 974, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 974, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Burgers, sourdough pizza, huge spirits menu, Yelp Top 100 #39",
@@ -3315,7 +3320,7 @@ const restaurants = [
   {
     name: "Aroy Mak Thai Food", zip: "98133", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 393, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 393, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue 11am-8:30pm (varies)",
     knownFor: "Yelp Top 100 #7 in 2025, Greenwood neighborhood Thai",
@@ -3324,7 +3329,7 @@ const restaurants = [
   {
     name: "Cafe Bonjour", zip: "02111", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 1160, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 1160, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Mon 7am-3pm (varies)",
     knownFor: "All-day breakfast diner in Downtown Boston",
@@ -3333,7 +3338,7 @@ const restaurants = [
   {
     name: "Ekiben", zip: "21231", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 2104, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 2104, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-3:30pm, 4:30-10pm (varies)",
     knownFor: "Asian fusion steamed buns in Fells Point, Yelp Top 100 #30",
@@ -3342,7 +3347,7 @@ const restaurants = [
   {
     name: "Rutba Indian Kitchen", zip: "89146", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 417, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 417, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-10:30pm (varies)",
     knownFor: "Halal Indian in Vegas Chinatown, Yelp Top 100 #34",
@@ -3351,7 +3356,7 @@ const restaurants = [
   {
     name: "Scalessa's", zip: "19806", cuisines: ["italian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 450, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 450, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-8pm (varies)",
     knownFor: "Old-school scratch-made Italian, homemade gnocchi",
@@ -3360,7 +3365,7 @@ const restaurants = [
   {
     name: "Alma Fonda Fina", zip: "80211", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 295, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 295, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 2-10pm (varies)",
     knownFor: "Upscale Mexican in LoHi, NYT Best Mexican Restaurants list",
@@ -3369,7 +3374,7 @@ const restaurants = [
   {
     name: "Golden Banh Mi", zip: "80014", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 323, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 323, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Tue-Sun 11am-6pm, closed Mon",
     knownFor: "Locally owned Vietnamese sandwich shop, Yelp Top 100 #99",
@@ -3378,7 +3383,7 @@ const restaurants = [
   {
     name: "Songbird", zip: "63116", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 628, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 628, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily 8am-2pm, closed Tue",
     knownFor: "Locally-sourced breakfast, Yelp Top 100 #71",
@@ -3387,7 +3392,7 @@ const restaurants = [
   {
     name: "Blues City Deli", zip: "63104", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 1393, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 1393, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 10:30am-3pm (varies)",
     knownFor: "Legendary po'boys in Benton Park, Yelp Top 100 #82",
@@ -3396,7 +3401,7 @@ const restaurants = [
   {
     name: "Two Chicks Cafe - CBD", zip: "70112", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 857, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 857, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily (check listing)",
     knownFor: "Scratch-made breakfast and fresh juices, Yelp Top 100 #90",
@@ -3405,7 +3410,7 @@ const restaurants = [
   {
     name: "Polite Society", zip: "63104", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 1413, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 1413, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Lafayette Square New American dining, Yelp Top 100 #97",
@@ -3414,7 +3419,7 @@ const restaurants = [
   {
     name: "Telva at The Ridge", zip: "63119", cuisines: ["greek"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 229, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 229, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Mediterranean cafe inside a nursery, Yelp Top 100 #77",
@@ -3423,7 +3428,7 @@ const restaurants = [
   {
     name: "Flavor Rich Restaurant", zip: "30308", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 288, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 288, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Tue 9am-4pm (varies)",
     knownFor: "Best Southern comfort food in Atlanta, Yelp Top 100 #60",
@@ -3432,7 +3437,7 @@ const restaurants = [
   {
     name: "The BEP Corner", zip: "30096", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 333, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 333, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Vietnamese-Asian fusion, huge menu, Yelp Top 100 #81",
@@ -3441,7 +3446,7 @@ const restaurants = [
   {
     name: "Fudo", zip: "30341", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 1090, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 1090, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Fresh sushi and Japanese fusion, Yelp Top 100 #86",
@@ -3450,7 +3455,7 @@ const restaurants = [
   {
     name: "Mawn", zip: "19147", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 266, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 266, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon-Tue, Wed 4:30-9pm (varies)",
     knownFor: "Cambodian noodle house in Bella Vista, Yelp Top 100 #46",
@@ -3459,7 +3464,7 @@ const restaurants = [
   {
     name: "Ciccio Mio", zip: "60654", cuisines: ["italian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 664, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 664, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 4-10:30pm (varies)",
     knownFor: "River North Italian, Yelp Top 100 alum",
@@ -3468,7 +3473,7 @@ const restaurants = [
   {
     name: "Kitchen Social", zip: "43240", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 1071, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 1071, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 3-9pm (varies)",
     knownFor: "Trendy cocktail bar and small plates, Yelp Top 100 #92",
@@ -3477,7 +3482,7 @@ const restaurants = [
   {
     name: "Yunta Nikkei", zip: "28203", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 551, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 551, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 4-10pm (varies)",
     knownFor: "Peruvian-Japanese Nikkei fusion, Yelp Top 100 #80",
@@ -3486,7 +3491,7 @@ const restaurants = [
   {
     name: "Zeneli Pizzeria", zip: "06511", cuisines: ["italian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 703, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 703, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "New Haven apizza, Yelp Top 100 #87",
@@ -3495,7 +3500,7 @@ const restaurants = [
   {
     name: "Monell's Dining & Catering", zip: "37208", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 2245, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 2245, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 8am-3pm (varies)",
     knownFor: "Family-style Southern boarding-house dining, Yelp Top 100 #84",
@@ -3504,7 +3509,7 @@ const restaurants = [
   {
     name: "Chay Restaurant", zip: "22041", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 218, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 218, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 10am-9pm (varies)",
     knownFor: "Vietnamese vegetarian and vegan cuisine, Yelp Top 100 #68",
@@ -3513,7 +3518,7 @@ const restaurants = [
   {
     name: "Hatsuyuki Handroll Bar", zip: "76107", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 994, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 994, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue 11am-2:30pm (varies)",
     knownFor: "Yelp #9 nationally in 2024, handroll sushi bar",
@@ -3522,7 +3527,7 @@ const restaurants = [
   {
     name: "Gold Spoon", zip: "75007", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 265, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 265, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11:30am-3pm, 5-11pm (varies)",
     knownFor: "Korean BBQ, Yelp Top 100 #37",
@@ -3531,7 +3536,7 @@ const restaurants = [
   {
     name: "Xiaolong Dumpling", zip: "77006", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 303, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 303, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-9pm (varies)",
     knownFor: "Handmade soup dumplings, Yelp Top 100 #43",
@@ -3540,7 +3545,7 @@ const restaurants = [
   {
     name: "Taqueria De Diez", zip: "78701", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 561, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 561, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11:30am-10pm (varies)",
     knownFor: "Tijuana-style street tacos downtown, Yelp Top 100 #47",
@@ -3549,7 +3554,7 @@ const restaurants = [
   {
     name: "Lewis Barbecue", zip: "29403", cuisines: ["bbq"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 2460, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 2460, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-9pm (varies)",
     knownFor: "Central Texas-style BBQ in Charleston, Yelp Top 100 #48",
@@ -3558,7 +3563,7 @@ const restaurants = [
   {
     name: "Aga's Restaurant & Catering", zip: "77031", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 3658, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 3658, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-10pm (varies)",
     knownFor: "Top Pakistani-Indian restaurant in Houston, Yelp Top 100 #50",
@@ -3567,7 +3572,7 @@ const restaurants = [
   {
     name: "Gino's Deli Stop N Buy", zip: "78230", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 2617, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 2617, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 9am-8pm (varies)",
     knownFor: "Best sandwich in San Antonio, Yelp Top 100 #51",
@@ -3576,7 +3581,7 @@ const restaurants = [
   {
     name: "167 Raw Oyster Bar - Charleston", zip: "29401", cuisines: ["seafood"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 3280, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 3280, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-11pm (varies)",
     knownFor: "Yelp Top 100 seafood spot, no-reservations oyster bar",
@@ -3585,7 +3590,7 @@ const restaurants = [
   {
     name: "Mikiya Wagyu Shabu House", zip: "77036", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 256, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 256, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Wagyu hot pot in Asiatown, Yelp Top 100 #55",
@@ -3594,7 +3599,7 @@ const restaurants = [
   {
     name: "Sushi Yume", zip: "78664", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 205, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 205, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue 11am-1:30pm (varies)",
     knownFor: "Innovative sushi, Yelp Top 100 #57",
@@ -3603,7 +3608,7 @@ const restaurants = [
   {
     name: "Edmond's Burgers & More", zip: "75075", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 473, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 473, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue 11am-9pm (varies)",
     knownFor: "Top burgers in Plano, Yelp Top 100 #59",
@@ -3612,7 +3617,7 @@ const restaurants = [
   {
     name: "Whip My Soul", zip: "78726", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 774, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 774, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Black-owned soul food, Yelp Top 100 #62",
@@ -3621,7 +3626,7 @@ const restaurants = [
   {
     name: "The Ginger Mule", zip: "77008", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 356, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 356, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Plant-based globally-inspired food in the Heights, Yelp Top 100 #63",
@@ -3630,7 +3635,7 @@ const restaurants = [
   {
     name: "Revelry", zip: "33062", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 256, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 256, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon-Tue, Wed 4-11pm (varies)",
     knownFor: "Live-music beer bar and lounge, Yelp Top 100 #64",
@@ -3639,7 +3644,7 @@ const restaurants = [
   {
     name: "Bird Bird Biscuit", zip: "78722", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 1867, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 1867, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 7:30am-2pm (varies)",
     knownFor: "East Austin chicken-biscuit flagship, Yelp Top 100 #66",
@@ -3648,7 +3653,7 @@ const restaurants = [
   {
     name: "Shabu En", zip: "77036", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 616, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 616, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-10pm (varies)",
     knownFor: "All-you-can-eat shabu-shabu hot pot, Yelp Top 100 #69",
@@ -3657,7 +3662,7 @@ const restaurants = [
   {
     name: "Crackings", zip: "32459", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 882, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 882, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily (check listing)",
     knownFor: "Longtime family-owned homestyle breakfast on 30A, Yelp Top 100 #70",
@@ -3666,7 +3671,7 @@ const restaurants = [
   {
     name: "Rosalia's Kitchen", zip: "33025", cuisines: ["italian"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 1044, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 1044, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-10pm (varies)",
     knownFor: "Italian dining, Yelp Top 100 #72",
@@ -3675,7 +3680,7 @@ const restaurants = [
   {
     name: "The Chef's Table - Vintage Park", zip: "77070", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 596, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 596, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-9pm (varies)",
     knownFor: "Globally-inspired fine dining, Yelp Top 100 #73",
@@ -3684,7 +3689,7 @@ const restaurants = [
   {
     name: "Stasio's", zip: "32803", cuisines: ["italian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 829, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 829, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 7am-7pm (varies)",
     knownFor: "Italian deli and market, Yelp Top 100 #75",
@@ -3693,7 +3698,7 @@ const restaurants = [
   {
     name: "Charoen Krung Thai", zip: "10022", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 451, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 451, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11:30am-4pm, 5-10pm (varies)",
     knownFor: "Midtown East Thai, Yelp Top 100 #35",
@@ -3702,7 +3707,7 @@ const restaurants = [
   {
     name: "Gurume", zip: "10036", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 404, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 404, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Korean tapas bar in Hell's Kitchen, Yelp Top 100 #38",
@@ -3711,7 +3716,7 @@ const restaurants = [
   {
     name: "Da Andrea - Chelsea", zip: "10011", cuisines: ["italian"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 850, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 850, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "North Italian handmade pasta, Yelp Top 100 #45",
@@ -3720,7 +3725,7 @@ const restaurants = [
   {
     name: "Larb Thai-Isan", zip: "33308", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 870, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 870, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11:30am-10pm (varies)",
     knownFor: "South Florida's favorite Thai spot, Yelp Top 100 #42",
@@ -3729,7 +3734,7 @@ const restaurants = [
   {
     name: "618", zip: "07728", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 848, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 848, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Modern rustic restaurant and bar, Yelp Top 100 #95",
@@ -3738,7 +3743,7 @@ const restaurants = [
   {
     name: "Chellas Arepa Kitchen", zip: "17601", cuisines: ["caribbean"],
     source: "vetted",
-    vetting: { rating: 4.9, reviewCount: 423, asOf: "2026-09-09" },
+    vetting: { rating: 4.9, reviewCount: 423, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue-Sun 11am (varies)",
     knownFor: "Peruvian-Venezuelan arepas, Yelp Top 100 #5 in 2025",
@@ -3747,7 +3752,7 @@ const restaurants = [
   {
     name: "Holbox", zip: "90007", cuisines: ["seafood"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 1700, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 1700, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Michelin-rated Yucatan seafood counter, Yelp Top 100 2025 #1",
@@ -3756,7 +3761,7 @@ const restaurants = [
   {
     name: "Twisted Gyros", zip: "97124", cuisines: ["greek"],
     source: "vetted",
-    vetting: { rating: 4.9, reviewCount: 257, asOf: "2026-09-09" },
+    vetting: { rating: 4.9, reviewCount: 257, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Viral food-truck-turned-restaurant fusion gyros, Yelp Top 100 2025 #2",
@@ -3765,7 +3770,7 @@ const restaurants = [
   {
     name: "Amy's French Bakery & Bistro", zip: "33060", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 495, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 495, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily 7am (varies)",
     knownFor: "French omelets and pastries, Yelp Top 100 2025 #9",
@@ -3774,7 +3779,7 @@ const restaurants = [
   {
     name: "Wally's Cafe", zip: "95765", cuisines: ["greek"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 1300, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 1300, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "4-time Yelp Top 100 Lebanese cafe",
@@ -3783,7 +3788,7 @@ const restaurants = [
   {
     name: "Milpa", zip: "89147", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 706, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 706, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily 8am-9pm",
     knownFor: "Birria tacos and breakfast, Yelp Top 100 2025 #19",
@@ -3792,7 +3797,7 @@ const restaurants = [
   {
     name: "Sierra Subs & Salads", zip: "93271", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.9, reviewCount: 669, asOf: "2026-09-09" },
+    vetting: { rating: 4.9, reviewCount: 669, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue-Sun (varies)",
     knownFor: "Riverside sandwich shop by Sequoia National Park, Yelp Top 100 2025 #12",
@@ -3801,7 +3806,7 @@ const restaurants = [
   {
     name: "Beyer Deli", zip: "92154", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 895, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 895, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon (varies)",
     knownFor: "Family-owned deli sandwiches since 2001, Yelp Top 100 2025 #14",
@@ -3810,7 +3815,7 @@ const restaurants = [
   {
     name: "Berry Brand", zip: "92780", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 4.9, reviewCount: 210, asOf: "2026-09-09" },
+    vetting: { rating: 4.9, reviewCount: 210, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon 9am-8pm (varies)",
     knownFor: "Acai and pitaya bowl shop, Yelp Top 100 2025 #15",
@@ -3819,7 +3824,7 @@ const restaurants = [
   {
     name: "Shlap Muan Chicken Wings", zip: "90805", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 545, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 545, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11:30am-7:30pm (varies)",
     knownFor: "Cambodian-style wings and garlic noodles, Yelp Top 100 2025 #11",
@@ -3828,7 +3833,7 @@ const restaurants = [
   {
     name: "Freeman's Grub & Pub", zip: "27403", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 593, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 593, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Seasonal gastropub menu, Yelp Top 100 2025 #35",
@@ -3837,7 +3842,7 @@ const restaurants = [
   {
     name: "Baja Cafe on Broadway", zip: "85710", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 1690, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 1690, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily 6am-2pm",
     knownFor: "Scratch-kitchen Southwestern breakfast, Yelp Top 100 2025 #34",
@@ -3846,7 +3851,7 @@ const restaurants = [
   {
     name: "West Coast Cheesesteaks", zip: "91740", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 803, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 803, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am-7pm (varies)",
     knownFor: "California-style cheesesteaks, Yelp Top 100 2025 #18",
@@ -3855,7 +3860,7 @@ const restaurants = [
   {
     name: "Shawarma Guys", zip: "91942", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 738, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 738, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Wagyu shawarma and Middle Eastern platters, Yelp Top 100 2025 #26",
@@ -3864,7 +3869,7 @@ const restaurants = [
   {
     name: "Baba Kabob", zip: "92126", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 568, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 568, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-8pm (varies)",
     knownFor: "Afghan kabobs and shawarma in Miramar, Yelp Top 100 2025 #37",
@@ -3873,7 +3878,7 @@ const restaurants = [
   {
     name: "Sunbliss Cafe", zip: "92808", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 801, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 801, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Mon 7am-6pm (varies)",
     knownFor: "Acai bowls and creative drinks, Yelp Top 100 2025 #23",
@@ -3882,7 +3887,7 @@ const restaurants = [
   {
     name: "Guy's for Lunch", zip: "95678", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 1144, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 1144, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Sun (varies)",
     knownFor: "Fresh sandwiches, soups and salads, Yelp Top 100 2025 #21",
@@ -3891,7 +3896,7 @@ const restaurants = [
   {
     name: "GONZO!", zip: "92008", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 1499, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 1499, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Fri 11:30am-1am (varies)",
     knownFor: "Anime-inspired ramen shop, Yelp Top 100 2025 #31",
@@ -3900,7 +3905,7 @@ const restaurants = [
   {
     name: "EBESU Robata & Sushi", zip: "75074", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 333, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 333, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Modern Japanese bistro in Historic Downtown Plano, Yelp Top 100 2025 #32",
@@ -3909,7 +3914,7 @@ const restaurants = [
   {
     name: "Nick's Old Fashioned Hamburger House", zip: "27295", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 273, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 273, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Sun, Sat 11am-5pm (varies)",
     knownFor: "Community burger joint, Yelp Top 100 2025 #60",
@@ -3918,7 +3923,7 @@ const restaurants = [
   {
     name: "Hutchins BBQ", zip: "75033", cuisines: ["bbq"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 3492, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 3492, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-9pm (varies)",
     knownFor: "Frisco BBQ institution, Yelp Top 100 #49",
@@ -3927,7 +3932,7 @@ const restaurants = [
   {
     name: "Con Huevos", zip: "40206", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 866, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 866, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily 7:30am-2pm (varies)",
     knownFor: "Nationally recognized pancakes, scratch-made Mexican breakfast",
@@ -3936,7 +3941,7 @@ const restaurants = [
   {
     name: "Taste The Thai and Sushi House", zip: "03561", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 230, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 230, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 12-9pm (varies)",
     knownFor: "Thai and sushi in the White Mountains, Yelp Top 100 Sushi Spots 2024 #74",
@@ -3945,7 +3950,7 @@ const restaurants = [
   {
     name: "Rocky Yama Sushi", zip: "80204", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 314, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 314, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["dinner"],
     hours: "Closed Mon, Tue 12pm-8:45pm (varies)",
     knownFor: "Casual neighborhood sushi, Yelp Top 100 Sushi Spots 2024 #67",
@@ -3954,7 +3959,7 @@ const restaurants = [
   {
     name: "Sapporo Japanese Restaurant", zip: "17268", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 288, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 288, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue-Sat (varies)",
     knownFor: "Local sushi favorite for a decade, Yelp Top 100 Sushi Spots 2024 #50",
@@ -3963,7 +3968,7 @@ const restaurants = [
   {
     name: "Kengo Sushi & Yakitori", zip: "43604", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 257, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 257, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Sun-Mon, Tue 5-10pm (varies)",
     knownFor: "Intimate 23-seat downtown sushi and yakitori, Yelp Top 100 Sushi Spots 2024 #54",
@@ -3972,7 +3977,7 @@ const restaurants = [
   {
     name: "Mint Tapas and Sushi 1 - Sandy", zip: "84070", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 285, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 285, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Tapas-style sushi and Asian fusion, Yelp Top 100 Sushi Spots 2024 #52",
@@ -3981,7 +3986,7 @@ const restaurants = [
   {
     name: "The Goblin", zip: "48035", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 232, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 232, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue 12-8pm (varies)",
     knownFor: "Clean, fresh sushi, Yelp Top 100 Sushi Spots 2024 #38",
@@ -3990,7 +3995,7 @@ const restaurants = [
   {
     name: "Blue Orchid Sushi & Asian Bistro", zip: "28273", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 229, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 229, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Sun closed, Thu 11am-3pm, 5-9:30pm (varies)",
     knownFor: "Steele Creek sushi bar and Asian bistro",
@@ -3999,7 +4004,7 @@ const restaurants = [
   {
     name: "Mad Jack's Mountaintop Barbecue", zip: "88317", cuisines: ["bbq"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 436, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 436, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue-Sun 11am (varies)",
     knownFor: "Texas-style smoked BBQ at 9000ft elevation, Yelp Top 100 BBQ 2024 #22",
@@ -4008,7 +4013,7 @@ const restaurants = [
   {
     name: "Meat Boss - Cottage Hill", zip: "36609", cuisines: ["bbq"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 484, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 484, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Fri breakfast 7-10:30am (varies)",
     knownFor: "Featured on Diners, Drive-Ins and Dives, whole smoked meats, Yelp Top 100 BBQ 2024 #85",
@@ -4017,7 +4022,7 @@ const restaurants = [
   {
     name: "Federal Hill Smokehouse", zip: "16508", cuisines: ["bbq"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 269, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 269, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Sun, Mon 11am-3pm or sell out",
     knownFor: "Food & Wine's Best BBQ in PA, Yelp Top 100 BBQ 2024 #23",
@@ -4026,7 +4031,7 @@ const restaurants = [
   {
     name: "Prime Barbecue", zip: "27545", cuisines: ["bbq"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 398, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 398, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Fri 11am-4pm (varies)",
     knownFor: "Wildly popular BBQ with long lines, Yelp Top 100 BBQ 2024 #34",
@@ -4035,7 +4040,7 @@ const restaurants = [
   {
     name: "Blue Seafood & Spirits", zip: "23454", cuisines: ["seafood"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 857, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 857, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue 4-9pm (varies)",
     knownFor: "Award-winning crab soup, 13-table neighborhood spot, Yelp Top 100 Seafood 2024 #1",
@@ -4044,7 +4049,7 @@ const restaurants = [
   {
     name: "Mr. Shuck's Seafood", zip: "31525", cuisines: ["seafood"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 525, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 525, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Sun, Mon 11am (varies)",
     knownFor: "Daily-fresh blue crab with secret garlic butter sauce, Yelp Top 100 Seafood 2024 #8",
@@ -4053,7 +4058,7 @@ const restaurants = [
   {
     name: "J Crab House", zip: "34746", cuisines: ["seafood"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 356, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 356, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Wed-Thu 5:30-7:30pm (varies)",
     knownFor: "Reservation-only Filipino-Cajun seafood boil near Disney, Yelp Top 100 Seafood 2024 #7",
@@ -4062,7 +4067,7 @@ const restaurants = [
   {
     name: "Abuqir", zip: "11103", cuisines: ["seafood"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 272, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 272, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Halal pick-your-own-seafood market and grill, Yelp Top 100 Seafood 2024 #26",
@@ -4071,7 +4076,7 @@ const restaurants = [
   {
     name: "Tubb's Shrimp & Fish Co.", zip: "29505", cuisines: ["seafood"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 765, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 765, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Mon 11am-9pm (varies)",
     knownFor: "Local seafood market and kitchen, Yelp Top 100 Seafood 2024 #57",
@@ -4080,7 +4085,7 @@ const restaurants = [
   {
     name: "FreshCo Fish Market & Grill", zip: "33186", cuisines: ["seafood"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 972, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 972, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Best Seafood Market & Grill in Florida, Yelp Top 100 Seafood 2024 #13",
@@ -4089,7 +4094,7 @@ const restaurants = [
   {
     name: "Chang Lai Fishballs & Noodles", zip: "10013", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 220, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 220, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Thu, Fri 7:30am (varies)",
     knownFor: "Cantonese street food, curry fish balls, Yelp Top 100 Chinese 2024 #5",
@@ -4098,7 +4103,7 @@ const restaurants = [
   {
     name: "China Mama - Shanghai Plaza", zip: "89102", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.6, reviewCount: 1700, asOf: "2026-09-09" },
+    vetting: { rating: 4.6, reviewCount: 1700, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am-10pm",
     knownFor: "Cantonese, Sichuan and Dongbei cuisine, Yelp Top 100 Chinese 2024 #8",
@@ -4107,7 +4112,7 @@ const restaurants = [
   {
     name: "888 Japanese BBQ", zip: "89103", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 6200, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 6200, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Premium all-you-can-eat Japanese BBQ and sushi, Yelp Top 100 2025 #75 (photo caption)",
@@ -4116,7 +4121,7 @@ const restaurants = [
   {
     name: "ITs IZAKAYA", zip: "89146", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 811, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 811, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Value happy hour sushi and izakaya fare, Yelp Top 100 Sushi 2024 #19",
@@ -4125,7 +4130,7 @@ const restaurants = [
   {
     name: "TARU", zip: "89102", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 480, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 480, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes midnight",
     knownFor: "Contemporary Japanese sashimi with K-pop cafe fusion, Yelp Top 100 Sushi 2024 #25",
@@ -4134,7 +4139,7 @@ const restaurants = [
   {
     name: "Kabuto Edomae Sushi", zip: "89146", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 906, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 906, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Intimate Edomae-style omakase, Yelp Top 100 Sushi 2024 #39",
@@ -4143,7 +4148,7 @@ const restaurants = [
   {
     name: "Sushi Hiroyoshi", zip: "89146", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 543, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 543, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon-Tue (varies)",
     knownFor: "Intimate authentic omakase counter, Yelp Top 100 Sushi 2024 #23",
@@ -4152,7 +4157,7 @@ const restaurants = [
   {
     name: "Smile Shota AYCE Sushi", zip: "89117", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 2000, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 2000, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 11:30pm",
     knownFor: "Premium all-you-can-eat sushi, Yelp Top 100 Sushi 2024 #77",
@@ -4161,7 +4166,7 @@ const restaurants = [
   {
     name: "Kame Omakase", zip: "89102", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 408, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 408, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["dinner"],
     hours: "Daily, two seatings 5:30pm and 8pm",
     knownFor: "Reservations-only exclusive omakase, Yelp Top 100 Sushi 2024 #45",
@@ -4170,7 +4175,7 @@ const restaurants = [
   {
     name: "Toro Sushi", zip: "89012", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 417, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 417, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Fri 11am-10pm (varies)",
     knownFor: "Fresh high-quality sushi with booming takeout, Yelp Top 100 Sushi 2024 #64",
@@ -4179,7 +4184,7 @@ const restaurants = [
   {
     name: "Tama Sushi", zip: "92649", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 4.8, reviewCount: 371, asOf: "2026-09-09" },
+    vetting: { rating: 4.8, reviewCount: 371, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (check listing)",
     knownFor: "Extensive vegan and traditional sushi menu, Yelp Top 100 Sushi 2024 #15",
@@ -4188,7 +4193,7 @@ const restaurants = [
   {
     name: "Koya Sushi", zip: "97005", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 318, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 318, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Sun, Mon 11:30am-2:30pm, 5-9pm",
     knownFor: "Fresh sushi in downtown Beaverton's Dining Commons, Yelp Top 100 Sushi 2024 #24",
@@ -4197,7 +4202,7 @@ const restaurants = [
   {
     name: "Izakaya Sushi K", zip: "93063", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 320, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 320, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Sat 11am-8:45pm, Sun closed (varies)",
     knownFor: "Reservation-recommended intimate strip-mall sushi counter",
@@ -4206,7 +4211,7 @@ const restaurants = [
   {
     name: "Soichi Sushi", zip: "92116", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 554, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 554, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 9:30pm (varies)",
     knownFor: "Chef Soichi Kadoya omakase, Michelin-recognized",
@@ -4215,7 +4220,7 @@ const restaurants = [
   {
     name: "Sushi Kaunta", zip: "98032", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 215, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 215, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 8pm (varies)",
     knownFor: "Minimalist reservation-only sushi counter in downtown Kent",
@@ -4224,7 +4229,7 @@ const restaurants = [
   {
     name: "Gen Sushi", zip: "98604", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 229, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 229, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Tue closed, Mon 11am-9pm (varies)",
     knownFor: "Family-friendly sushi with outdoor patio",
@@ -4233,7 +4238,7 @@ const restaurants = [
   {
     name: "Howlin' Hounds Coffee", zip: "68102", cuisines: ["cafe"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 257, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 257, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Sun closed, opens 6:30am (varies)",
     knownFor: "Yelp Top 100 Coffee Shops 2025 #34",
@@ -4242,7 +4247,7 @@ const restaurants = [
   {
     name: "Cutbow Coffee Roastology", zip: "87104", cuisines: ["cafe"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 336, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 336, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily, opens 7:30am (varies)",
     knownFor: "Artisan roastery near Old Town, Yelp Top 100 Coffee Shops 2025 #61",
@@ -4251,7 +4256,7 @@ const restaurants = [
   {
     name: "The Foundry Bakery", zip: "63043", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 321, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 321, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Closed varies, opens 11am (varies)",
     knownFor: "Taiwan-inspired bakery and tea house, Yelp Top 100 Coffee Shops 2025 #51",
@@ -4260,7 +4265,7 @@ const restaurants = [
   {
     name: "Neil's Donuts", zip: "06492", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 781, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 781, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily, opens 6am (varies)",
     knownFor: "Beloved local donut shop since decades, Yelp Top 100 Coffee Shops 2025 #75",
@@ -4269,7 +4274,7 @@ const restaurants = [
   {
     name: "Sushi Friend", zip: "85020", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 504, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 504, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 7pm (varies)",
     knownFor: "Yelp's #3 Sushi in America 2023, Sunnyslope neighborhood counter",
@@ -4278,7 +4283,7 @@ const restaurants = [
   {
     name: "EDOBOY Standing Sushi Bar", zip: "32803", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 207, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 207, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Thu-Sun dinner only, reservation via Resy",
     knownFor: "8-seat standing sushi bar, Michelin Guide-listed, Yelp Top 100 Sushi 2024 #21",
@@ -4287,7 +4292,7 @@ const restaurants = [
   {
     name: "Sushi Hut", zip: "93906", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 211, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 211, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, opens 11:30am (varies)",
     knownFor: "Poke, sushi and noodles, Yelp Top 100 Sushi 2024 #26",
@@ -4296,7 +4301,7 @@ const restaurants = [
   {
     name: "Akanomi", zip: "12009", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 251, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 251, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue-Sun 11am-9:30pm (varies)",
     knownFor: "Traditional Japanese sushi near Albany, Yelp Top 100 Sushi 2024 #28",
@@ -4305,7 +4310,7 @@ const restaurants = [
   {
     name: "Sushi Bichi", zip: "33141", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 289, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 289, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 11pm (varies)",
     knownFor: "Beachfront sushi with pan-coastal fusion, North Beach",
@@ -4314,7 +4319,7 @@ const restaurants = [
   {
     name: "Kaido Sushi", zip: "60005", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 204, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 204, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 9:30pm (varies)",
     knownFor: "Omakase from chefs formerly of Mako and Juno, Yelp Top 100 Sushi 2024 #37",
@@ -4323,7 +4328,7 @@ const restaurants = [
   {
     name: "Lili's Restaurant", zip: "01002", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 290, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 290, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Tue-Sun 11am (varies)",
     knownFor: "Hand-pulled Biang Biang noodles, Xi'an cuisine, Yelp Top 100 Chinese 2024 #4",
@@ -4332,7 +4337,7 @@ const restaurants = [
   {
     name: "Tian Fu DIY Hotpot", zip: "97330", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 227, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 227, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 8pm (varies)",
     knownFor: "Sichuan DIY hotpot near Oregon State, Yelp Top 100 Chinese 2024 #9",
@@ -4341,7 +4346,7 @@ const restaurants = [
   {
     name: "Kelley Farm Kitchen", zip: "25425", cuisines: ["vegan"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 299, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 299, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed varies, opens 11am (varies)",
     knownFor: "West Virginia's first vegan restaurant, Yelp #1 Top 100 Places to Eat 2021",
@@ -4350,7 +4355,7 @@ const restaurants = [
   {
     name: "Urban Fresh", zip: "85701", cuisines: ["vegan"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 268, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 268, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Sat-Sun, opens 9am (varies)",
     knownFor: "100% plant-based downtown cafe, Yelp Top 100 Vegan Restaurants 2024 #3",
@@ -4359,7 +4364,7 @@ const restaurants = [
   {
     name: "Cafe Carambola", zip: "83814", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 4.9, reviewCount: 433, asOf: "2026-09-09" },
+    vetting: { rating: 4.9, reviewCount: 433, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed varies, opens 11am (varies)",
     knownFor: "Latin American cafe with tortas and ceviche, Yelp Top 25 Mexican Food Spots 2024 #5",
@@ -4368,7 +4373,7 @@ const restaurants = [
   {
     name: "Malinche Mexican Culinary Experience", zip: "63011", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 425, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 425, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 9pm (varies)",
     knownFor: "Fine-dining Mexican tapas near St. Louis, Yelp Top 25 Mexican Food Spots 2024 #11",
@@ -4377,7 +4382,7 @@ const restaurants = [
   {
     name: "Tacos Aya Yay", zip: "80026", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 356, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 356, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 8pm (varies)",
     knownFor: "Jalisco/Zacatecas-style street tacos, Yelp Top 25 Mexican Food Spots 2024 #19",
@@ -4386,7 +4391,7 @@ const restaurants = [
   {
     name: "Kiss Pollos Estilo Sinaloa", zip: "85003", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 308, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 308, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Sat-Sun, opens 10:30am (varies)",
     knownFor: "Sinaloa-style charcoal-grilled chicken tacos, Yelp Top 25 Mexican Food Spots 2024 #21",
@@ -4395,7 +4400,7 @@ const restaurants = [
   {
     name: "RJ Skillets", zip: "97211", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 350, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 350, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Closed varies, opens 8am (varies)",
     knownFor: "Oaxacan-style breakfast and brunch, Yelp Top 25 Mexican Food Spots 2024 #12",
@@ -4404,7 +4409,7 @@ const restaurants = [
   {
     name: "El Xangarrito", zip: "60625", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 223, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 223, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, Sun 12-9pm (varies)",
     knownFor: "Contemporary fine-dining Mexican, BYOB, Yelp Top 25 Mexican Food Spots 2024 #15",
@@ -4413,7 +4418,7 @@ const restaurants = [
   {
     name: "Restaurante Los Primos", zip: "92260", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 501, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 501, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, closes 9pm (varies)",
     knownFor: "Mexican-twist breakfast and brunch, Yelp Top 25 Mexican Food Spots 2024 #6",
@@ -4422,7 +4427,7 @@ const restaurants = [
   {
     name: "Taco Libre", zip: "96756", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 385, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 385, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 4pm (varies)",
     knownFor: "Kauai food truck, Mexican-style loco moco, Yelp Top 25 Mexican Food Spots 2024 #8",
@@ -4431,7 +4436,7 @@ const restaurants = [
   {
     name: "Tommy Tamale Market & Cafe", zip: "76051", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 1700, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 1700, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Sun, Mon-Sat 10am-8pm",
     knownFor: "Gourmet tamales year-round, Yelp Top 25 Mexican Food Spots 2024 #9",
@@ -4440,7 +4445,7 @@ const restaurants = [
   {
     name: "T-Loc's Sonora Hot Dogs", zip: "78756", cuisines: ["mexican"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 624, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 624, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed varies, opens 11am (varies)",
     knownFor: "Sonoran bacon-wrapped hot dogs, Yelp Top 25 Mexican Food Spots 2024 #10",
@@ -4449,7 +4454,7 @@ const restaurants = [
   {
     name: "Granny's Gourmet Donuts", zip: "59715", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 263, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 263, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Closed varies, opens 7am (varies)",
     knownFor: "Yelp Elites' Best Donut Shop in Montana 2024",
@@ -4458,7 +4463,7 @@ const restaurants = [
   {
     name: "Carol Lee Donuts", zip: "24060", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 244, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 244, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily, opens 6:30am (varies)",
     knownFor: "Retail donut shop across from Virginia Tech since 1968, Yelp Elites' Best Donut Shop in Virginia 2024",
@@ -4467,7 +4472,7 @@ const restaurants = [
   {
     name: "Uncle Dood's Donuts", zip: "08753", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 374, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 374, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Closed Mon, opens 6:30am (varies)",
     knownFor: "Jersey Shore iced-to-order donuts, Yelp Elites' Best Donut Shop in New Jersey 2024",
@@ -4476,7 +4481,7 @@ const restaurants = [
   {
     name: "Papi's Ohana", zip: "96761", cuisines: ["bakery"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 919, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 919, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily, opens 7am until sold out",
     knownFor: "Ma-and-pop scratch bakery, famous cinnamon rolls, Yelp Top 100 US Restaurants 2026",
@@ -4485,7 +4490,7 @@ const restaurants = [
   {
     name: "Tumerico", zip: "85716", cuisines: ["vegan"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 1500, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 1500, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 8pm (varies)",
     knownFor: "Ranked #1 on Yelp Top 100 US Restaurants 2024, fully vegan Latin American",
@@ -4494,7 +4499,7 @@ const restaurants = [
   {
     name: "Blues City Deli", zip: "63104", cuisines: ["deli"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 1400, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 1400, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Sun, opens 10:30am (varies)",
     knownFor: "Muffulettas and po-boys, live blues backdrop, Yelp Top 100 US Restaurants 2026 #82",
@@ -4503,7 +4508,7 @@ const restaurants = [
   {
     name: "Gold Spoon", zip: "75007", cuisines: ["korean"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 263, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 263, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 11pm (varies)",
     knownFor: "Korean restaurant, Yelp Top 100 US Restaurants 2026 #37",
@@ -4512,7 +4517,7 @@ const restaurants = [
   {
     name: "Telva at The Ridge", zip: "63119", cuisines: ["mediterranean"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 229, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 229, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed varies, opens 8am (varies)",
     knownFor: "Bosnian-inspired cafe from Balkan Treat Box team, Yelp Top 100 US Restaurants 2026 #77",
@@ -4521,7 +4526,7 @@ const restaurants = [
   {
     name: "Golden Banh Mi", zip: "80014", cuisines: ["vietnamese"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 323, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 323, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed varies, opens 11am (varies)",
     knownFor: "Creative fusion banh mi, Yelp Top 100 US Restaurants 2026 #99",
@@ -4530,7 +4535,7 @@ const restaurants = [
   {
     name: "Kitchen Social", zip: "43240", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 4.7, reviewCount: 971, asOf: "2026-09-09" },
+    vetting: { rating: 4.7, reviewCount: 971, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 10pm (varies)",
     knownFor: "Chef-driven scratch-made food and craft cocktails, Yelp Top 100 US Restaurants 2026 #92",
@@ -4539,7 +4544,7 @@ const restaurants = [
   {
     name: "Rutba Indian Kitchen", zip: "89146", cuisines: ["indian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 416, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 416, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 10:30pm (varies)",
     knownFor: "Fine dining Indian cuisine, Yelp Top 100 US Restaurants 2026 #34",
@@ -4548,7 +4553,7 @@ const restaurants = [
   {
     name: "Aroy Mak Thai Food", zip: "98133", cuisines: ["thai"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 393, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 393, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, opens 11am (varies)",
     knownFor: "Mom-and-pop Thai, huge portions, Yelp Top 100 US Restaurants 2026 #44",
@@ -4557,7 +4562,7 @@ const restaurants = [
   {
     name: "Fountain Grill", zip: "20147", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 383, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 383, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 10pm (varies)",
     knownFor: "Family-owned American grill and bar, Yelp Top 100 US Restaurants 2026 #78",
@@ -4566,7 +4571,7 @@ const restaurants = [
   {
     name: "De Babel", zip: "85260", cuisines: ["mediterranean"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 973, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 973, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 9pm (varies)",
     knownFor: "Middle Eastern/Mediterranean fast-casual, ranked #3 on Yelp Top 100 US Restaurants 2025",
@@ -4575,7 +4580,7 @@ const restaurants = [
   {
     name: "Zen Curry and Grill", zip: "92591", cuisines: ["indian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 1000, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 1000, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 9:30pm (varies)",
     knownFor: "Indian and Nepalese cuisine, ranked #22 on Yelp Top 100 US Restaurants 2026",
@@ -4584,7 +4589,7 @@ const restaurants = [
   {
     name: "Fat of the Land", zip: "92701", cuisines: ["tapas"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 445, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 445, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 10pm (varies)",
     knownFor: "Intimate 25-seat European-inspired tapas, Yelp Top 100 US Restaurants 2026 #19",
@@ -4593,7 +4598,7 @@ const restaurants = [
   {
     name: "Rock N' Potato", zip: "89109", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 1200, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 1200, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 11:30pm (varies)",
     knownFor: "Loaded baked potatoes on the Strip, Yelp Top 100 US Restaurants 2026 #23",
@@ -4602,7 +4607,7 @@ const restaurants = [
   {
     name: "Ton Shou Premium Katsu & Izakaya", zip: "89102", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 2100, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 2100, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes midnight (varies)",
     knownFor: "Traditional Japanese pork cutlets, ranked #31 on Yelp Top 100 Places to Eat 2026",
@@ -4611,7 +4616,7 @@ const restaurants = [
   {
     name: "Sushi Yume", zip: "78664", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 204, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 204, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, opens varies",
     knownFor: "Japanese sushi, Yelp Top 100 US Restaurants 2026 #57",
@@ -4620,7 +4625,7 @@ const restaurants = [
   {
     name: "Yuubi Sushi", zip: "97005", cuisines: ["asian"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 358, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 358, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 8:30pm (varies)",
     knownFor: "Dry-aged sushi and sashimi, Yelp Top 100 US Restaurants 2026 #58",
@@ -4629,7 +4634,7 @@ const restaurants = [
   {
     name: "Edmond's Burgers & More", zip: "75075", cuisines: ["american"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 473, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 473, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon, opens 10:30am (varies)",
     knownFor: "Specialty burgers, Yelp Top 100 US Restaurants 2026 #59",
@@ -4638,10 +4643,100 @@ const restaurants = [
   {
     name: "Gino's Deli @ Stop & Buy", zip: "78230", cuisines: ["deli"],
     source: "vetted",
-    vetting: { rating: 5.0, reviewCount: 2600, asOf: "2026-09-09" },
+    vetting: { rating: 5.0, reviewCount: 2600, asOf: "2026-09-09", platform: "Yelp" },
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, closes 9pm (varies)",
     knownFor: "Philly cheesesteaks and deli sandwiches, Yelp Top 100 US Restaurants 2026 #51",
     lat: 29.5407, lon: -98.5521, city: "San Antonio", state: "TX"
+  },
+  {
+    name: "Mama K's", zip: "72084", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 269, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Sun-Tue, Wed-Sat 11am-8pm",
+    knownFor: "Home-style Southern cooking, daily specials",
+    lat: 34.1856, lon: -92.5979, city: "Leola", state: "AR"
+  },
+  {
+    name: "Grumpy's Getaway", zip: "72137", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 383, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Closed varies, opens 9pm close (varies)",
+    knownFor: "Family-owned comfort food and breakfast",
+    lat: 35.3214, lon: -92.062, city: "Rose Bud", state: "AR"
+  },
+  {
+    name: "Soulmate Brewing Company", zip: "05661", cuisines: ["american", "mexican"],
+    source: "vetted",
+    vetting: { rating: 5.0, reviewCount: 755, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed varies, opens 3pm (varies)",
+    knownFor: "Craft brewery with house-made beer cheese smash burger",
+    lat: 44.5543, lon: -72.6026, city: "Morrisville", state: "VT"
+  },
+  {
+    name: "Whilma's Filipino Restaurant", zip: "72143", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 439, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Sun, Mon-Sat 11am (varies)",
+    knownFor: "Homestyle Filipino comfort food, chicken adobo",
+    lat: 35.2436, lon: -91.7317, city: "Searcy", state: "AR"
+  },
+  {
+    name: "Picnic", zip: "83001", cuisines: ["bakery", "cafe"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 931, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily, opens 7am (varies)",
+    knownFor: "Stylish cafe with coffee, breakfast, and baked goods",
+    lat: 43.4528, lon: -110.7393, city: "Jackson", state: "WY"
+  },
+  {
+    name: "The Whistling Grizzly", zip: "83001", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 350, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Western-inspired dining with wild game, at Wyoming Inn of Jackson Hole",
+    lat: 43.4528, lon: -110.7393, city: "Jackson", state: "WY"
+  },
+  {
+    name: "Brave New Restaurant", zip: "72202", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1028, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Upscale New American fare with river-view balcony",
+    lat: 34.7363, lon: -92.2741, city: "Little Rock", state: "AR"
+  },
+  {
+    name: "El Sur Street Food Co", zip: "72202", cuisines: ["latin"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 591, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Honduran baleadas and street food",
+    lat: 34.7363, lon: -92.2741, city: "Little Rock", state: "AR"
+  },
+  {
+    name: "Beignets & Brew", zip: "72202", cuisines: ["bakery", "cafe"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 216, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily, closes 9pm (varies)",
+    knownFor: "Beignets and coffee, breakfast and brunch",
+    lat: 34.7363, lon: -92.2741, city: "Little Rock", state: "AR"
+  },
+  {
+    name: "Kismet Mediterranean Grill", zip: "05401", cuisines: ["mediterranean"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 492, asOf: "2026-09-09", platform: "Google" },
+    mealTypes: ["dinner"],
+    hours: "Closed Sun, opens 12pm (varies)",
+    knownFor: "Turkish-run Mediterranean grill, baklava and Turkish coffee",
+    lat: 44.484, lon: -73.2199, city: "Burlington", state: "VT"
   }
 ];

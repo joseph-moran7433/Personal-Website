@@ -1389,6 +1389,9 @@
     .restaurant-message.success { background: rgba(75,107,63,0.1); border: 1px solid rgba(75,107,63,0.3); color: var(--rf-basil-deep); }
     .restaurant-message.error { background: rgba(217,96,63,0.1); border: 1px solid rgba(217,96,63,0.3); color: var(--rf-tomato-hover); }
     .restaurant-message.loading { background: var(--rf-card); border: 1px solid var(--rf-border); color: var(--rf-muted); }
+    /* Heads-up, not a problem — used when a filter (like budget) comes up
+       empty but there's still something to show once it's relaxed. */
+    .restaurant-message.info { background: rgba(224,165,48,0.14); border: 1px solid rgba(224,165,48,0.4); color: var(--rf-basil-deep); margin-bottom: 1.25rem; }
 
     /* ── CONTACT ── */
     #contact { background: var(--bg); }
@@ -1983,6 +1986,10 @@
       <div class="recipe-form-row">
         <label class="recipe-form-label">🍽️ Style <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional — leave every box unchecked for anything)</span></label>
         <div class="checkbox-pills" id="restaurant-style-pills"></div>
+      </div>
+      <div class="recipe-form-row">
+        <label class="recipe-form-label">💵 Budget <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional — pick your max; click again to clear)</span></label>
+        <div class="checkbox-pills" id="restaurant-price-pills"></div>
       </div>
       <div class="recipe-form-row">
         <label class="recipe-form-label">🌍 Cuisine <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional — leave every box unchecked for anything)</span></label>
@@ -3674,6 +3681,25 @@ function buildCheckboxPills(containerId, options, groupName) {
     </label>`).join('');
 }
 
+// Same pill look as buildCheckboxPills, but single-select (radio) — for an
+// ordinal filter like budget, where picking one means "this or below," not
+// "any of these." Clicking an already-selected pill clears it back to "any."
+function buildRadioPills(containerId, options, groupName) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = options.map(o => `
+    <label class="checkbox-pill">
+      <input type="radio" name="${groupName}" value="${o.value}">
+      <span>${o.label}</span>
+    </label>`).join('');
+  container.querySelectorAll('input[type="radio"]').forEach(input => {
+    let wasChecked = false;
+    input.addEventListener('mousedown', () => { wasChecked = input.checked; });
+    input.addEventListener('click', () => {
+      if (wasChecked) { input.checked = false; wasChecked = false; }
+    });
+  });
+}
+
 function initRecipeFinder() {
   buildCheckboxPills('meal-pills', MEAL_OPTIONS, 'meal');
   buildCheckboxPills('mood-pills', MOOD_OPTIONS, 'mood');
@@ -4302,6 +4328,7 @@ function resetScenery() {
 function initRestaurantTool() {
   buildCheckboxPills('restaurant-meal-pills', RESTAURANT_MEAL_OPTIONS, 'restaurant-meal');
   buildCheckboxPills('restaurant-style-pills', RESTAURANT_STYLE_OPTIONS, 'restaurant-style');
+  buildRadioPills('restaurant-price-pills', RESTAURANT_PRICE_OPTIONS, 'restaurant-price');
   buildCheckboxPills('restaurant-cuisine-pills', RESTAURANT_CUISINE_OPTIONS, 'restaurant-cuisine');
 }
 
@@ -4731,6 +4758,8 @@ async function handleRestaurantSearch(e) {
   const meals = Array.from(document.querySelectorAll('#restaurant-meal-pills input:checked')).map(el => el.value);
   const styles = Array.from(document.querySelectorAll('#restaurant-style-pills input:checked')).map(el => el.value);
   const cuisines = Array.from(document.querySelectorAll('#restaurant-cuisine-pills input:checked')).map(el => el.value);
+  const priceEl = document.querySelector('#restaurant-price-pills input:checked');
+  const budget = priceEl ? parseInt(priceEl.value, 10) : null;
   const resultsEl = document.getElementById('restaurant-results');
 
   if (!rawInput.trim()) {
@@ -4774,11 +4803,29 @@ async function handleRestaurantSearch(e) {
     return;
   }
 
-  matches.sort((a, b) => a.distance - b.distance);
-  const displayResults = matches.map(r => ({ ...r, distance: Math.round(r.distance * 10) / 10 }));
+  // Budget is "this or cheaper" — entries with no priceLevel set are of
+  // unknown price and don't count as within budget. If nothing nearby
+  // actually clears the bar, fall back to showing everything else that
+  // matched (still sorted by distance) with a message explaining why,
+  // rather than a dead-end "no results."
+  let budgetNotice = '';
+  let displaySet = matches;
+  if (budget) {
+    const withinBudget = matches.filter(r => r.priceLevel && r.priceLevel <= budget);
+    if (withinBudget.length > 0) {
+      displaySet = withinBudget;
+    } else {
+      const budgetLabel = (RESTAURANT_PRICE_OPTIONS.find(o => o.value === budget) || {}).label || '$'.repeat(budget);
+      budgetNotice = `<div class="restaurant-message info">💸 Nothing near ${geo.label} matches at ${budgetLabel} or under — everything that fits your other filters is pricier. Showing those instead:</div>`;
+    }
+  }
+
+  displaySet = [...displaySet].sort((a, b) => a.distance - b.distance);
+  const displayResults = displaySet.map(r => ({ ...r, distance: Math.round(r.distance * 10) / 10 }));
   lastRestaurantResults = displayResults;
 
   resultsEl.innerHTML = `
+    ${budgetNotice}
     <div class="restaurant-results-label">${displayResults.length} spot${displayResults.length === 1 ? '' : 's'} near ${geo.label}</div>
     <div class="restaurant-grid">${displayResults.map((r, i) => restaurantCardHTML(r, i)).join('')}</div>`;
 }

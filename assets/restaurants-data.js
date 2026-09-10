@@ -100,6 +100,18 @@ const RESTAURANT_STYLE_OPTIONS = [
   { value: "comfort", label: "Local / Comfort" }
 ];
 
+// Budget filter: single-select, "this level or cheaper" — value is the max
+// priceLevel (1-5) to allow. Entries with no priceLevel set are treated as
+// unknown price and excluded once a budget is picked, rather than assumed
+// to be within it.
+const RESTAURANT_PRICE_OPTIONS = [
+  { value: 1, label: "$" },
+  { value: 2, label: "$$" },
+  { value: 3, label: "$$$" },
+  { value: 4, label: "$$$$" },
+  { value: 5, label: "$$$$$" }
+];
+
 const restaurants = [
   {
     name: "LaScala's Beach House", zip: "08203", cuisines: ["italian"],

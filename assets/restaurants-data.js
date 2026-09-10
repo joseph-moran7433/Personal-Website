@@ -1,10 +1,9 @@
 // ─────────────────────────────────────────────────────────────────
 // NEARBY EATS DATA
-// A hand-curated list of restaurants Joseph actually vouches for —
-// no crowdsourcing, no submissions. Each entry's lat/lon is geocoded
-// once (from its zip) at authoring time, so a search only needs to
-// geocode the visitor's own zip or city, then it's just distance math
-// against this list.
+// A hand-curated list of restaurants — no crowdsourcing, no
+// submissions. Each entry's lat/lon is geocoded once (from its zip)
+// at authoring time, so a search only needs to geocode the visitor's
+// own zip or city, then it's just distance math against this list.
 //
 // To add a restaurant: look up its zip's coordinates (e.g. visiting
 // https://api.zippopotam.us/us/<zip> in a browser gives you
@@ -18,6 +17,28 @@
 // mealTypes: which of "breakfast" | "lunch" | "dinner" the place is
 // realistically open for, based on its posted hours — used by the
 // meal filter. hours/knownFor are just display text, not parsed.
+//
+// source: where an entry's trust comes from — every entry needs one:
+//   "personal" — Joseph named it himself (whether he's eaten there
+//                or knows it by reputation). No rating bar; this is
+//                the default and covers almost everything here.
+//   "chain"    — a well-known multi-location chain (Chick-fil-A,
+//                IHOP, Cava, Chopt, Mission BBQ, Bareburger, Sweet
+//                Paris) where brand consistency is the trust
+//                mechanism, not one specific visit.
+//   "vetted"   — a restaurant sourced independently (e.g. by Claude,
+//                filling a geographic gap) with no personal backing
+//                from Joseph. These must clear 4.6★+ AND 200+
+//                reviews, with recent reviews specifically checked
+//                for signs of decline (not just the all-time
+//                average) before being added. Carries a
+//                `vetting: { rating, reviewCount, asOf }` object as
+//                the receipt for that check, and the frontend shows
+//                a "not personally visited" badge on these.
+//                IMPORTANT: this bar only applies when the
+//                restaurant is being sourced independently — if
+//                Joseph names a restaurant himself, it's "personal"
+//                regardless of its public rating.
 // ─────────────────────────────────────────────────────────────────
 
 const RESTAURANT_CUISINE_OPTIONS = [
@@ -44,6 +65,7 @@ const RESTAURANT_MEAL_OPTIONS = [
 const restaurants = [
   {
     name: "LaScala's Beach House", zip: "08203", cuisines: ["italian"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Thu 12–10pm, Fri 12pm–1am, Sat 11am–1am, Sun 11am–10pm",
     knownFor: "Seafood and Italian-American beach house fare",
@@ -51,6 +73,7 @@ const restaurants = [
   },
   {
     name: "Salsa Mexicana", zip: "11570", cuisines: ["mexican"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Tue–Thu 3–9:30pm, Fri 3–10pm, Sat 1–10pm, Sun 1–9pm; closed Mon",
     knownFor: "Sit-down Mexican classics",
@@ -58,6 +81,7 @@ const restaurants = [
   },
   {
     name: "Dos Vargas Taqueria", zip: "11570", cuisines: ["mexican"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–10pm, Sun 12–10pm",
     knownFor: "Tacos and quick Mexican",
@@ -65,6 +89,7 @@ const restaurants = [
   },
   {
     name: "The French Workshop", zip: "11530", cuisines: ["french", "bakery"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Thu 7am–9pm, Fri 7am–10pm, Sat–Sun 8am–9/10pm",
     knownFor: "French pastries, bread, and coffee",
@@ -73,6 +98,7 @@ const restaurants = [
   },
   {
     name: "Caracara Mexican Grill", zip: "11735", cuisines: ["mexican"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri lunch 12–3pm; dinner Mon–Thu 3–9pm, Fri–Sat 12–10pm, Sun 12–9pm",
     knownFor: "Tableside guacamole and margaritas",
@@ -80,6 +106,7 @@ const restaurants = [
   },
   {
     name: "Caracara Mexican Grill", zip: "11731", cuisines: ["mexican"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Closed Mon; Tue–Thu 12–9pm, Fri–Sat 12–10pm, Sun 12–9pm",
     knownFor: "Tableside guacamole and margaritas",
@@ -87,6 +114,7 @@ const restaurants = [
   },
   {
     name: "Heritage", zip: "10018", cuisines: ["italian"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am–11pm",
     knownFor: "Wood-fired pizza and Italian small plates",
@@ -95,6 +123,7 @@ const restaurants = [
   },
   {
     name: "Naya", zip: "10036", cuisines: ["greek"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 10:30am–9pm",
     knownFor: "Customizable Lebanese bowls, rolls, and pitas",
@@ -103,6 +132,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "06830", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -110,6 +140,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "11590", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -117,6 +148,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "10917", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -124,6 +156,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "28303", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -131,6 +164,7 @@ const restaurants = [
   },
   {
     name: "A Better Place Bar & Grill", zip: "10917", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Thu 11:30am–12am, Fri–Sat 11:30am–2am, Sun 11am–12am",
     knownFor: "Burgers, wings, and a big beer list",
@@ -138,6 +172,7 @@ const restaurants = [
   },
   {
     name: "Orienta Restaurant", zip: "06830", cuisines: ["asian"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Thu 11:45am–2pm & 4:30–9pm, Fri–Sat 11:45am–10pm, Sun 4:30–8:30pm",
     knownFor: "French-Vietnamese fusion",
@@ -146,6 +181,7 @@ const restaurants = [
   },
   {
     name: "Zaza Italian Gastrobar", zip: "06901", cuisines: ["italian"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Kitchen: Mon–Thu 11am–9:30pm, Fri–Sat 11am–10:45pm, Sun 11am–9pm",
     knownFor: "Wood-fired pizza and Italian small plates",
@@ -153,6 +189,7 @@ const restaurants = [
   },
   {
     name: "Mecha Noodle Bar", zip: "06901", cuisines: ["asian"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11:30am–10pm, Sun 11:30am–9pm",
     knownFor: "Ramen and Asian noodle bowls",
@@ -161,6 +198,7 @@ const restaurants = [
   },
   {
     name: "La Selva", zip: "08025", cuisines: ["spanish"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 12:30pm–12:30am (lunch until 6pm, dinner after)",
     knownFor: "Grilled meats and steaks",
@@ -169,6 +207,7 @@ const restaurants = [
   },
   {
     name: "El Nacional", zip: "08007", cuisines: ["spanish"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily from noon — kitchen open until midnight or 1am depending on the day",
     knownFor: "Tapas, drinks, and grilled meats in a historic hall",
@@ -177,6 +216,7 @@ const restaurants = [
   },
   {
     name: "Bubba's 33", zip: "28314", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–12am (varies by location)",
     knownFor: "Burgers, wings, and cold beer",
@@ -184,6 +224,7 @@ const restaurants = [
   },
   {
     name: "Carolina Ale House", zip: "28314", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–12/1am (varies by location)",
     knownFor: "Wings, beer, and sports on TV",
@@ -191,6 +232,7 @@ const restaurants = [
   },
   {
     name: "Don Ramon's Taco Shop", zip: "28303", cuisines: ["mexican"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Fri 8am–8pm, Sat 9am–7pm; closed Sun",
     knownFor: "Tacos",
@@ -198,6 +240,7 @@ const restaurants = [
   },
   {
     name: "Taqueria El Refugio", zip: "28303", cuisines: ["mexican"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat 9am–9pm, Sun 9am–7pm",
     knownFor: "Tacos and quick Mexican",
@@ -206,6 +249,7 @@ const restaurants = [
   // ── Chick-fil-A: broad metro coverage (not a full nationwide list) ──
   {
     name: "Chick-fil-A", zip: "10036", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -213,6 +257,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "90017", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -220,6 +265,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "60601", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -227,6 +273,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "77010", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -234,6 +281,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "85016", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -241,6 +289,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "19114", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -248,6 +297,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "78209", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -255,6 +305,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "92111", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -262,6 +313,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "75202", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -269,6 +321,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "78701", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -276,6 +329,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "32246", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -283,6 +337,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "76107", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -290,6 +345,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "43201", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -297,6 +353,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "28209", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -304,6 +361,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "94015", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -311,6 +369,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "46204", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -318,6 +377,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "98133", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -325,6 +385,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "80222", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -332,6 +393,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "20001", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -339,6 +401,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "02116", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -346,6 +409,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "37203", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -353,6 +417,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "48226", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -360,6 +425,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "73112", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -367,6 +433,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "97216", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -374,6 +441,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "89109", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -381,6 +449,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "38117", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -388,6 +457,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "40218", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -395,6 +465,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "21202", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -402,6 +473,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "53203", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -409,6 +481,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "30361", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -416,6 +489,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "33136", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -423,6 +497,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "55414", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -430,6 +505,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "64114", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -437,6 +513,7 @@ const restaurants = [
   },
   {
     name: "Chick-fil-A", zip: "27605", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat ~6:30am–9/10pm; closed Sundays (varies by location)",
     knownFor: "Chicken sandwiches and waffle fries",
@@ -446,6 +523,7 @@ const restaurants = [
   // ── IHOP: broad metro coverage (not a full nationwide list) ──
   {
     name: "IHOP", zip: "10003", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -453,6 +531,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "90036", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -460,6 +539,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "60647", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -467,6 +547,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "77057", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -474,6 +555,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "85008", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -481,6 +563,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "19107", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -488,6 +571,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "78209", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -495,6 +579,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "92111", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -502,6 +587,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "75214", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -509,6 +595,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "78701", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -516,6 +603,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "32211", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -523,6 +611,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "76107", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -530,6 +619,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "43201", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -537,6 +627,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "28262", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -544,6 +635,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "94133", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -551,6 +643,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "46254", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -558,6 +651,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "98122", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -565,6 +659,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "80222", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -572,6 +667,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "20010", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -579,6 +675,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "02135", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -586,6 +683,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "37211", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -593,6 +691,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "48226", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -600,6 +699,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "73118", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -607,6 +707,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "97266", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -614,6 +715,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "89121", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -621,6 +723,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "38104", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -628,6 +731,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "40222", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -635,6 +739,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "21202", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -642,6 +747,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "53214", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -649,6 +755,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "30329", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -656,6 +763,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "33155", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -663,6 +771,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "55421", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -670,6 +779,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "64117", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -677,6 +787,7 @@ const restaurants = [
   },
   {
     name: "IHOP", zip: "27604", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily, many locations open very early to late or 24 hours (varies)",
     knownFor: "All-day breakfast — pancakes and more",
@@ -686,6 +797,7 @@ const restaurants = [
   // ── Cava: broad metro coverage (not a full nationwide list; a few metros skipped where Cava has no open location yet) ──
   {
     name: "Cava", zip: "10018", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -693,6 +805,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "90089", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -700,6 +813,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "60611", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -707,6 +821,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "77008", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -714,6 +829,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "85018", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -721,6 +837,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "19103", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -728,6 +845,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "78209", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -735,6 +853,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "92130", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -742,6 +861,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "75201", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -749,6 +869,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "78701", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -756,6 +877,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "32202", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -763,6 +885,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "76107", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -770,6 +893,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "43240", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -777,6 +901,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "28209", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -784,6 +909,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "46202", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -791,6 +917,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "80202", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -798,6 +925,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "20036", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -805,6 +933,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "02116", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -812,6 +941,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "37203", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -819,6 +949,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "48226", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -826,6 +957,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "73134", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -833,6 +965,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "89149", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -840,6 +973,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "21224", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -847,6 +981,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "30305", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -854,6 +989,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "33131", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -861,6 +997,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "55414", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -868,6 +1005,7 @@ const restaurants = [
   },
   {
     name: "Cava", zip: "66202", cuisines: ["greek"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~10:30am–9:30pm (varies by location)",
     knownFor: "Customizable Mediterranean bowls and pitas",
@@ -875,6 +1013,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "10036", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -882,6 +1021,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "10003", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -889,6 +1029,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "10018", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -896,6 +1037,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "10001", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -903,6 +1045,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "10583", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -910,6 +1053,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "10543", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -917,6 +1061,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "11590", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -924,6 +1069,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "10522", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -931,6 +1077,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "06830", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -938,6 +1085,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "06905", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -945,6 +1093,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "06033", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -952,6 +1101,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "07652", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -959,6 +1109,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "08540", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -966,6 +1117,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "08034", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -973,6 +1125,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "07950", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -980,6 +1133,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "19010", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -987,6 +1141,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "19073", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -994,6 +1149,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "19454", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1001,6 +1157,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "44145", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1008,6 +1165,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "44122", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1015,6 +1173,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "20814", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1022,6 +1181,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "20852", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1029,6 +1189,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "21204", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1036,6 +1197,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "21401", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1043,6 +1205,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "21208", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1050,6 +1213,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "22203", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1057,6 +1221,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "22315", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1064,6 +1229,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "22101", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1071,6 +1237,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "23219", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1078,6 +1245,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "22903", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1085,6 +1253,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "20004", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1092,6 +1261,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "20002", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1099,6 +1269,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "20005", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1106,6 +1277,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "28202", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1113,6 +1285,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "27609", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1120,6 +1293,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "27514", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1127,6 +1301,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "27103", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1134,6 +1309,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "28403", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1141,6 +1317,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "27408", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1148,6 +1325,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "29206", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1155,6 +1333,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "30319", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1162,6 +1341,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "30305", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1169,6 +1349,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "30068", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1176,6 +1357,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "31406", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1183,6 +1365,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "30346", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1190,6 +1373,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "37215", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1197,6 +1381,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "37027", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1204,6 +1389,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "35243", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1211,6 +1397,7 @@ const restaurants = [
   },
   {
     name: "Chopt", zip: "35216", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 10:30am–9pm, Sat–Sun 11am–8pm (varies by location)",
     knownFor: "Build-your-own salads and warm grain bowls",
@@ -1218,6 +1405,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "10024", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1225,6 +1413,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "10036", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1232,6 +1421,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "10016", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1239,6 +1429,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "10025", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1246,6 +1437,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "10128", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1253,6 +1445,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "11201", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1260,6 +1453,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "11106", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1267,6 +1461,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "11361", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1274,6 +1469,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "11375", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1281,6 +1477,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "11101", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1288,6 +1485,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "11570", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1295,6 +1493,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "07624", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1302,6 +1501,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "07020", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1309,6 +1509,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "07042", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1316,6 +1517,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "07450", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1323,6 +1525,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "07091", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1330,6 +1533,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "07677", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1337,6 +1541,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "06877", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1344,6 +1549,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "06902", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1351,6 +1557,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "06820", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1358,6 +1565,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "06033", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1365,6 +1573,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "10530", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1372,6 +1581,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "10549", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1379,6 +1589,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "10580", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1386,6 +1597,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "10917", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1393,6 +1605,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "10522", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1400,6 +1613,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "43215", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1407,6 +1621,7 @@ const restaurants = [
   },
   {
     name: "Bareburger", zip: "43219", cuisines: ["american"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Grass-fed, organic burgers and shakes",
@@ -1414,6 +1629,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "21042", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1421,6 +1637,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "20852", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1428,6 +1645,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "21061", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1435,6 +1653,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "21740", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1442,6 +1661,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "21701", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1449,6 +1669,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "21224", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1456,6 +1677,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "21204", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1463,6 +1685,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "23462", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1470,6 +1693,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "22601", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1477,6 +1701,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "22191", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1484,6 +1709,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "23320", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1491,6 +1717,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "20170", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1498,6 +1725,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "23233", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1505,6 +1733,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "44145", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1512,6 +1741,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "18974", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1519,6 +1749,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "18052", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1526,6 +1757,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "19610", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1533,6 +1765,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "17402", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1540,6 +1773,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "15146", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1547,6 +1781,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "34613", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1554,6 +1789,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "33326", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1561,6 +1797,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "33634", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1568,6 +1805,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "33613", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1575,6 +1813,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "32246", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1582,6 +1821,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "33907", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1589,6 +1829,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "33334", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1596,6 +1837,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "33914", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1603,6 +1845,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "34108", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1610,6 +1853,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "34952", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1617,6 +1861,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "32822", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1624,6 +1869,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "06477", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1631,6 +1877,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "49525", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1638,6 +1885,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "40207", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1645,6 +1893,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "85253", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1652,6 +1901,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "85374", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1659,6 +1909,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "85338", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1666,6 +1917,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "80921", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1673,6 +1925,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "80003", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1680,6 +1933,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "61614", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1687,6 +1941,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "47715", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1694,6 +1949,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "52807", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1701,6 +1957,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "08034", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1708,6 +1965,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "08081", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1715,6 +1973,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "08096", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1722,6 +1981,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "12205", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1729,6 +1989,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "27613", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1736,6 +1997,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "27834", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1743,6 +2005,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "19803", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1750,6 +2013,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "29582", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1757,6 +2021,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "29212", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1764,6 +2029,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "37214", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1771,6 +2037,7 @@ const restaurants = [
   },
   {
     name: "Mission BBQ", zip: "37129", cuisines: ["bbq"],
+    source: "chain",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 11:30am–8pm",
     knownFor: "Smoked brisket, ribs, and pulled pork with a side of patriotism",
@@ -1778,6 +2045,7 @@ const restaurants = [
   },
   {
     name: "One Hot Mama's", zip: "29928", cuisines: ["bbq"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am–9:30pm (bar bites Thu–Sun until 11pm)",
     knownFor: "Hickory-smoked BBQ ribs and Southern comfort classics",
@@ -1785,6 +2053,7 @@ const restaurants = [
   },
   {
     name: "Frankie Bones", zip: "29926", cuisines: ["italian"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 11am–9pm, Sun 10am–9pm (Sunday brunch 10am–3pm)",
     knownFor: "Wood-fired pizzas and Northern Italian classics on Main Street",
@@ -1792,6 +2061,7 @@ const restaurants = [
   },
   {
     name: "Victoria & Albert's", zip: "32830", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Tue–Sat, single seating 5:30–8:05pm; closed Sun–Mon",
     knownFor: "AAA Five Diamond prix-fixe fine dining inside Disney's Grand Floridian",
@@ -1799,6 +2069,7 @@ const restaurants = [
   },
   {
     name: "The Olde Pink House", zip: "31401", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Lunch Tue–Sat 11am–2:30pm, Dinner Sun–Thu 5–10:30pm, Fri–Sat 5–11pm",
     knownFor: "Candlelit Southern fine dining in an 18th-century pink mansion",
@@ -1806,6 +2077,7 @@ const restaurants = [
   },
   {
     name: "Poseidon", zip: "29928", cuisines: ["seafood"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Thu 11am–10pm, Fri 11am–11pm, Sat 10am–11pm, Sun 10am–9pm (weekend brunch 10am–3pm)",
     knownFor: "Waterfront seafood, steaks, and raw bar overlooking Broad Creek",
@@ -1813,6 +2085,7 @@ const restaurants = [
   },
   {
     name: "Chima Steakhouse", zip: "33301", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Dinner nightly 4:30–10pm (weekend lunch 12:30–3pm)",
     knownFor: "All-you-can-eat Brazilian rodizio churrasco and an extensive salad bar",
@@ -1820,6 +2093,7 @@ const restaurants = [
   },
   {
     name: "CaraCara Mexican Grill", zip: "11735", cuisines: ["mexican"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Thu 12–9pm, Fri–Sat 12–10pm, Sun 12–9pm",
     knownFor: "Tableside guacamole and craft margaritas",
@@ -1827,6 +2101,7 @@ const restaurants = [
   },
   {
     name: "Salt + Smoke", zip: "63130", cuisines: ["bbq"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Thu 11am–9pm, Fri–Sat 11am–10pm, Sun 11am–9pm",
     knownFor: "St. Louis-style BBQ ribs and bourbon-glazed burnt ends",
@@ -1834,6 +2109,7 @@ const restaurants = [
   },
   {
     name: "Pappy's Smokehouse", zip: "63103", cuisines: ["bbq"],
+    source: "personal",
     mealTypes: ["lunch"],
     hours: "Mon, Wed 11am–4pm, Thu 11am–6pm, Fri–Sat 11am–7pm, Sun 11am–4pm, closed Tue",
     knownFor: "James Beard-nominated St. Louis ribs and pulled pork",
@@ -1841,6 +2117,7 @@ const restaurants = [
   },
   {
     name: "Hatch'd St. Louis", zip: "63116", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily 7am–1:30pm",
     knownFor: "Creative St. Louis brunch plates and stuffed hatch cakes",
@@ -1848,6 +2125,7 @@ const restaurants = [
   },
   {
     name: "The Shack", zip: "63131", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily 6:30am–2pm",
     knownFor: "Scratch-made breakfast skillets and pancakes",
@@ -1855,6 +2133,7 @@ const restaurants = [
   },
   {
     name: "Skillets Café & Grill", zip: "29928", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily 7am–3pm, 4–9pm (varies by day)",
     knownFor: "All-day breakfast skillets and Lowcountry lunch classics",
@@ -1862,6 +2141,7 @@ const restaurants = [
   },
   {
     name: "Cootie Brown's", zip: "37620", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Thu 11am–9pm, Fri–Sat 11am–10pm, Sun 11am–9pm",
     knownFor: "Fire-roasted pizzas, tamales, and a huge Jamaican/Cajun/Mexican-inflected menu",
@@ -1869,6 +2149,7 @@ const restaurants = [
   },
   {
     name: "Juniper", zip: "37604", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Tue–Sat 4:30–9pm, closed Sun–Mon",
     knownFor: "Chef-owned modern American tasting plates and cocktails",
@@ -1876,6 +2157,7 @@ const restaurants = [
   },
   {
     name: "Phil's Dream Pit", zip: "37663", cuisines: ["bbq"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Tue 11am–7pm, Wed 11am–6pm, Thu 11am–7pm, Fri–Sat 11am–8pm, closed Sun–Mon",
     knownFor: "Slow-smoked BBQ plates and a locally bottled house sauce",
@@ -1883,6 +2165,7 @@ const restaurants = [
   },
   {
     name: "La Carreta", zip: "37620", cuisines: ["mexican"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Thu 11am–8:30pm, Fri 11am–9:30pm, Sat 11:30am–9:30pm, Sun 11:30am–8pm",
     knownFor: "Tri-Cities favorite for classic Mexican plates and margaritas",
@@ -1890,6 +2173,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "80202", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1897,6 +2181,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "80012", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1904,6 +2189,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "80903", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1911,6 +2197,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "85004", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1918,6 +2205,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "85251", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1925,6 +2213,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "07102", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1932,6 +2221,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "07652", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1939,6 +2229,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "77002", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1946,6 +2237,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "75201", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1953,6 +2245,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "60601", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1960,6 +2253,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "60540", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1967,6 +2261,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "28202", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1974,6 +2269,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "27701", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1981,6 +2277,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "10022", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1988,6 +2285,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "10451", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -1995,6 +2293,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "19102", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2002,6 +2301,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "18101", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2009,6 +2309,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "43215", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2016,6 +2317,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "45402", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2023,6 +2325,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "06489", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2030,6 +2333,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "22314", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2037,6 +2341,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "23320", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2044,6 +2349,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "20852", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2051,6 +2357,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "48226", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2058,6 +2365,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "84101", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2065,6 +2373,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "84043", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2072,6 +2381,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "89109", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2079,6 +2389,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "89029", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2086,6 +2397,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "33629", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2093,6 +2405,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "32541", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2100,6 +2413,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "29201", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2107,6 +2421,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "29483", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2114,6 +2429,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "98642", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2121,6 +2437,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "50265", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2128,6 +2445,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "83709", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2135,6 +2453,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "58103", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2142,6 +2461,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "99503", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2149,6 +2469,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "74133", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2156,6 +2477,7 @@ const restaurants = [
   },
   {
     name: "Smashburger", zip: "55102", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9/10pm (varies by location)",
     knownFor: "Smashed burgers, crispy fries, and hand-spun shakes",
@@ -2163,6 +2485,7 @@ const restaurants = [
   },
   {
     name: "Amada", zip: "08401", cuisines: ["spanish"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Wed–Sun 5–10/11pm, closed Mon–Tue",
     knownFor: "Spanish tapas and paella from Chef Jose Garces inside Ocean Casino Resort",
@@ -2170,6 +2493,7 @@ const restaurants = [
   },
   {
     name: "McCormick & Schmick's", zip: "08401", cuisines: ["seafood"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Sun, Wed–Sat 11:30am–10pm, Mon–Tue 3–10pm",
     knownFor: "Fresh seafood and steaks inside Harrah's Resort, with a daily happy hour",
@@ -2177,6 +2501,7 @@ const restaurants = [
   },
   {
     name: "Morton's", zip: "08401", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Sun 10am–9pm, Mon–Thu 4–9pm, Fri–Sat 4–10pm",
     knownFor: "Classic prime steaks and tableside presentation inside Caesars Atlantic City",
@@ -2184,6 +2509,7 @@ const restaurants = [
   },
   {
     name: "Old Homestead", zip: "08401", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Mon–Thu, Sun 5–10pm, Fri 5–10:30pm, Sat 4–10:30pm",
     knownFor: "Legendary NYC steakhouse import known for dry-aged prime beef inside Borgata",
@@ -2191,6 +2517,7 @@ const restaurants = [
   },
   {
     name: "Maureen's Kitchen", zip: "11787", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily ~6am–3pm",
     knownFor: "Diner-style breakfast platters and bottomless coffee",
@@ -2198,6 +2525,7 @@ const restaurants = [
   },
   {
     name: "Buttermilk's Farmhouse", zip: "11772", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily ~7am–3pm",
     knownFor: "Farmhouse-style brunch plates and buttermilk pancakes",
@@ -2205,6 +2533,7 @@ const restaurants = [
   },
   {
     name: "Peter's Clam Bar", zip: "11558", cuisines: ["seafood"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Seasonal, roughly daily 11am–10pm in-season",
     knownFor: "Waterfront clams, shrimp, and a rowdy summer raw bar scene",
@@ -2212,6 +2541,7 @@ const restaurants = [
   },
   {
     name: "Limani Restaurant", zip: "11576", cuisines: ["greek"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~12pm–10pm",
     knownFor: "Whole grilled fish and upscale Greek seafood",
@@ -2219,6 +2549,7 @@ const restaurants = [
   },
   {
     name: "Avra 48th Street", zip: "10036", cuisines: ["greek"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Fri 12–11pm, Sat–Sun 5–11pm",
     knownFor: "Mediterranean whole fish sold by the pound and grilled octopus",
@@ -2226,6 +2557,7 @@ const restaurants = [
   },
   {
     name: "John's Pizzeria", zip: "10036", cuisines: ["italian"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11:30am–midnight",
     knownFor: "Coal-fired brick-oven pies in a converted Times Square church",
@@ -2233,6 +2565,7 @@ const restaurants = [
   },
   {
     name: "The Barking Dog", zip: "10128", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–11pm",
     knownFor: "All-day comfort food in a dog-themed Upper East Side diner",
@@ -2240,6 +2573,7 @@ const restaurants = [
   },
   {
     name: "Dock's Oyster House", zip: "08401", cuisines: ["seafood"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~4–10pm (varies by day)",
     knownFor: "Atlantic City raw bar institution open since 1897",
@@ -2247,6 +2581,7 @@ const restaurants = [
   },
   {
     name: "Waterzooi", zip: "11530", cuisines: ["seafood"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Thu 11:30am–10pm, Fri–Sat 11:30am–11pm, Sun 11:30am–9pm",
     knownFor: "Belgian mussels by the pot and a huge beer list",
@@ -2254,6 +2589,7 @@ const restaurants = [
   },
   {
     name: "Pace's Steakhouse", zip: "11788", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Mon–Sat 5–10pm, closed Sun",
     knownFor: "Old-school Long Island steakhouse dry-aged beef",
@@ -2261,6 +2597,7 @@ const restaurants = [
   },
   {
     name: "Becco", zip: "10036", cuisines: ["italian"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11:30am–11pm",
     knownFor: "Lidia Bastianich's Restaurant Row pasta trio, all-you-can-eat",
@@ -2268,6 +2605,7 @@ const restaurants = [
   },
   {
     name: "Dario's", zip: "11570", cuisines: ["italian"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Tue–Sun 5–10pm, closed Mon",
     knownFor: "Neighborhood Italian dinner spot in Rockville Centre",
@@ -2275,6 +2613,7 @@ const restaurants = [
   },
   {
     name: "American Burrito", zip: "10928", cuisines: ["mexican"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9pm",
     knownFor: "Cadet-favorite burritos and bowls near West Point",
@@ -2282,6 +2621,7 @@ const restaurants = [
   },
   {
     name: "Butters Pancakes & Café", zip: "85054", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily 6:30am–2:30pm",
     knownFor: "Scratch-made breakfast and lunch fare in a from-scratch kitchen",
@@ -2289,6 +2629,7 @@ const restaurants = [
   },
   {
     name: "Mastro's Steakhouse", zip: "85260", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Daily from 4:30pm (varies by day)",
     knownFor: "Upscale prime steaks and a piano bar scene",
@@ -2296,6 +2637,7 @@ const restaurants = [
   },
   {
     name: "Dominick's Steak House", zip: "85254", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Daily from 4pm (varies by day)",
     knownFor: "North Scottsdale steakhouse classics",
@@ -2303,6 +2645,7 @@ const restaurants = [
   },
   {
     name: "Husk", zip: "29401", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Dinner nightly 5–10pm, Brunch Sat–Sun 10am–2pm",
     knownFor: "Modern Southern cooking built entirely around what local farms have that day",
@@ -2310,6 +2653,7 @@ const restaurants = [
   },
   {
     name: "The Zero George", zip: "29401", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Dinner nightly (hours vary — reservation recommended)",
     knownFor: "Seasonal, locally-sourced fine dining inside a boutique Charleston hotel",
@@ -2317,6 +2661,7 @@ const restaurants = [
   },
   {
     name: "Tsunami", zip: "30601", cuisines: ["asian"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (hours vary by day)",
     knownFor: "Sushi and Japanese fare in downtown Athens",
@@ -2324,6 +2669,7 @@ const restaurants = [
   },
   {
     name: "Mama's Boy", zip: "30601", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch"],
     hours: "Daily, breakfast and brunch hours",
     knownFor: "Georgia peach French toast and made-from-scratch Southern breakfast",
@@ -2331,6 +2677,7 @@ const restaurants = [
   },
   {
     name: "White Tiger Gourmet BBQ", zip: "30601", cuisines: ["bbq"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily (hours vary by day)",
     knownFor: "Gourmet Southern BBQ in downtown Athens",
@@ -2338,6 +2685,7 @@ const restaurants = [
   },
   {
     name: "Ryleigh's Oyster", zip: "21093", cuisines: ["seafood"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily from 11am",
     knownFor: "Baltimore-style raw bar with daily rotating oysters and a sushi bar",
@@ -2345,6 +2693,7 @@ const restaurants = [
   },
   {
     name: "Henrietta's Table", zip: "02138", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Breakfast daily 7–11am, Lunch Mon–Fri 12–2pm, Supper daily 5–9pm, Sat/Sun Brunch",
     knownFor: "New England farm-to-table cooking and an award-winning Sunday brunch buffet",
@@ -2352,6 +2701,7 @@ const restaurants = [
   },
   {
     name: "Ebbitt Room", zip: "08204", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Dinner Sun–Thu 5–9pm, Fri–Sat 5–10pm",
     knownFor: "Farm-to-table fine dining sourced from a nearby Cape May farm",
@@ -2359,6 +2709,7 @@ const restaurants = [
   },
   {
     name: "The Pearl", zip: "43215", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Brunch Sat–Sun 10am–3pm, Dinner Mon–Thu 4–9pm, Fri–Sat till 10/11pm, Sun 3–9pm",
     knownFor: "Polished seafood, shareables, and handcrafted cocktails in the Short North",
@@ -2366,6 +2717,7 @@ const restaurants = [
   },
   {
     name: "Lupe Tortilla", zip: "77024", cuisines: ["mexican"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am–10pm (varies by location)",
     knownFor: "Sizzling mesquite-grilled fajitas and handmade tortillas",
@@ -2373,6 +2725,7 @@ const restaurants = [
   },
   {
     name: "George's Restaurant", zip: "76706", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Mon–Sat 6:30am–close, closed Sun",
     knownFor: "Waco institution since 1963 — chicken-fried steak and cold beer near Baylor",
@@ -2380,6 +2733,7 @@ const restaurants = [
   },
   {
     name: "Terry Black's Barbecue", zip: "76701", cuisines: ["bbq"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am–9pm or until sold out",
     knownFor: "Central Texas smoked brisket and beef ribs by the pound",
@@ -2387,6 +2741,7 @@ const restaurants = [
   },
   {
     name: "Arnaud's Restaurant", zip: "70112", cuisines: ["french"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Mon–Sat 5:30–9pm, Fri lunch 11:30am–1:30pm, Sun jazz brunch 10am–1:30pm",
     knownFor: "Century-old French Creole fine dining and its famous Sunday jazz brunch",
@@ -2394,6 +2749,7 @@ const restaurants = [
   },
   {
     name: "Saddle", zip: "28009", cuisines: ["spanish"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~1–4pm, 8pm–midnight (varies by day)",
     knownFor: "Grilled meats and seafood cooked over embers on a leafy terrace near Retiro Park",
@@ -2401,6 +2757,7 @@ const restaurants = [
   },
   {
     name: "Hôtel Particulier Montmartre", zip: "75018", cuisines: ["french"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Wed–Sat, roughly 12–2:30pm and 7–11pm (bar open later)",
     knownFor: "Secluded garden dining and cocktails behind a private Montmartre mansion",
@@ -2408,6 +2765,7 @@ const restaurants = [
   },
   {
     name: "Aqua al 2", zip: "50122", cuisines: ["italian"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Daily ~7:30pm–1am, dinner only",
     knownFor: "Tegamaccio mixed-meat skillet and steak tartare near the Bargello",
@@ -2415,6 +2773,7 @@ const restaurants = [
   },
   {
     name: "Saint James Paris", zip: "75116", cuisines: ["french"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~12–2:30pm, 7–10:30pm",
     knownFor: "Elegant hotel dining and a storied library bar near Trocadéro",
@@ -2422,6 +2781,7 @@ const restaurants = [
   },
   {
     name: "Mama's Fish House", zip: "96779", cuisines: ["seafood"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am–2:30pm, 4:30–8:45pm",
     knownFor: "Oceanfront Hawaiian seafood with the catching fisherman credited on the menu",
@@ -2429,6 +2789,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "77024", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2436,6 +2797,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "77546", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2443,6 +2805,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "77027", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2450,6 +2813,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "77494", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2457,6 +2821,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "77005", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2464,6 +2829,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "77478", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2471,6 +2837,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "77380", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2478,6 +2845,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "77433", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2485,6 +2853,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "76092", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2492,6 +2861,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "75071", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2499,6 +2869,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "75205", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2506,6 +2877,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "78758", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2513,6 +2885,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "77840", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2520,6 +2893,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "78256", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2527,6 +2901,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "78503", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2534,6 +2909,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "33178", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2541,6 +2917,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "33134", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2548,6 +2925,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "33132", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2555,6 +2933,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "55125", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2562,6 +2941,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "55425", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2569,6 +2949,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "55435", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2576,6 +2957,7 @@ const restaurants = [
   },
   {
     name: "Sweet Paris Creperie & Café", zip: "85254", cuisines: ["french"],
+    source: "chain",
     mealTypes: ["breakfast", "lunch", "dinner"],
     hours: "Daily ~8am–9pm (varies by location)",
     knownFor: "French crepes, both sweet and savory, plus coffee and crepe cakes",
@@ -2583,6 +2965,7 @@ const restaurants = [
   },
   {
     name: "JZ Steakhouse", zip: "33021", cuisines: ["american"],
+    source: "personal",
     mealTypes: ["dinner"],
     hours: "Sun 4pm–12am, Mon–Thu 5pm–12am; closed Fri–Sat",
     knownFor: "Kosher steakhouse — dry-aged cuts and a full bar",
@@ -2591,6 +2974,7 @@ const restaurants = [
   },
   {
     name: "Pita Plus", zip: "33312", cuisines: ["greek"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily ~11am–9pm (varies by day)",
     knownFor: "Glatt kosher Israeli shawarma and Middle Eastern plates",
@@ -2602,6 +2986,7 @@ const restaurants = [
   // closed in Nov 2022. ──
   {
     name: "Cooper's Old Time Pit Bar-B-Que", zip: "78643", cuisines: ["bbq"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Sun–Thu 11am–8pm, Fri–Sat 11am–9pm",
     knownFor: "The original location — open-pit, order-by-pointing Texas BBQ since 1953",
@@ -2609,6 +2994,7 @@ const restaurants = [
   },
   {
     name: "Cooper's Old Time Pit Bar-B-Que", zip: "78130", cuisines: ["bbq"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Sun–Thu 11am–8pm, Fri–Sat 11am–9pm",
     knownFor: "Open-pit Texas BBQ on the Guadalupe River",
@@ -2616,6 +3002,7 @@ const restaurants = [
   },
   {
     name: "Cooper's Old Time Pit Bar-B-Que", zip: "77845", cuisines: ["bbq"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am–9pm",
     knownFor: "Open-pit Texas BBQ near Texas A&M",
@@ -2623,6 +3010,7 @@ const restaurants = [
   },
   {
     name: "Cooper's Old Time Pit Bar-B-Que", zip: "76164", cuisines: ["bbq"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Sun–Thu 11am–8pm, Fri–Sat 11am–9pm",
     knownFor: "Open-pit Texas BBQ in the Fort Worth Stockyards",
@@ -2630,9 +3018,910 @@ const restaurants = [
   },
   {
     name: "Cooper's Old Time Pit Bar-B-Que", zip: "78701", cuisines: ["bbq"],
+    source: "personal",
     mealTypes: ["lunch", "dinner"],
     hours: "Daily 11am–10pm",
     knownFor: "Open-pit Texas BBQ in downtown Austin",
     lat: 30.2713, lon: -97.7426, city: "Austin", state: "TX"
+  },
+  {
+    name: "Broken Mouth: Lee's Homestyle", zip: "90014", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 2454, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Tue-Sun 12-6pm (varies), closed Mon",
+    knownFor: "Hawaiian-Korean plate lunches inside a downtown LA food hall",
+    lat: 34.0443, lon: -118.2509, city: "Los Angeles", state: "CA"
+  },
+  {
+    name: "NAM Kitchen - Gardena", zip: "90248", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 2629, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Vietnamese-Peruvian fusion, 48-hour pho and lomo saltado",
+    lat: 33.8766, lon: -118.2835, city: "Gardena", state: "CA"
+  },
+  {
+    name: "Greek Bistro", zip: "91206", cuisines: ["greek"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 1607, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily, kitchen closes ~9:30pm",
+    knownFor: "Highest-rated Greek restaurant on Yelp nationally",
+    lat: 34.1556, lon: -118.2322, city: "Glendale", state: "CA"
+  },
+  {
+    name: "Tsukiyo Sushi", zip: "90010", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 1379, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11:30am-10pm (varies by day)",
+    knownFor: "Upscale handcrafted sushi in Koreatown",
+    lat: 34.0606, lon: -118.3027, city: "Los Angeles", state: "CA"
+  },
+  {
+    name: "Fat Of The Land", zip: "92701", cuisines: ["french"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 446, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon-Tue 5-10pm (varies)",
+    knownFor: "Intimate 25-seat European small-plates spot, Yelp Top 100 #19",
+    lat: 33.7523, lon: -117.8541, city: "Santa Ana", state: "CA"
+  },
+  {
+    name: "Thanh Tinh Chay", zip: "92115", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 1443, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily ~10:30am-9pm",
+    knownFor: "Vietnamese vegan restaurant, City Heights",
+    lat: 32.7607, lon: -117.0721, city: "San Diego", state: "CA"
+  },
+  {
+    name: "Zen Curry and Grill", zip: "92591", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 1048, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-9:30pm (varies)",
+    knownFor: "Yelp Top 100 #22 nationwide, top Indian curry in Southern CA",
+    lat: 33.5217, lon: -117.1286, city: "Temecula", state: "CA"
+  },
+  {
+    name: "Lapisara Eatery", zip: "94109", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 2072, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Mon 8am-2pm, 5-9pm (varies)",
+    knownFor: "Top-rated brunch spot in Lower Nob Hill",
+    lat: 37.7917, lon: -122.4186, city: "San Francisco", state: "CA"
+  },
+  {
+    name: "Board and Drink", zip: "94109", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 281, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily, brunch hours",
+    knownFor: "Fisherman's Wharf brunch spot, pancakes and shakshuka",
+    lat: 37.7917, lon: -122.4186, city: "San Francisco", state: "CA"
+  },
+  {
+    name: "RJ Skillets", zip: "97211", cuisines: ["mexican"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 350, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily 9am-3pm",
+    knownFor: "Yelp #14 nationally, scratch-made Mexican breakfast",
+    lat: 45.5653, lon: -122.6448, city: "Portland", state: "OR"
+  },
+  {
+    name: "Yuubi Sushi", zip: "97005", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 358, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 4:30-8:30pm (varies)",
+    knownFor: "Hidden-gem omakase and sushi in downtown Beaverton",
+    lat: 45.4963, lon: -122.8001, city: "Beaverton", state: "OR"
+  },
+  {
+    name: "Khao Moo Dang", zip: "97214", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 628, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Authentic Thai street food since 1999, namesake red pork rice",
+    lat: 45.5142, lon: -122.6364, city: "Portland", state: "OR"
+  },
+  {
+    name: "Meesh Meesh", zip: "40202", cuisines: ["greek"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 250, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Tue-Sat 5-10pm, closed Mon",
+    knownFor: "Levantine small plates in NuLu, Yelp Top 100 #3 nationally in 2024",
+    lat: 38.2507, lon: -85.7476, city: "Louisville", state: "KY"
+  },
+  {
+    name: "Georgetown Seafood", zip: "20007", cuisines: ["seafood"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 545, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Yelp Top 100 #16 nationally, Georgetown seafood spot",
+    lat: 38.9144, lon: -77.074, city: "Washington", state: "DC"
+  },
+  {
+    name: "Umai Nori", zip: "20036", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 290, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-3pm (varies)",
+    knownFor: "Sushi bar in Downtown DC, praised sashimi platters",
+    lat: 38.9087, lon: -77.0414, city: "Washington", state: "DC"
+  },
+  {
+    name: "Jayd Bun", zip: "02879", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 646, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Mon-Tue (check listing)",
+    knownFor: "Award-winning handmade Tianjin Chinese buns and dumplings, Yelp Top 100 #2 in 2024",
+    lat: 41.4437, lon: -71.5342, city: "South Kingstown", state: "RI"
+  },
+  {
+    name: "Memoir", zip: "68102", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 302, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 11am-10pm",
+    knownFor: "Trendy downtown small plates, potato puffs and pork potstickers",
+    lat: 41.259, lon: -95.9409, city: "Omaha", state: "NE"
+  },
+  {
+    name: "Room Service", zip: "53207", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 248, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 4:30-10pm (varies)",
+    knownFor: "Japanese-Thai-Asian fusion in Bay View, Yelp Top 100 #88",
+    lat: 42.9751, lon: -87.8947, city: "Milwaukee", state: "WI"
+  },
+  {
+    name: "Joe's Kansas City Bar-B-Que", zip: "66103", cuisines: ["bbq"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 5334, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 11am-9pm",
+    knownFor: "Famous original gas-station BBQ, Yelp Top 100 #15",
+    lat: 39.0668, lon: -94.6282, city: "Kansas City", state: "KS"
+  },
+  {
+    name: "Vida", zip: "46202", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 556, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Mon, Tue-Sat 5-10pm",
+    knownFor: "Top fine dining in the Circle City, Yelp Top 100 alum",
+    lat: 39.7851, lon: -86.1595, city: "Indianapolis", state: "IN"
+  },
+  {
+    name: "Waffle and Berry", zip: "96815", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 1400, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily (check listing)",
+    knownFor: "Yelp Top 100 #4, hand-crafted waffles and acai bowls in Waikiki",
+    lat: 21.2811, lon: -157.8266, city: "Honolulu", state: "HI"
+  },
+  {
+    name: "Adela's Country Eatery", zip: "96744", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 3861, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 10:30am-8pm (varies)",
+    knownFor: "Customizable Filipino-Hawaiian noodle bowls, 3-time Yelp Top 100 alum",
+    lat: 21.4228, lon: -157.8115, city: "Kaneohe", state: "HI"
+  },
+  {
+    name: "Papi's Ohana", zip: "96761", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 921, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily, early close once sold out",
+    knownFor: "Best of Maui bakery, scratch-made pastries and pizza",
+    lat: 20.9174, lon: -156.6772, city: "Lahaina", state: "HI"
+  },
+  {
+    name: "Butcher's Union", zip: "49504", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1474, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 4-11pm",
+    knownFor: "Yelp Top 100 #11 nationally, butcher-driven American fare",
+    lat: 42.9737, lon: -85.7265, city: "Grand Rapids", state: "MI"
+  },
+  {
+    name: "Porzana", zip: "55401", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 407, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 5-10pm",
+    knownFor: "North Loop steakhouse, Yelp Top 100 #12",
+    lat: 44.9835, lon: -93.2683, city: "Minneapolis", state: "MN"
+  },
+  {
+    name: "Leven Deli", zip: "80204", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 917, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 8am-7pm (varies)",
+    knownFor: "Highest-ranked CO restaurant on Yelp Top 100 (#13), classic deli sandwiches",
+    lat: 39.734, lon: -105.0259, city: "Denver", state: "CO"
+  },
+  {
+    name: "GW Fins", zip: "70112", cuisines: ["seafood"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 3524, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 5-9:30pm",
+    knownFor: "Fine-dining French Quarter seafood, dry-aged fish, Yelp Top 100 #8",
+    lat: 29.9605, lon: -90.0753, city: "New Orleans", state: "LA"
+  },
+  {
+    name: "Slackwater - Salt Lake City", zip: "84101", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 932, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 11am-10pm",
+    knownFor: "Pop-culture-themed pizza and huge beer menu, Yelp Top 100 #9",
+    lat: 40.7559, lon: -111.8967, city: "Salt Lake City", state: "UT"
+  },
+  {
+    name: "Rock N' Potato", zip: "89109", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 1153, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Loaded baked potatoes on the Strip",
+    lat: 36.126, lon: -115.1454, city: "Las Vegas", state: "NV"
+  },
+  {
+    name: "Noko Nashville", zip: "37206", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 608, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Tue-Sun 5-9pm, closed Mon",
+    knownFor: "Award-winning wood-fire Japanese, Yelp Top 100 #24",
+    lat: 36.1798, lon: -86.7411, city: "Nashville", state: "TN"
+  },
+  {
+    name: "Ludi's Restaurant & Lounge", zip: "98101", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 847, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily 7am-2:30pm",
+    knownFor: "Classic all-day breakfast diner near Pike Place, Yelp Top 100 #25",
+    lat: 47.6114, lon: -122.3305, city: "Seattle", state: "WA"
+  },
+  {
+    name: "Von's 1000Spirits", zip: "98072", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 974, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Burgers, sourdough pizza, huge spirits menu, Yelp Top 100 #39",
+    lat: 47.7684, lon: -122.1271, city: "Woodinville", state: "WA"
+  },
+  {
+    name: "Aroy Mak Thai Food", zip: "98133", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 393, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Mon, Tue 11am-8:30pm (varies)",
+    knownFor: "Yelp Top 100 #7 in 2025, Greenwood neighborhood Thai",
+    lat: 47.7377, lon: -122.3431, city: "Seattle", state: "WA"
+  },
+  {
+    name: "Cafe Bonjour", zip: "02111", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1160, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Mon 7am-3pm (varies)",
+    knownFor: "All-day breakfast diner in Downtown Boston",
+    lat: 42.3503, lon: -71.0629, city: "Boston", state: "MA"
+  },
+  {
+    name: "Ekiben", zip: "21231", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 2104, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-3:30pm, 4:30-10pm (varies)",
+    knownFor: "Asian fusion steamed buns in Fells Point, Yelp Top 100 #30",
+    lat: 39.2892, lon: -76.59, city: "Baltimore", state: "MD"
+  },
+  {
+    name: "Rutba Indian Kitchen", zip: "89146", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 417, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-10:30pm (varies)",
+    knownFor: "Halal Indian in Vegas Chinatown, Yelp Top 100 #34",
+    lat: 36.1424, lon: -115.2242, city: "Las Vegas", state: "NV"
+  },
+  {
+    name: "Scalessa's", zip: "19806", cuisines: ["italian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 450, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-8pm (varies)",
+    knownFor: "Old-school scratch-made Italian, homemade gnocchi",
+    lat: 39.7571, lon: -75.5635, city: "Wilmington", state: "DE"
+  },
+  {
+    name: "Alma Fonda Fina", zip: "80211", cuisines: ["mexican"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 295, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 2-10pm (varies)",
+    knownFor: "Upscale Mexican in LoHi, NYT Best Mexican Restaurants list",
+    lat: 39.7665, lon: -105.0204, city: "Denver", state: "CO"
+  },
+  {
+    name: "Golden Banh Mi", zip: "80014", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 323, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Tue-Sun 11am-6pm, closed Mon",
+    knownFor: "Locally owned Vietnamese sandwich shop, Yelp Top 100 #99",
+    lat: 39.6662, lon: -104.835, city: "Aurora", state: "CO"
+  },
+  {
+    name: "Songbird", zip: "63116", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 628, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily 8am-2pm, closed Tue",
+    knownFor: "Locally-sourced breakfast, Yelp Top 100 #71",
+    lat: 38.5814, lon: -90.2625, city: "St. Louis", state: "MO"
+  },
+  {
+    name: "Blues City Deli", zip: "63104", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 1393, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 10:30am-3pm (varies)",
+    knownFor: "Legendary po'boys in Benton Park, Yelp Top 100 #82",
+    lat: 38.6128, lon: -90.2185, city: "St Louis", state: "MO"
+  },
+  {
+    name: "Two Chicks Cafe - CBD", zip: "70112", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 857, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily (check listing)",
+    knownFor: "Scratch-made breakfast and fresh juices, Yelp Top 100 #90",
+    lat: 29.9605, lon: -90.0753, city: "New Orleans", state: "LA"
+  },
+  {
+    name: "Polite Society", zip: "63104", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1413, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Lafayette Square New American dining, Yelp Top 100 #97",
+    lat: 38.6128, lon: -90.2185, city: "St Louis", state: "MO"
+  },
+  {
+    name: "Telva at The Ridge", zip: "63119", cuisines: ["greek"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 229, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Mediterranean cafe inside a nursery, Yelp Top 100 #77",
+    lat: 38.5893, lon: -90.3481, city: "Webster Groves", state: "MO"
+  },
+  {
+    name: "Flavor Rich Restaurant", zip: "30308", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 288, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Tue 9am-4pm (varies)",
+    knownFor: "Best Southern comfort food in Atlanta, Yelp Top 100 #60",
+    lat: 33.7718, lon: -84.3757, city: "Atlanta", state: "GA"
+  },
+  {
+    name: "The BEP Corner", zip: "30096", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 333, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Vietnamese-Asian fusion, huge menu, Yelp Top 100 #81",
+    lat: 33.9845, lon: -84.1529, city: "Duluth", state: "GA"
+  },
+  {
+    name: "Fudo", zip: "30341", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1090, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Fresh sushi and Japanese fusion, Yelp Top 100 #86",
+    lat: 33.8879, lon: -84.2905, city: "Chamblee", state: "GA"
+  },
+  {
+    name: "Mawn", zip: "19147", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 266, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Mon-Tue, Wed 4:30-9pm (varies)",
+    knownFor: "Cambodian noodle house in Bella Vista, Yelp Top 100 #46",
+    lat: 39.9362, lon: -75.1563, city: "Philadelphia", state: "PA"
+  },
+  {
+    name: "Ciccio Mio", zip: "60654", cuisines: ["italian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 664, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 4-10:30pm (varies)",
+    knownFor: "River North Italian, Yelp Top 100 alum",
+    lat: 41.8923, lon: -87.6373, city: "Chicago", state: "IL"
+  },
+  {
+    name: "Kitchen Social", zip: "43240", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1071, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 3-9pm (varies)",
+    knownFor: "Trendy cocktail bar and small plates, Yelp Top 100 #92",
+    lat: 40.1454, lon: -82.9817, city: "Columbus", state: "OH"
+  },
+  {
+    name: "Yunta Nikkei", zip: "28203", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 551, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 4-10pm (varies)",
+    knownFor: "Peruvian-Japanese Nikkei fusion, Yelp Top 100 #80",
+    lat: 35.2081, lon: -80.8583, city: "Charlotte", state: "NC"
+  },
+  {
+    name: "Zeneli Pizzeria", zip: "06511", cuisines: ["italian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 703, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "New Haven apizza, Yelp Top 100 #87",
+    lat: 41.3184, lon: -72.9318, city: "New Haven", state: "CT"
+  },
+  {
+    name: "Monell's Dining & Catering", zip: "37208", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 2245, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 8am-3pm (varies)",
+    knownFor: "Family-style Southern boarding-house dining, Yelp Top 100 #84",
+    lat: 36.1762, lon: -86.8076, city: "Nashville", state: "TN"
+  },
+  {
+    name: "Chay Restaurant", zip: "22041", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 218, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 10am-9pm (varies)",
+    knownFor: "Vietnamese vegetarian and vegan cuisine, Yelp Top 100 #68",
+    lat: 38.8502, lon: -77.1448, city: "Falls Church", state: "VA"
+  },
+  {
+    name: "Hatsuyuki Handroll Bar", zip: "76107", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 994, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Mon, Tue 11am-2:30pm (varies)",
+    knownFor: "Yelp #9 nationally in 2024, handroll sushi bar",
+    lat: 32.7392, lon: -97.3852, city: "Fort Worth", state: "TX"
+  },
+  {
+    name: "Gold Spoon", zip: "75007", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 265, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11:30am-3pm, 5-11pm (varies)",
+    knownFor: "Korean BBQ, Yelp Top 100 #37",
+    lat: 33.0033, lon: -96.882, city: "Carrollton", state: "TX"
+  },
+  {
+    name: "Xiaolong Dumpling", zip: "77006", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 303, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-9pm (varies)",
+    knownFor: "Handmade soup dumplings, Yelp Top 100 #43",
+    lat: 29.7409, lon: -95.3923, city: "Houston", state: "TX"
+  },
+  {
+    name: "Taqueria De Diez", zip: "78701", cuisines: ["mexican"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 561, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11:30am-10pm (varies)",
+    knownFor: "Tijuana-style street tacos downtown, Yelp Top 100 #47",
+    lat: 30.2713, lon: -97.7426, city: "Austin", state: "TX"
+  },
+  {
+    name: "Lewis Barbecue", zip: "29403", cuisines: ["bbq"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 2460, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-9pm (varies)",
+    knownFor: "Central Texas-style BBQ in Charleston, Yelp Top 100 #48",
+    lat: 32.7976, lon: -79.9493, city: "Charleston", state: "SC"
+  },
+  {
+    name: "Aga's Restaurant & Catering", zip: "77031", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 3658, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-10pm (varies)",
+    knownFor: "Top Pakistani-Indian restaurant in Houston, Yelp Top 100 #50",
+    lat: 29.6581, lon: -95.5413, city: "Houston", state: "TX"
+  },
+  {
+    name: "Gino's Deli Stop N Buy", zip: "78230", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 2617, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 9am-8pm (varies)",
+    knownFor: "Best sandwich in San Antonio, Yelp Top 100 #51",
+    lat: 29.5407, lon: -98.5521, city: "San Antonio", state: "TX"
+  },
+  {
+    name: "167 Raw Oyster Bar - Charleston", zip: "29401", cuisines: ["seafood"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 3280, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-11pm (varies)",
+    knownFor: "Yelp Top 100 seafood spot, no-reservations oyster bar",
+    lat: 32.7795, lon: -79.9371, city: "Charleston", state: "SC"
+  },
+  {
+    name: "Mikiya Wagyu Shabu House", zip: "77036", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 256, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Wagyu hot pot in Asiatown, Yelp Top 100 #55",
+    lat: 29.6984, lon: -95.5405, city: "Houston", state: "TX"
+  },
+  {
+    name: "Sushi Yume", zip: "78664", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 205, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Mon, Tue 11am-1:30pm (varies)",
+    knownFor: "Innovative sushi, Yelp Top 100 #57",
+    lat: 30.5145, lon: -97.668, city: "Round Rock", state: "TX"
+  },
+  {
+    name: "Edmond's Burgers & More", zip: "75075", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 473, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Mon, Tue 11am-9pm (varies)",
+    knownFor: "Top burgers in Plano, Yelp Top 100 #59",
+    lat: 33.025, lon: -96.7397, city: "Plano", state: "TX"
+  },
+  {
+    name: "Whip My Soul", zip: "78726", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 774, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Black-owned soul food, Yelp Top 100 #62",
+    lat: 30.43, lon: -97.8326, city: "Austin", state: "TX"
+  },
+  {
+    name: "The Ginger Mule", zip: "77008", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 356, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Plant-based globally-inspired food in the Heights, Yelp Top 100 #63",
+    lat: 29.7991, lon: -95.4118, city: "Houston", state: "TX"
+  },
+  {
+    name: "Revelry", zip: "33062", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 256, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Mon-Tue, Wed 4-11pm (varies)",
+    knownFor: "Live-music beer bar and lounge, Yelp Top 100 #64",
+    lat: 26.2343, lon: -80.0941, city: "Pompano Beach", state: "FL"
+  },
+  {
+    name: "Bird Bird Biscuit", zip: "78722", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1867, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 7:30am-2pm (varies)",
+    knownFor: "East Austin chicken-biscuit flagship, Yelp Top 100 #66",
+    lat: 30.2893, lon: -97.715, city: "Austin", state: "TX"
+  },
+  {
+    name: "Shabu En", zip: "77036", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 616, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-10pm (varies)",
+    knownFor: "All-you-can-eat shabu-shabu hot pot, Yelp Top 100 #69",
+    lat: 29.6984, lon: -95.5405, city: "Houston", state: "TX"
+  },
+  {
+    name: "Crackings", zip: "32459", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 882, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily (check listing)",
+    knownFor: "Longtime family-owned homestyle breakfast on 30A, Yelp Top 100 #70",
+    lat: 30.3659, lon: -86.2458, city: "Santa Rosa Beach", state: "FL"
+  },
+  {
+    name: "Rosalia's Kitchen", zip: "33025", cuisines: ["italian"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1044, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-10pm (varies)",
+    knownFor: "Italian dining, Yelp Top 100 #72",
+    lat: 25.9921, lon: -80.2712, city: "Miramar", state: "FL"
+  },
+  {
+    name: "The Chef's Table - Vintage Park", zip: "77070", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 596, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-9pm (varies)",
+    knownFor: "Globally-inspired fine dining, Yelp Top 100 #73",
+    lat: 29.9781, lon: -95.5803, city: "Houston", state: "TX"
+  },
+  {
+    name: "Stasio's", zip: "32803", cuisines: ["italian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 829, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 7am-7pm (varies)",
+    knownFor: "Italian deli and market, Yelp Top 100 #75",
+    lat: 28.5559, lon: -81.3535, city: "Orlando", state: "FL"
+  },
+  {
+    name: "Charoen Krung Thai", zip: "10022", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 451, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11:30am-4pm, 5-10pm (varies)",
+    knownFor: "Midtown East Thai, Yelp Top 100 #35",
+    lat: 40.7571, lon: -73.9657, city: "New York", state: "NY"
+  },
+  {
+    name: "Gurume", zip: "10036", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 404, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Korean tapas bar in Hell's Kitchen, Yelp Top 100 #38",
+    lat: 40.7597, lon: -73.9918, city: "New York", state: "NY"
+  },
+  {
+    name: "Da Andrea - Chelsea", zip: "10011", cuisines: ["italian"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 850, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "North Italian handmade pasta, Yelp Top 100 #45",
+    lat: 40.7402, lon: -73.9996, city: "New York", state: "NY"
+  },
+  {
+    name: "Larb Thai-Isan", zip: "33308", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 870, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11:30am-10pm (varies)",
+    knownFor: "South Florida's favorite Thai spot, Yelp Top 100 #42",
+    lat: 26.0984, lon: -80.1822, city: "Fort Lauderdale", state: "FL"
+  },
+  {
+    name: "618", zip: "07728", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 848, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Modern rustic restaurant and bar, Yelp Top 100 #95",
+    lat: 40.2458, lon: -74.2768, city: "Freehold", state: "NJ"
+  },
+  {
+    name: "Chellas Arepa Kitchen", zip: "17601", cuisines: ["caribbean"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 423, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Mon, Tue-Sun 11am (varies)",
+    knownFor: "Peruvian-Venezuelan arepas, Yelp Top 100 #5 in 2025",
+    lat: 40.0766, lon: -76.3107, city: "Lancaster", state: "PA"
+  },
+  {
+    name: "Holbox", zip: "90007", cuisines: ["seafood"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 1700, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Michelin-rated Yucatan seafood counter, Yelp Top 100 2025 #1",
+    lat: 34.0294, lon: -118.2871, city: "Los Angeles", state: "CA"
+  },
+  {
+    name: "Twisted Gyros", zip: "97124", cuisines: ["greek"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 257, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Viral food-truck-turned-restaurant fusion gyros, Yelp Top 100 2025 #2",
+    lat: 45.5387, lon: -122.9636, city: "Hillsboro", state: "OR"
+  },
+  {
+    name: "Amy's French Bakery & Bistro", zip: "33060", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 495, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily 7am (varies)",
+    knownFor: "French omelets and pastries, Yelp Top 100 2025 #9",
+    lat: 26.2315, lon: -80.1235, city: "Pompano Beach", state: "FL"
+  },
+  {
+    name: "Wally's Cafe", zip: "95765", cuisines: ["greek"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 1300, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "4-time Yelp Top 100 Lebanese cafe",
+    lat: 38.8136, lon: -121.2677, city: "Rocklin", state: "CA"
+  },
+  {
+    name: "Milpa", zip: "89147", cuisines: ["mexican"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 706, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Daily 8am-9pm",
+    knownFor: "Birria tacos and breakfast, Yelp Top 100 2025 #19",
+    lat: 36.1128, lon: -115.2801, city: "Las Vegas", state: "NV"
+  },
+  {
+    name: "Sierra Subs & Salads", zip: "93271", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 669, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Mon, Tue-Sun (varies)",
+    knownFor: "Riverside sandwich shop by Sequoia National Park, Yelp Top 100 2025 #12",
+    lat: 36.4377, lon: -118.8875, city: "Three Rivers", state: "CA"
+  },
+  {
+    name: "Beyer Deli", zip: "92154", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 5.0, reviewCount: 895, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Mon (varies)",
+    knownFor: "Family-owned deli sandwiches since 2001, Yelp Top 100 2025 #14",
+    lat: 32.5753, lon: -117.0707, city: "San Diego", state: "CA"
+  },
+  {
+    name: "Berry Brand", zip: "92780", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.9, reviewCount: 210, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch", "dinner"],
+    hours: "Mon 9am-8pm (varies)",
+    knownFor: "Acai and pitaya bowl shop, Yelp Top 100 2025 #15",
+    lat: 33.7364, lon: -117.8229, city: "Tustin", state: "CA"
+  },
+  {
+    name: "Shlap Muan Chicken Wings", zip: "90805", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 545, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11:30am-7:30pm (varies)",
+    knownFor: "Cambodian-style wings and garlic noodles, Yelp Top 100 2025 #11",
+    lat: 33.8635, lon: -118.1801, city: "Long Beach", state: "CA"
+  },
+  {
+    name: "Freeman's Grub & Pub", zip: "27403", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 593, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Seasonal gastropub menu, Yelp Top 100 2025 #35",
+    lat: 36.0641, lon: -79.8202, city: "Greensboro", state: "NC"
+  },
+  {
+    name: "Baja Cafe on Broadway", zip: "85710", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 1690, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Daily 6am-2pm",
+    knownFor: "Scratch-kitchen Southwestern breakfast, Yelp Top 100 2025 #34",
+    lat: 32.2138, lon: -110.824, city: "Tucson", state: "AZ"
+  },
+  {
+    name: "West Coast Cheesesteaks", zip: "91740", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 803, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily 11am-7pm (varies)",
+    knownFor: "California-style cheesesteaks, Yelp Top 100 2025 #18",
+    lat: 34.1287, lon: -117.8552, city: "Glendora", state: "CA"
+  },
+  {
+    name: "Shawarma Guys", zip: "91942", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 738, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Wagyu shawarma and Middle Eastern platters, Yelp Top 100 2025 #26",
+    lat: 32.7835, lon: -117.0189, city: "La Mesa", state: "CA"
+  },
+  {
+    name: "Baba Kabob", zip: "92126", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 568, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-8pm (varies)",
+    knownFor: "Afghan kabobs and shawarma in Miramar, Yelp Top 100 2025 #37",
+    lat: 32.9161, lon: -117.1402, city: "San Diego", state: "CA"
+  },
+  {
+    name: "Sunbliss Cafe", zip: "92808", cuisines: ["bakery"],
+    source: "vetted",
+    vetting: { rating: 4.8, reviewCount: 801, asOf: "2026-09-09" },
+    mealTypes: ["breakfast", "lunch"],
+    hours: "Mon 7am-6pm (varies)",
+    knownFor: "Acai bowls and creative drinks, Yelp Top 100 2025 #23",
+    lat: 33.8579, lon: -117.7513, city: "Anaheim", state: "CA"
+  },
+  {
+    name: "Guy's for Lunch", zip: "95678", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 5.0, reviewCount: 1144, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Sun (varies)",
+    knownFor: "Fresh sandwiches, soups and salads, Yelp Top 100 2025 #21",
+    lat: 38.7609, lon: -121.2867, city: "Roseville", state: "CA"
+  },
+  {
+    name: "GONZO!", zip: "92008", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 1499, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Fri 11:30am-1am (varies)",
+    knownFor: "Anime-inspired ramen shop, Yelp Top 100 2025 #31",
+    lat: 33.1602, lon: -117.325, city: "Carlsbad", state: "CA"
+  },
+  {
+    name: "EBESU Robata & Sushi", zip: "75074", cuisines: ["asian"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 333, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Daily (check listing)",
+    knownFor: "Modern Japanese bistro in Historic Downtown Plano, Yelp Top 100 2025 #32",
+    lat: 33.0277, lon: -96.6777, city: "Plano", state: "TX"
+  },
+  {
+    name: "Nick's Old Fashioned Hamburger House", zip: "27295", cuisines: ["american"],
+    source: "vetted",
+    vetting: { rating: 4.6, reviewCount: 273, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Closed Sun, Sat 11am-5pm (varies)",
+    knownFor: "Community burger joint, Yelp Top 100 2025 #60",
+    lat: 35.8684, lon: -80.315, city: "Lexington", state: "NC"
+  },
+  {
+    name: "Hutchins BBQ", zip: "75033", cuisines: ["bbq"],
+    source: "vetted",
+    vetting: { rating: 4.7, reviewCount: 3492, asOf: "2026-09-09" },
+    mealTypes: ["lunch", "dinner"],
+    hours: "Mon 11am-9pm (varies)",
+    knownFor: "Frisco BBQ institution, Yelp Top 100 #49",
+    lat: 33.1499, lon: -96.8241, city: "Frisco", state: "TX"
   }
 ];

@@ -1330,6 +1330,15 @@
     .restaurant-card-known-for { font-size: 0.88rem; color: var(--rf-basil-deep); font-weight: 600; margin-bottom: 0.5rem; }
     .restaurant-card-hours { font-size: 0.78rem; color: var(--rf-muted); margin-bottom: 0.65rem; }
     .restaurant-card-note { font-size: 0.88rem; color: var(--rf-muted); line-height: 1.65; }
+    /* Only shown on "vetted" entries — restaurants sourced independently
+       rather than personally named by Joseph, so it's worth flagging that
+       the confidence here comes from review data, not a first-hand pick. */
+    .restaurant-card-vetted-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.72rem; font-weight: 700; color: var(--rf-tomato-hover);
+      background: rgba(217,96,63,0.1); border: 1px solid rgba(217,96,63,0.25);
+      border-radius: 2rem; padding: 0.25rem 0.65rem; margin-bottom: 0.6rem;
+    }
 
     .restaurant-message { margin-top: 1.5rem; padding: 1.1rem 1.4rem; border-radius: 0.7rem; font-weight: 600; font-size: 0.92rem; line-height: 1.6; }
     .restaurant-message.success { background: rgba(75,107,63,0.1); border: 1px solid rgba(75,107,63,0.3); color: var(--rf-basil-deep); }
@@ -4216,10 +4225,14 @@ function initRestaurantTool() {
 
 function restaurantCardHTML(r) {
   const cuisineLabels = r.cuisines.map(c => (RESTAURANT_CUISINE_OPTIONS.find(o => o.value === c) || {}).label || c).join(', ');
+  const vettedBadge = r.source === 'vetted' && r.vetting
+    ? `<div class="restaurant-card-vetted-badge">★ ${r.vetting.rating} (${r.vetting.reviewCount}) · Not personally visited</div>`
+    : '';
   return `
     <div class="restaurant-card">
       <div class="restaurant-card-name">${r.name}</div>
       <div class="restaurant-card-meta">${r.city ? `${r.city}, ${r.state} · ` : ''}${r.distance} mi away · ${cuisineLabels}</div>
+      ${vettedBadge}
       ${r.knownFor ? `<div class="restaurant-card-known-for">${r.knownFor}</div>` : ''}
       ${r.hours ? `<div class="restaurant-card-hours">🕒 ${r.hours}</div>` : ''}
       ${r.note ? `<div class="restaurant-card-note">"${r.note}"</div>` : ''}

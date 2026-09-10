@@ -5397,7 +5397,7 @@ const restaurants = [
     tip: "Get the tuna — the best tuna dish I've ever had, anywhere.",
     mealTypes: ["dinner"],
     hours: "Dinner nightly, opens 5pm (reservations required)",
-    knownFor: "3 Michelin stars — New French fine dining inside the Fairmont Grand Del Mar. Went with Wendy and Grace; beautiful food.",
+    knownFor: "3 Michelin stars — New French fine dining inside the Fairmont Grand Del Mar. Beautiful food.",
     lat: 32.9555, lon: -117.2252, city: "San Diego", state: "CA"
   },
   {
@@ -5407,7 +5407,7 @@ const restaurants = [
     priceLevel: 5,
     mealTypes: ["dinner"],
     hours: "Dinner nightly, opens 5:30pm (reservations required)",
-    knownFor: "2 Michelin stars — modern French gastronomy. Been several times with Wendy and clients.",
+    knownFor: "2 Michelin stars — modern French gastronomy.",
     lat: 34.0176, lon: -118.4907, city: "Santa Monica", state: "CA"
   },
   {
@@ -5417,7 +5417,7 @@ const restaurants = [
     priceLevel: 5,
     mealTypes: ["dinner"],
     hours: "Dinner nightly, opens 5:30pm (reservations required)",
-    knownFor: "Wolfgang Puck's flagship — 2 Michelin stars. Been there with many clients.",
+    knownFor: "Wolfgang Puck's flagship — 2 Michelin stars.",
     lat: 34.0901, lon: -118.4065, city: "Beverly Hills", state: "CA"
   },
   {
@@ -5438,7 +5438,7 @@ const restaurants = [
     tip: "The garlic noodles are the best-known dish, but ask for the tofu dumplings — they're off the printed menu.",
     mealTypes: ["dinner"],
     hours: "Dinner nightly, opens 5:30pm (reservations required)",
-    knownFor: "Famous for its secret kitchen and family recipes; the chicken satay is the best in the world. There's a great documentary about the founder. Used to go on Valentine's Day and for client lunches and dinners.",
+    knownFor: "Famous for its secret kitchen and family recipes; the chicken satay is the best in the world. There's a great documentary about the founder.",
     lat: 34.0901, lon: -118.4065, city: "Beverly Hills", state: "CA"
   },
   {
@@ -5459,7 +5459,7 @@ const restaurants = [
     priceLevel: 4,
     mealTypes: ["lunch", "dinner"],
     hours: "Daily, opens 11:30am",
-    knownFor: "Best steakhouse in Downtown LA other than CUT — usually with TV execs.",
+    knownFor: "Best steakhouse in Downtown LA other than CUT.",
     lat: 34.0529, lon: -118.2549, city: "Los Angeles", state: "CA"
   },
   {

@@ -37,7 +37,7 @@ ROWS_PER_EVENT = 25
 PER_QUERY_BYTES_WARN = 3 * 1024**3        # 3 GB -- flagged per-event
 CUMULATIVE_BYTES_ABORT = 100 * 1024**3    # 100 GB -- run stops entirely (measured full-sample cost: ~64 GB)
 
-FIELDS = ["GKGRECORDID", "DATE", "SourceCommonName", "DocumentIdentifier", "V2Locations"]
+FIELDS = ["GKGRECORDID", "DATE", "SourceCommonName", "DocumentIdentifier", "V2Locations", "V2Tone", "GCAM"]
 
 QUERY_TEMPLATE = f"""
 SELECT {", ".join(FIELDS)}

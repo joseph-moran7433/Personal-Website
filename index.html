@@ -1105,6 +1105,12 @@
     }
 
     .usl-q-num { font-family: var(--font-body-usl); color: var(--usl-faint); font-size: 0.8rem; margin-right: 0.5rem; }
+    .usl-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1.25rem 0; }
+    .usl-table th, .usl-table td { text-align: left; padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--usl-border); vertical-align: top; }
+    .usl-table th { font-family: var(--font-body-usl); text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.68rem; color: var(--usl-muted); }
+    .usl-status-yes { color: #4b6b3f; font-weight: 700; }
+    .usl-status-no { color: var(--usl-accent-dim); font-weight: 700; }
+    .usl-status-partial { color: #c97f45; font-weight: 700; }
     .usl-chart-wrap { margin: 1.25rem 0; }
     .usl-chart-wrap svg text { font-family: var(--font-body-usl); fill: var(--usl-muted); font-size: 11px; }
     .usl-gridline { stroke: var(--usl-border); stroke-width: 1; }
@@ -2425,7 +2431,33 @@
       <p class="usl-panel-body"><strong>17 of 50 (34%)</strong> are genuinely peaceful protests with no intervention or violence recorded; <strong>33 of 50 (66%)</strong> are coded as riots — 31 violent demonstrations and 2 mob violence events. Notably, none of the 50 landed in the two middle categories (protest with intervention, excessive force against protesters) — at this sample size that's plausibly chance rather than a real gap, and would need a larger pull to confirm. Only 2 events carried any fatalities (1 each). This split only exists because of the event_type filter fix above — the original broken pull would have shown 100% violent with no peaceful baseline to compare against at all.</p>
     </div>
 
-    <p class="usl-note">Stop condition reached: this page answers all four original Phase 0 questions with real pulled data, plus one follow-up exploration. No labeling scheme, feature engineering, model, pipeline, or automation has been built — that's a separate, later conversation.</p>
+    <div class="usl-panel">
+      <div class="usl-panel-label">Follow-up (not one of the original four)</div>
+      <h2 class="usl-panel-heading">Comparative analysis: planned model variables vs. what Phase 0 actually has</h2>
+      <p class="usl-panel-body"><code>civil-unrest-risk-classifier-plan.pdf</code> (the planning doc for the actual future model) names specific predictor variables. Checking each one against what this phase's pulls actually contain — without building any of the model itself — surfaced real gaps worth knowing before that work starts.</p>
+      <table class="usl-table">
+        <tr><th>Variable</th><th>Source</th><th>Status</th><th>Note</th></tr>
+        <tr><td>Average Tone</td><td>GDELT GKG (<code>V2Tone</code>)</td><td class="usl-status-yes">Have it</td><td>Pulled for a 7-event spot-check below.</td></tr>
+        <tr><td>GCAM emotion dimensions</td><td>GDELT GKG (<code>GCAM</code>)</td><td class="usl-status-partial">Present, too costly to sample</td><td>Confirmed in the table schema at zero cost — but one event's <code>GCAM</code> column alone dry-ran at 22.8 GB, ~17x every other column in the row combined. Bulk-pulling it for the full 50-event sample would have used 112% of the entire monthly free quota by itself. Not pulled.</td></tr>
+        <tr><td>Goldstein Scale</td><td>GDELT Events table</td><td class="usl-status-no">Not in this pull</td><td>Lives in <code>gdeltv2.events</code>, a separate table from the GKG table this phase queries. Zero rows pulled from it so far.</td></tr>
+        <tr><td>Quad Class Ratio</td><td>GDELT Events table</td><td class="usl-status-no">Not in this pull</td><td>Same table gap as Goldstein Scale — <code>QuadClass</code> is an Events-table field, not GKG.</td></tr>
+        <tr><td>Volume / Mention Spike</td><td>GDELT GKG (row counts)</td><td class="usl-status-yes">Derivable</td><td>No new field needed — just a count of existing pulled rows per location/day.</td></tr>
+        <tr><td>Actor Diversity</td><td>GDELT GKG (<code>V2Persons</code>/<code>V2Organizations</code>)</td><td class="usl-status-partial">Partial</td><td>GKG has NLP-extracted names, not the structured opposing-actor coding the plan describes — would need real work to turn into "count of opposing groups."</td></tr>
+        <tr><td>sub_event_type</td><td>ACLED</td><td class="usl-status-yes">Have it</td><td>Already the basis of the severity scale above.</td></tr>
+        <tr><td>fatalities</td><td>ACLED</td><td class="usl-status-yes">Have it</td><td>Already pulled and shown in the severity analysis.</td></tr>
+        <tr><td>actor fields</td><td>ACLED (<code>actor1</code>)</td><td class="usl-status-yes">Have it</td><td>Already in every pulled record.</td></tr>
+      </table>
+      <p class="usl-panel-body">To ground the one variable that's cheap enough to actually check (Average Tone), a small, deliberately-chosen subset — 3 Peaceful protest, 3 Violent demonstration, and the 1 Mob violence event with a GDELT hit (7 events, 151 articles, 10.7 GB scanned) — got <code>V2Tone</code> added to the pull.</p>
+      <div class="usl-chart-wrap">
+        <svg class="chart-svg" viewBox="0 0 480 260" role="img" aria-label="Diverging bar chart of mean GDELT article tone in the pre-event window by ACLED severity level: Peaceful protest -1.65, Violent demonstration -2.64, Mob violence -1.68, all on a -10 to +10 scale">
+          <line class="usl-gridline" x1="40" y1="90" x2="460" y2="90"/><rect class="usl-bar" x="75.0" y="90.0" width="70.0" height="56.2" rx="3" style="fill:#a8402b"/><text class="usl-bar-value" x="110.0" y="162.2" text-anchor="middle">-1.65</text><text class="usl-bar-label" x="110.0" y="220" text-anchor="middle">Peaceful</text><text class="usl-bar-label" x="110.0" y="234" text-anchor="middle">protest</text><rect class="usl-bar" x="215.0" y="90.0" width="70.0" height="90.0" rx="3" style="fill:#a8402b"/><text class="usl-bar-value" x="250.0" y="196.0" text-anchor="middle">-2.64</text><text class="usl-bar-label" x="250.0" y="220" text-anchor="middle">Violent</text><text class="usl-bar-label" x="250.0" y="234" text-anchor="middle">demonstration</text><rect class="usl-bar" x="355.0" y="90.0" width="70.0" height="57.3" rx="3" style="fill:#a8402b"/><text class="usl-bar-value" x="390.0" y="163.3" text-anchor="middle">-1.68</text><text class="usl-bar-label" x="390.0" y="220" text-anchor="middle">Mob</text><text class="usl-bar-label" x="390.0" y="234" text-anchor="middle">violence</text>
+        </svg>
+      </div>
+      <p class="usl-panel-body">Mean tone is negative across all three — unsurprising for protest coverage — but it's <strong>not monotonic with severity</strong>: Violent demonstration articles (-2.64) read more negative than Mob violence (-1.68), which reads about the same as Peaceful protest (-1.65). At n=7 events / 151 articles this is far too small to draw a real conclusion from, but it's a useful early warning: Average Tone alone may not cleanly separate severity levels the way the plan doc's "baseline signal" framing implies — consistent with the plan's own caveat that Tone "can't distinguish angry vs. sad vs. fearful negativity," and with this phase's earlier finding that pre-event, location-matched articles aren't reliably about the event at all, so some of this tone may not even reflect protest-related coverage in the first place.</p>
+      <p class="usl-panel-body">Net effect on a later phase: two of six planned GDELT features (Goldstein Scale, Quad Class Ratio) need a second table pulled that this phase never touched, and the highest-value emotion feature (GCAM) needs a far more targeted strategy than "pull it for every event" — likely limited to the final labeled training set only, not exploratory sampling, given the per-event cost.</p>
+    </div>
+
+    <p class="usl-note">Stop condition reached: this page answers all four original Phase 0 questions with real pulled data, plus two follow-up explorations. No labeling scheme, feature engineering, model, pipeline, or automation has been built — including no train/test split yet; that's real, necessary future work per the classifier plan, but it's a separate, later conversation.</p>
   </div>
 </div>
 

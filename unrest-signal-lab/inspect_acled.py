@@ -19,8 +19,16 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
+import manifest as pull_manifest
+
 HERE = Path(__file__).resolve().parent
 load_dotenv(HERE / ".env")
+
+# Private cache (gitignored, never in the public repo -- unlike data/acled_sample.json,
+# this can accumulate raw ACLED content across many runs without republishing it).
+# Keyed by event_id_cnty so repeat pulls can tell genuinely-new events from ones
+# already seen, without needing ACLED to support an incremental "since" filter.
+CACHE_PATH = HERE / ".cache" / "acled_events.json"
 
 TOKEN_URL = "https://acleddata.com/oauth/token"
 API_URL = "https://acleddata.com/api/acled/read"
@@ -81,6 +89,7 @@ def fetch_pool(token):
     # pulled with its own separate, single-value-filtered call instead of
     # trusting that OR syntax -- still scoped, still capped, still logged.
     rows = []
+    total_bytes = 0
     per_type_limit = POOL_LIMIT // 2
     for event_type in ("Protests", "Riots"):
         params = {
@@ -106,7 +115,8 @@ def fetch_pool(token):
               f"(capped at limit={per_type_limit}, date range {DATE_START}..{DATE_END}) "
               f"-- NOT the full history for this query")
         rows.extend(type_rows)
-    return rows
+        total_bytes += byte_count
+    return rows, total_bytes
 
 
 def stratified_sample(rows, n, seed=RANDOM_SEED):
@@ -140,6 +150,17 @@ def tag_metro(row):
     return row
 
 
+def load_cache():
+    if not CACHE_PATH.exists():
+        return {"events": {}, "sampled_event_ids": []}
+    return json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+
+
+def save_cache(cache):
+    CACHE_PATH.parent.mkdir(exist_ok=True)
+    CACHE_PATH.write_text(json.dumps(cache, indent=2), encoding="utf-8")
+
+
 def main():
     email = os.environ.get("ACLED_EMAIL")
     password = os.environ.get("ACLED_PASSWORD")
@@ -147,14 +168,28 @@ def main():
         print("Missing ACLED_EMAIL / ACLED_PASSWORD -- check unrest-signal-lab/.env", file=sys.stderr)
         sys.exit(1)
 
+    prior = pull_manifest.load_manifest()
+    print(f"[ACLED] manifest check: {len(prior['entries'])} prior pulls logged before this run starts.")
+
     token = get_access_token(email, password)
-    pool = fetch_pool(token)
+    pool, pool_bytes = fetch_pool(token)
     if not pool:
         print("ACLED returned zero rows for this query -- feasibility check fails.", file=sys.stderr)
         sys.exit(1)
 
+    cache = load_cache()
+    new_count = sum(1 for r in pool if r.get("event_id_cnty") not in cache["events"])
+    for r in pool:
+        cache["events"][r["event_id_cnty"]] = r
+    print(f"[ACLED] cache: {new_count} genuinely new events, {len(pool) - new_count} already known "
+          f"-- {len(cache['events'])} total events cached at {CACHE_PATH}")
+
     sample = stratified_sample(pool, SAMPLE_SIZE)
     sample = [tag_metro(r) for r in sample]
+
+    for eid in {r["event_id_cnty"] for r in sample} - set(cache["sampled_event_ids"]):
+        cache["sampled_event_ids"].append(eid)
+    save_cache(cache)
 
     states_covered = sorted({r.get("admin1", "UNKNOWN") for r in sample})
     metros = sum(1 for r in sample if r["_city_size_bucket"] == "major_metro")
@@ -167,6 +202,13 @@ def main():
     out_path.parent.mkdir(exist_ok=True)
     out_path.write_text(json.dumps(sample, indent=2), encoding="utf-8")
     print(f"[ACLED] wrote {out_path}")
+
+    pull_manifest.append_entry(
+        script="inspect_acled.py", source="ACLED",
+        description=f"Pool pull ({new_count} new events, {len(pool) - new_count} already cached), "
+                    f"stratified sample of {len(sample)} events written to data/acled_sample.json.",
+        rows=len(pool), byte_count=pool_bytes,
+    )
 
 
 if __name__ == "__main__":

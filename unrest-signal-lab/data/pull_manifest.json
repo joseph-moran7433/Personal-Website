@@ -1,0 +1,101 @@
+{
+  "_note": "Running log of every real (non-dry-run) pull against ACLED or BigQuery this phase has made. No raw ACLED content lives here -- rows/bytes/dates only, safe to be public. Entries before this manifest existed (sequence 1-5) are reconstructed from session history on 2026-09-15; exact intra-day timestamps weren't captured at pull time, so their 'date' is the session date, not a precise timestamp. Every pull script reads this file before pulling and appends to it after.",
+  "entries": [
+    {
+      "sequence": 1,
+      "date": "2026-09-15",
+      "script": "inspect_acled.py",
+      "source": "ACLED",
+      "description": "Original pool pull, broken event_type OR-filter (100% Riots, 0% Protests) -- superseded by sequence 2.",
+      "rows": 500,
+      "bytes": 433319,
+      "matching_method_version": null
+    },
+    {
+      "sequence": 2,
+      "date": "2026-09-15",
+      "script": "inspect_acled.py",
+      "source": "ACLED",
+      "description": "Corrected pool pull, event_type queried separately (250 Protests + 250 Riots) after the OR-filter bug fix. Sample used by all current Q1-Q4 findings.",
+      "rows": 500,
+      "bytes": 379891,
+      "matching_method_version": null
+    },
+    {
+      "sequence": 3,
+      "date": "2026-09-15",
+      "script": "inspect_gdelt.py",
+      "source": "GDELT_GKG",
+      "description": "GDELT pull against the ORIGINAL buggy 50-event ACLED sample (100% Riots, sequence 1). Location-substring matching only. Superseded by sequence 4 once sequence 1's bug was fixed -- data file since overwritten, but the quota was genuinely spent so it stays in this log.",
+      "rows": 1157,
+      "bytes": 68584185266,
+      "matching_method_version": "v1_location_substring"
+    },
+    {
+      "sequence": 4,
+      "date": "2026-09-15",
+      "script": "inspect_gdelt.py",
+      "source": "GDELT_GKG",
+      "description": "GDELT pull against the corrected 50-event sample from sequence 2 (17 Peaceful / 33 Riots). Location-substring matching only, no country or theme filter.",
+      "rows": 997,
+      "bytes": 69256347648,
+      "matching_method_version": "v1_location_substring"
+    },
+    {
+      "sequence": 5,
+      "date": "2026-09-15",
+      "script": "inspect_gdelt.py (ad hoc V2Tone subset)",
+      "source": "GDELT_GKG",
+      "description": "Targeted 7-event subset (3 Peaceful protest, 3 Violent demonstration, 1 Mob violence) with V2Tone added, for the tone-by-severity comparative analysis.",
+      "rows": 151,
+      "bytes": 11442866618,
+      "matching_method_version": "v1_location_substring"
+    },
+    {
+      "sequence": 6,
+      "date": "2026-09-15",
+      "script": "expand_acled_sample.py",
+      "source": "ACLED",
+      "description": "Drew 50 new events from the pool (excluding the original 50) to build the 100-event set for the Phase 0 Extension.",
+      "rows": 500,
+      "bytes": 379891,
+      "matching_method_version": null
+    },
+    {
+      "sequence": 7,
+      "date": "2026-09-15",
+      "script": "inspect_gdelt.py",
+      "source": "GDELT_GKG",
+      "description": "GKG pull across 78/100 events.",
+      "rows": 1465,
+      "bytes": 466816239698,
+      "matching_method_version": "v2_country_theme_filtered"
+    },
+    {
+      "sequence": 8,
+      "date": "2026-09-15",
+      "script": "inspect_gdelt_events.py",
+      "source": "GDELT_EVENTS",
+      "description": "Events table pull (Goldstein Scale + QuadClass) across 81/100 events.",
+      "rows": 3129,
+      "bytes": 12303796975,
+      "matching_method_version": "v2_country_theme_filtered"
+    },
+    {
+      "sequence": 9,
+      "date": "2026-09-15",
+      "script": "inspect_gdelt.py (ad hoc V2Persons/V2Organizations subset)",
+      "source": "GDELT_GKG",
+      "description": "Targeted 15-event subset (6 Peaceful, 6 Violent, 3 Mob violence) with V2Persons/V2Organizations added, for the actor-diversity proxy exploration.",
+      "rows": 288,
+      "bytes": 74540746628,
+      "matching_method_version": "v2_country_theme_filtered"
+    }
+  ],
+  "cumulative_bytes_by_source": {
+    "ACLED": 1193101,
+    "GDELT_GKG": 690640385858,
+    "GDELT_EVENTS": 12303796975
+  },
+  "cumulative_gdelt_gb_of_monthly_quota_pct": 63.93
+}

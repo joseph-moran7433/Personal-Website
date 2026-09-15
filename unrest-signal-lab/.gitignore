@@ -1,0 +1,8 @@
+.env
+gcp-service-account.json
+*.iam.gserviceaccount.json
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.token_cache.json

@@ -2319,97 +2319,113 @@
   <div class="usl-body">
     <p class="usl-note">Scope lock: this page is the entire deliverable for Phase 0. No labeling, feature engineering, modeling, or automation happens here or anywhere in this repo — every pull below was run once, by hand, from a local machine, and logged.</p>
 
+    <p class="usl-note"><strong>Mid-session correction:</strong> the original ACLED pull used a documented "field=A:OR:field=B" filter syntax for event_type that turned out not to work — it silently returned only the second clause, so the first sample was 100% Riots and 0% Protests. Confirmed by testing both orders directly (each returned only whichever type came last) and fixed by querying each event_type separately and combining the results. Every number on this page reflects the corrected pull.</p>
+
     <div class="usl-panel">
       <div class="usl-panel-label">Question 1</div>
       <h2 class="usl-panel-heading">Feasibility check</h2>
-      <p class="usl-panel-body">Both sources return real, non-empty results. ACLED returned all 50/50 events in a stratified sample (drawn from a 500-row scoped pool, capped and logged — never a bulk history pull). GDELT returned mentions for 49 of the 50 events (1,157 rows total); the one miss was a Washington, DC event whose ACLED location field was too vague ("Unspecified") to match against GDELT's location text, which is itself a small, honest data point about location-field quality.</p>
+      <p class="usl-panel-body">Both sources return real, non-empty results. ACLED returned all 50/50 events in a stratified sample (drawn from a 500-row scoped pool — 250 Protests + 250 Riots pulled separately — capped and logged, never a bulk history pull). GDELT returned mentions for 46 of the 50 events (997 rows total); the 4 misses were events whose ACLED location text didn't turn up a match in GDELT's location field within the pre-event window.</p>
       <div class="usl-stat-row">
         <div class="usl-stat"><div class="usl-stat-num">500</div><div class="usl-stat-label">ACLED pool rows</div></div>
-        <div class="usl-stat"><div class="usl-stat-num">433 KB</div><div class="usl-stat-label">ACLED bytes</div></div>
-        <div class="usl-stat"><div class="usl-stat-num">50 / 43</div><div class="usl-stat-label">Sample events / states</div></div>
-        <div class="usl-stat"><div class="usl-stat-num">1,157</div><div class="usl-stat-label">GDELT rows (49 events)</div></div>
-        <div class="usl-stat"><div class="usl-stat-num">63.9 GB</div><div class="usl-stat-label">GDELT bytes scanned</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">371 KB</div><div class="usl-stat-label">ACLED bytes</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">50 / 44</div><div class="usl-stat-label">Sample events / states</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">997</div><div class="usl-stat-label">GDELT rows (46 events)</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">64.5 GB</div><div class="usl-stat-label">GDELT bytes scanned</div></div>
       </div>
       <div class="usl-raw-grid">
         <div>
           <div class="usl-raw-label">Raw ACLED record (verbatim)</div>
           <pre class="usl-raw-block">{
-  &quot;event_id_cnty&quot;: &quot;USA4866&quot;,
-  &quot;event_date&quot;: &quot;2020-05-30&quot;,
+  &quot;event_id_cnty&quot;: &quot;USA571&quot;,
+  &quot;event_date&quot;: &quot;2020-06-14&quot;,
   &quot;year&quot;: 2020,
-  &quot;event_type&quot;: &quot;Riots&quot;,
-  &quot;sub_event_type&quot;: &quot;Violent demonstration&quot;,
-  &quot;actor1&quot;: &quot;Rioters (United States)&quot;,
+  &quot;event_type&quot;: &quot;Protests&quot;,
+  &quot;sub_event_type&quot;: &quot;Peaceful protest&quot;,
+  &quot;actor1&quot;: &quot;Protesters (United States)&quot;,
   &quot;country&quot;: &quot;United States&quot;,
-  &quot;admin1&quot;: &quot;Nebraska&quot;,
-  &quot;admin2&quot;: &quot;Douglas&quot;,
-  &quot;location&quot;: &quot;Omaha&quot;,
-  &quot;latitude&quot;: &quot;41.2568&quot;,
-  &quot;longitude&quot;: &quot;-95.9342&quot;,
+  &quot;admin1&quot;: &quot;North Carolina&quot;,
+  &quot;admin2&quot;: &quot;Durham&quot;,
+  &quot;location&quot;: &quot;Durham&quot;,
+  &quot;latitude&quot;: &quot;35.9940&quot;,
+  &quot;longitude&quot;: &quot;-78.8986&quot;,
   &quot;geo_precision&quot;: 1,
-  &quot;source&quot;: &quot;CBS News; KETV Channel 7; NPR&quot;,
-  &quot;source_scale&quot;: &quot;Subnational-National&quot;,
-  &quot;notes&quot;: &quot;On 30 May 2020, up to 1,000 people gathered as part of the Black Lives Matter movement in Omaha (Nebraska) to denounce the killing of George Floyd by police in Minneapolis on 25 May 2020. People began throwing objects at police, who responded with pepper balls and tear gas. Around midnight, the owner of a bar and a group of demonstrators argued outside his bar. The owner of the bar then shot and killed a Black man during the argument. The bar owner was initially cleared on self-defense grounds by the Country AG, but was charged with manslaughter, assault and terroristic threats by a grand jury on 15 September 2020. However, he committed suicide on 20 September 2020 before the case proceeded further. 1 fatality.&quot;,
-  &quot;fatalities&quot;: 1,
-  &quot;tags&quot;: &quot;Terrorist activity; crowd size=large&quot;,
+  &quot;source&quot;: &quot;ABC11&quot;,
+  &quot;source_scale&quot;: &quot;Subnational&quot;,
+  &quot;notes&quot;: &quot;On 14 June 2020, members of the faith community staged a march in Durham (North Carolina) from the Duke Memorial United Methodist Church through downtown in support of the Black Lives Matter movement and against police brutality and the death of George Floyd. People took a knee in memory of George Floyd for 8 minutes and 46 seconds.&quot;,
+  &quot;fatalities&quot;: 0,
+  &quot;tags&quot;: &quot;crowd size=small&quot;,
   &quot;_city_size_bucket&quot;: &quot;smaller_town&quot;
 }</pre>
         </div>
         <div>
           <div class="usl-raw-label">Raw GDELT GKG record (verbatim)</div>
           <pre class="usl-raw-block">{
-  &quot;GKGRECORDID&quot;: &quot;20210825140000-55&quot;,
-  &quot;DATE&quot;: 20210825140000,
-  &quot;SourceCommonName&quot;: &quot;kbur.com&quot;,
-  &quot;DocumentIdentifier&quot;: &quot;https://www.kbur.com/2021/08/25/ex-iowa-anchor-hopes-her-age-bias-lawsuit-changes-tv-news/&quot;,
-  &quot;V2Locations&quot;: &quot;2#Iowa, United States#US#USIA##42.0046#-93.214#IA#4;2#Iowa, United States#US#USIA##42.0046#-93.214#IA#76;3#Iowa City, Iowa, United States#US#USIA#IA103#41.6611#-91.5302#457827#9&quot;,
-  &quot;_acled_event_id&quot;: &quot;USA33274&quot;,
-  &quot;_acled_location&quot;: &quot;Iowa City&quot;,
-  &quot;_acled_admin1&quot;: &quot;Iowa&quot;
+  &quot;GKGRECORDID&quot;: &quot;20200608054500-269&quot;,
+  &quot;DATE&quot;: 20200608054500,
+  &quot;SourceCommonName&quot;: &quot;thenorthernecho.co.uk&quot;,
+  &quot;DocumentIdentifier&quot;: &quot;https://www.thenorthernecho.co.uk/culture/18502031.lockdown-doesnt-stop-college-bands-end-year-show/&quot;,
+  &quot;V2Locations&quot;: &quot;4#Sedgefield, Durham, United Kingdom#UK#UKD8#40106#54.65#-1.45#-2607389#302&quot;,
+  &quot;_acled_event_id&quot;: &quot;USA571&quot;,
+  &quot;_acled_location&quot;: &quot;Durham&quot;,
+  &quot;_acled_admin1&quot;: &quot;North Carolina&quot;
 }</pre>
         </div>
       </div>
+      <p class="usl-panel-body" style="margin-top:1.5rem;"><strong>Caveat, added after a manual spot-check:</strong> "non-empty" is not the same as "relevant." The pair above is a clean illustration of why: the ACLED event is a peaceful BLM march in Durham, <em>North Carolina</em>; the GDELT match is a college-bands story from Durham, <em>United Kingdom</em> — wrong country, not just wrong topic. Pulling every GDELT row previously tied to a different sampled event (the Iowa City protest from an earlier pull, 25 rows) and reading the actual article topics turned up the same pattern — a motorcycle crash, a mask-mandate op-ed, a taco restaurant opening, an obituary — none about the protest. That's structural, not a fluke: <code>inspect_gdelt.py</code> only pulls a <em>pre-event</em> window (ending the day before the ACLED event date), so it is incapable by design of ever returning coverage <em>of</em> the event itself, and a plain location-substring match can't tell "Durham, NC" from "Durham, UK" or "Iowa City" from any other article that happens to mention Iowa. A later phase would need a window that includes or follows the event date, country-code filtering on the match, and some relevance filter beyond location text, before GDELT mentions could be trusted as actual event coverage.</p>
     </div>
 
     <div class="usl-panel">
       <div class="usl-panel-label">Question 2</div>
       <h2 class="usl-panel-heading">GDELT geospatial accuracy</h2>
-      <p class="usl-panel-body">Every V2Locations field across the 1,157 pulled records was parsed for its finest-grained GDELT geo-type code present (1 = country, 2/5 = state or admin1, 3/4 = city or lat/long).</p>
+      <p class="usl-panel-body">Every V2Locations field across the 997 pulled records was parsed for its finest-grained GDELT geo-type code present (1 = country, 2/5 = state or admin1, 3/4 = city or lat/long).</p>
       <div class="usl-chart-wrap">
-        <svg class="chart-svg" viewBox="0 0 480 240" role="img" aria-label="Bar chart of GDELT GKG records by geo resolution: country-only 0, state or admin1 13, city or lat-long 1144">
+        <svg class="chart-svg" viewBox="0 0 480 240" role="img" aria-label="Bar chart of GDELT GKG records by geo resolution: country-only 0, state or admin1 11, city or lat-long 986">
           <line class="usl-gridline" x1="40" y1="200.0" x2="460" y2="200.0"/><line class="usl-gridline" x1="40" y1="155.0" x2="460" y2="155.0"/><line class="usl-gridline" x1="40" y1="110.0" x2="460" y2="110.0"/><line class="usl-gridline" x1="40" y1="65.0" x2="460" y2="65.0"/><line class="usl-gridline" x1="40" y1="20.0" x2="460" y2="20.0"/>
-          <rect class="usl-bar" x="75.0" y="200.0" width="70.0" height="0.0" rx="3"/><text class="usl-bar-value" x="110.0" y="192.0" text-anchor="middle">0</text><text class="usl-bar-label" x="110.0" y="222.0" text-anchor="middle">Country-only</text><rect class="usl-bar" x="215.0" y="197.0" width="70.0" height="3.0" rx="3"/><text class="usl-bar-value" x="250.0" y="189.0" text-anchor="middle">13</text><text class="usl-bar-label" x="250.0" y="222.0" text-anchor="middle">State/Admin1</text><rect class="usl-bar" x="355.0" y="20.0" width="70.0" height="180.0" rx="3"/><text class="usl-bar-value" x="390.0" y="12.0" text-anchor="middle">1144</text><text class="usl-bar-label" x="390.0" y="222.0" text-anchor="middle">City/Lat-Long</text>
+          <rect class="usl-bar" x="75.0" y="200.0" width="70.0" height="0.0" rx="3"/><text class="usl-bar-value" x="110.0" y="192.0" text-anchor="middle">0</text><text class="usl-bar-label" x="110.0" y="222.0" text-anchor="middle">Country-only</text><rect class="usl-bar" x="215.0" y="197.0" width="70.0" height="3.0" rx="3"/><text class="usl-bar-value" x="250.0" y="189.0" text-anchor="middle">11</text><text class="usl-bar-label" x="250.0" y="222.0" text-anchor="middle">State/Admin1</text><rect class="usl-bar" x="355.0" y="20.0" width="70.0" height="180.0" rx="3"/><text class="usl-bar-value" x="390.0" y="12.0" text-anchor="middle">986</text><text class="usl-bar-label" x="390.0" y="222.0" text-anchor="middle">City/Lat-Long</text>
         </svg>
       </div>
-      <p class="usl-panel-body"><strong>98.9%</strong> of records (1,144 of 1,157) resolve to city-level or better — a named town/city plus latitude/longitude — with only 13 falling back to state/admin1 and zero landing at country-only. For this sample, GDELT's geocoding is precise enough to actually locate a mention against a specific ACLED event, not just its home state — usability here looks strong, though this is 1,157 records tied to 49 pre-selected US protest locations, not a random cross-section of GDELT overall.</p>
+      <p class="usl-panel-body"><strong>98.9%</strong> of records (986 of 997) resolve to city-level or better — a named town/city plus latitude/longitude — with only 11 falling back to state/admin1 and zero landing at country-only. GDELT's geocoding is precise enough to actually locate a mention against a specific ACLED event's town, not just its home state — but per the Q1 caveat, precise geolocation is not the same as topical relevance, and the Durham NC/UK mixup above shows precise-but-wrong is possible too.</p>
     </div>
 
     <div class="usl-panel">
       <div class="usl-panel-label">Question 3</div>
       <h2 class="usl-panel-heading">ACLED geospatial accuracy</h2>
-      <p class="usl-panel-body">Every one of the 50 sampled events carries a specific named city/town in its <code>location</code> field, never left blank or country-level. The 50 events span 46 distinctly named locations across 43 distinct states.</p>
+      <p class="usl-panel-body">Every one of the 50 sampled events carries a specific named city/town in its <code>location</code> field, never left blank or country-level. The 50 events span 49 distinctly named locations across 44 distinct states.</p>
       <div class="usl-chart-wrap">
-        <svg class="chart-svg" viewBox="0 0 360 240" role="img" aria-label="Bar chart of ACLED sample events by location type: major metro 13, smaller town 37">
+        <svg class="chart-svg" viewBox="0 0 360 240" role="img" aria-label="Bar chart of ACLED sample events by location type: major metro 8, smaller town 42">
           <line class="usl-gridline" x1="40" y1="200.0" x2="340" y2="200.0"/><line class="usl-gridline" x1="40" y1="155.0" x2="340" y2="155.0"/><line class="usl-gridline" x1="40" y1="110.0" x2="340" y2="110.0"/><line class="usl-gridline" x1="40" y1="65.0" x2="340" y2="65.0"/><line class="usl-gridline" x1="40" y1="20.0" x2="340" y2="20.0"/>
-          <rect class="usl-bar" x="77.5" y="136.8" width="75.0" height="63.2" rx="3"/><text class="usl-bar-value" x="115.0" y="128.8" text-anchor="middle">13</text><text class="usl-bar-label" x="115.0" y="222.0" text-anchor="middle">Major metro</text><rect class="usl-bar" x="227.5" y="20.0" width="75.0" height="180.0" rx="3"/><text class="usl-bar-value" x="265.0" y="12.0" text-anchor="middle">37</text><text class="usl-bar-label" x="265.0" y="222.0" text-anchor="middle">Smaller town</text>
+          <rect class="usl-bar" x="77.5" y="165.7" width="75.0" height="34.3" rx="3"/><text class="usl-bar-value" x="115.0" y="157.7" text-anchor="middle">8</text><text class="usl-bar-label" x="115.0" y="222.0" text-anchor="middle">Major metro</text><rect class="usl-bar" x="227.5" y="20.0" width="75.0" height="180.0" rx="3"/><text class="usl-bar-value" x="265.0" y="12.0" text-anchor="middle">42</text><text class="usl-bar-label" x="265.0" y="222.0" text-anchor="middle">Smaller town</text>
         </svg>
       </div>
-      <p class="usl-panel-body">Only <strong>13 of 50 (26%)</strong> fall in a major metro (checked against a hand-picked ~40-city reference list); the remaining <strong>37 (74%)</strong> are in smaller towns — Coralville IA, Waycross GA, Northampton MA, Petersburg VA, Tigard OR, Murfreesboro TN, and more. ACLED's US coverage reads as genuinely broad, not major-cities-only — which matters, since a prediction model trained only on big-city signal would miss most of this sample entirely.</p>
+      <p class="usl-panel-body">Only <strong>8 of 50 (16%)</strong> fall in a major metro (checked against a hand-picked ~40-city reference list); the remaining <strong>42 (84%)</strong> are in smaller towns. ACLED's US coverage reads as genuinely broad, not major-cities-only — which matters, since a prediction model trained only on big-city signal would miss most of this sample entirely.</p>
     </div>
 
     <div class="usl-panel">
       <div class="usl-panel-label">Question 4</div>
       <h2 class="usl-panel-heading">News source frequency / publishers</h2>
-      <p class="usl-panel-body">Raw mention counts by publisher domain across all 1,157 GDELT rows — a frequency count, not a share of all news coverage on the topic.</p>
+      <p class="usl-panel-body">Raw mention counts by publisher domain across all 997 GDELT rows — a frequency count, not a share of all news coverage on the topic.</p>
       <div class="usl-chart-wrap">
-        <svg class="chart-svg" viewBox="0 0 520 290" role="img" aria-label="Horizontal bar chart of top 10 GDELT publisher domains by mention count, msn.com highest at 40">
-          <text class="usl-bar-label-h" x="140" y="32.0" text-anchor="end">msn.com</text><rect class="usl-bar" x="150" y="18.0" width="320.0" height="18" rx="3"/><text class="usl-bar-value" x="478.0" y="32.0">40</text><text class="usl-bar-label-h" x="140" y="58.0" text-anchor="end">chron.com</text><rect class="usl-bar" x="150" y="44.0" width="136.0" height="18" rx="3"/><text class="usl-bar-value" x="294.0" y="58.0">17</text><text class="usl-bar-label-h" x="140" y="84.0" text-anchor="end">sfgate.com</text><rect class="usl-bar" x="150" y="70.0" width="128.0" height="18" rx="3"/><text class="usl-bar-value" x="286.0" y="84.0">16</text><text class="usl-bar-label-h" x="140" y="110.0" text-anchor="end">yahoo.com</text><rect class="usl-bar" x="150" y="96.0" width="104.0" height="18" rx="3"/><text class="usl-bar-value" x="262.0" y="110.0">13</text><text class="usl-bar-label-h" x="140" y="136.0" text-anchor="end">omaha.com</text><rect class="usl-bar" x="150" y="122.0" width="88.0" height="18" rx="3"/><text class="usl-bar-value" x="246.0" y="136.0">11</text><text class="usl-bar-label-h" x="140" y="162.0" text-anchor="end">journalgazette.net</text><rect class="usl-bar" x="150" y="148.0" width="72.0" height="18" rx="3"/><text class="usl-bar-value" x="230.0" y="162.0">9</text><text class="usl-bar-label-h" x="140" y="188.0" text-anchor="end">lmtonline.com</text><rect class="usl-bar" x="150" y="174.0" width="64.0" height="18" rx="3"/><text class="usl-bar-value" x="222.0" y="188.0">8</text><text class="usl-bar-label-h" x="140" y="214.0" text-anchor="end">thegazette.com</text><rect class="usl-bar" x="150" y="200.0" width="56.0" height="18" rx="3"/><text class="usl-bar-value" x="214.0" y="214.0">7</text><text class="usl-bar-label-h" x="140" y="240.0" text-anchor="end">washingtontimes.com</text><rect class="usl-bar" x="150" y="226.0" width="56.0" height="18" rx="3"/><text class="usl-bar-value" x="214.0" y="240.0">7</text><text class="usl-bar-label-h" x="140" y="266.0" text-anchor="end">houstonchronicle.com</text><rect class="usl-bar" x="150" y="252.0" width="56.0" height="18" rx="3"/><text class="usl-bar-value" x="214.0" y="266.0">7</text>
+        <svg class="chart-svg" viewBox="0 0 520 290" role="img" aria-label="Horizontal bar chart of top 10 GDELT publisher domains by mention count, msn.com highest at 33">
+          <text class="usl-bar-label-h" x="140" y="32.0" text-anchor="end">msn.com</text><rect class="usl-bar" x="150" y="18.0" width="320.0" height="18" rx="3"/><text class="usl-bar-value" x="478.0" y="32.0">33</text><text class="usl-bar-label-h" x="140" y="58.0" text-anchor="end">sfgate.com</text><rect class="usl-bar" x="150" y="44.0" width="106.7" height="18" rx="3"/><text class="usl-bar-value" x="264.7" y="58.0">11</text><text class="usl-bar-label-h" x="140" y="84.0" text-anchor="end">patch.com</text><rect class="usl-bar" x="150" y="70.0" width="87.3" height="18" rx="3"/><text class="usl-bar-value" x="245.3" y="84.0">9</text><text class="usl-bar-label-h" x="140" y="110.0" text-anchor="end">iheart.com</text><rect class="usl-bar" x="150" y="96.0" width="87.3" height="18" rx="3"/><text class="usl-bar-value" x="245.3" y="110.0">9</text><text class="usl-bar-label-h" x="140" y="136.0" text-anchor="end">fredericksburg.com</text><rect class="usl-bar" x="150" y="122.0" width="77.6" height="18" rx="3"/><text class="usl-bar-value" x="235.6" y="136.0">8</text><text class="usl-bar-label-h" x="140" y="162.0" text-anchor="end">chron.com</text><rect class="usl-bar" x="150" y="148.0" width="67.9" height="18" rx="3"/><text class="usl-bar-value" x="225.9" y="162.0">7</text><text class="usl-bar-label-h" x="140" y="188.0" text-anchor="end">delcotimes.com</text><rect class="usl-bar" x="150" y="174.0" width="67.9" height="18" rx="3"/><text class="usl-bar-value" x="225.9" y="188.0">7</text><text class="usl-bar-label-h" x="140" y="214.0" text-anchor="end">minotdailynews.com</text><rect class="usl-bar" x="150" y="200.0" width="67.9" height="18" rx="3"/><text class="usl-bar-value" x="225.9" y="214.0">7</text><text class="usl-bar-label-h" x="140" y="240.0" text-anchor="end">northantstelegraph.co.uk</text><rect class="usl-bar" x="150" y="226.0" width="67.9" height="18" rx="3"/><text class="usl-bar-value" x="225.9" y="240.0">7</text><text class="usl-bar-label-h" x="140" y="266.0" text-anchor="end">yahoo.com</text><rect class="usl-bar" x="150" y="252.0" width="58.2" height="18" rx="3"/><text class="usl-bar-value" x="216.2" y="266.0">6</text>
         </svg>
       </div>
-      <p class="usl-panel-body"><strong>727 distinct publisher domains</strong> appear across the 1,157 mentions. The single most frequent, msn.com (a syndication aggregator), accounts for just 40 mentions — about 3.5% of the total. Past a couple of large aggregators (msn.com, yahoo.com), the list is dominated by regional and local outlets: omaha.com, journalgazette.net (Fort Wayne, IN), thegazette.com (Cedar Rapids, IA), and washingtontimes.com. Coverage reads as spread across diverse local outlets rather than concentrated in a handful of wire services.</p>
+      <p class="usl-panel-body"><strong>665 distinct publisher domains</strong> appear across the 997 mentions. The single most frequent, msn.com (a syndication aggregator), accounts for just 33 mentions — about 3.3% of the total. One entry worth noting: northantstelegraph.co.uk (a UK outlet) is in the top 10, the same wrong-country pattern flagged in Q1 — a reminder that this publisher list includes some geographically mismatched noise, not purely US local coverage. Past the aggregators, the list still leans toward regional/local outlets (sfgate.com, patch.com, fredericksburg.com, delcotimes.com, minotdailynews.com) rather than a small handful of wire services.</p>
     </div>
 
-    <p class="usl-note">Stop condition reached: this page answers all four Phase 0 questions with real pulled data. No labeling scheme, feature engineering, model, pipeline, or automation has been built — that's a separate, later conversation.</p>
+    <div class="usl-panel">
+      <div class="usl-panel-label">Follow-up (not one of the original four)</div>
+      <h2 class="usl-panel-heading">ACLED severity scale: peaceful vs. violent</h2>
+      <p class="usl-panel-body">ACLED's own codebook defines exactly 5 sub_event_types across the "Protests" and "Riots" disorder types, forming a natural peaceful-to-violent ordinal scale — this isn't a scale invented for this page: <strong>Peaceful protest</strong> → <strong>Protest with intervention</strong> → <strong>Excessive force against protesters</strong> → <strong>Violent demonstration</strong> → <strong>Mob violence</strong>.</p>
+      <div class="usl-chart-wrap">
+        <svg class="chart-svg" viewBox="0 0 620 270" role="img" aria-label="Bar chart of ACLED sample events by severity level, peaceful to violent: Peaceful protest 17, Protest with intervention 0, Excessive force against protesters 0, Violent demonstration 31, Mob violence 2">
+          <line class="usl-gridline" x1="40" y1="214.0" x2="600" y2="214.0"/><line class="usl-gridline" x1="40" y1="165.5" x2="600" y2="165.5"/><line class="usl-gridline" x1="40" y1="117.0" x2="600" y2="117.0"/><line class="usl-gridline" x1="40" y1="68.5" x2="600" y2="68.5"/><line class="usl-gridline" x1="40" y1="20.0" x2="600" y2="20.0"/>
+          <rect class="usl-bar" x="65.2" y="107.6" width="61.6" height="106.4" rx="3" style="fill:#e8dcc5"/><text class="usl-bar-value" x="96.0" y="99.6" text-anchor="middle">17</text><text class="usl-bar-label" x="96.0" y="234.0" text-anchor="middle">Peaceful</text><text class="usl-bar-label" x="96.0" y="248.0" text-anchor="middle">protest</text><rect class="usl-bar" x="177.2" y="214.0" width="61.6" height="0.0" rx="3" style="fill:#d9b073"/><text class="usl-bar-value" x="208.0" y="206.0" text-anchor="middle">0</text><text class="usl-bar-label" x="208.0" y="234.0" text-anchor="middle">Protest w/</text><text class="usl-bar-label" x="208.0" y="248.0" text-anchor="middle">intervention</text><rect class="usl-bar" x="289.2" y="214.0" width="61.6" height="0.0" rx="3" style="fill:#c97f45"/><text class="usl-bar-value" x="320.0" y="206.0" text-anchor="middle">0</text><text class="usl-bar-label" x="320.0" y="234.0" text-anchor="middle">Excessive</text><text class="usl-bar-label" x="320.0" y="248.0" text-anchor="middle">force</text><rect class="usl-bar" x="401.2" y="20.0" width="61.6" height="194.0" rx="3" style="fill:#a8402b"/><text class="usl-bar-value" x="432.0" y="12.0" text-anchor="middle">31</text><text class="usl-bar-label" x="432.0" y="234.0" text-anchor="middle">Violent</text><text class="usl-bar-label" x="432.0" y="248.0" text-anchor="middle">demonstration</text><rect class="usl-bar" x="513.2" y="201.5" width="61.6" height="12.5" rx="3" style="fill:#6b1f14"/><text class="usl-bar-value" x="544.0" y="193.5" text-anchor="middle">2</text><text class="usl-bar-label" x="544.0" y="234.0" text-anchor="middle">Mob</text><text class="usl-bar-label" x="544.0" y="248.0" text-anchor="middle">violence</text>
+        </svg>
+      </div>
+      <p class="usl-panel-body"><strong>17 of 50 (34%)</strong> are genuinely peaceful protests with no intervention or violence recorded; <strong>33 of 50 (66%)</strong> are coded as riots — 31 violent demonstrations and 2 mob violence events. Notably, none of the 50 landed in the two middle categories (protest with intervention, excessive force against protesters) — at this sample size that's plausibly chance rather than a real gap, and would need a larger pull to confirm. Only 2 events carried any fatalities (1 each). This split only exists because of the event_type filter fix above — the original broken pull would have shown 100% violent with no peaceful baseline to compare against at all.</p>
+    </div>
+
+    <p class="usl-note">Stop condition reached: this page answers all four original Phase 0 questions with real pulled data, plus one follow-up exploration. No labeling scheme, feature engineering, model, pipeline, or automation has been built — that's a separate, later conversation.</p>
   </div>
 </div>
 

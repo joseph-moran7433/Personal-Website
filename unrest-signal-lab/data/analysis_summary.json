@@ -1,132 +1,36 @@
 {
   "gdelt_resolution_counts": {
-    "city_latlong": 1144,
-    "state_admin1": 13
+    "city_latlong": 986,
+    "state_admin1": 11
   },
   "gdelt_city_or_better_pct": 98.9,
   "acled_state_counts": [
+    [
+      "Georgia",
+      2
+    ],
+    [
+      "Indiana",
+      2
+    ],
+    [
+      "Oklahoma",
+      2
+    ],
+    [
+      "Washington",
+      2
+    ],
+    [
+      "Texas",
+      2
+    ],
     [
       "Iowa",
       2
     ],
     [
-      "Nebraska",
-      2
-    ],
-    [
-      "Tennessee",
-      2
-    ],
-    [
-      "New Jersey",
-      2
-    ],
-    [
-      "Maine",
-      2
-    ],
-    [
-      "Massachusetts",
-      2
-    ],
-    [
-      "Ohio",
-      2
-    ],
-    [
-      "Pennsylvania",
-      1
-    ],
-    [
-      "Washington",
-      1
-    ],
-    [
-      "Kentucky",
-      1
-    ],
-    [
-      "Kansas",
-      1
-    ],
-    [
-      "Utah",
-      1
-    ],
-    [
-      "North Carolina",
-      1
-    ],
-    [
-      "Florida",
-      1
-    ],
-    [
       "Alabama",
-      1
-    ],
-    [
-      "Mississippi",
-      1
-    ],
-    [
-      "Hawaii",
-      1
-    ],
-    [
-      "New York",
-      1
-    ],
-    [
-      "Wisconsin",
-      1
-    ],
-    [
-      "South Dakota",
-      1
-    ],
-    [
-      "Minnesota",
-      1
-    ],
-    [
-      "Oklahoma",
-      1
-    ],
-    [
-      "District of Columbia",
-      1
-    ],
-    [
-      "Georgia",
-      1
-    ],
-    [
-      "North Dakota",
-      1
-    ],
-    [
-      "Illinois",
-      1
-    ],
-    [
-      "Texas",
-      1
-    ],
-    [
-      "Oregon",
-      1
-    ],
-    [
-      "Nevada",
-      1
-    ],
-    [
-      "Missouri",
-      1
-    ],
-    [
-      "Michigan",
       1
     ],
     [
@@ -134,39 +38,15 @@
       1
     ],
     [
-      "Arkansas",
+      "Tennessee",
       1
     ],
     [
-      "Indiana",
+      "South Dakota",
       1
     ],
     [
-      "Virginia",
-      1
-    ],
-    [
-      "Maryland",
-      1
-    ],
-    [
-      "Louisiana",
-      1
-    ],
-    [
-      "Arizona",
-      1
-    ],
-    [
-      "Connecticut",
-      1
-    ],
-    [
-      "New Mexico",
-      1
-    ],
-    [
-      "California",
+      "North Carolina",
       1
     ],
     [
@@ -174,75 +54,204 @@
       1
     ],
     [
+      "Wyoming",
+      1
+    ],
+    [
+      "Ohio",
+      1
+    ],
+    [
+      "Missouri",
+      1
+    ],
+    [
+      "Montana",
+      1
+    ],
+    [
+      "Nevada",
+      1
+    ],
+    [
+      "Wisconsin",
+      1
+    ],
+    [
+      "Alaska",
+      1
+    ],
+    [
+      "Florida",
+      1
+    ],
+    [
+      "Arkansas",
+      1
+    ],
+    [
+      "Minnesota",
+      1
+    ],
+    [
+      "New Mexico",
+      1
+    ],
+    [
+      "Michigan",
+      1
+    ],
+    [
+      "New York",
+      1
+    ],
+    [
+      "Nebraska",
+      1
+    ],
+    [
+      "Oregon",
+      1
+    ],
+    [
+      "Kansas",
+      1
+    ],
+    [
+      "California",
+      1
+    ],
+    [
+      "Illinois",
+      1
+    ],
+    [
+      "New Jersey",
+      1
+    ],
+    [
+      "Maryland",
+      1
+    ],
+    [
+      "Arizona",
+      1
+    ],
+    [
       "Colorado",
+      1
+    ],
+    [
+      "Maine",
+      1
+    ],
+    [
+      "Connecticut",
+      1
+    ],
+    [
+      "Hawaii",
+      1
+    ],
+    [
+      "Utah",
+      1
+    ],
+    [
+      "Kentucky",
+      1
+    ],
+    [
+      "Massachusetts",
+      1
+    ],
+    [
+      "Virginia",
+      1
+    ],
+    [
+      "Pennsylvania",
+      1
+    ],
+    [
+      "North Dakota",
+      1
+    ],
+    [
+      "Louisiana",
       1
     ]
   ],
   "acled_metro_counts": {
-    "smaller_town": 37,
-    "major_metro": 13
+    "smaller_town": 42,
+    "major_metro": 8
   },
   "gdelt_top_publishers": [
     [
       "msn.com",
-      40
-    ],
-    [
-      "chron.com",
-      17
+      33
     ],
     [
       "sfgate.com",
-      16
-    ],
-    [
-      "yahoo.com",
-      13
-    ],
-    [
-      "omaha.com",
       11
     ],
     [
-      "journalgazette.net",
+      "patch.com",
       9
     ],
     [
-      "lmtonline.com",
+      "iheart.com",
+      9
+    ],
+    [
+      "fredericksburg.com",
       8
     ],
     [
-      "thegazette.com",
+      "chron.com",
       7
     ],
     [
-      "washingtontimes.com",
+      "delcotimes.com",
       7
     ],
     [
-      "houstonchronicle.com",
+      "minotdailynews.com",
       7
     ],
     [
-      "inforum.com",
+      "northantstelegraph.co.uk",
       7
     ],
     [
-      "app.com",
+      "yahoo.com",
       6
     ],
     [
-      "desmoinesregister.com",
-      5
+      "journalgazette.net",
+      6
     ],
     [
-      "ketv.com",
-      5
+      "journaltimes.com",
+      6
     ],
     [
-      "prnewswire.com",
+      "lacapital.com.ar",
+      6
+    ],
+    [
+      "siouxcityjournal.com",
+      6
+    ],
+    [
+      "washingtonpost.com",
       5
     ]
   ],
-  "gdelt_distinct_publishers": 727
+  "gdelt_distinct_publishers": 665,
+  "acled_sub_event_counts": {
+    "Violent demonstration": 31,
+    "Mob violence": 2,
+    "Peaceful protest": 17
+  }
 }

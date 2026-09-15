@@ -73,28 +73,39 @@ def get_access_token(email, password):
 
 
 def fetch_pool(token):
-    params = {
-        "_format": "json",
-        "country": "United States",
-        "event_type": "Protests:OR:event_type=Riots",
-        "event_date": f"{DATE_START}|{DATE_END}",
-        "event_date_where": "BETWEEN",
-        "fields": "|".join(FIELDS),
-        "limit": POOL_LIMIT,
-    }
-    resp = requests.get(
-        API_URL,
-        params=params,
-        headers={"Authorization": f"Bearer {token}"},
-        timeout=60,
-    )
-    resp.raise_for_status()
-    payload = resp.json()
-    rows = payload.get("data", [])
-    byte_count = len(resp.content)
-    print(f"[ACLED] pool pull: {len(rows)} rows, {byte_count:,} bytes "
-          f"(capped at limit={POOL_LIMIT}, date range {DATE_START}..{DATE_END}) "
-          f"-- NOT the full history for this query")
+    # ACLED's documented "field=A:OR:field=B" syntax does not behave as an
+    # OR for event_type -- confirmed by direct testing that it silently
+    # drops whichever clause comes first and returns only the last one
+    # (event_type=Protests:OR:event_type=Riots came back 100% Riots;
+    # swapping the order came back 100% Protests). So each event_type is
+    # pulled with its own separate, single-value-filtered call instead of
+    # trusting that OR syntax -- still scoped, still capped, still logged.
+    rows = []
+    per_type_limit = POOL_LIMIT // 2
+    for event_type in ("Protests", "Riots"):
+        params = {
+            "_format": "json",
+            "country": "United States",
+            "event_type": event_type,
+            "event_date": f"{DATE_START}|{DATE_END}",
+            "event_date_where": "BETWEEN",
+            "fields": "|".join(FIELDS),
+            "limit": per_type_limit,
+        }
+        resp = requests.get(
+            API_URL,
+            params=params,
+            headers={"Authorization": f"Bearer {token}"},
+            timeout=60,
+        )
+        resp.raise_for_status()
+        payload = resp.json()
+        type_rows = payload.get("data", [])
+        byte_count = len(resp.content)
+        print(f"[ACLED] pool pull ({event_type}): {len(type_rows)} rows, {byte_count:,} bytes "
+              f"(capped at limit={per_type_limit}, date range {DATE_START}..{DATE_END}) "
+              f"-- NOT the full history for this query")
+        rows.extend(type_rows)
     return rows
 
 

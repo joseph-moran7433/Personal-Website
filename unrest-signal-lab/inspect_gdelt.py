@@ -131,20 +131,25 @@ def group_events_by_window(events):
 
 
 def build_query(fields, rows_per_event):
+    # Partition/key on the event's own ACLED id (item.event_id), never on the
+    # location pattern text -- two events in the same window CAN share a
+    # location name (e.g. two different "Portland" protests), which would
+    # silently merge their row budgets and misattribute rows if pattern text
+    # were used as the join/partition key instead.
     theme_clause = THEME_FILTER_CLAUSE
     return f"""
     WITH matched AS (
-      SELECT {", ".join(fields)}, pattern
-      FROM `{TABLE}`, UNNEST(@patterns) AS pattern
+      SELECT {", ".join(fields)}, item.event_id AS _match_event_id
+      FROM `{TABLE}`, UNNEST(@patterns) AS item
       WHERE _PARTITIONTIME >= TIMESTAMP(@start_date)
         AND _PARTITIONTIME <= TIMESTAMP(@end_date)
         AND DATE >= @date_start_int
         AND DATE <= @date_end_int
-        AND REGEXP_CONTAINS(V2Locations, pattern)
+        AND REGEXP_CONTAINS(V2Locations, item.pattern)
         AND ({theme_clause})
     )
     SELECT * EXCEPT(rn) FROM (
-      SELECT *, ROW_NUMBER() OVER (PARTITION BY pattern ORDER BY DATE) AS rn
+      SELECT *, ROW_NUMBER() OVER (PARTITION BY _match_event_id ORDER BY DATE) AS rn
       FROM matched
     )
     WHERE rn <= {rows_per_event}
@@ -152,15 +157,22 @@ def build_query(fields, rows_per_event):
 
 
 def run_one_window(client, window_start, window_end, events, fields, cumulative_bytes, force_expensive):
-    patterns = [LOCATION_COUNTRY_REGEX_TEMPLATE.format(location=re.escape(e["location"])) for e in events]
-    pattern_to_event = dict(zip(patterns, events))
+    event_by_id = {e["event_id_cnty"]: e for e in events}
+    patterns = bigquery.ArrayQueryParameter("patterns", "STRUCT", [
+        bigquery.StructQueryParameter(
+            None,
+            bigquery.ScalarQueryParameter("event_id", "STRING", e["event_id_cnty"]),
+            bigquery.ScalarQueryParameter("pattern", "STRING", LOCATION_COUNTRY_REGEX_TEMPLATE.format(location=re.escape(e["location"]))),
+        )
+        for e in events
+    ])
     query = build_query(fields, ROWS_PER_EVENT)
     params = [
         bigquery.ScalarQueryParameter("start_date", "STRING", window_start.strftime("%Y-%m-%d")),
         bigquery.ScalarQueryParameter("end_date", "STRING", window_end.strftime("%Y-%m-%d")),
         bigquery.ScalarQueryParameter("date_start_int", "INT64", int(window_start.strftime("%Y%m%d") + "000000")),
         bigquery.ScalarQueryParameter("date_end_int", "INT64", int(window_end.strftime("%Y%m%d") + "235959")),
-        bigquery.ArrayQueryParameter("patterns", "STRING", patterns),
+        patterns,
     ]
 
     dry_config = bigquery.QueryJobConfig(query_parameters=params, dry_run=True, use_query_cache=False)
@@ -194,7 +206,7 @@ def run_one_window(client, window_start, window_end, events, fields, cumulative_
           f"scans before batching -- now one shared scan).")
 
     for r in rows:
-        event = pattern_to_event.get(r.pop("pattern"))
+        event = event_by_id.get(r.pop("_match_event_id"))
         if event is None:
             continue
         r["_acled_event_id"] = event["event_id_cnty"]

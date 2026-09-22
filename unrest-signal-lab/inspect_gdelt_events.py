@@ -48,17 +48,17 @@ MATCHING_METHOD_VERSION = "v3_batched_window"
 
 QUERY_TEMPLATE = f"""
 WITH matched AS (
-  SELECT {", ".join(FIELDS)}, pattern
-  FROM `{TABLE}`, UNNEST(@patterns) AS pattern
+  SELECT {", ".join(FIELDS)}, item.event_id AS _match_event_id
+  FROM `{TABLE}`, UNNEST(@patterns) AS item
   WHERE _PARTITIONTIME >= TIMESTAMP(@start_date)
     AND _PARTITIONTIME <= TIMESTAMP(@end_date)
     AND SQLDATE >= @date_start_int
     AND SQLDATE <= @date_end_int
     AND ActionGeo_CountryCode = 'US'
-    AND ActionGeo_FullName LIKE pattern
+    AND ActionGeo_FullName LIKE item.pattern
 )
 SELECT * EXCEPT(rn) FROM (
-  SELECT *, ROW_NUMBER() OVER (PARTITION BY pattern ORDER BY SQLDATE) AS rn
+  SELECT *, ROW_NUMBER() OVER (PARTITION BY _match_event_id ORDER BY SQLDATE) AS rn
   FROM matched
 )
 WHERE rn <= {ROWS_PER_EVENT}
@@ -66,14 +66,24 @@ WHERE rn <= {ROWS_PER_EVENT}
 
 
 def run_one_window(client, window_start, window_end, events, cumulative_bytes, force_expensive):
-    patterns = [f"%{e['location']}%" for e in events]
-    pattern_to_event = dict(zip(patterns, events))
+    # Keyed on each event's own ACLED id, not location text -- see
+    # inspect_gdelt.py's build_query() docstring for why pattern text alone
+    # is unsafe as a join/partition key (two events can share a place name).
+    event_by_id = {e["event_id_cnty"]: e for e in events}
+    patterns = bigquery.ArrayQueryParameter("patterns", "STRUCT", [
+        bigquery.StructQueryParameter(
+            None,
+            bigquery.ScalarQueryParameter("event_id", "STRING", e["event_id_cnty"]),
+            bigquery.ScalarQueryParameter("pattern", "STRING", f"%{e['location']}%"),
+        )
+        for e in events
+    ])
     params = [
         bigquery.ScalarQueryParameter("start_date", "STRING", window_start.strftime("%Y-%m-%d")),
         bigquery.ScalarQueryParameter("end_date", "STRING", window_end.strftime("%Y-%m-%d")),
         bigquery.ScalarQueryParameter("date_start_int", "INT64", int(window_start.strftime("%Y%m%d"))),
         bigquery.ScalarQueryParameter("date_end_int", "INT64", int(window_end.strftime("%Y%m%d"))),
-        bigquery.ArrayQueryParameter("patterns", "STRING", patterns),
+        patterns,
     ]
 
     label = f"{window_start.date()}..{window_end.date()} ({len(events)} events batched)"
@@ -106,7 +116,7 @@ def run_one_window(client, window_start, window_end, events, cumulative_bytes, f
           f"across {len(events)} events.")
 
     for r in rows:
-        event = pattern_to_event.get(r.pop("pattern"))
+        event = event_by_id.get(r.pop("_match_event_id"))
         if event is None:
             continue
         r["_acled_event_id"] = event["event_id_cnty"]

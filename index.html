@@ -1119,6 +1119,22 @@
     .usl-bar-label { fill: var(--usl-muted); }
     .usl-bar-label-h { fill: var(--usl-muted); }
 
+    .usl-picker-row { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 1.25rem 0 1.5rem; }
+    .usl-picker { display: flex; flex-direction: column; gap: 0.4rem; }
+    .usl-picker label { font-family: var(--font-body-usl); text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.68rem; color: var(--usl-muted); }
+    .usl-picker select {
+      font-family: var(--font-body-usl); font-size: 0.9rem; color: var(--usl-text);
+      background: var(--usl-bg); border: 1px solid var(--usl-border); border-radius: 0.3rem;
+      padding: 0.5rem 0.75rem; min-width: 220px; cursor: pointer;
+    }
+    .usl-picker select:focus { outline: 2px solid var(--usl-accent); outline-offset: 1px; }
+    .usl-picker-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+    .usl-picker-overfit-warn {
+      display: none; font-size: 0.85rem; color: var(--usl-accent-dim); background: rgba(168,64,43,0.08);
+      border: 1px solid rgba(168,64,43,0.3); border-radius: 0.3rem; padding: 0.75rem 1rem; margin-bottom: 1.25rem;
+    }
+    .usl-picker-overfit-warn.show { display: block; }
+
     .food-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.5rem; }
     .food-tool-card {
       background: var(--rf-surface); border: 1px solid var(--rf-border); border-radius: 1.1rem;
@@ -3107,7 +3123,33 @@
       <p class="usl-panel-body">Rows are sorted by true outcome (10 peaceful events on top in green, 15 escalated below in red), so a good model should show green dots clustered left of the 0.5 line and red dots clustered right. Neither model does this cleanly — both have green dots well past the threshold and red dots well short of it, visibly matching the mediocre recall (0.467 for both) reported above. This is what "recall 0.467" actually looks like at the level of individual events, not just a summary number.</p>
     </div>
 
-    <p class="usl-note">Stop condition reached: the BigQuery cost problem is explained with real per-row numbers and fixed in the pull scripts (unrun, pending the next real pull); the lat/long cross-check is implemented and applied, with 16-18% of previously-trusted rows caught and dropped; the training table is built and cleaned; two models are trained, compared, and their disagreement is reported rather than papered over; the models' actual learned structure (a real extracted tree, the real fitted sigmoid, and every held-out prediction) is shown, not just summary statistics. No new ACLED or BigQuery calls were made anywhere in this phase. Next, later conversation: SHAP explanations, a larger/rebalanced sample, and re-running the fixed pull scripts for real.</p>
+    <div class="usl-panel">
+      <div class="usl-panel-label">Modeling, part 5</div>
+      <h2 class="usl-panel-heading">Try it yourself: pick a dataset, pick a model</h2>
+      <p class="usl-panel-body">Every number and dot below is computed live from the real fitted models' real predictions on all 100 events — nothing here is precomputed or faked. Switch to the training set to see what each model looks like on data it already memorized, versus the held-out test set it never saw.</p>
+      <div class="usl-picker-row">
+        <div class="usl-picker">
+          <label for="usl-picker-dataset">Dataset</label>
+          <select id="usl-picker-dataset" onchange="renderPredictionPicker()">
+            <option value="test" selected>Test — held-out (25 events)</option>
+            <option value="train">Train — fitted on (75 events)</option>
+          </select>
+        </div>
+        <div class="usl-picker">
+          <label for="usl-picker-model">Model</label>
+          <select id="usl-picker-model" onchange="renderPredictionPicker()">
+            <option value="gbm" selected>Gradient-Boosted Trees</option>
+            <option value="logit">Logistic Regression</option>
+          </select>
+        </div>
+      </div>
+      <div id="usl-picker-overfit-warn" class="usl-picker-overfit-warn"></div>
+      <div id="usl-picker-stats" class="usl-picker-stats"></div>
+      <div id="usl-picker-chart" class="usl-chart-wrap"></div>
+      <p class="usl-panel-body">Green = the model got that event right (predicted class matched the real ACLED outcome). Red = it got it wrong. The dashed line is the 0.5 decision threshold used everywhere else on this page.</p>
+    </div>
+
+    <p class="usl-note">Stop condition reached: the BigQuery cost problem is explained with real per-row numbers and fixed in the pull scripts (unrun, pending the next real pull); the lat/long cross-check is implemented and applied, with 16-18% of previously-trusted rows caught and dropped; the training table is built and cleaned; two models are trained, compared, and their disagreement is reported rather than papered over; the models' actual learned structure (a real extracted tree, the real fitted sigmoid, and every held-out prediction) is shown, not just summary statistics; and every prediction on all 100 events is explorable live, train vs. test, model vs. model. No new ACLED or BigQuery calls were made anywhere in this phase. Next, later conversation: SHAP explanations, a larger/rebalanced sample, and re-running the fixed pull scripts for real.</p>
   </div>
 </div>
 
@@ -4618,6 +4660,181 @@ function closeUnrestPhase1() {
   document.getElementById('unrest-hub').classList.add('open');
   window.scrollTo(0, 0);
 }
+
+// Real predictions from the two Phase 1 models (data/model_predictions.json),
+// generated once by fitting on the 75-event train split and scoring all 100
+// events -- not simulated, not re-derived here. i=event_id, d=event_date,
+// s=dataset (train/test), y=true label, g=GBM probability, l=logistic
+// regression probability.
+const MODEL_PREDICTIONS = [
+  {i:'USA20408',d:'2020-04-08',s:'train',y:1,g:0.7162,l:0.6732},
+  {i:'USA20422',d:'2020-04-09',s:'train',y:1,g:0.6419,l:0.3517},
+  {i:'USA20585',d:'2020-04-19',s:'train',y:1,g:0.528,l:0.5601},
+  {i:'USA20620',d:'2020-04-20',s:'train',y:1,g:0.528,l:0.5601},
+  {i:'USA4628',d:'2020-05-28',s:'train',y:1,g:0.4747,l:0.2999},
+  {i:'USA4697',d:'2020-05-29',s:'train',y:1,g:0.4092,l:0.3446},
+  {i:'USA4786',d:'2020-05-29',s:'train',y:1,g:0.556,l:0.4336},
+  {i:'USA4739',d:'2020-05-29',s:'train',y:1,g:0.7599,l:0.2795},
+  {i:'USA4870',d:'2020-05-30',s:'train',y:1,g:0.528,l:0.5601},
+  {i:'USA5170',d:'2020-05-30',s:'train',y:1,g:0.7391,l:0.4505},
+  {i:'USA4887',d:'2020-05-30',s:'train',y:1,g:0.7016,l:0.3934},
+  {i:'USA4948',d:'2020-05-30',s:'train',y:1,g:0.8396,l:0.4559},
+  {i:'USA5096',d:'2020-05-30',s:'train',y:1,g:0.6867,l:0.4237},
+  {i:'USA5015',d:'2020-05-30',s:'train',y:1,g:0.5886,l:0.2399},
+  {i:'USA4941',d:'2020-05-30',s:'train',y:1,g:0.9288,l:0.7313},
+  {i:'USA4986',d:'2020-05-30',s:'train',y:1,g:0.528,l:0.5601},
+  {i:'USA4905',d:'2020-05-30',s:'train',y:1,g:0.7886,l:0.4059},
+  {i:'USA5040',d:'2020-05-30',s:'train',y:1,g:0.5536,l:0.3704},
+  {i:'USA5479',d:'2020-05-31',s:'train',y:1,g:0.528,l:0.5601},
+  {i:'USA5709',d:'2020-05-31',s:'train',y:1,g:0.7354,l:0.6866},
+  {i:'USA5354',d:'2020-05-31',s:'train',y:1,g:0.588,l:0.4792},
+  {i:'USA5416',d:'2020-05-31',s:'train',y:1,g:0.6843,l:0.5645},
+  {i:'USA11656',d:'2020-05-31',s:'train',y:1,g:0.528,l:0.5601},
+  {i:'USA10390',d:'2020-05-31',s:'train',y:1,g:0.6963,l:0.4406},
+  {i:'USA5485',d:'2020-05-31',s:'train',y:1,g:0.7179,l:0.7112},
+  {i:'USA5572',d:'2020-05-31',s:'train',y:1,g:0.5733,l:0.47},
+  {i:'USA5723',d:'2020-05-31',s:'train',y:1,g:0.528,l:0.5601},
+  {i:'USA5578',d:'2020-05-31',s:'train',y:1,g:0.528,l:0.5601},
+  {i:'USA5715',d:'2020-05-31',s:'train',y:1,g:0.9288,l:0.765},
+  {i:'USA5741',d:'2020-05-31',s:'train',y:1,g:0.7706,l:0.7586},
+  {i:'USA5385',d:'2020-05-31',s:'train',y:1,g:0.5188,l:0.3524},
+  {i:'USA6138',d:'2020-06-01',s:'train',y:1,g:0.528,l:0.5601},
+  {i:'USA5967',d:'2020-06-01',s:'train',y:1,g:0.7658,l:0.5115},
+  {i:'USA6015',d:'2020-06-01',s:'train',y:1,g:0.905,l:0.7436},
+  {i:'USA6144',d:'2020-06-01',s:'train',y:1,g:0.9631,l:0.7886},
+  {i:'USA6089',d:'2020-06-01',s:'train',y:1,g:0.8055,l:0.46},
+  {i:'USA6021',d:'2020-06-01',s:'train',y:1,g:0.528,l:0.5601},
+  {i:'USA6474',d:'2020-06-02',s:'train',y:1,g:0.5467,l:0.469},
+  {i:'USA6471',d:'2020-06-02',s:'train',y:1,g:0.773,l:0.7738},
+  {i:'USA6540',d:'2020-06-02',s:'train',y:1,g:0.772,l:0.8036},
+  {i:'USA6625',d:'2020-06-02',s:'train',y:1,g:0.7493,l:0.8426},
+  {i:'USA6465',d:'2020-06-02',s:'train',y:1,g:0.9631,l:0.7886},
+  {i:'USA7207',d:'2020-06-03',s:'train',y:1,g:0.8721,l:0.8123},
+  {i:'USA8468',d:'2020-06-06',s:'train',y:1,g:0.528,l:0.5601},
+  {i:'USA8169',d:'2020-06-06',s:'train',y:1,g:0.6107,l:0.393},
+  {i:'USA524',d:'2020-06-14',s:'train',y:0,g:0.528,l:0.5601},
+  {i:'USA571',d:'2020-06-14',s:'train',y:0,g:0.2872,l:0.4627},
+  {i:'USA395',d:'2020-06-14',s:'train',y:0,g:0.1589,l:0.3215},
+  {i:'USA36',d:'2020-06-14',s:'train',y:0,g:0.3859,l:0.3651},
+  {i:'USA390',d:'2020-06-14',s:'train',y:0,g:0.528,l:0.5601},
+  {i:'USA67',d:'2020-06-14',s:'train',y:0,g:0.1694,l:0.4869},
+  {i:'USA452',d:'2020-06-14',s:'train',y:0,g:0.269,l:0.4333},
+  {i:'USA1',d:'2020-06-15',s:'train',y:0,g:0.1097,l:0.3644},
+  {i:'USA793',d:'2020-06-15',s:'train',y:0,g:0.2395,l:0.4564},
+  {i:'USA864',d:'2020-06-15',s:'train',y:0,g:0.4486,l:0.4419},
+  {i:'USA863',d:'2020-06-15',s:'train',y:0,g:0.4121,l:0.4933},
+  {i:'USA946',d:'2020-06-16',s:'train',y:0,g:0.1794,l:0.4874},
+  {i:'USA949',d:'2020-06-17',s:'train',y:0,g:0.1113,l:0.48},
+  {i:'USA80',d:'2020-06-18',s:'train',y:0,g:0.5108,l:0.3868},
+  {i:'USA624',d:'2020-06-18',s:'train',y:0,g:0.1992,l:0.3183},
+  {i:'USA997',d:'2020-06-19',s:'train',y:0,g:0.149,l:0.5021},
+  {i:'USA60',d:'2020-06-19',s:'train',y:0,g:0.528,l:0.5601},
+  {i:'USA391',d:'2020-06-19',s:'train',y:0,g:0.365,l:0.2126},
+  {i:'USA940',d:'2020-06-19',s:'train',y:0,g:0.3705,l:0.2367},
+  {i:'USA384',d:'2020-06-19',s:'train',y:0,g:0.3151,l:0.3826},
+  {i:'USA823',d:'2020-06-19',s:'train',y:0,g:0.2889,l:0.6584},
+  {i:'USA986',d:'2020-06-20',s:'train',y:0,g:0.1722,l:0.4057},
+  {i:'USA917',d:'2020-06-20',s:'train',y:0,g:0.528,l:0.5601},
+  {i:'USA687',d:'2020-06-20',s:'train',y:0,g:0.528,l:0.7684},
+  {i:'USA892',d:'2020-06-20',s:'train',y:0,g:0.1505,l:0.3274},
+  {i:'USA938',d:'2020-06-20',s:'train',y:0,g:0.2946,l:0.4693},
+  {i:'USA522',d:'2020-06-20',s:'train',y:0,g:0.528,l:0.5601},
+  {i:'USA205',d:'2020-06-20',s:'train',y:0,g:0.3536,l:0.3629},
+  {i:'USA909',d:'2020-06-20',s:'train',y:0,g:0.2759,l:0.3953},
+  {i:'USA670',d:'2020-06-20',s:'train',y:0,g:0.528,l:0.5601},
+  {i:'USA908',d:'2020-06-20',s:'test',y:0,g:0.7664,l:0.3993},
+  {i:'USA217',d:'2020-06-25',s:'test',y:0,g:0.528,l:0.5601},
+  {i:'USA845',d:'2020-06-26',s:'test',y:0,g:0.1738,l:0.2954},
+  {i:'USA219',d:'2020-06-27',s:'test',y:0,g:0.4232,l:0.3317},
+  {i:'USA969',d:'2020-06-27',s:'test',y:0,g:0.6858,l:0.4613},
+  {i:'USA740',d:'2020-06-27',s:'test',y:0,g:0.3455,l:0.3483},
+  {i:'USA648',d:'2020-06-27',s:'test',y:0,g:0.0816,l:0.164},
+  {i:'USA1004',d:'2020-06-29',s:'test',y:0,g:0.528,l:0.5601},
+  {i:'USA1664',d:'2020-07-01',s:'test',y:1,g:0.3783,l:0.4432},
+  {i:'USA555',d:'2020-07-02',s:'test',y:0,g:0.213,l:0.2789},
+  {i:'USA427',d:'2020-07-04',s:'test',y:0,g:0.4009,l:0.4389},
+  {i:'USA3247',d:'2020-07-13',s:'test',y:1,g:0.1795,l:0.4452},
+  {i:'USA3069',d:'2020-07-23',s:'test',y:1,g:0.528,l:0.5601},
+  {i:'USA3702',d:'2020-08-01',s:'test',y:1,g:0.2623,l:0.7718},
+  {i:'USA3784',d:'2020-08-02',s:'test',y:1,g:0.528,l:0.5601},
+  {i:'USA4487',d:'2020-08-14',s:'test',y:1,g:0.528,l:0.5601},
+  {i:'USA10469',d:'2020-08-16',s:'test',y:1,g:0.2807,l:0.3715},
+  {i:'USA10993',d:'2020-08-16',s:'test',y:1,g:0.528,l:0.5601},
+  {i:'USA11382',d:'2020-08-26',s:'test',y:1,g:0.5477,l:0.337},
+  {i:'USA11385',d:'2020-08-26',s:'test',y:1,g:0.3639,l:0.319},
+  {i:'USA12007',d:'2020-09-03',s:'test',y:1,g:0.1196,l:0.2994},
+  {i:'USA14290',d:'2020-10-04',s:'test',y:1,g:0.528,l:0.5601},
+  {i:'USA16482',d:'2020-10-31',s:'test',y:1,g:0.9631,l:0.8075},
+  {i:'USA18953',d:'2020-11-30',s:'test',y:1,g:0.3688,l:0.4815},
+  {i:'USA19998',d:'2020-12-31',s:'test',y:1,g:0.171,l:0.473}
+];
+
+function renderPredictionPicker() {
+  const datasetEl = document.getElementById('usl-picker-dataset');
+  const modelEl = document.getElementById('usl-picker-model');
+  if (!datasetEl || !modelEl) return;
+  const datasetSel = datasetEl.value;
+  const modelSel = modelEl.value;
+  const probKey = modelSel === 'gbm' ? 'g' : 'l';
+  const modelName = modelSel === 'gbm' ? 'Gradient-Boosted Trees' : 'Logistic Regression';
+
+  const rows = MODEL_PREDICTIONS.filter(r => r.s === datasetSel).map(r => {
+    const p = r[probKey];
+    const pred = p >= 0.5 ? 1 : 0;
+    return Object.assign({}, r, { p: p, pred: pred, correct: pred === r.y });
+  });
+  rows.sort((a, b) => a.y - b.y || a.p - b.p);
+
+  const n = rows.length;
+  const correctCount = rows.filter(r => r.correct).length;
+  const tp = rows.filter(r => r.y === 1 && r.pred === 1).length;
+  const fp = rows.filter(r => r.y === 0 && r.pred === 1).length;
+  const fn = rows.filter(r => r.y === 1 && r.pred === 0).length;
+  const precision = (tp + fp) ? tp / (tp + fp) : 0;
+  const recall = (tp + fn) ? tp / (tp + fn) : 0;
+  const accuracy = correctCount / n;
+
+  document.getElementById('usl-picker-stats').innerHTML = `
+    <div class="usl-stat"><div class="usl-stat-num">${(accuracy * 100).toFixed(1)}%</div><div class="usl-stat-label">Accuracy</div></div>
+    <div class="usl-stat"><div class="usl-stat-num">${correctCount} / ${n}</div><div class="usl-stat-label">Correct predictions</div></div>
+    <div class="usl-stat"><div class="usl-stat-num">${precision.toFixed(3)}</div><div class="usl-stat-label">Precision</div></div>
+    <div class="usl-stat"><div class="usl-stat-num">${recall.toFixed(3)}</div><div class="usl-stat-label">Recall</div></div>
+  `;
+
+  const warnEl = document.getElementById('usl-picker-overfit-warn');
+  if (datasetSel === 'train') {
+    warnEl.classList.add('show');
+    warnEl.innerHTML = modelSel === 'gbm'
+      ? '<strong>Heads up:</strong> this is training-set accuracy — the model already saw these exact 75 events while fitting, so this number is optimistic by construction, not a real performance estimate. Gradient-boosted trees hit <strong>86.7%</strong> here but only <strong>52.0%</strong> on the held-out test set — a 34.7-point gap, textbook overfitting on a 75-row training set.'
+      : '<strong>Heads up:</strong> this is training-set accuracy — the model already saw these exact 75 events while fitting, so this number is optimistic by construction, not a real performance estimate. Logistic regression only moves from <strong>62.7%</strong> here to <strong>60.0%</strong> on the held-out test set — a 2.7-point gap, which is what a well-regularized model on small data should look like.';
+  } else {
+    warnEl.classList.remove('show');
+  }
+
+  const rowH = 16;
+  const width = 900;
+  const height = n * rowH + 46;
+  const left = 30, right = width - 30;
+  const px = p => left + p * (right - left);
+
+  let svg = `<svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Dot plot of ${modelName} predictions on the ${datasetSel === 'train' ? 'training' : 'held-out test'} set, colored green for correct and red for incorrect">`;
+  svg += `<line class="usl-gridline" x1="${left}" y1="20" x2="${right}" y2="20"/>`;
+  for (let i = 0; i <= 5; i++) {
+    const x = left + (right - left) * i / 5;
+    svg += `<text class="usl-bar-label" x="${x.toFixed(1)}" y="14" text-anchor="middle" font-size="9">${(i / 5).toFixed(1)}</text>`;
+  }
+  const threshX = px(0.5);
+  svg += `<line x1="${threshX.toFixed(1)}" y1="24" x2="${threshX.toFixed(1)}" y2="${height - 12}" stroke="#9a9488" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+  svg += `<text class="usl-bar-label" x="${threshX.toFixed(1)}" y="${height - 2}" text-anchor="middle" font-size="9">0.5 threshold</text>`;
+  rows.forEach((r, i) => {
+    const cy = 30 + i * rowH;
+    const color = r.correct ? '#4b6b3f' : '#a8402b';
+    svg += `<circle cx="${px(r.p).toFixed(1)}" cy="${cy}" r="4.5" fill="${color}" opacity="0.85"><title>${r.i} (${r.d}) — true: ${r.y ? 'escalated' : 'peaceful'}, predicted: ${(r.p * 100).toFixed(1)}%</title></circle>`;
+  });
+  svg += `</svg>`;
+  document.getElementById('usl-picker-chart').innerHTML = svg;
+}
+renderPredictionPicker();
 
 function openWeatherTool() {
   document.getElementById('project-detail').classList.remove('open');

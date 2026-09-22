@@ -1,0 +1,802 @@
+[
+  {
+    "event_id": "USA20408",
+    "date": "2020-04-08",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.7162,
+    "logit": 0.6732
+  },
+  {
+    "event_id": "USA20422",
+    "date": "2020-04-09",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.6419,
+    "logit": 0.3517
+  },
+  {
+    "event_id": "USA20585",
+    "date": "2020-04-19",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA20620",
+    "date": "2020-04-20",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA4628",
+    "date": "2020-05-28",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.4747,
+    "logit": 0.2999
+  },
+  {
+    "event_id": "USA4697",
+    "date": "2020-05-29",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.4092,
+    "logit": 0.3446
+  },
+  {
+    "event_id": "USA4786",
+    "date": "2020-05-29",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.556,
+    "logit": 0.4336
+  },
+  {
+    "event_id": "USA4739",
+    "date": "2020-05-29",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.7599,
+    "logit": 0.2795
+  },
+  {
+    "event_id": "USA4870",
+    "date": "2020-05-30",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA5170",
+    "date": "2020-05-30",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.7391,
+    "logit": 0.4505
+  },
+  {
+    "event_id": "USA4887",
+    "date": "2020-05-30",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.7016,
+    "logit": 0.3934
+  },
+  {
+    "event_id": "USA4948",
+    "date": "2020-05-30",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.8396,
+    "logit": 0.4559
+  },
+  {
+    "event_id": "USA5096",
+    "date": "2020-05-30",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.6867,
+    "logit": 0.4237
+  },
+  {
+    "event_id": "USA5015",
+    "date": "2020-05-30",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.5886,
+    "logit": 0.2399
+  },
+  {
+    "event_id": "USA4941",
+    "date": "2020-05-30",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.9288,
+    "logit": 0.7313
+  },
+  {
+    "event_id": "USA4986",
+    "date": "2020-05-30",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA4905",
+    "date": "2020-05-30",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.7886,
+    "logit": 0.4059
+  },
+  {
+    "event_id": "USA5040",
+    "date": "2020-05-30",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.5536,
+    "logit": 0.3704
+  },
+  {
+    "event_id": "USA5479",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA5709",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.7354,
+    "logit": 0.6866
+  },
+  {
+    "event_id": "USA5354",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.588,
+    "logit": 0.4792
+  },
+  {
+    "event_id": "USA5416",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.6843,
+    "logit": 0.5645
+  },
+  {
+    "event_id": "USA11656",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA10390",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.6963,
+    "logit": 0.4406
+  },
+  {
+    "event_id": "USA5485",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.7179,
+    "logit": 0.7112
+  },
+  {
+    "event_id": "USA5572",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.5733,
+    "logit": 0.47
+  },
+  {
+    "event_id": "USA5723",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA5578",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA5715",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.9288,
+    "logit": 0.765
+  },
+  {
+    "event_id": "USA5741",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.7706,
+    "logit": 0.7586
+  },
+  {
+    "event_id": "USA5385",
+    "date": "2020-05-31",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.5188,
+    "logit": 0.3524
+  },
+  {
+    "event_id": "USA6138",
+    "date": "2020-06-01",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA5967",
+    "date": "2020-06-01",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.7658,
+    "logit": 0.5115
+  },
+  {
+    "event_id": "USA6015",
+    "date": "2020-06-01",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.905,
+    "logit": 0.7436
+  },
+  {
+    "event_id": "USA6144",
+    "date": "2020-06-01",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.9631,
+    "logit": 0.7886
+  },
+  {
+    "event_id": "USA6089",
+    "date": "2020-06-01",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.8055,
+    "logit": 0.46
+  },
+  {
+    "event_id": "USA6021",
+    "date": "2020-06-01",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA6474",
+    "date": "2020-06-02",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.5467,
+    "logit": 0.469
+  },
+  {
+    "event_id": "USA6471",
+    "date": "2020-06-02",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.773,
+    "logit": 0.7738
+  },
+  {
+    "event_id": "USA6540",
+    "date": "2020-06-02",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.772,
+    "logit": 0.8036
+  },
+  {
+    "event_id": "USA6625",
+    "date": "2020-06-02",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.7493,
+    "logit": 0.8426
+  },
+  {
+    "event_id": "USA6465",
+    "date": "2020-06-02",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.9631,
+    "logit": 0.7886
+  },
+  {
+    "event_id": "USA7207",
+    "date": "2020-06-03",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.8721,
+    "logit": 0.8123
+  },
+  {
+    "event_id": "USA8468",
+    "date": "2020-06-06",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA8169",
+    "date": "2020-06-06",
+    "dataset": "train",
+    "true": 1,
+    "gbm": 0.6107,
+    "logit": 0.393
+  },
+  {
+    "event_id": "USA524",
+    "date": "2020-06-14",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA571",
+    "date": "2020-06-14",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.2872,
+    "logit": 0.4627
+  },
+  {
+    "event_id": "USA395",
+    "date": "2020-06-14",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.1589,
+    "logit": 0.3215
+  },
+  {
+    "event_id": "USA36",
+    "date": "2020-06-14",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.3859,
+    "logit": 0.3651
+  },
+  {
+    "event_id": "USA390",
+    "date": "2020-06-14",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA67",
+    "date": "2020-06-14",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.1694,
+    "logit": 0.4869
+  },
+  {
+    "event_id": "USA452",
+    "date": "2020-06-14",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.269,
+    "logit": 0.4333
+  },
+  {
+    "event_id": "USA1",
+    "date": "2020-06-15",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.1097,
+    "logit": 0.3644
+  },
+  {
+    "event_id": "USA793",
+    "date": "2020-06-15",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.2395,
+    "logit": 0.4564
+  },
+  {
+    "event_id": "USA864",
+    "date": "2020-06-15",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.4486,
+    "logit": 0.4419
+  },
+  {
+    "event_id": "USA863",
+    "date": "2020-06-15",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.4121,
+    "logit": 0.4933
+  },
+  {
+    "event_id": "USA946",
+    "date": "2020-06-16",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.1794,
+    "logit": 0.4874
+  },
+  {
+    "event_id": "USA949",
+    "date": "2020-06-17",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.1113,
+    "logit": 0.48
+  },
+  {
+    "event_id": "USA80",
+    "date": "2020-06-18",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.5108,
+    "logit": 0.3868
+  },
+  {
+    "event_id": "USA624",
+    "date": "2020-06-18",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.1992,
+    "logit": 0.3183
+  },
+  {
+    "event_id": "USA997",
+    "date": "2020-06-19",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.149,
+    "logit": 0.5021
+  },
+  {
+    "event_id": "USA60",
+    "date": "2020-06-19",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA391",
+    "date": "2020-06-19",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.365,
+    "logit": 0.2126
+  },
+  {
+    "event_id": "USA940",
+    "date": "2020-06-19",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.3705,
+    "logit": 0.2367
+  },
+  {
+    "event_id": "USA384",
+    "date": "2020-06-19",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.3151,
+    "logit": 0.3826
+  },
+  {
+    "event_id": "USA823",
+    "date": "2020-06-19",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.2889,
+    "logit": 0.6584
+  },
+  {
+    "event_id": "USA986",
+    "date": "2020-06-20",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.1722,
+    "logit": 0.4057
+  },
+  {
+    "event_id": "USA917",
+    "date": "2020-06-20",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA687",
+    "date": "2020-06-20",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.528,
+    "logit": 0.7684
+  },
+  {
+    "event_id": "USA892",
+    "date": "2020-06-20",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.1505,
+    "logit": 0.3274
+  },
+  {
+    "event_id": "USA938",
+    "date": "2020-06-20",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.2946,
+    "logit": 0.4693
+  },
+  {
+    "event_id": "USA522",
+    "date": "2020-06-20",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA205",
+    "date": "2020-06-20",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.3536,
+    "logit": 0.3629
+  },
+  {
+    "event_id": "USA909",
+    "date": "2020-06-20",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.2759,
+    "logit": 0.3953
+  },
+  {
+    "event_id": "USA670",
+    "date": "2020-06-20",
+    "dataset": "train",
+    "true": 0,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA908",
+    "date": "2020-06-20",
+    "dataset": "test",
+    "true": 0,
+    "gbm": 0.7664,
+    "logit": 0.3993
+  },
+  {
+    "event_id": "USA217",
+    "date": "2020-06-25",
+    "dataset": "test",
+    "true": 0,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA845",
+    "date": "2020-06-26",
+    "dataset": "test",
+    "true": 0,
+    "gbm": 0.1738,
+    "logit": 0.2954
+  },
+  {
+    "event_id": "USA219",
+    "date": "2020-06-27",
+    "dataset": "test",
+    "true": 0,
+    "gbm": 0.4232,
+    "logit": 0.3317
+  },
+  {
+    "event_id": "USA969",
+    "date": "2020-06-27",
+    "dataset": "test",
+    "true": 0,
+    "gbm": 0.6858,
+    "logit": 0.4613
+  },
+  {
+    "event_id": "USA740",
+    "date": "2020-06-27",
+    "dataset": "test",
+    "true": 0,
+    "gbm": 0.3455,
+    "logit": 0.3483
+  },
+  {
+    "event_id": "USA648",
+    "date": "2020-06-27",
+    "dataset": "test",
+    "true": 0,
+    "gbm": 0.0816,
+    "logit": 0.164
+  },
+  {
+    "event_id": "USA1004",
+    "date": "2020-06-29",
+    "dataset": "test",
+    "true": 0,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA1664",
+    "date": "2020-07-01",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.3783,
+    "logit": 0.4432
+  },
+  {
+    "event_id": "USA555",
+    "date": "2020-07-02",
+    "dataset": "test",
+    "true": 0,
+    "gbm": 0.213,
+    "logit": 0.2789
+  },
+  {
+    "event_id": "USA427",
+    "date": "2020-07-04",
+    "dataset": "test",
+    "true": 0,
+    "gbm": 0.4009,
+    "logit": 0.4389
+  },
+  {
+    "event_id": "USA3247",
+    "date": "2020-07-13",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.1795,
+    "logit": 0.4452
+  },
+  {
+    "event_id": "USA3069",
+    "date": "2020-07-23",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA3702",
+    "date": "2020-08-01",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.2623,
+    "logit": 0.7718
+  },
+  {
+    "event_id": "USA3784",
+    "date": "2020-08-02",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA4487",
+    "date": "2020-08-14",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA10469",
+    "date": "2020-08-16",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.2807,
+    "logit": 0.3715
+  },
+  {
+    "event_id": "USA10993",
+    "date": "2020-08-16",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA11382",
+    "date": "2020-08-26",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.5477,
+    "logit": 0.337
+  },
+  {
+    "event_id": "USA11385",
+    "date": "2020-08-26",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.3639,
+    "logit": 0.319
+  },
+  {
+    "event_id": "USA12007",
+    "date": "2020-09-03",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.1196,
+    "logit": 0.2994
+  },
+  {
+    "event_id": "USA14290",
+    "date": "2020-10-04",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.528,
+    "logit": 0.5601
+  },
+  {
+    "event_id": "USA16482",
+    "date": "2020-10-31",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.9631,
+    "logit": 0.8075
+  },
+  {
+    "event_id": "USA18953",
+    "date": "2020-11-30",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.3688,
+    "logit": 0.4815
+  },
+  {
+    "event_id": "USA19998",
+    "date": "2020-12-31",
+    "dataset": "test",
+    "true": 1,
+    "gbm": 0.171,
+    "logit": 0.473
+  }
+]

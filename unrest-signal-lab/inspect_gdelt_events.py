@@ -1,26 +1,32 @@
 """
-inspect_gdelt_events.py -- Phase 0 Extension, Part 2.
+inspect_gdelt_events.py -- Phase 0/1 pull from gdeltv2.events_partitioned,
+a SEPARATE table from the GKG table inspect_gdelt.py queries. GKG has no
+Goldstein Scale or QuadClass fields; those live only here.
 
-New pull from gdeltv2.events_partitioned -- a SEPARATE table from the
-GKG table inspect_gdelt.py queries. GKG has no Goldstein Scale or
-QuadClass fields; those live only here. Same pre-event-window,
-dry-run-first, safety-cap pattern as inspect_gdelt.py, reused via
-import rather than duplicated.
+Phase 1 rewrite (matching_method_version "v3_batched_window"), same two
+fixes as inspect_gdelt.py and for the same reason -- see that file's
+docstring for the full BigQuery-billing explanation:
+  1. Events sharing an event_date (identical pre-event window) are
+     batched into one query via UNNEST(@patterns), instead of one query
+     per event re-scanning the same day's partitions repeatedly.
+  2. A window whose dry-run estimate exceeds PER_QUERY_BYTES_WARN is
+     skipped by default, not just flagged.
 
-Confirmed table + schema directly against BigQuery (not guessed):
-gdelt-bq.gdeltv2.events_partitioned, DAY-partitioned on _PARTITIONTIME.
-Unlike GKG, this table has real structured geo columns
-(ActionGeo_CountryCode, ActionGeo_FullName) instead of a single blob
-field, so country filtering here is an exact column match, not a regex.
+Also fixes a real gap the Phase 1 geo-distance check surfaced: the prior
+version never selected ActionGeo_Lat/ActionGeo_Long, so
+build_training_table.py could only cross-check this table's rows at the
+coarse state (ADM1) level, not the same haversine-distance check GKG
+rows get. These two float columns are cheap (structured, typed, no text
+blob) -- added below so the NEXT pull can support the precise check.
 """
+import argparse
 import json
 import sys
-from datetime import datetime, timedelta
 from pathlib import Path
 
 from google.cloud import bigquery
 
-import inspect_gdelt as gkg  # reuse make_client(), PRE_EVENT_WINDOW_DAYS, safety-cap pattern
+import inspect_gdelt as gkg  # reuse make_client(), PRE_EVENT_WINDOW_DAYS, group_events_by_window()
 import manifest as pull_manifest
 
 HERE = Path(__file__).resolve().parent
@@ -34,61 +40,75 @@ CUMULATIVE_BYTES_ABORT = 100 * 1024**3
 FIELDS = [
     "GLOBALEVENTID", "SQLDATE", "EventCode", "QuadClass", "GoldsteinScale",
     "ActionGeo_FullName", "ActionGeo_CountryCode", "ActionGeo_ADM1Code",
+    "ActionGeo_Lat", "ActionGeo_Long",
     "NumMentions", "NumArticles", "AvgTone",
 ]
 
+MATCHING_METHOD_VERSION = "v3_batched_window"
+
 QUERY_TEMPLATE = f"""
-SELECT {", ".join(FIELDS)}
-FROM `{TABLE}`
-WHERE _PARTITIONTIME >= TIMESTAMP(@start_date)
-  AND _PARTITIONTIME <= TIMESTAMP(@end_date)
-  AND SQLDATE >= @date_start_int
-  AND SQLDATE <= @date_end_int
-  AND ActionGeo_CountryCode = 'US'
-  AND ActionGeo_FullName LIKE @location_pattern
-LIMIT {ROWS_PER_EVENT}
+WITH matched AS (
+  SELECT {", ".join(FIELDS)}, pattern
+  FROM `{TABLE}`, UNNEST(@patterns) AS pattern
+  WHERE _PARTITIONTIME >= TIMESTAMP(@start_date)
+    AND _PARTITIONTIME <= TIMESTAMP(@end_date)
+    AND SQLDATE >= @date_start_int
+    AND SQLDATE <= @date_end_int
+    AND ActionGeo_CountryCode = 'US'
+    AND ActionGeo_FullName LIKE pattern
+)
+SELECT * EXCEPT(rn) FROM (
+  SELECT *, ROW_NUMBER() OVER (PARTITION BY pattern ORDER BY SQLDATE) AS rn
+  FROM matched
+)
+WHERE rn <= {ROWS_PER_EVENT}
 """
 
 
-def build_job_params(event):
-    event_date = datetime.strptime(event["event_date"], "%Y-%m-%d")
-    window_end = event_date - timedelta(days=1)
-    window_start = window_end - timedelta(days=gkg.PRE_EVENT_WINDOW_DAYS - 1)
-
-    return [
+def run_one_window(client, window_start, window_end, events, cumulative_bytes, force_expensive):
+    patterns = [f"%{e['location']}%" for e in events]
+    pattern_to_event = dict(zip(patterns, events))
+    params = [
         bigquery.ScalarQueryParameter("start_date", "STRING", window_start.strftime("%Y-%m-%d")),
         bigquery.ScalarQueryParameter("end_date", "STRING", window_end.strftime("%Y-%m-%d")),
         bigquery.ScalarQueryParameter("date_start_int", "INT64", int(window_start.strftime("%Y%m%d"))),
         bigquery.ScalarQueryParameter("date_end_int", "INT64", int(window_end.strftime("%Y%m%d"))),
-        bigquery.ScalarQueryParameter("location_pattern", "STRING", f"%{event['location']}%"),
-    ], window_start, window_end
+        bigquery.ArrayQueryParameter("patterns", "STRING", patterns),
+    ]
 
-
-def run_one_event(client, event, cumulative_bytes):
-    params, window_start, window_end = build_job_params(event)
+    label = f"{window_start.date()}..{window_end.date()} ({len(events)} events batched)"
 
     dry_config = bigquery.QueryJobConfig(query_parameters=params, dry_run=True, use_query_cache=False)
     dry_job = client.query(QUERY_TEMPLATE, job_config=dry_config)
     estimated_bytes = dry_job.total_bytes_processed
 
     if cumulative_bytes + estimated_bytes > CUMULATIVE_BYTES_ABORT:
-        print(f"[EVENTS] ABORT before {event['event_id_cnty']}: cumulative bytes would hit "
+        print(f"[EVENTS] ABORT before window {label}: cumulative bytes would hit "
               f"{(cumulative_bytes + estimated_bytes) / 1024**3:.2f} GB, over the "
               f"{CUMULATIVE_BYTES_ABORT / 1024**3:.0f} GB safety cap. Stopping run.")
         return None, cumulative_bytes, True
 
-    flag = " ** OVER PER-QUERY WARN THRESHOLD **" if estimated_bytes > PER_QUERY_BYTES_WARN else ""
-    print(f"[EVENTS] {event['event_id_cnty']} ({event['location']}, {window_start.date()}..{window_end.date()}): "
-          f"estimated {estimated_bytes / 1024**2:.1f} MB{flag}")
+    if estimated_bytes > PER_QUERY_BYTES_WARN and not force_expensive:
+        print(f"[EVENTS] SKIPPED window {label}: estimated {estimated_bytes / 1024**3:.2f} GB "
+              f"exceeds the {PER_QUERY_BYTES_WARN / 1024**3:.0f} GB per-query warn threshold. "
+              f"Re-run with --force-expensive to pull it anyway.")
+        return [], cumulative_bytes, False
+
+    flag = " ** OVER PER-QUERY WARN THRESHOLD -- forced **" if estimated_bytes > PER_QUERY_BYTES_WARN else ""
+    print(f"[EVENTS] window {label}: estimated {estimated_bytes / 1024**2:.1f} MB{flag}")
 
     real_config = bigquery.QueryJobConfig(query_parameters=params, use_query_cache=False)
     job = client.query(QUERY_TEMPLATE, job_config=real_config)
     rows = [dict(r) for r in job.result()]
     actual_bytes = job.total_bytes_processed
 
-    print(f"[EVENTS]   -> actual: {actual_bytes / 1024**2:.1f} MB scanned, {len(rows)} rows returned")
+    print(f"[EVENTS]   -> actual: {actual_bytes / 1024**2:.1f} MB scanned, {len(rows)} rows returned "
+          f"across {len(events)} events.")
 
     for r in rows:
+        event = pattern_to_event.get(r.pop("pattern"))
+        if event is None:
+            continue
         r["_acled_event_id"] = event["event_id_cnty"]
         r["_acled_location"] = event["location"]
 
@@ -96,8 +116,14 @@ def run_one_event(client, event, cumulative_bytes):
 
 
 def main():
-    sample_path = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "data" / "acled_sample_100.json"
-    out_path = Path(sys.argv[2]) if len(sys.argv) > 2 else HERE / "data" / "gdelt_events_sample.json"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("sample_path", nargs="?", default=str(HERE / "data" / "acled_sample_100.json"))
+    parser.add_argument("out_path", nargs="?", default=str(HERE / "data" / "gdelt_events_sample.json"))
+    parser.add_argument("--force-expensive", action="store_true")
+    args = parser.parse_args()
+
+    sample_path = Path(args.sample_path)
+    out_path = Path(args.out_path)
     if not sample_path.exists():
         print(f"No ACLED sample found at {sample_path}.", file=sys.stderr)
         sys.exit(1)
@@ -108,23 +134,30 @@ def main():
           f"{prior.get('cumulative_gdelt_gb_of_monthly_quota_pct', 0)}% of the monthly free tier "
           f"before this run starts.")
 
+    windows = gkg.group_events_by_window(events)
+    print(f"[EVENTS] {len(events)} events collapse to {len(windows)} unique pre-event windows.")
+
     client = gkg.make_client()
 
     all_rows = []
     cumulative_bytes = 0
-    events_with_hits = 0
+    windows_with_hits = 0
     aborted = False
 
-    for event in events:
-        rows, cumulative_bytes, aborted = run_one_event(client, event, cumulative_bytes)
+    for (window_start, window_end), window_events in sorted(windows.items()):
+        rows, cumulative_bytes, aborted = run_one_window(
+            client, window_start, window_end, window_events, cumulative_bytes, args.force_expensive
+        )
         if aborted:
             break
         if rows:
-            events_with_hits += 1
+            windows_with_hits += 1
             all_rows.extend(rows)
 
+    events_with_hits = len({r["_acled_event_id"] for r in all_rows})
     print()
-    print(f"[EVENTS] TOTAL: {len(all_rows)} rows across {events_with_hits}/{len(events)} events, "
+    print(f"[EVENTS] TOTAL: {len(all_rows)} rows across {events_with_hits}/{len(events)} events "
+          f"({windows_with_hits}/{len(windows)} windows had hits), "
           f"{cumulative_bytes / 1024**3:.3f} GB scanned"
           f"{' (run aborted early by safety cap)' if aborted else ''}")
 
@@ -133,10 +166,12 @@ def main():
 
     pull_manifest.append_entry(
         script="inspect_gdelt_events.py", source="GDELT_EVENTS",
-        description=f"Events table pull (Goldstein Scale + QuadClass) across {events_with_hits}/{len(events)} events"
+        description=f"Batched-window Events-table pull (Goldstein Scale + QuadClass + Lat/Long) "
+                    f"across {events_with_hits}/{len(events)} events "
+                    f"({len(windows)} unique windows queried instead of {len(events)} per-event queries)"
                     f"{' (run aborted early by safety cap)' if aborted else ''}.",
         rows=len(all_rows), byte_count=cumulative_bytes,
-        matching_method_version="v2_country_theme_filtered",
+        matching_method_version=MATCHING_METHOD_VERSION,
     )
 
 

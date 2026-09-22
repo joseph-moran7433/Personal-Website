@@ -1008,7 +1008,7 @@
        lines, flat borders, no glow/blur/animation. Same open/close
        overlay mechanics as the rest of the site.
        ═══════════════════════════════════════════════════════════════ */
-    #unrest-hub, #unrest-notebook {
+    #unrest-hub, #unrest-notebook, #unrest-phase1 {
       position: fixed; inset: 0; z-index: 150;
       background:
         repeating-linear-gradient(0deg, rgba(38,38,34,0.05) 0px, rgba(38,38,34,0.05) 1px, transparent 1px, transparent 28px),
@@ -1020,7 +1020,7 @@
       font-family: var(--font-body);
       color: var(--usl-text);
     }
-    #unrest-hub.open, #unrest-notebook.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+    #unrest-hub.open, #unrest-notebook.open, #unrest-phase1.open { opacity: 1; transform: translateX(0); pointer-events: all; }
     #unrest-hub { z-index: 151; }
 
     .usl-nav {
@@ -2302,6 +2302,13 @@
         <h2 class="usl-hub-label-title">PHASE 0 — DATA INSPECTION</h2>
         <p class="usl-hub-label-sub">Can ACLED and GDELT even be pulled together in a usable way? Raw examples, geospatial-accuracy checks, and a publisher-frequency count — no model, no pipeline, just the data itself.</p>
       </div>
+      <div class="usl-hub-item">
+        <div class="usl-hub-icon-stage" onclick="openUnrestPhase1()" role="button" tabindex="0" aria-label="Open the Phase 1 data cleaning and preliminary model notebook" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openUnrestPhase1();}">
+          <i data-lucide="git-branch" style="width:44px;height:44px;"></i>
+        </div>
+        <h2 class="usl-hub-label-title">PHASE 1 — CLEANING &amp; PRELIMINARY MODEL</h2>
+        <p class="usl-hub-label-sub">Why the Phase 0 pulls burned so much BigQuery quota for so little data, a real lat/long cross-check that catches wrong-state GDELT matches, a cleaned training table, and two preliminary models compared head-to-head.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -2564,6 +2571,311 @@
     </div>
 
     <p class="usl-note">Stop condition reached: every v1 variable (V2Tone's seven sub-values, Goldstein Scale, Quad Class Ratio, Volume, Actor mentions, and the ACLED label fields) now has a real example, chart, and analysis, and the matching fix + Events table pull are verified above with real before/after numbers — not just claimed. No labeling scheme, model training, or automation has been built; that's a separate, later conversation.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ UNREST PREDICTIONS — PHASE 1 NOTEBOOK (full-page) ═══════════════════════════════════════ -->
+<div id="unrest-phase1">
+  <div class="usl-nav">
+    <button class="usl-back" onclick="closeUnrestPhase1()">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Unrest Predictions</span>
+    </button>
+    <div class="usl-breadcrumb"><span>Unrest Predictions</span><span>/</span><span>Phase 1</span></div>
+  </div>
+
+  <div class="usl-hero">
+    <div class="usl-eyebrow">Phase 1 — Cleaning &amp; Preliminary Model</div>
+    <h1 class="usl-title">Fix the collection, clean the data, build a first model</h1>
+    <p class="usl-summary">Two questions came back from advisor review of Phase 0. Both get answered here with real numbers, not just explained in the abstract — then the same cached Phase 0 pulls (no new ACLED or BigQuery calls anywhere on this page) get cleaned into one row per event and run through two preliminary classifiers, compared head-to-head.</p>
+    <p class="usl-summary" style="margin-top:1rem;">The order below matches how the work actually happened: fix and explain the data-collection problem first, then re-clean the data with a real fix applied, <em>then</em> build and compare models on top of the corrected table. A model trained on ungeofiltered data would have been learning from wrong-state noise without anyone knowing.</p>
+  </div>
+
+  <div class="usl-body">
+    <p class="usl-note">Scope lock, same as Phase 0: everything below runs against files already sitting in <code>data/</code> from the Phase 0 pulls. Zero new ACLED or BigQuery queries were made building this page — the corrected pull scripts (below) are written and ready, but intentionally not yet re-run against the API.</p>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Advisor question 1</div>
+      <h2 class="usl-panel-heading">Why did 100 rows and ~10 columns cost hundreds of GB?</h2>
+      <p class="usl-panel-body">BigQuery is a columnar warehouse: it bills for every value of every <code>SELECT</code>ed column read out of the date-partitions a query's <em>partition-time</em> filter keeps — <strong>before</strong> the rest of the <code>WHERE</code> clause ever runs. A <code>REGEXP_CONTAINS(V2Locations, ...)</code> or <code>LIKE</code> filter on an ordinary column doesn't prune anything at the storage level; BigQuery still has to read that column's value for every article on Earth in the scanned window, then throw away whatever doesn't match. The 25 rows a query returns and the millions of rows it reads to find them are almost completely decoupled costs.</p>
+      <div class="usl-chart-wrap">
+        <svg class="chart-svg" viewBox="0 0 560 260" role="img" aria-label="Bar chart of megabytes scanned per row actually returned, by pull: v1 GKG 66.2, v2 GKG 303.9, Events table 3.8, GKG plus two wide text columns 246.8">
+          <line class="usl-gridline" x1="45" y1="20.0" x2="540" y2="20.0"/>
+          <line class="usl-gridline" x1="45" y1="68.5" x2="540" y2="68.5"/>
+          <line class="usl-gridline" x1="45" y1="117.0" x2="540" y2="117.0"/>
+          <line class="usl-gridline" x1="45" y1="165.5" x2="540" y2="165.5"/>
+          <line class="usl-gridline" x1="45" y1="214.0" x2="540" y2="214.0"/>
+          <rect class="usl-bar" x="45.0" y="174.9" width="108.8" height="39.1" rx="3"/>
+          <text class="usl-bar-value" x="99.4" y="166.9" text-anchor="middle">66.2</text>
+          <text class="usl-bar-label" x="99.4" y="232" text-anchor="middle">v1 GKG pull</text>
+          <text class="usl-bar-label" x="99.4" y="246" text-anchor="middle">(7 fields)</text>
+          <rect class="usl-bar" x="173.8" y="34.4" width="108.8" height="179.6" rx="3"/>
+          <text class="usl-bar-value" x="228.1" y="26.4" text-anchor="middle">303.9</text>
+          <text class="usl-bar-label" x="228.1" y="232" text-anchor="middle">v2 GKG pull</text>
+          <text class="usl-bar-label" x="228.1" y="246" text-anchor="middle">(same 7 fields)</text>
+          <rect class="usl-bar" x="302.5" y="211.8" width="108.8" height="2.2" rx="3"/>
+          <text class="usl-bar-value" x="356.9" y="203.8" text-anchor="middle">3.8</text>
+          <text class="usl-bar-label" x="356.9" y="232" text-anchor="middle">Events table</text>
+          <text class="usl-bar-label" x="356.9" y="246" text-anchor="middle">(9 typed fields)</text>
+          <rect class="usl-bar" x="431.2" y="68.1" width="108.8" height="145.9" rx="3"/>
+          <text class="usl-bar-value" x="485.6" y="60.1" text-anchor="middle">246.8</text>
+          <text class="usl-bar-label" x="485.6" y="232" text-anchor="middle">GKG +2 wide</text>
+          <text class="usl-bar-label" x="485.6" y="246" text-anchor="middle">text columns</text>
+        </svg>
+      </div>
+      <p class="usl-panel-body">Megabytes scanned per row actually kept, computed straight from <code>data/pull_manifest.json</code> (sequences 4, 7, 8, 9 — no new pulls). The Events table's typed, structured columns (<code>ActionGeo_CountryCode</code>, <code>QuadClass</code>, floats) cost <strong>3.8 MB per row returned</strong>. GKG's wide free-text columns (<code>V2Locations</code>, <code>V2Themes</code>, and worse once <code>DocumentIdentifier</code>/<code>SourceCommonName</code> or <code>V2Persons</code>/<code>V2Organizations</code> are added) cost <strong>65-300+ MB per row returned</strong> — an 80x spread for the exact same "one row per matched article" output. That's the real answer to "why is this so many GB": it was never about how many rows survived filtering, it was about which table and which columns got scanned to find them.</p>
+      <p class="usl-panel-body">Second, independent cost driver, found by re-checking the cached 100-event sample with zero new queries: <strong>100 events collapse to only 38 distinct <code>event_date</code>s</strong>, and every event on the same date needs the exact same 7-day pre-event window. The old script issued one query per event regardless, so it was re-scanning some days' entire global GKG partitions up to several times over for nothing.</p>
+      <div class="usl-stat-row">
+        <div class="usl-stat"><div class="usl-stat-num">100 → 38</div><div class="usl-stat-label">Events → unique windows</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">2.6x</div><div class="usl-stat-label">Redundant rescans, minimum</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">80x</div><div class="usl-stat-label">MB/row spread, cheapest→priciest</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">63.9%</div><div class="usl-stat-label">Monthly quota used, Phase 0</div></div>
+      </div>
+    </div>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Fix, applied to the pull scripts</div>
+      <h2 class="usl-panel-heading">Batch by window, gate the cost, trim the columns</h2>
+      <p class="usl-panel-body"><code>inspect_gdelt.py</code> and <code>inspect_gdelt_events.py</code> are rewritten (matching_method_version <code>v3_batched_window</code>) with three concrete changes, ready for the next real pull but <strong>not yet run against BigQuery</strong> — no quota was spent making this fix:</p>
+      <table class="usl-table">
+        <tr><th>Fix</th><th>What changed</th><th>Why</th></tr>
+        <tr><td>Batched windows</td><td>Events sharing an <code>event_date</code> are now queried together in one <code>UNNEST(@patterns)</code> query instead of one query each.</td><td>Stops paying for the same day's global partitions multiple times — direct fix for the 38-unique-windows finding above.</td></tr>
+        <tr><td>Trimmed default fields</td><td><code>DocumentIdentifier</code>/<code>SourceCommonName</code> dropped from the default pull; only re-added with an explicit <code>--with-source-fields</code> flag.</td><td>Those two fields were only ever needed for the one-off Q4 publisher-frequency chart, not any v1 model feature — no reason to pay for them every run.</td></tr>
+        <tr><td>Real cost gate</td><td>A window whose dry-run estimate exceeds the 3 GB per-query warning is now <strong>skipped by default</strong> (logged, not silently dropped), instead of just printing a flag nobody acted on. <code>--force-expensive</code> overrides it.</td><td>This is the literal "catch it before spending" advisors asked for — the old threshold existed but never actually stopped a query.</td></tr>
+      </table>
+      <p class="usl-panel-body">One more gap this surfaced: <code>inspect_gdelt_events.py</code> never selected <code>ActionGeo_Lat</code>/<code>ActionGeo_Long</code> — two cheap typed float columns — so the geo-distance check below could only be applied to GKG rows, not Events-table rows. Added to the field list for the next pull; <code>build_training_table.py</code> already checks for them and will automatically switch the Events table to the same precise haversine check once they exist, falling back to today's coarser state-code check until then.</p>
+    </div>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Advisor question 2</div>
+      <h2 class="usl-panel-heading">Cross-check ACLED's lat/long against GDELT's</h2>
+      <p class="usl-panel-body">Every ACLED record already carries its own real <code>latitude</code>/<code>longitude</code>. Every GDELT <code>V2Locations</code> match carries its own too, buried in the "#"-delimited string. Phase 0 flagged same-name-different-state errors (Portland ME matched to Portland OR) as a known problem but never actually built a filter for it — this does, using only lat/long already sitting in the cached files.</p>
+      <p class="usl-panel-body">For every matched GDELT row, the closest location entry's lat/long is parsed out and its haversine distance from the real ACLED event is computed; anything over <strong>50 miles</strong> away is dropped before any feature gets averaged. A real case this caught, never flagged before now: the "Gainesville GA" event used in Phase 0's own Goldstein Scale example was actually pulled from <strong>Gainesville, Florida</strong> news.</p>
+      <div class="usl-raw-grid">
+        <div>
+          <div class="usl-raw-label">ACLED event (USA4870, verbatim)</div>
+          <pre class="usl-raw-block">{
+  &quot;event_id_cnty&quot;: &quot;USA4870&quot;,
+  &quot;location&quot;: &quot;Gainesville&quot;,
+  &quot;admin1&quot;: &quot;Georgia&quot;,
+  &quot;latitude&quot;: &quot;34.2978&quot;,
+  &quot;longitude&quot;: &quot;-83.8240&quot;,
+  &quot;sub_event_type&quot;: &quot;Violent demonstration&quot;
+}</pre>
+        </div>
+        <div>
+          <div class="usl-raw-label">GDELT Events-table match for the same event_id (verbatim)</div>
+          <pre class="usl-raw-block">{
+  &quot;ActionGeo_FullName&quot;: &quot;Gainesville, Florida, United States&quot;,
+  &quot;ActionGeo_ADM1Code&quot;: &quot;USFL&quot;,
+  &quot;GoldsteinScale&quot;: 6.0,
+  &quot;QuadClass&quot;: 2
+}</pre>
+        </div>
+      </div>
+      <p class="usl-panel-body" style="margin-top:1.5rem;">332.8 miles apart. The country+theme fix from Phase 0's extension correctly confirms both are in the US and protest-adjacent — it was never built to check <em>which</em> Gainesville. Applying the haversine check across the full cached sample:</p>
+      <div class="usl-chart-wrap">
+        <svg class="chart-svg" viewBox="0 0 480 280" role="img" aria-label="Grouped bar chart of rows kept vs dropped by the lat/long geo-distance and state cross-check: GKG 1231 kept 234 dropped, Events table 2552 kept 577 dropped">
+          <line class="usl-gridline" x1="45" y1="20.0" x2="460" y2="20.0"/>
+          <line class="usl-gridline" x1="45" y1="70.0" x2="460" y2="70.0"/>
+          <line class="usl-gridline" x1="45" y1="120.0" x2="460" y2="120.0"/>
+          <line class="usl-gridline" x1="45" y1="170.0" x2="460" y2="170.0"/>
+          <line class="usl-gridline" x1="45" y1="220.0" x2="460" y2="220.0"/>
+          <rect class="usl-bar" x="45.0" y="136.1" width="77.4" height="83.9" rx="2" style="fill:#4b6b3f"/>
+          <text class="usl-bar-value" x="83.7" y="130.1" text-anchor="middle" font-size="9">1231</text>
+          <rect class="usl-bar" x="141.8" y="204.1" width="77.4" height="15.9" rx="2" style="fill:#a8402b"/>
+          <text class="usl-bar-value" x="180.4" y="198.1" text-anchor="middle" font-size="9">234</text>
+          <text class="usl-bar-label" x="141.8" y="238" text-anchor="middle">GKG (V2Tone/V2Themes matches)</text>
+          <rect class="usl-bar" x="266.5" y="46.1" width="77.4" height="173.9" rx="2" style="fill:#4b6b3f"/>
+          <text class="usl-bar-value" x="305.2" y="40.1" text-anchor="middle" font-size="9">2552</text>
+          <rect class="usl-bar" x="363.2" y="180.7" width="77.4" height="39.3" rx="2" style="fill:#a8402b"/>
+          <text class="usl-bar-value" x="401.9" y="174.7" text-anchor="middle" font-size="9">577</text>
+          <text class="usl-bar-label" x="363.2" y="238" text-anchor="middle">Events table (Goldstein/QuadClass)</text>
+          <rect x="45" y="257" width="10" height="10" rx="2" style="fill:#4b6b3f"/>
+          <text class="usl-bar-label" x="59" y="266" text-anchor="start">Kept (geo-valid)</text>
+          <rect x="175" y="257" width="10" height="10" rx="2" style="fill:#a8402b"/>
+          <text class="usl-bar-label" x="189" y="266" text-anchor="start">Dropped</text>
+        </svg>
+      </div>
+      <p class="usl-panel-body"><strong>16.0%</strong> of GKG rows (234/1,465) and <strong>18.4%</strong> of Events-table rows (577/3,129) were geographically wrong and are now excluded before any feature is computed — previously silent contamination in every chart Phase 0 published. Seven more caught examples, spanning both coasts:</p>
+      <table class="usl-table">
+        <tr><th>ACLED event</th><th>Wrongly matched to</th><th>Distance</th></tr>
+        <tr><td>USA6015 — Montgomery, Alabama</td><td>Montgomery County, Virginia</td><td>471.7 mi</td></tr>
+        <tr><td>USA4941 — Austin, Texas</td><td>Austin Church, Texas</td><td>139.7 mi</td></tr>
+        <tr><td>USA14290 — Franklin, Tennessee</td><td>Franklin County, New York</td><td>891.9 mi</td></tr>
+        <tr><td>USA390 — Jackson, Wyoming</td><td>Jacksonville City Hall, Arkansas</td><td>1,159.0 mi</td></tr>
+        <tr><td>USA4739 — Columbus, Ohio</td><td>Columbus Circle, New York</td><td>477.8 mi</td></tr>
+        <tr><td>USA80 — Santa Fe, New Mexico</td><td>Santa Fe High School, Florida</td><td>1,501.2 mi</td></tr>
+        <tr><td>USA5096 — Albany, New York</td><td>Albany Notch, Maine</td><td>185.4 mi</td></tr>
+      </table>
+      <p class="usl-panel-body">The Events-table check is coarser (state-code match, not distance) only because that table's own pull never selected lat/long — see the fix above. Once re-pulled, it gets the same precise check automatically.</p>
+    </div>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Cleaning, step 2</div>
+      <h2 class="usl-panel-heading">Building one row per event</h2>
+      <p class="usl-panel-body"><code>build_training_table.py</code> takes the geo-filtered rows and collapses them to exactly one training row per ACLED event: GKG rows average into the seven V2Tone sub-values, Events-table rows compute the Goldstein trend (second half of the window minus first half) and the QuadClass conflict ratio, and the ACLED fields become the label. <code>fatalities</code> is kept in the table for reference but deliberately <strong>excluded from the model inputs</strong> — it's determined by how the event actually went, the same as the label, and using it as a predictor would be leaking the answer.</p>
+      <table class="usl-table">
+        <tr><th>Feature</th><th>Source</th><th>Note</th></tr>
+        <tr><td><code>avg_tone</code>, <code>tone_polarity</code>, +5 more V2Tone sub-values</td><td>GDELT GKG, geo-filtered</td><td>Mean across an event's surviving articles.</td></tr>
+        <tr><td><code>goldstein_trend</code></td><td>GDELT Events table, geo-filtered</td><td>2nd-half mean Goldstein minus 1st-half mean, needs ≥4 surviving rows.</td></tr>
+        <tr><td><code>quad_class_ratio</code></td><td>GDELT Events table, geo-filtered</td><td>Material Conflict share of (Material + Verbal Conflict) rows only.</td></tr>
+        <tr><td><code>log_volume</code></td><td>GDELT GKG row count</td><td>Log1p of surviving row count; Phase 0 flagged the raw count as right-censored at the 25-row cap.</td></tr>
+        <tr><td><code>had_gkg_match</code>, <code>had_events_match</code></td><td>Derived</td><td>Missingness flags — a real event with zero surviving matches is informative, not an error.</td></tr>
+        <tr><td><code>label_escalated</code></td><td>ACLED <code>sub_event_type</code></td><td>0 = Peaceful protest, 1 = everything else (per the plan doc's "escalated to riot or violence").</td></tr>
+      </table>
+      <div class="usl-stat-row">
+        <div class="usl-stat"><div class="usl-stat-num">100</div><div class="usl-stat-label">Events in training table</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">67 / 100</div><div class="usl-stat-label">Retain a GKG match</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">73 / 100</div><div class="usl-stat-label">Retain an Events match</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">60%</div><div class="usl-stat-label">Escalated (label=1)</div></div>
+      </div>
+      <p class="usl-panel-body"><strong>Caveat carried forward honestly:</strong> the ACLED pull was deliberately stratified 250 Protests + 250 Riots at collection time (Phase 0), not a natural random draw — so this 60% escalated rate is a sampling artifact, not the real-world base rate. Everything below measures whether the features can tell the two classes apart, not a calibrated real-world risk score.</p>
+    </div>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Modeling, part 1</div>
+      <h2 class="usl-panel-heading">Understanding the two models</h2>
+      <p class="usl-panel-body">The plan doc calls for a gradient-boosted tree classifier plus a logistic regression "interpretability sanity check" run alongside it — both trained here, in plain terms:</p>
+      <table class="usl-table">
+        <tr><th>Model</th><th>How it actually works</th><th>Why it's here</th></tr>
+        <tr><td><strong>Logistic Regression</strong></td><td>Fits one weight (coefficient) per feature and combines them linearly into a single escalation-probability curve. Every feature's effect is a straight line — easy to read, impossible to hide a weird interaction inside.</td><td>The sanity check: if this simple, fully transparent model already separates the classes reasonably, that's a strong signal the features carry real information, not model-complexity artifacts.</td></tr>
+        <tr><td><strong>Gradient-Boosted Trees</strong> (<code>HistGradientBoostingClassifier</code>)</td><td>Builds many small decision trees in sequence, each one fitting to the previous trees' mistakes. Can capture nonlinear effects and feature interactions logistic regression can't (e.g. "tone only matters when volume is also high") — but needs more data to do it reliably.</td><td>The plan doc's primary model family, for exactly the nonlinear-interaction case above — with a native ability to handle the missing-match rows (see below) without imputation.</td></tr>
+      </table>
+      <p class="usl-panel-body">Both were trained with <strong>class weighting</strong> (misclassifying the minority class costs more during training) instead of duplicating rows, and evaluated on a <strong>time-based split</strong> — the earliest 75 events by date train the model, the most recent 25 test it, so no model ever sees "the future" during training. Logistic regression needed its missing GDELT features median-imputed first (it can't handle blanks); the gradient-boosted model was given the raw data with gaps intact, since it can split on "missing" as its own category and that missingness can itself be a signal.</p>
+    </div>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Modeling, part 2</div>
+      <h2 class="usl-panel-heading">Model comparison</h2>
+      <p class="usl-panel-body">Trained on the earliest 75 events (2020-04-08 through 2020-06-20), tested on the most recent 25 (2020-06-20 through 2020-12-31) — both splits land at a 60% escalated rate, so the split itself isn't skewing the comparison.</p>
+      <div class="usl-chart-wrap">
+        <svg class="chart-svg" viewBox="0 0 560 260" role="img" aria-label="Grouped bar chart comparing Gradient-Boosted Trees and Logistic Regression on Precision, Recall, PR-AUC, and ROC-AUC">
+          <line class="usl-gridline" x1="45" y1="20.0" x2="540" y2="20.0"/>
+          <line class="usl-gridline" x1="45" y1="65.0" x2="540" y2="65.0"/>
+          <line class="usl-gridline" x1="45" y1="110.0" x2="540" y2="110.0"/>
+          <line class="usl-gridline" x1="45" y1="155.0" x2="540" y2="155.0"/>
+          <line class="usl-gridline" x1="45" y1="200.0" x2="540" y2="200.0"/>
+          <rect class="usl-bar" x="45.0" y="73.5" width="41.1" height="126.5" rx="2" style="fill:#a8402b"/>
+          <text class="usl-bar-value" x="65.5" y="67.5" text-anchor="middle" font-size="9">0.64</text>
+          <rect class="usl-bar" x="96.4" y="45.3" width="41.1" height="154.7" rx="2" style="fill:#4b6b3f"/>
+          <text class="usl-bar-value" x="116.9" y="39.3" text-anchor="middle" font-size="9">0.78</text>
+          <text class="usl-bar-label" x="96.4" y="218" text-anchor="middle">Precision</text>
+          <rect class="usl-bar" x="175.8" y="107.1" width="41.1" height="92.9" rx="2" style="fill:#a8402b"/>
+          <text class="usl-bar-value" x="196.3" y="101.1" text-anchor="middle" font-size="9">0.47</text>
+          <rect class="usl-bar" x="227.1" y="107.1" width="41.1" height="92.9" rx="2" style="fill:#4b6b3f"/>
+          <text class="usl-bar-value" x="247.7" y="101.1" text-anchor="middle" font-size="9">0.47</text>
+          <text class="usl-bar-label" x="227.1" y="218" text-anchor="middle">Recall</text>
+          <rect class="usl-bar" x="306.5" y="73.1" width="41.1" height="126.9" rx="2" style="fill:#a8402b"/>
+          <text class="usl-bar-value" x="327.1" y="67.1" text-anchor="middle" font-size="9">0.64</text>
+          <rect class="usl-bar" x="357.9" y="43.5" width="41.1" height="156.5" rx="2" style="fill:#4b6b3f"/>
+          <text class="usl-bar-value" x="378.4" y="37.5" text-anchor="middle" font-size="9">0.79</text>
+          <text class="usl-bar-label" x="357.9" y="218" text-anchor="middle">PR-AUC</text>
+          <rect class="usl-bar" x="437.2" y="100.6" width="41.1" height="99.4" rx="2" style="fill:#a8402b"/>
+          <text class="usl-bar-value" x="457.8" y="94.6" text-anchor="middle" font-size="9">0.50</text>
+          <rect class="usl-bar" x="488.6" y="54.2" width="41.1" height="145.8" rx="2" style="fill:#4b6b3f"/>
+          <text class="usl-bar-value" x="509.2" y="48.2" text-anchor="middle" font-size="9">0.73</text>
+          <text class="usl-bar-label" x="488.6" y="218" text-anchor="middle">ROC-AUC</text>
+          <rect x="45" y="237" width="10" height="10" rx="2" style="fill:#a8402b"/>
+          <text class="usl-bar-label" x="59" y="246" text-anchor="start">Gradient-Boosted Trees</text>
+          <rect x="211" y="237" width="10" height="10" rx="2" style="fill:#4b6b3f"/>
+          <text class="usl-bar-label" x="225" y="246" text-anchor="start">Logistic Regression</text>
+        </svg>
+      </div>
+      <table class="usl-table">
+        <tr><th>Model</th><th>Precision</th><th>Recall</th><th>F1</th><th>PR-AUC</th><th>ROC-AUC</th><th>Confusion (TN/FP/FN/TP)</th></tr>
+        <tr><td>Gradient-Boosted Trees</td><td>0.636</td><td>0.467</td><td>0.538</td><td>0.638</td><td>0.500</td><td>6 / 4 / 8 / 7</td></tr>
+        <tr><td>Logistic Regression</td><td>0.778</td><td>0.467</td><td>0.583</td><td><strong>0.787</strong></td><td><strong>0.733</strong></td><td>8 / 2 / 8 / 7</td></tr>
+      </table>
+      <p class="usl-panel-body"><strong>Logistic regression wins on this test split</strong>, on every metric except recall (tied). That's not a knock on gradient-boosted trees as a family — with only 75 training rows, an ensemble of trees doesn't have enough data to find real interaction effects and starts fitting noise, while a simple linear model's built-in regularization handles small-n far better. This is expected to flip as the training set grows in a later phase; it isn't evidence gradient-boosting is the wrong long-term choice, just that it's the wrong choice <em>at this sample size</em>. Both models missed the same 8 escalations (identical false-negative events) and got the same recall — worth a closer look before Phase 2, since those may share a real, findable pattern the current features can't see.</p>
+    </div>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Modeling, part 3</div>
+      <h2 class="usl-panel-heading">What's actually driving each model</h2>
+      <p class="usl-panel-body">Logistic regression's standardized coefficients (direction and relative strength, holding other features fixed) versus the gradient-boosted model's permutation importance (how much test PR-AUC drops when a feature is randomly shuffled) — deliberately shown side by side rather than picking one, since they measure different things and, on this small a test set, don't fully agree.</p>
+      <div class="usl-raw-grid">
+        <div>
+          <div class="usl-raw-label">Logistic regression — standardized coefficients</div>
+          <div class="usl-chart-wrap">
+            <svg class="chart-svg" viewBox="0 0 480 352" role="img" aria-label="Diverging bar chart of standardized logistic regression coefficients by feature">
+              <line class="usl-gridline" x1="330.0" y1="10" x2="330.0" y2="342"/>
+              <text class="usl-bar-label-h" x="165" y="29" text-anchor="end">Had events match</text>
+              <rect class="usl-bar" x="330.0" y="16" width="105.0" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="440.0" y="29" text-anchor="start" font-size="10">+0.401</text>
+              <text class="usl-bar-label-h" x="165" y="55" text-anchor="end">Had GKG match</text>
+              <rect class="usl-bar" x="232.5" y="42" width="97.5" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="227.5" y="55" text-anchor="end" font-size="10">-0.377</text>
+              <text class="usl-bar-label-h" x="165" y="81" text-anchor="end">Log volume</text>
+              <rect class="usl-bar" x="234.0" y="68" width="96.0" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="229.0" y="81" text-anchor="end" font-size="10">-0.372</text>
+              <text class="usl-bar-label-h" x="165" y="107" text-anchor="end">Tone word count</text>
+              <rect class="usl-bar" x="330.0" y="94" width="91.0" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="426.0" y="107" text-anchor="start" font-size="10">+0.352</text>
+              <text class="usl-bar-label-h" x="165" y="133" text-anchor="end">Tone self/group density</text>
+              <rect class="usl-bar" x="281.6" y="120" width="48.4" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="276.6" y="133" text-anchor="end" font-size="10">-0.187</text>
+              <text class="usl-bar-label-h" x="165" y="159" text-anchor="end">Goldstein trend</text>
+              <rect class="usl-bar" x="293.5" y="146" width="36.5" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="288.5" y="159" text-anchor="end" font-size="10">-0.141</text>
+              <text class="usl-bar-label-h" x="165" y="185" text-anchor="end">Tone activity density</text>
+              <rect class="usl-bar" x="296.5" y="172" width="33.5" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="291.5" y="185" text-anchor="end" font-size="10">-0.129</text>
+              <text class="usl-bar-label-h" x="165" y="211" text-anchor="end">Tone polarity</text>
+              <rect class="usl-bar" x="330.0" y="198" width="25.2" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="360.2" y="211" text-anchor="start" font-size="10">+0.097</text>
+              <text class="usl-bar-label-h" x="165" y="237" text-anchor="end">Tone negative score</text>
+              <rect class="usl-bar" x="330.0" y="224" width="24.7" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="359.7" y="237" text-anchor="start" font-size="10">+0.095</text>
+              <text class="usl-bar-label-h" x="165" y="263" text-anchor="end">Avg tone</text>
+              <rect class="usl-bar" x="306.6" y="250" width="23.4" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="301.6" y="263" text-anchor="end" font-size="10">-0.090</text>
+              <text class="usl-bar-label-h" x="165" y="289" text-anchor="end">Quad class ratio</text>
+              <rect class="usl-bar" x="330.0" y="276" width="22.1" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="352.1" y="289" text-anchor="start" font-size="10">+0.085</text>
+              <text class="usl-bar-label-h" x="165" y="315" text-anchor="end">Tone positive score</text>
+              <rect class="usl-bar" x="320.1" y="302" width="9.9" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="315.1" y="315" text-anchor="end" font-size="10">-0.038</text>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div class="usl-raw-label">Gradient-boosted trees — permutation importance</div>
+          <div class="usl-chart-wrap">
+            <svg class="chart-svg" viewBox="0 0 480 352" role="img" aria-label="Diverging bar chart of GBM permutation importance by feature">
+              <line class="usl-gridline" x1="330.0" y1="10" x2="330.0" y2="342"/>
+              <text class="usl-bar-label-h" x="165" y="29" text-anchor="end">Goldstein trend</text>
+              <rect class="usl-bar" x="225.0" y="16" width="105.0" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="220.0" y="29" text-anchor="end" font-size="10">-0.093</text>
+              <text class="usl-bar-label-h" x="165" y="55" text-anchor="end">Tone word count</text>
+              <rect class="usl-bar" x="330.0" y="42" width="43.0" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="378.0" y="55" text-anchor="start" font-size="10">+0.038</text>
+              <text class="usl-bar-label-h" x="165" y="81" text-anchor="end">Quad class ratio</text>
+              <rect class="usl-bar" x="289.2" y="68" width="40.8" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="284.2" y="81" text-anchor="end" font-size="10">-0.036</text>
+              <text class="usl-bar-label-h" x="165" y="107" text-anchor="end">Avg tone</text>
+              <rect class="usl-bar" x="330.0" y="94" width="20.4" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="355.4" y="107" text-anchor="start" font-size="10">+0.018</text>
+              <text class="usl-bar-label-h" x="165" y="133" text-anchor="end">Log volume</text>
+              <rect class="usl-bar" x="315.3" y="120" width="14.7" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="310.3" y="133" text-anchor="end" font-size="10">-0.013</text>
+              <text class="usl-bar-label-h" x="165" y="159" text-anchor="end">Tone polarity</text>
+              <rect class="usl-bar" x="325.5" y="146" width="4.5" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="320.5" y="159" text-anchor="end" font-size="10">-0.004</text>
+              <text class="usl-bar-label-h" x="165" y="185" text-anchor="end">Tone self/group density</text>
+              <rect class="usl-bar" x="328.9" y="172" width="1.1" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="323.9" y="185" text-anchor="end" font-size="10">-0.001</text>
+              <text class="usl-bar-label-h" x="165" y="211" text-anchor="end" font-size="9">4 others (≈0)</text>
+              <rect class="usl-bar" x="330.0" y="198" width="0.0" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="336.0" y="211" text-anchor="start" font-size="10">≈0.000</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <p class="usl-panel-body">The two models don't agree on what matters, and that disagreement is itself the honest finding: logistic regression leans hardest on <em>whether a match existed at all</em> (<code>had_events_match</code>, <code>had_gkg_match</code>) and article volume/length, while the gradient-boosted model's strongest (negative) signal is the Goldstein trend. With only 25 test events, permutation importance on a handful of held-out rows is noisy by construction — this is a first read, not a settled feature ranking. SHAP-based per-prediction explanations (what the plan doc ultimately wants for the "top 2-3 indicators" output) are a deferred, later-phase addition, not built here.</p>
+    </div>
+
+    <p class="usl-note">Stop condition reached: the BigQuery cost problem is explained with real per-row numbers and fixed in the pull scripts (unrun, pending the next real pull); the lat/long cross-check is implemented and applied, with 16-18% of previously-trusted rows caught and dropped; the training table is built and cleaned; two models are trained, compared, and their disagreement is reported rather than papered over. No new ACLED or BigQuery calls were made anywhere in this phase. Next, later conversation: SHAP explanations, a larger/rebalanced sample, and re-running the fixed pull scripts for real.</p>
   </div>
 </div>
 
@@ -3945,7 +4257,7 @@ function renderProjectDetail(p) {
 // All full-page food overlays, kept in a list so opening one can reliably
 // close the rest — only one of these (and #project-detail) is ever open
 // at a time, no matter which nav path got you there.
-const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook'];
+const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1'];
 function closeAllToolOverlays() {
   TOOL_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
 }
@@ -4056,6 +4368,21 @@ function openUnrestNotebook() {
 
 function closeUnrestNotebook() {
   document.getElementById('unrest-notebook').classList.remove('open');
+  document.getElementById('unrest-hub').classList.add('open');
+  window.scrollTo(0, 0);
+}
+
+function openUnrestPhase1() {
+  document.getElementById('project-detail').classList.remove('open');
+  closeAllToolOverlays();
+  document.getElementById('unrest-phase1').classList.add('open');
+  document.getElementById('main-site').classList.add('hidden');
+  window.scrollTo(0, 0);
+  lucide.createIcons();
+}
+
+function closeUnrestPhase1() {
+  document.getElementById('unrest-phase1').classList.remove('open');
   document.getElementById('unrest-hub').classList.add('open');
   window.scrollTo(0, 0);
 }

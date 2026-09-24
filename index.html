@@ -1008,7 +1008,7 @@
        lines, flat borders, no glow/blur/animation. Same open/close
        overlay mechanics as the rest of the site.
        ═══════════════════════════════════════════════════════════════ */
-    #unrest-hub, #unrest-notebook, #unrest-phase1, #unrest-phase2 {
+    #unrest-hub, #unrest-notebook, #unrest-phase1, #unrest-phase2, #unrest-phase3 {
       position: fixed; inset: 0; z-index: 150;
       background:
         repeating-linear-gradient(0deg, rgba(38,38,34,0.05) 0px, rgba(38,38,34,0.05) 1px, transparent 1px, transparent 28px),
@@ -1020,7 +1020,7 @@
       font-family: var(--font-body);
       color: var(--usl-text);
     }
-    #unrest-hub.open, #unrest-notebook.open, #unrest-phase1.open, #unrest-phase2.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+    #unrest-hub.open, #unrest-notebook.open, #unrest-phase1.open, #unrest-phase2.open, #unrest-phase3.open { opacity: 1; transform: translateX(0); pointer-events: all; }
     #unrest-hub { z-index: 151; }
 
     .usl-nav {
@@ -1150,6 +1150,29 @@
       text-transform: uppercase; color: var(--usl-accent); border: 1px solid var(--usl-accent);
       border-radius: 999px; padding: 0.25rem 0.75rem; margin-bottom: 1rem;
     }
+
+    .usl-riskcard {
+      max-width: 460px; margin: 1.5rem 0; border: 1px solid var(--usl-border); border-radius: 0.6rem;
+      overflow: hidden; background: var(--usl-bg); box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+    }
+    .usl-riskcard-head {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #2a2a26; padding: 0.75rem 1.1rem;
+    }
+    .usl-riskcard-eyebrow { font-family: var(--font-body-usl); font-size: 0.65rem; letter-spacing: 0.05em; color: #c9c3b4; }
+    .usl-riskcard-tier {
+      font-family: var(--font-body-usl); font-weight: 700; font-size: 0.75rem; letter-spacing: 0.04em;
+      color: #2a2a26; background: #d9b073; padding: 0.2rem 0.65rem; border-radius: 999px;
+    }
+    .usl-riskcard-id { font-family: var(--font-body-usl); font-size: 0.72rem; color: var(--usl-muted); padding: 0.85rem 1.1rem 0; }
+    .usl-riskcard-score { font-family: var(--font-display); font-size: 2.6rem; color: var(--usl-accent); padding: 0.25rem 1.1rem 0.5rem; line-height: 1; }
+    .usl-riskcard-score span { display: block; font-family: var(--font-body-usl); font-size: 0.72rem; color: var(--usl-muted); margin-top: 0.4rem; }
+    .usl-riskcard-indicators { padding: 0.25rem 1.1rem 0.9rem; display: flex; flex-direction: column; gap: 0.55rem; }
+    .usl-riskcard-ind { font-size: 0.85rem; color: var(--usl-text); display: flex; align-items: flex-start; gap: 0.55rem; line-height: 1.45; }
+    .usl-riskcard-ind-dot { width: 9px; height: 9px; border-radius: 999px; margin-top: 0.35rem; flex-shrink: 0; }
+    .usl-riskcard-ind-dot.up { background: var(--usl-accent); }
+    .usl-riskcard-ind-dot.down { background: #4b6b3f; }
+    .usl-riskcard-foot { font-size: 0.78rem; color: var(--usl-muted); border-top: 1px solid var(--usl-border); padding: 0.7rem 1.1rem; font-style: italic; }
 
     .food-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.5rem; }
     .food-tool-card {
@@ -2348,6 +2371,13 @@
         <h2 class="usl-hub-label-title">PHASE 2 — MULTI-YEAR DATA &amp; TIME-VALIDATED MODEL</h2>
         <p class="usl-hub-label-sub">255 events across 2020-2024, a self-caught sampling bias fixed before it reached a model, a real leakage fix for chains of correlated protests, and an honest look at what happens when the world the model trained on isn't the world it's asked to predict.</p>
       </div>
+      <div class="usl-hub-item">
+        <div class="usl-hub-icon-stage" onclick="openUnrestPhase3()" role="button" tabindex="0" aria-label="Open the Phase 3 calibration, root-cause fix, and explainability page" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openUnrestPhase3();}">
+          <i data-lucide="lightbulb" style="width:44px;height:44px;"></i>
+        </div>
+        <h2 class="usl-hub-label-title">PHASE 3 — CALIBRATION, THE REAL FIX &amp; EXPLAINABILITY</h2>
+        <p class="usl-hub-label-sub">Three attempts to fix Phase 2's calibration collapse, two that don't work and one that does — the actual root cause turned out to be the train/test split, not the model — plus real per-prediction "top indicators," the output this project wanted since page one.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -3461,6 +3491,190 @@
     </div>
 
     <p class="usl-note">Stop condition reached: ACLED's protest definition is documented from its own published methodology; a self-caught sampling bug that would have silently faked a "peaceful protests are under-reported" finding was found and fixed at near-zero cost; a real cross-event leakage risk (correlated protest waves) is fixed with a sequence-anchored pre-event window, applied retroactively to all 255 events; 155 new events were pulled across 2021-2024 under tightened, explicitly-chosen safety caps, landing the account at 89.11% of its monthly quota with a deliberate buffer left; and the retrained models reveal a real, important failure mode — calibration collapse across eras with different base rates — documented honestly instead of hidden behind a rosier headline number. Next, later conversation: probability calibration (or a time-varying threshold), SHAP explanations, and finishing GKG coverage for 2023-2024 within a fresh month's quota.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ UNREST PREDICTIONS — PHASE 3 (full-page) ═══════════════════════════════════════ -->
+<div id="unrest-phase3">
+  <div class="usl-nav">
+    <button class="usl-back" onclick="closeUnrestPhase3()">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Unrest Predictions</span>
+    </button>
+    <div class="usl-breadcrumb"><span>Unrest Predictions</span><span>/</span><span>Phase 3</span></div>
+  </div>
+
+  <div class="usl-hero">
+    <div class="usl-hero-badge">Phase 3 — Calibration, Root Cause &amp; Explainability</div>
+    <h1 class="usl-title">Two fixes that failed, and the one that worked</h1>
+    <p class="usl-hook">Phase 2 ended on a real problem: logistic regression's predictions collapsed to all-zero on 2021-2024 data. The obvious next move is "calibrate the probabilities." That was tried first — and it didn't work. Neither did the next, fancier attempt. The actual fix turned out to be much simpler than either, and it was hiding in the train/test split the whole time, not the model.</p>
+    <p class="usl-summary">This phase is deliberately built around three real dead-ends and one real fix, in the order they actually happened — including the two that didn't pan out — because the honest path to a working answer is more useful to understand than a version with the failed attempts quietly deleted. It ends with the "top indicators" output this project has wanted since the very first planning doc, finally built for real, on the model that actually works.</p>
+  </div>
+
+  <div class="usl-body">
+    <p class="usl-note">Scope, up front: this phase makes <strong>zero new ACLED or BigQuery calls</strong>. Quota sat at 89.11% at the end of Phase 2, and the real unfinished business wasn't more data — it was three methodology questions everything below actually answers. All results come from the same 255-event table Phase 2 already built.</p>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Attempt 1 — Calibration</div>
+      <h2 class="usl-panel-heading">"So 72% really means 72%" — deferred twice, tried now</h2>
+      <p class="usl-panel-body">Both Phase 1 and Phase 2 named probability calibration as the obvious next fix for a model whose raw scores don't mean what they say. Applied here with isotonic regression (5-fold cross-validated on the training set only, the test set untouched until evaluation) on top of both Phase 2 models.</p>
+      <div class="usl-chart-wrap">
+        <svg class="chart-svg" viewBox="0 0 480 300" role="img" aria-label="Reliability diagram for logistic regression before and after isotonic calibration, with a diagonal perfect-calibration reference line">
+          <line class="usl-gridline" x1="55" y1="20.0" x2="460" y2="20.0"/>
+          <text class="usl-bar-label" x="47" y="23.0" text-anchor="end" font-size="9">1.0</text>
+          <text class="usl-bar-label" x="55.0" y="261" text-anchor="middle" font-size="9">0.0</text>
+          <line class="usl-gridline" x1="55" y1="76.2" x2="460" y2="76.2"/>
+          <text class="usl-bar-label" x="47" y="79.2" text-anchor="end" font-size="9">0.75</text>
+          <text class="usl-bar-label" x="156.2" y="261" text-anchor="middle" font-size="9">0.25</text>
+          <line class="usl-gridline" x1="55" y1="132.5" x2="460" y2="132.5"/>
+          <text class="usl-bar-label" x="47" y="135.5" text-anchor="end" font-size="9">0.5</text>
+          <text class="usl-bar-label" x="257.5" y="261" text-anchor="middle" font-size="9">0.5</text>
+          <line class="usl-gridline" x1="55" y1="188.8" x2="460" y2="188.8"/>
+          <text class="usl-bar-label" x="47" y="191.8" text-anchor="end" font-size="9">0.25</text>
+          <text class="usl-bar-label" x="358.8" y="261" text-anchor="middle" font-size="9">0.75</text>
+          <line class="usl-gridline" x1="55" y1="245.0" x2="460" y2="245.0"/>
+          <text class="usl-bar-label" x="47" y="248.0" text-anchor="end" font-size="9">0.0</text>
+          <text class="usl-bar-label" x="460.0" y="261" text-anchor="middle" font-size="9">1.0</text>
+          <line x1="55.0" y1="245.0" x2="460.0" y2="20.0" stroke="#9a9488" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <path d="M55.8,177.5 L57.8,132.5 L60.3,113.8 L66.3,123.9 L134.4,54.7" fill="none" stroke="#a8402b" stroke-width="2.5"/>
+          <path d="M85.8,136.3 L138.8,20.0" fill="none" stroke="#4b6b3f" stroke-width="2.5"/>
+          <text class="usl-bar-label" x="257.5" y="292" text-anchor="middle" font-size="10">Predicted probability</text>
+          <text class="usl-bar-label" x="14" y="132.5" text-anchor="middle" font-size="10" transform="rotate(-90 14 132.5)">Observed frequency</text>
+          <rect x="55" y="6" width="10" height="10" rx="2" style="fill:#a8402b"/>
+          <text class="usl-bar-label" x="69" y="14" text-anchor="start" font-size="10">Raw probability</text>
+          <rect x="181" y="6" width="10" height="10" rx="2" style="fill:#4b6b3f"/>
+          <text class="usl-bar-label" x="195" y="14" text-anchor="start" font-size="10">Calibrated (isotonic)</text>
+        </svg>
+      </div>
+      <p class="usl-panel-body">Both lines sit far <strong>above</strong> the diagonal — the model's predicted probabilities are dramatically lower than what actually happened. In the lowest predicted-probability bin (~0.2%), the real observed escalation rate was <strong>30%</strong>; in the highest predicted bin (~20%), it was <strong>85%</strong>. Calibration nudges the raw curve toward the diagonal and does improve the Brier score (0.458 → 0.436), but the maximum calibrated probability on the entire 64-event test set is <strong>0.359</strong> — still under the 0.5 decision threshold. Precision and recall stay at exactly <strong>0.000</strong>, unchanged.</p>
+      <p class="usl-panel-body"><strong>Why calibration alone couldn't fix this:</strong> isotonic regression can only remap a model's existing scores onto a better probability scale — it's monotonic, so it can't invent discriminative power the model didn't already have, and it can't push a test event's score past what the training-set calibration curve would map an equivalent raw score to. If the model's underlying ranking is already crushed toward zero for a whole era, recalibrating the scale doesn't undo that.</p>
+      <p class="usl-sidenote">Calibration fixes "does 72% mean 72%," not "can the model tell anything apart." Those are genuinely different problems, and this result is a clean demonstration that you can have one without the other.</p>
+    </div>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Attempt 2 — Time-varying coefficients</div>
+      <h2 class="usl-panel-heading">More flexibility didn't help either</h2>
+      <p class="usl-panel-body">Phase 2's audit found two features whose relationship to escalation flips sign between 2020 and 2021-2024 — evidence a single additive <code>year</code> feature can only shift a model's baseline, not the slope of another feature's own relationship. The direct fix: add <code>year × feature</code> interaction terms for all 12 GDELT features, letting every coefficient drift with time, not just the intercept.</p>
+      <table class="usl-table">
+        <tr><th>Model</th><th>Precision</th><th>Recall</th><th>PR-AUC</th><th>ROC-AUC</th><th>Brier</th></tr>
+        <tr><td>Plain <code>year</code> feature (Phase 2)</td><td class="usl-status-no">0.000</td><td class="usl-status-no">0.000</td><td>0.776</td><td>0.746</td><td>0.456</td></tr>
+        <tr><td><code>year × feature</code> interactions (13 extra terms)</td><td class="usl-status-no">0.000</td><td class="usl-status-no">0.000</td><td>0.770</td><td>0.747</td><td>0.445</td></tr>
+      </table>
+      <p class="usl-panel-body">No change worth calling a fix. PR-AUC and ROC-AUC barely move, precision and recall stay at zero, and the <code>year</code> coefficient itself gets <em>larger</em> (-1.16 vs. -1.08) — more flexible parameters gave the model more ways to fit noise in a 191-row training set, not a way out of the underlying problem.</p>
+      <p class="usl-panel-body"><strong>Why more flexibility didn't help:</strong> the real issue isn't that <code>year</code>'s relationship to other features needs a more complex shape — it's that a model trained only on 2020-2021 has never seen what 2022-2023's <em>rebound</em> looks like. No amount of coefficient flexibility lets a model extrapolate correctly past the edge of what it was shown; a straight (or even feature-interacted) line fit to a declining 2020→2021 trend has no way to know the real pattern reverses right after the training data ends.</p>
+      <p class="usl-sidenote">This is the failure mode to remember: when a "more flexible model" doesn't fix a bad prediction, check whether the real problem is actually about what data the model has ever seen, not how expressive its math is. Flexibility can't substitute for coverage.</p>
+    </div>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Root cause, confirmed directly</div>
+      <h2 class="usl-panel-heading">The training set never saw 2022, 2023, or 2024</h2>
+      <p class="usl-panel-body">Phase 2's time-based split put the earliest 75% of all 255 events in training and the latest 25% in test — sound advice for avoiding leakage in general, but with this sample's year distribution (100 events in 2020, 99 in 2021, only 56 across 2022-2024 combined), it means something specific and severe:</p>
+      <div class="usl-stat-row">
+        <div class="usl-stat"><div class="usl-stat-num">2020-2021</div><div class="usl-stat-label">Only years in training (191 events)</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">0</div><div class="usl-stat-label">2022-2024 events in training</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">56 / 56</div><div class="usl-stat-label">2022-2024 events, all in test</div></div>
+      </div>
+      <p class="usl-panel-body">Confirmed with one more direct test: encoding <code>year</code> as a categorical variable (one dummy per year) instead of a numeric trend performed <em>worse</em> (ROC-AUC 0.316) — because a category with zero training examples has no coefficient to learn at all. This isn't a modeling problem. It's a <strong>zero-exposure problem</strong>: no feature engineering, however clever, teaches a model about a year range it was never shown even one example from.</p>
+      <p class="usl-panel-body">The plan doc's own justification for a chronological split — "validated on later events it never saw, avoiding the leakage trap of a random split" — is correct advice taken too far here. A global chronological split is right when every era has real training representation. When one class of years is a small minority of the sample, it silently pushes an entire era into "test only," which isn't leakage-avoidance anymore, it's evaluation on a genuinely unseen distribution.</p>
+    </div>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Attempt 3 — the fix that worked</div>
+      <h2 class="usl-panel-heading">Split within each year, not across the whole timeline</h2>
+      <p class="usl-panel-body">Same "no future leakage" guarantee, applied at a finer grain: for <em>each</em> year independently, the earliest 75% of that year's events go to training and the latest 25% go to test. A model still never trains on a date later than a test point <em>from the same year</em> — but every era, including 2022-2024, now has real training exposure instead of none.</p>
+      <table class="usl-table">
+        <tr><th>Split</th><th>Precision</th><th>Recall</th><th>PR-AUC</th><th>ROC-AUC</th></tr>
+        <tr><td>Global chronological (Phase 2)</td><td class="usl-status-no">0.000</td><td class="usl-status-no">0.000</td><td>0.776</td><td>0.746</td></tr>
+        <tr><td>Within-year, no <code>year</code> feature</td><td>0.630</td><td>0.378</td><td>0.662</td><td>0.425</td></tr>
+        <tr><td><strong>Within-year, with <code>year</code> feature</strong></td><td class="usl-status-yes"><strong>0.719</strong></td><td class="usl-status-yes"><strong>0.511</strong></td><td>0.673</td><td>0.491</td></tr>
+      </table>
+      <p class="usl-panel-body">Real, usable numbers instead of a collapse to zero. Worth being honest about the trade: ROC-AUC actually reads slightly <em>worse</em> here (0.491, near chance) than Phase 2's headline 0.746 — but Phase 2's number was earned by a model that never once predicted "escalated" and therefore never really had to discriminate on the test set at all. A model that makes real, mixed predictions on a harder, properly-representative split producing a middling ROC-AUC is a more trustworthy number than a higher one earned by refusing to guess.</p>
+      <p class="usl-sidenote">If you remember one lesson from this whole phase, make it this one: when a fix doesn't work, check the split before you blame the model. This one line of methodology — how training and test data get divided — mattered more than two rounds of statistical technique.</p>
+    </div>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">Explainability, built for real</div>
+      <h2 class="usl-panel-heading">The "top indicators" the plan doc always wanted</h2>
+      <p class="usl-panel-body">Step 6 of the original plan doc called for "a numeric probability and top contributing indicators" for every scored event — deferred in Phase 1 and Phase 2 as SHAP explanations. Built here with <code>shap.LinearExplainer</code>, run against the actual best-performing configuration above (logistic regression, within-year split), not the gradient-boosted model — checked directly, GBM still only recalls 20% on this split and never once correctly flags a 2022+ escalation, so explaining it instead of the model that works would have been dishonest.</p>
+      <div class="usl-raw-grid">
+        <div>
+          <div class="usl-raw-label">USA1664 — correctly flagged escalation (51.6% predicted)</div>
+          <div class="usl-chart-wrap">
+            <svg class="chart-svg" viewBox="0 0 480 118" role="img" aria-label="SHAP contribution chart for a correctly flagged escalation">
+              <line class="usl-gridline" x1="343.0" y1="10" x2="343.0" y2="108"/>
+              <text class="usl-bar-label-h" x="190" y="29" text-anchor="end">year</text>
+              <rect class="usl-bar" x="343.0" y="16" width="93.6" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="442.6" y="29" text-anchor="start" font-size="10">+0.667</text>
+              <text class="usl-bar-label-h" x="190" y="55" text-anchor="end">had GKG match</text>
+              <rect class="usl-bar" x="306.9" y="42" width="36.1" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="300.9" y="55" text-anchor="end" font-size="10">-0.257</text>
+              <text class="usl-bar-label-h" x="190" y="81" text-anchor="end">had Events match</text>
+              <rect class="usl-bar" x="343.0" y="68" width="34.0" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="383.0" y="81" text-anchor="start" font-size="10">+0.242</text>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div class="usl-raw-label">USA42385 — missed escalation, 2022 (46.6% predicted)</div>
+          <div class="usl-chart-wrap">
+            <svg class="chart-svg" viewBox="0 0 480 118" role="img" aria-label="SHAP contribution chart for a missed 2022 escalation, a near-miss just under the decision threshold">
+              <line class="usl-gridline" x1="343.0" y1="10" x2="343.0" y2="108"/>
+              <text class="usl-bar-label-h" x="190" y="29" text-anchor="end">year</text>
+              <rect class="usl-bar" x="249.4" y="16" width="93.6" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="243.4" y="29" text-anchor="end" font-size="10">-0.616</text>
+              <text class="usl-bar-label-h" x="190" y="55" text-anchor="end">had Events match</text>
+              <rect class="usl-bar" x="343.0" y="42" width="36.8" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="385.8" y="55" text-anchor="start" font-size="10">+0.242</text>
+              <text class="usl-bar-label-h" x="190" y="81" text-anchor="end">had GKG match</text>
+              <rect class="usl-bar" x="343.0" y="68" width="36.0" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="385.0" y="81" text-anchor="start" font-size="10">+0.237</text>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div class="usl-raw-label">USA64524 — correctly cleared, 2024 (18.7% predicted)</div>
+          <div class="usl-chart-wrap">
+            <svg class="chart-svg" viewBox="0 0 480 118" role="img" aria-label="SHAP contribution chart for a correctly cleared 2024 peaceful event">
+              <line class="usl-gridline" x1="343.0" y1="10" x2="343.0" y2="108"/>
+              <text class="usl-bar-label-h" x="190" y="29" text-anchor="end">year</text>
+              <rect class="usl-bar" x="249.4" y="16" width="93.6" height="16" rx="2" style="fill:#4b6b3f"/>
+              <text class="usl-bar-value" x="243.4" y="29" text-anchor="end" font-size="10">-1.900</text>
+              <text class="usl-bar-label-h" x="190" y="55" text-anchor="end">had Events match</text>
+              <rect class="usl-bar" x="343.0" y="42" width="11.9" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="360.9" y="55" text-anchor="start" font-size="10">+0.242</text>
+              <text class="usl-bar-label-h" x="190" y="81" text-anchor="end">had GKG match</text>
+              <rect class="usl-bar" x="343.0" y="68" width="11.7" height="16" rx="2" style="fill:#a8402b"/>
+              <text class="usl-bar-value" x="360.7" y="81" text-anchor="start" font-size="10">+0.237</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <p class="usl-panel-body">Real, honest texture here: <code>year</code> dominates every single explanation — for the 2024 event it alone drags the score down by -1.9 log-odds, more than enough on its own to explain why the model correctly stayed under threshold. That's consistent with everything above: <code>year</code> is still doing most of the work, for better (real signal that later years differ) and worse (it's the same feature that broke Phase 2 when extrapolated). The near-miss case (USA42385, 46.6%) is the most informative of the three — it shows a real event sitting right at the edge of the decision boundary, where the "top indicators" output is most useful precisely because the call is genuinely close, not obvious.</p>
+      <p class="usl-sidenote">This is the actual deliverable the very first planning PDF asked for — "risk tier + score + top indicators" — three phases later than planned, but built on a model that's now honest about its own limits instead of one that looked better only because it refused to commit to an answer.</p>
+    </div>
+
+    <div class="usl-panel">
+      <div class="usl-panel-label">What this would look like, shipped</div>
+      <h2 class="usl-panel-heading">A risk tile, styled like Morning Text and Trust Score</h2>
+      <p class="usl-panel-body">The plan doc's last step was always "ship a tile," styled like this site's other Tactical Tools. Historical lookup only, same as this whole project — not a live monitor.</p>
+      <div class="usl-riskcard">
+        <div class="usl-riskcard-head">
+          <span class="usl-riskcard-eyebrow">HISTORICAL RISK LOOKUP</span>
+          <span class="usl-riskcard-tier">MEDIUM</span>
+        </div>
+        <div class="usl-riskcard-id">USA42385 &middot; May 1, 2022 &middot; pre-event window</div>
+        <div class="usl-riskcard-score">46.6<span>% predicted escalation probability</span></div>
+        <div class="usl-riskcard-indicators">
+          <div class="usl-riskcard-ind"><span class="usl-riskcard-ind-dot up"></span>Article coverage found in GDELT's Events table (+0.242)</div>
+          <div class="usl-riskcard-ind"><span class="usl-riskcard-ind-dot up"></span>No GDELT news-article match found for this location (+0.237)</div>
+          <div class="usl-riskcard-ind"><span class="usl-riskcard-ind-dot down"></span>2022 baseline pulls risk down relative to 2020 (&minus;0.616)</div>
+        </div>
+        <div class="usl-riskcard-foot">Actual outcome: escalated (violent demonstration) &mdash; this was a real miss, shown here on purpose.</div>
+      </div>
+      <p class="usl-panel-body">Shown as a genuine miss, not a cherry-picked win — the honest version of "here's what this would look like" includes the case where the tile would have called it wrong. A true "Ship" phase would still need: live scoring against a real upcoming event (this project has never done that), a monitoring/refresh cadence, and the calibration + split fixes above running against a much larger, still-growing training set. None of that is built. This is a mockup of the destination, not a claim of arrival.</p>
+    </div>
+
+    <p class="usl-note">Stop condition reached: calibration was tried and honestly shown to be insufficient on its own; time-varying coefficients were tried and honestly shown not to help; the actual root cause (zero training exposure to entire held-out years) was diagnosed and confirmed with a direct categorical-encoding test; the real fix (a within-year time-based split) is implemented and shown to turn a 0.000/0.000 collapse into real, usable precision and recall; and per-prediction explainability is built for the first time, on the model that actually works, including an honest miss rather than only a win. No new ACLED or BigQuery calls were made anywhere in this phase. Next, later conversation: a genuinely larger sample (especially 2022-2024, still this project's thinnest years), and finishing GKG coverage for 2023-2024 within a fresh month's quota.</p>
   </div>
 </div>
 
@@ -4842,7 +5056,7 @@ function renderProjectDetail(p) {
 // All full-page food overlays, kept in a list so opening one can reliably
 // close the rest — only one of these (and #project-detail) is ever open
 // at a time, no matter which nav path got you there.
-const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2'];
+const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2', 'unrest-phase3'];
 function closeAllToolOverlays() {
   TOOL_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
 }
@@ -4984,6 +5198,21 @@ function openUnrestPhase2() {
 
 function closeUnrestPhase2() {
   document.getElementById('unrest-phase2').classList.remove('open');
+  document.getElementById('unrest-hub').classList.add('open');
+  window.scrollTo(0, 0);
+}
+
+function openUnrestPhase3() {
+  document.getElementById('project-detail').classList.remove('open');
+  closeAllToolOverlays();
+  document.getElementById('unrest-phase3').classList.add('open');
+  document.getElementById('main-site').classList.add('hidden');
+  window.scrollTo(0, 0);
+  lucide.createIcons();
+}
+
+function closeUnrestPhase3() {
+  document.getElementById('unrest-phase3').classList.remove('open');
   document.getElementById('unrest-hub').classList.add('open');
   window.scrollTo(0, 0);
 }

@@ -1008,7 +1008,7 @@
        lines, flat borders, no glow/blur/animation. Same open/close
        overlay mechanics as the rest of the site.
        ═══════════════════════════════════════════════════════════════ */
-    #unrest-hub, #unrest-notebook, #unrest-phase1, #unrest-phase2, #unrest-phase3 {
+    #unrest-hub, #unrest-notebook, #unrest-phase1, #unrest-phase2, #unrest-phase3, #unrest-phase4 {
       position: fixed; inset: 0; z-index: 150;
       background:
         repeating-linear-gradient(0deg, rgba(38,38,34,0.05) 0px, rgba(38,38,34,0.05) 1px, transparent 1px, transparent 28px),
@@ -1020,7 +1020,7 @@
       font-family: var(--font-body);
       color: var(--usl-text);
     }
-    #unrest-hub.open, #unrest-notebook.open, #unrest-phase1.open, #unrest-phase2.open, #unrest-phase3.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+    #unrest-hub.open, #unrest-notebook.open, #unrest-phase1.open, #unrest-phase2.open, #unrest-phase3.open, #unrest-phase4.open { opacity: 1; transform: translateX(0); pointer-events: all; }
     #unrest-hub { z-index: 151; }
 
     .usl-nav {
@@ -1173,6 +1173,53 @@
     .usl-riskcard-ind-dot.up { background: var(--usl-accent); }
     .usl-riskcard-ind-dot.down { background: #4b6b3f; }
     .usl-riskcard-foot { font-size: 0.78rem; color: var(--usl-muted); border-top: 1px solid var(--usl-border); padding: 0.7rem 1.1rem; font-style: italic; }
+
+    /* Phase 4 -- Tool / Report tab switcher */
+    .usl-p4-tabs { display: flex; gap: 0.5rem; padding: 1.25rem 3rem 0; margin-bottom: -1px; position: relative; z-index: 1; }
+    .usl-p4-tab {
+      font-family: var(--font-body-usl); font-size: 0.78rem; letter-spacing: 0.03em; text-transform: uppercase;
+      background: none; border: 1px solid var(--usl-border); border-radius: 0.4rem 0.4rem 0 0; border-bottom: none;
+      color: var(--usl-muted); padding: 0.6rem 1.4rem; cursor: pointer; position: relative; top: 1px;
+    }
+    .usl-p4-tab.active { color: var(--usl-accent); background: var(--usl-bg); border-color: var(--usl-accent); font-weight: 700; }
+    .usl-p4-view { display: none; }
+    .usl-p4-view.active { display: block; }
+
+    /* Phase 4 -- report document styling */
+    .usl-report-cover { border-bottom: 3px double var(--usl-text); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+    .usl-report-cover-kicker { font-family: var(--font-body-usl); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--usl-muted); }
+    .usl-report-cover-title { font-family: var(--font-display); font-size: 2.4rem; color: var(--usl-text); margin: 0.4rem 0 0.6rem; }
+    .usl-report-cover-meta { font-family: var(--font-body-usl); font-size: 0.78rem; color: var(--usl-muted); display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .usl-toc { background: var(--usl-bg); border: 1px solid var(--usl-border); border-radius: 0.4rem; padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+    .usl-toc-title { font-family: var(--font-body-usl); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; color: var(--usl-muted); margin-bottom: 0.75rem; }
+    .usl-toc ol { margin: 0; padding-left: 1.4rem; columns: 2; column-gap: 2rem; }
+    .usl-toc li { font-size: 0.88rem; margin-bottom: 0.4rem; break-inside: avoid; }
+    .usl-toc a { color: var(--usl-text); text-decoration: none; border-bottom: 1px dotted var(--usl-border); }
+    .usl-toc a:hover { color: var(--usl-accent); border-color: var(--usl-accent); }
+    .usl-report-section { margin: 2.5rem 0; scroll-margin-top: 5.5rem; }
+    .usl-report-section-num {
+      display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem;
+      background: var(--usl-accent); color: var(--usl-bg); font-family: var(--font-body-usl); font-weight: 700;
+      font-size: 0.9rem; border-radius: 0.3rem; margin-right: 0.75rem; flex-shrink: 0;
+    }
+    .usl-report-section-heading { display: flex; align-items: center; border-bottom: 2px solid var(--usl-text); padding-bottom: 0.6rem; margin-bottom: 1.25rem; }
+    .usl-report-section-heading h2 { font-family: var(--font-display); font-size: 1.6rem; margin: 0; }
+    .usl-exec-summary { background: rgba(217,176,115,0.12); border-left: 4px solid var(--usl-accent); border-radius: 0 0.4rem 0.4rem 0; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+    .usl-mini-chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1.5rem; margin: 1.25rem 0; }
+    .usl-mini-chart-card { border: 1px solid var(--usl-border); border-radius: 0.4rem; padding: 1rem; }
+    .usl-mini-chart-title { font-family: var(--font-body-usl); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--usl-muted); margin-bottom: 0.5rem; }
+    .usl-pitfall-list { list-style: none; padding: 0; margin: 1rem 0; }
+    .usl-pitfall-list li { display: flex; gap: 0.75rem; padding: 0.85rem 0; border-bottom: 1px solid var(--usl-border); }
+    .usl-pitfall-list li:last-child { border-bottom: none; }
+    .usl-pitfall-icon { flex-shrink: 0; width: 22px; height: 22px; color: var(--usl-accent); }
+    .usl-pitfall-body strong { display: block; margin-bottom: 0.2rem; }
+    .usl-mentor-table td:first-child { font-weight: 700; width: 26%; }
+    .usl-p4-cta {
+      display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-body-usl); font-size: 0.85rem;
+      color: var(--usl-bg); background: var(--usl-accent); border: none; border-radius: 999px; padding: 0.7rem 1.6rem;
+      cursor: pointer; font-weight: 700;
+    }
+    .usl-p4-cta:hover { background: var(--usl-accent-dim); }
 
     .food-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.5rem; }
     .food-tool-card {
@@ -2377,6 +2424,13 @@
         </div>
         <h2 class="usl-hub-label-title">PHASE 3 — CALIBRATION, THE REAL FIX &amp; EXPLAINABILITY</h2>
         <p class="usl-hub-label-sub">Three attempts to fix Phase 2's calibration collapse, two that don't work and one that does — the actual root cause turned out to be the train/test split, not the model — plus real per-prediction "top indicators," the output this project wanted since page one.</p>
+      </div>
+      <div class="usl-hub-item">
+        <div class="usl-hub-icon-stage" onclick="openUnrestPhase4()" role="button" tabindex="0" aria-label="Open the Phase 4 final report and interactive tool" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openUnrestPhase4();}">
+          <i data-lucide="file-check-2" style="width:44px;height:44px;"></i>
+        </div>
+        <h2 class="usl-hub-label-title">PHASE 4 — FINAL REPORT &amp; TOOL</h2>
+        <p class="usl-hub-label-sub">The capstone: a working historical-lookup tool (pick a model, pick a year, see real held-out predictions) and a full written report — data, exploration, models, honest analysis, pitfalls, and every mentor concern addressed in one place.</p>
       </div>
     </div>
   </div>
@@ -3832,6 +3886,356 @@
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════ UNREST PREDICTIONS — PHASE 4: FINAL REPORT & TOOL (full-page) ═══════════════════════════════════════ -->
+<div id="unrest-phase4">
+  <div class="usl-nav">
+    <button class="usl-back" onclick="closeUnrestPhase4()">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Unrest Predictions</span>
+    </button>
+    <div class="usl-breadcrumb"><span>Unrest Predictions</span><span>/</span><span>Phase 4</span></div>
+  </div>
+
+  <div class="usl-p4-tabs">
+    <button class="usl-p4-tab active" id="phase4-tab-tool" onclick="switchPhase4View('tool')">
+      <i data-lucide="sliders-horizontal" style="width:14px;height:14px;vertical-align:-2px;"></i> Tool
+    </button>
+    <button class="usl-p4-tab" id="phase4-tab-report" onclick="switchPhase4View('report')">
+      <i data-lucide="file-text" style="width:14px;height:14px;vertical-align:-2px;"></i> Full Report
+    </button>
+  </div>
+
+  <!-- ═══ TOOL VIEW ═══ -->
+  <div id="phase4-view-tool" class="usl-p4-view active">
+    <div class="usl-hero">
+      <div class="usl-hero-badge">Historical Test-Set Lookup — Not A Live Monitor</div>
+      <h1 class="usl-title">Civil Unrest Risk Classifier</h1>
+      <p class="usl-summary">Pick a model. Pick a year. See exactly how that model performed on real ACLED protest events it never trained on. There is deliberately no "training set" option here — this project already proved training-set numbers are systematically optimistic (Phase 1's overfitting demo, Phase 2 and 3's calibration collapse). Every number below is real, held-out performance, nothing else.</p>
+    </div>
+    <div class="usl-body">
+      <div class="usl-picker-row">
+        <div class="usl-picker">
+          <label for="phase4-model">Model</label>
+          <select id="phase4-model" onchange="renderPhase4Tool()">
+            <option value="logreg" selected>Logistic Regression (best overall)</option>
+            <option value="rf">Random Forest</option>
+            <option value="xgb">XGBoost</option>
+            <option value="histgbm">Gradient-Boosted Trees (HistGBM)</option>
+          </select>
+        </div>
+        <div class="usl-picker">
+          <label for="phase4-year">Year (held-out test events only)</label>
+          <select id="phase4-year" onchange="renderPhase4Tool()">
+            <option value="all" selected>All years, 2020-2024 (n=65)</option>
+            <option value="2020">2020 (n=25)</option>
+            <option value="2021">2021 (n=25)</option>
+            <option value="2022">2022 (n=6)</option>
+            <option value="2023">2023 (n=6)</option>
+            <option value="2024">2024 (n=3)</option>
+          </select>
+        </div>
+      </div>
+      <div id="phase4-warn" class="usl-picker-overfit-warn"></div>
+      <div id="phase4-stats" class="usl-picker-stats"></div>
+      <div id="phase4-chart" class="usl-chart-wrap"></div>
+      <p class="usl-panel-body">Green = correct prediction, red = wrong, dashed line = the 0.5 decision threshold used everywhere in this project. Hover any dot for its real event ID, date, and predicted probability.</p>
+      <div style="text-align:center; margin-top:2rem; padding-bottom:2rem;">
+        <button class="usl-p4-cta" onclick="switchPhase4View('report')">
+          <i data-lucide="file-text" style="width:16px;height:16px;"></i>
+          <span>Read the full written report</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ REPORT VIEW ═══ -->
+  <div id="phase4-view-report" class="usl-p4-view">
+    <div class="usl-body" style="max-width:1200px;">
+      <div class="usl-report-cover">
+        <div class="usl-report-cover-kicker">Final Report — Phases 0 through 4</div>
+        <h1 class="usl-report-cover-title">Civil Unrest Risk Classifier</h1>
+        <p class="usl-summary" style="margin-bottom:1rem;">Can pre-event news coverage and sentiment predict whether a U.S. protest stays peaceful or turns violent? A from-scratch, fully open-source investigation using ACLED and GDELT.</p>
+        <div class="usl-report-cover-meta">
+          <span>255 events, 2020-2024</span>
+          <span>8 model families tested</span>
+          <span>ACLED + GDELT (GKG &amp; Events)</span>
+          <span>West Point, Firstie Year MA491</span>
+          <span>Author: Joseph Moran</span>
+        </div>
+      </div>
+
+      <div class="usl-toc">
+        <div class="usl-toc-title">Contents</div>
+        <ol>
+          <li><a href="#p4-s1">Executive Summary</a></li>
+          <li><a href="#p4-s2">Introduction &amp; Motivation</a></li>
+          <li><a href="#p4-s3">Data Sources &amp; Collection</a></li>
+          <li><a href="#p4-s4">Data Exploration</a></li>
+          <li><a href="#p4-s5">Modeling Approach</a></li>
+          <li><a href="#p4-s6">Results</a></li>
+          <li><a href="#p4-s7">Analysis: Why Isn't It More Accurate?</a></li>
+          <li><a href="#p4-s8">Pitfalls &amp; Limitations</a></li>
+          <li><a href="#p4-s9">Mentor Concerns — Addressed</a></li>
+          <li><a href="#p4-s10">Conclusion &amp; Next Steps</a></li>
+        </ol>
+      </div>
+
+      <div class="usl-report-section" id="p4-s1">
+        <div class="usl-report-section-heading"><span class="usl-report-section-num">1</span><h2>Executive Summary</h2></div>
+        <div class="usl-exec-summary">
+          <p class="usl-panel-body" style="margin-bottom:0.75rem;">This project asked a specific, doctrine-motivated question: given a U.S. protest is already planned or underway, can pre-event GDELT news coverage predict whether it escalates to violence — the kind of leading indicator ATP 3-39.33 (Crowd Control) already asks commanders to watch for by eye? Built entirely from two public datasets (ACLED and GDELT) across five phases of work.</p>
+          <p class="usl-panel-body" style="margin-bottom:0.75rem;"><strong>The honest answer: partially, and not yet well enough to trust.</strong> The best model (logistic regression, tested on 65 real held-out events across 2020-2024) reaches <strong>71.9% precision and 51.1% recall</strong> — real signal, clearly above a coin flip, but far from reliable enough for an operational tool. Eight different model families were tested, two were properly tuned with cross-validation, and none beat this simple model — strong evidence the bottleneck is data volume and feature richness, not algorithm choice.</p>
+          <p class="usl-panel-body" style="margin-bottom:0;">Just as important as the accuracy number: this project caught and fixed three real methodological bugs along the way — a self-inflicted sampling bias, a cross-event data-leakage risk, and a train/test split that silently excluded three entire years from training — each documented with real before/after evidence rather than quietly patched. That process, as much as the final model, is the actual deliverable.</p>
+        </div>
+        <div class="usl-mini-chart-grid">
+          <div class="usl-mini-chart-card">
+            <div class="usl-mini-chart-title">Best model, held-out performance</div>
+            <div class="usl-stat-row" style="margin-bottom:0;">
+              <div class="usl-stat"><div class="usl-stat-num">0.719</div><div class="usl-stat-label">Precision</div></div>
+              <div class="usl-stat"><div class="usl-stat-num">0.511</div><div class="usl-stat-label">Recall</div></div>
+            </div>
+          </div>
+          <div class="usl-mini-chart-card">
+            <div class="usl-mini-chart-title">Scale of the effort</div>
+            <div class="usl-stat-row" style="margin-bottom:0;">
+              <div class="usl-stat"><div class="usl-stat-num">255</div><div class="usl-stat-label">Labeled events</div></div>
+              <div class="usl-stat"><div class="usl-stat-num">8</div><div class="usl-stat-label">Models tested</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="usl-report-section" id="p4-s2">
+        <div class="usl-report-section-heading"><span class="usl-report-section-num">2</span><h2>Introduction &amp; Motivation</h2></div>
+        <p class="usl-panel-body">ATP 3-39.33 (Crowd Control, 2022) directs commanders and staff to watch for "indicators of a potential civil disturbance" — currently a gut call made from experience, not a measurable process. This project tries to make that watching quantifiable: pull the pre-event public news signal (sentiment, coverage volume, reported-action tone) for a real protest, and see whether it predicts the ACLED-recorded outcome. Deliberately scoped to be fully open-source (no classified or restricted feeds), historical-only (no live monitoring built or claimed), and honest about being a preliminary, not a finished, capability.</p>
+        <p class="usl-panel-body">The project ran in five phases: <strong>Phase 0</strong> checked basic feasibility (can ACLED and GDELT even be matched?), <strong>Phase 1</strong> built a cleaned training table and two preliminary models on 100 events, <strong>Phase 2</strong> expanded to 255 events across 2020-2024 and caught a real cross-event leakage risk, <strong>Phase 3</strong> found and fixed a severe calibration failure (traced to the train/test split, not the model) and tested eight model families, and this report consolidates all of it into one final answer.</p>
+      </div>
+
+      <div class="usl-report-section" id="p4-s3">
+        <div class="usl-report-section-heading"><span class="usl-report-section-num">3</span><h2>Data Sources &amp; Collection</h2></div>
+        <table class="usl-table">
+          <tr><th>Source</th><th>What it provides</th><th>Volume used</th></tr>
+          <tr><td>ACLED</td><td>U.S. protest/riot event records: date, location, <code>sub_event_type</code> (the label source), fatalities, actors.</td><td>255 events, 2020-2024, stratified Protests + Riots pulls</td></tr>
+          <tr><td>GDELT GKG (Global Knowledge Graph)</td><td>Pre-event news article tone, emotional polarity, word count, theme tags — <code>V2Tone</code>'s seven sub-values.</td><td>125/255 events with real coverage (partial by design — see §8)</td></tr>
+          <tr><td>GDELT Events table</td><td>Goldstein Scale (reported-action severity) and QuadClass (verbal vs. material conflict), from a separate, structured table.</td><td>166/255 events with real coverage</td></tr>
+        </table>
+        <p class="usl-panel-body">All GDELT data comes exclusively from the 7-day window <em>ending the day before</em> each event's own date (or, for events in a correlated protest wave, before the wave's earliest date — see §9) — confirmed and re-verified at every phase, never once relaxed. Collection was quota-constrained by design: BigQuery's real columnar-scan billing (bytes read from the full scanned partition, not rows returned) meant every pull was dry-run estimated first, gated by explicit per-query and cumulative byte caps, and logged in a running manifest. Final cumulative usage: <strong>89.11%</strong> of the monthly 1&nbsp;TB free tier, stopped deliberately with a buffer left rather than run to the edge.</p>
+        <div class="usl-stat-row">
+          <div class="usl-stat"><div class="usl-stat-num">247.7 GB</div><div class="usl-stat-label">GKG spend, Phase 2</div></div>
+          <div class="usl-stat"><div class="usl-stat-num">10.1 GB</div><div class="usl-stat-label">Events-table spend</div></div>
+          <div class="usl-stat"><div class="usl-stat-num">89.11%</div><div class="usl-stat-label">Final quota usage</div></div>
+          <div class="usl-stat"><div class="usl-stat-num">0</div><div class="usl-stat-label">New pulls, Phases 3-4</div></div>
+        </div>
+      </div>
+
+      <div class="usl-report-section" id="p4-s4">
+        <div class="usl-report-section-heading"><span class="usl-report-section-num">4</span><h2>Data Exploration</h2></div>
+        <p class="usl-panel-body">255 labeled events, <strong>146 peaceful (57.3%)</strong> and <strong>109 escalated (42.7%)</strong> — a stratified sample by construction (Phase 0/2 pulled Protests and Riots separately, then combined), not a real-world base rate. Treat every rate in this report as measuring whether the features can separate the two classes, never as a calibrated real-world risk level.</p>
+        <h3 style="font-family:var(--font-display); font-size:1.15rem; margin:1.5rem 0 0.5rem;">4.1 — GDELT coverage is real but partial</h3>
+        <div class="usl-chart-wrap">
+          <svg class="chart-svg" viewBox="0 0 520 260" role="img" aria-label="Bar chart of GDELT coverage overlap across 255 events: both tables 46.7 percent, Events table only 18.4 percent, GKG only 2.4 percent, no coverage 32.5 percent">
+            <line class="usl-gridline" x1="45" y1="20.0" x2="500" y2="20.0"/>
+            <line class="usl-gridline" x1="45" y1="68.5" x2="500" y2="68.5"/>
+            <line class="usl-gridline" x1="45" y1="117.0" x2="500" y2="117.0"/>
+            <line class="usl-gridline" x1="45" y1="165.5" x2="500" y2="165.5"/>
+            <line class="usl-gridline" x1="45" y1="214.0" x2="500" y2="214.0"/>
+            <rect class="usl-bar" x="45.0" y="34.4" width="98.8" height="179.6" rx="3" style="fill:#4b6b3f"/>
+            <text class="usl-bar-value" x="94.4" y="26.4" text-anchor="middle">46.7%</text>
+            <text class="usl-bar-label" x="94.4" y="232" text-anchor="middle">Both GKG &amp; Events</text>
+            <text class="usl-bar-label" x="94.4" y="246" text-anchor="middle">(n=119)</text>
+            <rect class="usl-bar" x="163.8" y="143.2" width="98.8" height="70.8" rx="3" style="fill:#d9b073"/>
+            <text class="usl-bar-value" x="213.1" y="135.2" text-anchor="middle">18.4%</text>
+            <text class="usl-bar-label" x="213.1" y="232" text-anchor="middle">Events table only</text>
+            <text class="usl-bar-label" x="213.1" y="246" text-anchor="middle">(n=47)</text>
+            <rect class="usl-bar" x="282.5" y="204.8" width="98.8" height="9.2" rx="3" style="fill:#c97f45"/>
+            <text class="usl-bar-value" x="331.9" y="196.8" text-anchor="middle">2.4%</text>
+            <text class="usl-bar-label" x="331.9" y="232" text-anchor="middle">GKG only</text>
+            <text class="usl-bar-label" x="331.9" y="246" text-anchor="middle">(n=6)</text>
+            <rect class="usl-bar" x="401.2" y="89.0" width="98.8" height="125.0" rx="3" style="fill:#a8402b"/>
+            <text class="usl-bar-value" x="450.6" y="81.0" text-anchor="middle">32.5%</text>
+            <text class="usl-bar-label" x="450.6" y="232" text-anchor="middle">No GDELT coverage</text>
+            <text class="usl-bar-label" x="450.6" y="246" text-anchor="middle">(n=83)</text>
+          </svg>
+        </div>
+        <p class="usl-panel-body"><strong>83 of 255 events (32.5%) have no GDELT signal at all</strong> — no matched article, no Events-table row — after the geo-distance and sequence-anchoring filters remove wrong-location and leakage-risk matches. These events are not dropped; they're kept with missingness flags (<code>had_gkg_match</code>, <code>had_events_match</code>) that the models can use as their own signal, but it means over a third of the labeled sample is being classified on ACLED-derived features and missingness patterns alone, not real pre-event news content.</p>
+
+        <h3 style="font-family:var(--font-display); font-size:1.15rem; margin:1.5rem 0 0.5rem;">4.2 — Coverage and escalation rate both swing hard by year</h3>
+        <div class="usl-mini-chart-grid">
+          <div class="usl-mini-chart-card">
+            <div class="usl-mini-chart-title">GKG coverage rate by year</div>
+            <svg class="chart-svg" viewBox="0 0 340 200" role="img" aria-label="GKG coverage by year: 2020 67 percent, 2021 48 percent, 2022 46 percent, 2023 0 percent, 2024 0 percent">
+              <line class="usl-gridline" x1="35" y1="15" x2="325" y2="15"/>
+              <line class="usl-gridline" x1="35" y1="55" x2="325" y2="55"/>
+              <line class="usl-gridline" x1="35" y1="95" x2="325" y2="95"/>
+              <line class="usl-gridline" x1="35" y1="135" x2="325" y2="135"/>
+              <line class="usl-gridline" x1="35" y1="160" x2="325" y2="160"/>
+              <rect class="usl-bar" x="35" y="25.6" width="42" height="134.4" rx="2"/><text class="usl-bar-value" x="56" y="19.6" text-anchor="middle" font-size="9">67%</text><text class="usl-bar-label" x="56" y="175" text-anchor="middle" font-size="9">2020</text>
+              <rect class="usl-bar" x="93" y="90.5" width="42" height="69.5" rx="2"/><text class="usl-bar-value" x="114" y="84.5" text-anchor="middle" font-size="9">48%</text><text class="usl-bar-label" x="114" y="175" text-anchor="middle" font-size="9">2021</text>
+              <rect class="usl-bar" x="151" y="93.4" width="42" height="66.6" rx="2"/><text class="usl-bar-value" x="172" y="87.4" text-anchor="middle" font-size="9">46%</text><text class="usl-bar-label" x="172" y="175" text-anchor="middle" font-size="9">2022</text>
+              <rect class="usl-bar" x="209" y="160" width="42" height="0" rx="2" style="fill:#a8402b"/><text class="usl-bar-value" x="230" y="154" text-anchor="middle" font-size="9">0%</text><text class="usl-bar-label" x="230" y="175" text-anchor="middle" font-size="9">2023</text>
+              <rect class="usl-bar" x="267" y="160" width="42" height="0" rx="2" style="fill:#a8402b"/><text class="usl-bar-value" x="288" y="154" text-anchor="middle" font-size="9">0%</text><text class="usl-bar-label" x="288" y="175" text-anchor="middle" font-size="9">2024</text>
+            </svg>
+          </div>
+          <div class="usl-mini-chart-card">
+            <div class="usl-mini-chart-title">Escalation rate by year (sample, not real-world)</div>
+            <svg class="chart-svg" viewBox="0 0 340 200" role="img" aria-label="Escalated rate by year: 2020 60 percent, 2021 23 percent, 2022 58 percent, 2023 55 percent, 2024 0 percent">
+              <line class="usl-gridline" x1="35" y1="15" x2="325" y2="15"/>
+              <line class="usl-gridline" x1="35" y1="55" x2="325" y2="55"/>
+              <line class="usl-gridline" x1="35" y1="95" x2="325" y2="95"/>
+              <line class="usl-gridline" x1="35" y1="135" x2="325" y2="135"/>
+              <line class="usl-gridline" x1="35" y1="160" x2="325" y2="160"/>
+              <rect class="usl-bar" x="35" y="25.6" width="42" height="134.4" rx="2" style="fill:#a8402b"/><text class="usl-bar-value" x="56" y="19.6" text-anchor="middle" font-size="9">60%</text><text class="usl-bar-label" x="56" y="175" text-anchor="middle" font-size="9">2020</text>
+              <rect class="usl-bar" x="93" y="108.5" width="42" height="51.5" rx="2" style="fill:#4b6b3f"/><text class="usl-bar-value" x="114" y="102.5" text-anchor="middle" font-size="9">23%</text><text class="usl-bar-label" x="114" y="175" text-anchor="middle" font-size="9">2021</text>
+              <rect class="usl-bar" x="151" y="29.7" width="42" height="130.3" rx="2" style="fill:#a8402b"/><text class="usl-bar-value" x="172" y="23.7" text-anchor="middle" font-size="9">58%</text><text class="usl-bar-label" x="172" y="175" text-anchor="middle" font-size="9">2022</text>
+              <rect class="usl-bar" x="209" y="38.0" width="42" height="122.0" rx="2" style="fill:#a8402b"/><text class="usl-bar-value" x="230" y="32.0" text-anchor="middle" font-size="9">55%</text><text class="usl-bar-label" x="230" y="175" text-anchor="middle" font-size="9">2023</text>
+              <rect class="usl-bar" x="267" y="160" width="42" height="0" rx="2" style="fill:#4b6b3f"/><text class="usl-bar-value" x="288" y="154" text-anchor="middle" font-size="9">0%</text><text class="usl-bar-label" x="288" y="175" text-anchor="middle" font-size="9">2024</text>
+            </svg>
+          </div>
+        </div>
+        <p class="usl-panel-body">Neither chart is flat, and they don't move together — 2021 has both lower escalation <em>and</em> decent coverage, while 2023/2024 have zero GKG coverage at all (a real collection gap, not a real-world absence of news). Any model trained on this data has to contend with two independent, non-stationary confounds at once.</p>
+
+        <h3 style="font-family:var(--font-display); font-size:1.15rem; margin:1.5rem 0 0.5rem;">4.3 — Feature summary statistics (all 255 events)</h3>
+        <table class="usl-table">
+          <tr><th>Feature</th><th>Valid n</th><th>Missing</th><th>Mean</th><th>Std. dev.</th><th>Range</th></tr>
+          <tr><td><code>avg_tone</code></td><td>125</td><td>51.0%</td><td>-3.10</td><td>2.12</td><td>-9.64 to +1.75</td></tr>
+          <tr><td><code>tone_polarity</code></td><td>125</td><td>51.0%</td><td>7.52</td><td>1.42</td><td>3.17 to 11.99</td></tr>
+          <tr><td><code>tone_word_count</code></td><td>125</td><td>51.0%</td><td>1181.6</td><td>693.9</td><td>125 to 4278</td></tr>
+          <tr><td><code>goldstein_trend</code></td><td>149</td><td>41.6%</td><td>0.36</td><td>2.34</td><td>-10.40 to +8.00</td></tr>
+          <tr><td><code>quad_class_ratio</code></td><td>139</td><td>45.5%</td><td>0.55</td><td>0.28</td><td>0.00 to 1.00</td></tr>
+          <tr><td><code>log_volume</code></td><td>255</td><td>0.0%</td><td>1.28</td><td>1.46</td><td>0.00 to 3.26</td></tr>
+        </table>
+        <h3 style="font-family:var(--font-display); font-size:1.15rem; margin:1.5rem 0 0.5rem;">4.4 — Mean feature value by outcome</h3>
+        <table class="usl-table">
+          <tr><th>Feature</th><th>Peaceful (mean)</th><th>Escalated (mean)</th><th>Gap</th></tr>
+          <tr><td><code>tone_word_count</code></td><td>1114.9</td><td>1275.4</td><td>Escalated events get longer articles</td></tr>
+          <tr><td><code>avg_tone</code></td><td>-3.30</td><td>-2.83</td><td>Escalated events read (slightly) less negative</td></tr>
+          <tr><td><code>tone_negative_score</code></td><td>5.47</td><td>5.09</td><td>Same counter-intuitive direction</td></tr>
+          <tr><td><code>goldstein_trend</code></td><td>+0.41</td><td>+0.30</td><td>Both trend positive; barely distinguishable</td></tr>
+          <tr><td><code>log_volume</code></td><td>1.31</td><td>1.25</td><td>Essentially no difference</td></tr>
+        </table>
+        <p class="usl-panel-body">None of these gaps are large relative to their own standard deviations — consistent with every model in §5-6 topping out around 0.65-0.68 PR-AUC. This table is the data-level explanation for the model-level finding in §7: the individual features simply don't separate the two classes by much on their own.</p>
+        <h3 style="font-family:var(--font-display); font-size:1.15rem; margin:1.5rem 0 0.5rem;">4.5 — Feature-outcome relationships are not stable across eras</h3>
+        <table class="usl-table">
+          <tr><th>Feature</th><th>Corr. with escalation, 2020</th><th>Corr. with escalation, 2021-2024</th></tr>
+          <tr><td><code>tone_word_count</code></td><td>+0.227</td><td class="usl-status-no">-0.037</td></tr>
+          <tr><td><code>avg_tone</code></td><td>-0.018</td><td class="usl-status-no">+0.282</td></tr>
+        </table>
+        <p class="usl-panel-body">Two of five tested features flip sign entirely between eras (full detail in Phase 3) — real evidence that a model trained on one period's data cannot be assumed to generalize its feature relationships, not just its base rate, to a later one.</p>
+      </div>
+
+      <div class="usl-report-section" id="p4-s5">
+        <div class="usl-report-section-heading"><span class="usl-report-section-num">5</span><h2>Modeling Approach</h2></div>
+        <p class="usl-panel-body">Binary classification: <code>label_escalated</code> (0 = Peaceful protest, 1 = everything else, per ACLED's own <code>sub_event_type</code> taxonomy). 13 input features: seven <code>V2Tone</code> sub-values, Goldstein trend, QuadClass ratio, log-transformed coverage volume, two missingness flags, and <code>year</code>. Class weighting used throughout instead of synthetic oversampling, per the plan doc's own preference.</p>
+        <p class="usl-panel-body"><strong>Eight model families were tested</strong> on an identical, corrected <em>within-year</em> time-based split (earliest 75% of each year to training, latest 25% to test — every era gets real training exposure, unlike the global chronological split that silently gave zero 2022-2024 training examples): Logistic Regression, HistGradientBoostingClassifier, Random Forest, Extra Trees, XGBoost, SVM (RBF kernel), Gaussian Naive Bayes, and Balanced Random Forest. Random Forest and XGBoost were additionally tuned with 5-fold stratified cross-validation over a real hyperparameter grid.</p>
+        <table class="usl-table">
+          <tr><th>Model</th><th>Precision</th><th>Recall</th><th>F1</th><th>PR-AUC</th><th>ROC-AUC</th></tr>
+          <tr><td><strong>Logistic Regression</strong></td><td class="usl-status-yes"><strong>0.719</strong></td><td class="usl-status-yes"><strong>0.511</strong></td><td class="usl-status-yes"><strong>0.597</strong></td><td>0.673</td><td class="usl-status-yes"><strong>0.491</strong></td></tr>
+          <tr><td>Random Forest (tuned)</td><td>0.640</td><td>0.356</td><td>0.457</td><td>0.662</td><td>0.432</td></tr>
+          <tr><td>XGBoost (tuned)</td><td>0.500</td><td>0.178</td><td>0.262</td><td>0.679</td><td>0.463</td></tr>
+          <tr><td>HistGBM</td><td>0.529</td><td>0.200</td><td>0.290</td><td>0.667</td><td>0.449</td></tr>
+          <tr><td>Extra Trees</td><td>0.560</td><td>0.311</td><td>0.400</td><td>0.671</td><td>0.464</td></tr>
+          <tr><td>Balanced Random Forest</td><td>0.600</td><td>0.333</td><td>0.429</td><td>0.642</td><td>0.425</td></tr>
+          <tr><td>SVM (RBF)</td><td class="usl-status-no">0.000</td><td class="usl-status-no">0.000</td><td>0.000</td><td><strong>0.679</strong></td><td>0.406</td></tr>
+          <tr><td>Gaussian Naive Bayes</td><td>0.467</td><td>0.156</td><td>0.233</td><td>0.633</td><td>0.392</td></tr>
+        </table>
+        <p class="usl-panel-body"><strong>Logistic regression won</strong> on every metric that matters at an actual decision threshold. SVM's headline PR-AUC is the highest of the eight, but it predicted "peaceful" for every single test event — a real, cautionary example of why a ranking metric alone can hide a completely unusable model.</p>
+      </div>
+
+      <div class="usl-report-section" id="p4-s6">
+        <div class="usl-report-section-heading"><span class="usl-report-section-num">6</span><h2>Results</h2></div>
+        <div class="usl-raw-grid">
+          <div>
+            <div class="usl-raw-label">ROC curve — best two models</div>
+            <div class="usl-chart-wrap">
+              <svg class="chart-svg" viewBox="0 0 480 280" role="img" aria-label="ROC curve comparing logistic regression and tuned XGBoost">
+                <line class="usl-gridline" x1="50" y1="20" x2="450" y2="20"/><line class="usl-gridline" x1="50" y1="220" x2="450" y2="220"/>
+                <line x1="50" y1="220" x2="450" y2="20" stroke="#9a9488" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <path d="M50.0,220.0 L70.0,220.0 L70.0,211.2 L110.0,211.2 L110.0,206.6 L150.0,206.6 L150.0,166.6 L190.0,144.4 L190.0,140.0 L210.0,140.0 L210.0,126.6 L230.0,126.6 L230.0,108.8 L250.0,108.8 L250.0,104.4 L270.0,104.4 L330.0,82.2 L370.0,82.2 L370.0,64.4 L390.0,64.4 L390.0,46.6 L390.0,42.2 L410.0,42.2 L410.0,20.0 L450.0,20.0" fill="none" stroke="#4b6b3f" stroke-width="2.5"/>
+                <path d="M50.0,220.0 L50.0,215.6 L90.0,215.6 L90.0,211.2 L130.0,188.8 L130.0,184.4 L150.0,184.4 L150.0,175.6 L170.0,175.6 L170.0,171.2 L230.0,171.2 L230.0,157.8 L230.0,140.0 L250.0,140.0 L250.0,126.6 L250.0,104.4 L250.0,100.0 L270.0,100.0 L270.0,95.6 L310.0,95.6 L330.0,95.6 L330.0,86.6 L350.0,86.6 L350.0,82.2 L370.0,82.2 L370.0,68.8 L370.0,60.0 L370.0,51.2 L430.0,28.8 L430.0,20.0 L450.0,20.0" fill="none" stroke="#a8402b" stroke-width="2.5"/>
+                <text class="usl-bar-label" x="250" y="255" text-anchor="middle" font-size="10">False Positive Rate &rarr;</text>
+                <rect x="50" y="4" width="10" height="10" rx="2" style="fill:#4b6b3f"/><text class="usl-bar-label" x="64" y="12" font-size="9">Logistic Regression</text>
+                <rect x="290" y="4" width="10" height="10" rx="2" style="fill:#a8402b"/><text class="usl-bar-label" x="304" y="12" font-size="9">XGBoost (tuned)</text>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <div class="usl-raw-label">Predictions by year — Logistic Regression, all test events</div>
+            <table class="usl-table">
+              <tr><th>Year</th><th>Test n</th><th>Accuracy</th></tr>
+              <tr><td>2020</td><td>25</td><td>64.0%</td></tr>
+              <tr><td>2021</td><td>25</td><td>60.0%</td></tr>
+              <tr><td>2022</td><td>6</td><td class="usl-status-no">0.0%</td></tr>
+              <tr><td>2023</td><td>6</td><td class="usl-status-no">0.0%</td></tr>
+              <tr><td>2024</td><td>3</td><td>100.0%</td></tr>
+            </table>
+            <p class="usl-panel-body" style="margin-top:0.75rem;">Explore every one of these numbers yourself, live, in the <a href="#" onclick="switchPhase4View('tool'); return false;" style="color:var(--usl-accent);">interactive tool</a> — pick the model and year directly.</p>
+          </div>
+        </div>
+        <p class="usl-panel-body"><strong>2022 and 2023 both hit exactly 0% accuracy</strong> — every single one of the 6 test events in each year was mispredicted. 2024's 100% is the mirror-image artifact, on just 3 events. None of these three numbers should be read as "the model works/fails in year X" — each is a single-digit sample size, and this is precisely the small-sample warning the tool itself displays whenever a thin year is selected.</p>
+      </div>
+
+      <div class="usl-report-section" id="p4-s7">
+        <div class="usl-report-section-heading"><span class="usl-report-section-num">7</span><h2>Analysis: Why Isn't It More Accurate?</h2></div>
+        <p class="usl-panel-body">Five real, evidenced reasons, not speculation:</p>
+        <table class="usl-table">
+          <tr><th>Reason</th><th>Evidence</th></tr>
+          <tr><td><strong>Sample size</strong></td><td>190 training rows, 13 features. Eight model families of very different inductive bias all cluster within a few points of 0.65-0.68 PR-AUC — the classic signature of a data-limited, not algorithm-limited, ceiling (§5).</td></tr>
+          <tr><td><strong>Partial feature coverage</strong></td><td>32.5% of events have zero GDELT signal (§4.1); GCAM emotion dimensions were excluded entirely after one event's column alone dry-ran at 22.8 GB.</td></tr>
+          <tr><td><strong>Weak individual features</strong></td><td>Every feature's peaceful-vs-escalated mean gap is small relative to its own standard deviation (§4.4) — there's no single strong signal to lean on.</td></tr>
+          <tr><td><strong>Non-stationary relationships</strong></td><td>Feature-outcome correlations flip sign across eras (§4.5); a model can't learn a stable rule from a relationship that isn't stable.</td></tr>
+          <tr><td><strong>Reporting-intensity confound</strong></td><td>Escalated events get national-scale press pickup 4.7x more often than peaceful ones (Phase 2) — volume-based features partly measure "how much attention this got," entangled with, not independent of, severity.</td></tr>
+        </table>
+        <p class="usl-panel-body"><strong>Concrete steps forward, in priority order:</strong></p>
+        <ol style="padding-left:1.5rem; font-size:0.92rem; line-height:1.9;">
+          <li><strong>More labeled events, especially 2022-2024</strong> — still this project's thinnest years (56 events combined vs. 100+99 for 2020-2021). This is the single highest-leverage fix identified across all four phases.</li>
+          <li><strong>Finish GKG coverage for 2023-2024</strong> — currently 0% (§4.2), a collection gap, not a real absence of news, fixable within a fresh month's BigQuery quota.</li>
+          <li><strong>Probability calibration or a genuinely time-varying decision threshold</strong> — Phase 3 showed isotonic calibration helps the Brier score but can't manufacture ranking power a model doesn't have; the real fix needs to travel with more representative training data.</li>
+          <li><strong>Richer features</strong> — GCAM emotion dimensions (cost-prohibitive so far), real NLP embeddings instead of bag-of-words tone, structured opposing-actor coding instead of raw entity counts.</li>
+          <li><strong>SHAP-based per-prediction explanations at scale</strong> — built for three example events in Phase 3; extending this to every scored event is straightforward future work.</li>
+        </ol>
+      </div>
+
+      <div class="usl-report-section" id="p4-s8">
+        <div class="usl-report-section-heading"><span class="usl-report-section-num">8</span><h2>Pitfalls &amp; Limitations</h2></div>
+        <ul class="usl-pitfall-list">
+          <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>Not a random sample.</strong> ACLED events were pulled stratified by type (Protests vs. Riots), so the 42.7% escalation rate is a sampling artifact, never a real-world base rate. Nothing in this report should be read as "X% of U.S. protests turn violent."</div></li>
+          <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>Geo-matching is fixed but not perfect.</strong> The lat/long distance filter (Phase 1) catches wrong-state matches like Portland ME vs. OR, but the Events-table check still falls back to a coarser state-code comparison for events pulled before its lat/long fields were added.</div></li>
+          <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>Sequence-anchoring is a coarse proxy.</strong> "Same state, within 5 days" approximates a correlated protest wave; it isn't a verified causal link between events.</div></li>
+          <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>Small-n statistical fragility.</strong> A first hyperparameter-tuning attempt produced NaN cross-validation scores because some folds didn't contain both classes — a direct symptom of how little data this is to tune, not just to train.</div></li>
+          <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>The <code>year</code> feature is a double-edged sword.</strong> It measurably helps ranking (removing it drops ROC-AUC from 0.491 to 0.409) but extrapolates linearly past the training data's actual, non-monotonic pattern — a real, demonstrated failure mode when applied across eras with different dynamics (Phase 3).</div></li>
+          <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>Never validated live.</strong> Every number in this report is retrospective, on historical ACLED-labeled events. This system has never scored a real, upcoming, not-yet-resolved protest.</div></li>
+          <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>U.S.-only, English-language scope.</strong> No claim is made about generalizing to other countries, languages, or reporting ecosystems.</div></li>
+        </ul>
+      </div>
+
+      <div class="usl-report-section" id="p4-s9">
+        <div class="usl-report-section-heading"><span class="usl-report-section-num">9</span><h2>Mentor Concerns — Addressed</h2></div>
+        <table class="usl-table usl-mentor-table">
+          <tr><th>Concern raised</th><th>How it was addressed</th></tr>
+          <tr><td>What does ACLED register as a "protest"?</td><td>Documented directly from ACLED's own published methodology (Phase 2, §2 above): a Protest is a non-violent public gathering; a Riot involves violent or destructive acts. <code>sub_event_type</code> is the direct label source.</td></tr>
+          <tr><td>Are peaceful protests under-reported relative to violent ones?</td><td>Two-part answer. (1) A self-caught pull-design bug had silently produced 0% peaceful protests for 2022-2023 — fixed with a per-year backfill, near-zero cost (Phase 2). (2) Checked ACLED's own source metadata directly afterward: escalated events do get picked up by national-scale outlets 4.7x more often — a real, structural finding, not a bug (Phase 2).</td></tr>
+          <tr><td>Publishing date must be before the <em>first</em> protest in a correlated sequence.</td><td>Built directly: events within 5 days of each other in the same state are chained into one sequence, and every event anchors its pre-event window to the sequence's earliest date, not its own (Phase 2). Re-anchored 44/255 events; dropped 141 GKG and 373 Events-table rows that had been sitting past the corrected cutoff.</td></tr>
+          <tr><td>Make sure GDELT is only pulled from before the actual ACLED event.</td><td>True by construction since Phase 0 (window ends the day before event date) and re-verified at every phase; strengthened further by the sequence-anchoring fix above.</td></tr>
+          <tr><td>Time-varying sparsity and time-varying parameters.</td><td>Sparsity: GKG coverage by year charted directly (§4.2) — real, non-constant, and traced to specific collection decisions. Parameters: a <code>year</code> feature was added (a time-varying <em>intercept</em>), then checked more rigorously — two features' correlations with escalation flip sign across eras (§4.5), real evidence the fuller time-varying-parameters problem isn't solved by one feature, honestly flagged as future work (Phase 3).</td></tr>
+        </table>
+      </div>
+
+      <div class="usl-report-section" id="p4-s10">
+        <div class="usl-report-section-heading"><span class="usl-report-section-num">10</span><h2>Conclusion &amp; Next Steps</h2></div>
+        <p class="usl-panel-body">This project set out to test whether open-source news signal could give early warning of protest escalation, in the spirit of ATP 3-39.33. Across five phases it built a real, reproducible, safety-conscious data pipeline; caught and fixed three genuine methodological bugs before they reached a model; tested eight model families with real tuning rather than assuming one was good enough; and built the "top indicators" explainability the original plan always wanted. The resulting model — precision 0.719, recall 0.511 on real held-out data — is honest, defensible, and not yet good enough to operationalize. That gap is attributed, with evidence, to data volume and feature richness rather than to model choice, which is itself a useful, if modest, conclusion: the next phase of this work should spend its effort on data, not on searching for a cleverer algorithm.</p>
+        <p class="usl-panel-body" style="margin-bottom:0;">Every script, every pulled byte, every model, and every honest dead end in this report is committed to the public repository behind this site — nothing here is asserted without a real number backing it up.</p>
+      </div>
+
+      <div style="text-align:center; margin:3rem 0 1rem;">
+        <button class="usl-p4-cta" onclick="switchPhase4View('tool')">
+          <i data-lucide="sliders-horizontal" style="width:16px;height:16px;"></i>
+          <span>Back to the interactive tool</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════ RIDDLE ME THIS (full-page) ═══════════════════════════════════════ -->
 <div id="ingredient-game">
   <div class="rf-nav">
@@ -5210,7 +5614,7 @@ function renderProjectDetail(p) {
 // All full-page food overlays, kept in a list so opening one can reliably
 // close the rest — only one of these (and #project-detail) is ever open
 // at a time, no matter which nav path got you there.
-const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2', 'unrest-phase3'];
+const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2', 'unrest-phase3', 'unrest-phase4'];
 function closeAllToolOverlays() {
   TOOL_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
 }
@@ -5369,6 +5773,31 @@ function closeUnrestPhase3() {
   document.getElementById('unrest-phase3').classList.remove('open');
   document.getElementById('unrest-hub').classList.add('open');
   window.scrollTo(0, 0);
+}
+
+function openUnrestPhase4() {
+  document.getElementById('project-detail').classList.remove('open');
+  closeAllToolOverlays();
+  document.getElementById('unrest-phase4').classList.add('open');
+  document.getElementById('main-site').classList.add('hidden');
+  window.scrollTo(0, 0);
+  lucide.createIcons();
+  renderPhase4Tool();
+}
+
+function closeUnrestPhase4() {
+  document.getElementById('unrest-phase4').classList.remove('open');
+  document.getElementById('unrest-hub').classList.add('open');
+  window.scrollTo(0, 0);
+}
+
+function switchPhase4View(view) {
+  document.getElementById('phase4-view-tool').classList.toggle('active', view === 'tool');
+  document.getElementById('phase4-view-report').classList.toggle('active', view === 'report');
+  document.getElementById('phase4-tab-tool').classList.toggle('active', view === 'tool');
+  document.getElementById('phase4-tab-report').classList.toggle('active', view === 'report');
+  document.querySelector('#unrest-phase4 .usl-body').scrollIntoView({ block: 'start' });
+  lucide.createIcons();
 }
 
 // Real predictions from the two Phase 1 models (data/model_predictions.json),
@@ -5870,6 +6299,145 @@ function renderPredictionPickerV2() {
   });
   svg += `</svg>`;
   document.getElementById('usl-picker-chart-v2').innerHTML = svg;
+}
+
+// Phase 4 tool -- real held-out (TEST ONLY) predictions from four models,
+// tagged by year, on the within-year split. No train-set option exists on
+// purpose: this project already showed train-set numbers are systematically
+// misleading (Phase 1 overfitting, Phase 2/3 calibration collapse).
+const PHASE4_PREDICTIONS = [
+  {i:'USA908',d:'2020-06-20',y:2020,t:0,logreg:0.6669,rf:0.7039,xgb:0.8342,histgbm:0.9069},
+  {i:'USA217',d:'2020-06-25',y:2020,t:0,logreg:0.5958,rf:0.7037,xgb:0.7704,histgbm:0.784},
+  {i:'USA845',d:'2020-06-26',y:2020,t:0,logreg:0.7998,rf:0.6037,xgb:0.7199,histgbm:0.7708},
+  {i:'USA219',d:'2020-06-27',y:2020,t:0,logreg:0.6401,rf:0.6559,xgb:0.6629,histgbm:0.4916},
+  {i:'USA969',d:'2020-06-27',y:2020,t:0,logreg:0.566,rf:0.7507,xgb:0.7808,histgbm:0.7795},
+  {i:'USA740',d:'2020-06-27',y:2020,t:0,logreg:0.4176,rf:0.5657,xgb:0.5316,histgbm:0.5965},
+  {i:'USA648',d:'2020-06-27',y:2020,t:0,logreg:0.483,rf:0.6432,xgb:0.6357,histgbm:0.6449},
+  {i:'USA1004',d:'2020-06-29',y:2020,t:0,logreg:0.5958,rf:0.7037,xgb:0.7704,histgbm:0.784},
+  {i:'USA1664',d:'2020-07-01',y:2020,t:1,logreg:0.5157,rf:0.5269,xgb:0.5174,histgbm:0.4462},
+  {i:'USA555',d:'2020-07-02',y:2020,t:0,logreg:0.6728,rf:0.6524,xgb:0.6244,histgbm:0.3388},
+  {i:'USA427',d:'2020-07-04',y:2020,t:0,logreg:0.4612,rf:0.5054,xgb:0.3605,histgbm:0.5488},
+  {i:'USA3247',d:'2020-07-13',y:2020,t:1,logreg:0.5004,rf:0.4061,xgb:0.3406,histgbm:0.0717},
+  {i:'USA3069',d:'2020-07-23',y:2020,t:1,logreg:0.5958,rf:0.7037,xgb:0.7704,histgbm:0.784},
+  {i:'USA3702',d:'2020-08-01',y:2020,t:1,logreg:0.7124,rf:0.6746,xgb:0.6632,histgbm:0.7012},
+  {i:'USA3784',d:'2020-08-02',y:2020,t:1,logreg:0.5958,rf:0.7037,xgb:0.7704,histgbm:0.784},
+  {i:'USA4487',d:'2020-08-14',y:2020,t:1,logreg:0.5958,rf:0.7037,xgb:0.7704,histgbm:0.784},
+  {i:'USA10469',d:'2020-08-16',y:2020,t:1,logreg:0.5597,rf:0.576,xgb:0.5207,histgbm:0.3157},
+  {i:'USA10993',d:'2020-08-16',y:2020,t:1,logreg:0.5958,rf:0.7037,xgb:0.7704,histgbm:0.784},
+  {i:'USA11382',d:'2020-08-26',y:2020,t:1,logreg:0.4952,rf:0.5301,xgb:0.4765,histgbm:0.4075},
+  {i:'USA11385',d:'2020-08-26',y:2020,t:1,logreg:0.6032,rf:0.6973,xgb:0.7878,histgbm:0.6733},
+  {i:'USA12007',d:'2020-09-03',y:2020,t:1,logreg:0.5697,rf:0.5041,xgb:0.3911,histgbm:0.1},
+  {i:'USA14290',d:'2020-10-04',y:2020,t:1,logreg:0.5958,rf:0.7037,xgb:0.7704,histgbm:0.784},
+  {i:'USA16482',d:'2020-10-31',y:2020,t:1,logreg:0.7752,rf:0.7277,xgb:0.8411,histgbm:0.9355},
+  {i:'USA18953',d:'2020-11-30',y:2020,t:1,logreg:0.4948,rf:0.4987,xgb:0.4706,histgbm:0.1755},
+  {i:'USA19998',d:'2020-12-31',y:2020,t:1,logreg:0.6167,rf:0.5461,xgb:0.4696,histgbm:0.198},
+  {i:'USA22052',d:'2021-01-22',y:2021,t:0,logreg:0.629,rf:0.4323,xgb:0.1723,histgbm:0.141},
+  {i:'USA22041',d:'2021-01-22',y:2021,t:0,logreg:0.4213,rf:0.3964,xgb:0.1937,histgbm:0.0469},
+  {i:'USA22056',d:'2021-01-22',y:2021,t:0,logreg:0.4369,rf:0.2472,xgb:0.171,histgbm:0.1265},
+  {i:'USA22147',d:'2021-01-23',y:2021,t:0,logreg:0.4369,rf:0.2472,xgb:0.171,histgbm:0.1265},
+  {i:'USA22130',d:'2021-01-25',y:2021,t:0,logreg:0.4369,rf:0.2472,xgb:0.171,histgbm:0.1265},
+  {i:'USA22151',d:'2021-01-27',y:2021,t:0,logreg:0.2989,rf:0.2282,xgb:0.1081,histgbm:0.011},
+  {i:'USA22093',d:'2021-01-27',y:2021,t:0,logreg:0.5174,rf:0.4448,xgb:0.2662,histgbm:0.0989},
+  {i:'USA26553',d:'2021-03-13',y:2021,t:1,logreg:0.4369,rf:0.2472,xgb:0.171,histgbm:0.1265},
+  {i:'USA27400',d:'2021-03-27',y:2021,t:1,logreg:0.4369,rf:0.2472,xgb:0.171,histgbm:0.1265},
+  {i:'USA28214',d:'2021-04-16',y:2021,t:1,logreg:0.6101,rf:0.2878,xgb:0.2393,histgbm:0.1408},
+  {i:'USA30290',d:'2021-05-15',y:2021,t:1,logreg:0.6119,rf:0.3656,xgb:0.1179,histgbm:0.3019},
+  {i:'USA30699',d:'2021-06-03',y:2021,t:1,logreg:0.3224,rf:0.276,xgb:0.1179,histgbm:0.0137},
+  {i:'USA31823',d:'2021-06-18',y:2021,t:1,logreg:0.5546,rf:0.5359,xgb:0.4873,histgbm:0.334},
+  {i:'USA31654',d:'2021-06-23',y:2021,t:1,logreg:0.6264,rf:0.2819,xgb:0.1725,histgbm:0.1367},
+  {i:'USA32055',d:'2021-07-05',y:2021,t:1,logreg:0.4075,rf:0.5276,xgb:0.5231,histgbm:0.5706},
+  {i:'USA33390',d:'2021-07-09',y:2021,t:1,logreg:0.6138,rf:0.5082,xgb:0.3247,histgbm:0.4193},
+  {i:'USA32206',d:'2021-07-09',y:2021,t:1,logreg:0.4369,rf:0.2472,xgb:0.171,histgbm:0.1265},
+  {i:'USA33480',d:'2021-07-31',y:2021,t:1,logreg:0.4369,rf:0.2472,xgb:0.171,histgbm:0.1265},
+  {i:'USA33273',d:'2021-08-26',y:2021,t:1,logreg:0.6446,rf:0.5212,xgb:0.3799,histgbm:0.3508},
+  {i:'USA33274',d:'2021-08-31',y:2021,t:1,logreg:0.3371,rf:0.4305,xgb:0.2275,histgbm:0.2393},
+  {i:'USA34974',d:'2021-09-19',y:2021,t:1,logreg:0.6233,rf:0.2725,xgb:0.171,histgbm:0.137},
+  {i:'USA35873',d:'2021-10-16',y:2021,t:1,logreg:0.5197,rf:0.467,xgb:0.2556,histgbm:0.1481},
+  {i:'USA36760',d:'2021-10-29',y:2021,t:1,logreg:0.4369,rf:0.2472,xgb:0.171,histgbm:0.1265},
+  {i:'USA36703',d:'2021-11-03',y:2021,t:1,logreg:0.6198,rf:0.2898,xgb:0.2104,histgbm:0.1668},
+  {i:'USA48116',d:'2021-11-21',y:2021,t:1,logreg:0.6235,rf:0.2725,xgb:0.1725,histgbm:0.1367},
+  {i:'USA42385',d:'2022-05-01',y:2022,t:1,logreg:0.4655,rf:0.3604,xgb:0.3807,histgbm:0.3995},
+  {i:'USA45700',d:'2022-06-24',y:2022,t:1,logreg:0.2643,rf:0.372,xgb:0.3101,histgbm:0.1085},
+  {i:'USA45045',d:'2022-06-24',y:2022,t:1,logreg:0.2899,rf:0.3445,xgb:0.3782,histgbm:0.3784},
+  {i:'USA46678',d:'2022-07-30',y:2022,t:1,logreg:0.2899,rf:0.3445,xgb:0.3782,histgbm:0.3784},
+  {i:'USA46614',d:'2022-07-31',y:2022,t:1,logreg:0.2899,rf:0.3445,xgb:0.3782,histgbm:0.3784},
+  {i:'USA46887',d:'2022-08-07',y:2022,t:1,logreg:0.2899,rf:0.3445,xgb:0.3782,histgbm:0.3784},
+  {i:'USA56421',d:'2023-05-29',y:2023,t:1,logreg:0.1769,rf:0.3429,xgb:0.3782,histgbm:0.3732},
+  {i:'USA56422',d:'2023-05-29',y:2023,t:1,logreg:0.1769,rf:0.3429,xgb:0.3782,histgbm:0.3732},
+  {i:'USA56992',d:'2023-06-10',y:2023,t:1,logreg:0.1769,rf:0.3429,xgb:0.3782,histgbm:0.3732},
+  {i:'USA57302',d:'2023-06-12',y:2023,t:1,logreg:0.1769,rf:0.3429,xgb:0.3782,histgbm:0.3732},
+  {i:'USA58258',d:'2023-07-24',y:2023,t:1,logreg:0.3235,rf:0.4152,xgb:0.3697,histgbm:0.294},
+  {i:'USA60059',d:'2023-09-25',y:2023,t:1,logreg:0.1769,rf:0.3429,xgb:0.3782,histgbm:0.3732},
+  {i:'USA64524',d:'2024-01-18',y:2024,t:0,logreg:0.1869,rf:0.3424,xgb:0.4199,histgbm:0.4635},
+  {i:'USA64612',d:'2024-01-18',y:2024,t:0,logreg:0.1016,rf:0.3307,xgb:0.3345,histgbm:0.3732},
+  {i:'USA64546',d:'2024-01-18',y:2024,t:0,logreg:0.1016,rf:0.3307,xgb:0.3345,histgbm:0.3732}
+];
+
+const PHASE4_MODEL_NAMES = { logreg: 'Logistic Regression', rf: 'Random Forest', xgb: 'XGBoost', histgbm: 'Gradient-Boosted Trees (HistGBM)' };
+
+function renderPhase4Tool() {
+  const modelEl = document.getElementById('phase4-model');
+  const yearEl = document.getElementById('phase4-year');
+  if (!modelEl || !yearEl) return;
+  const modelKey = modelEl.value;
+  const yearSel = yearEl.value;
+  const modelName = PHASE4_MODEL_NAMES[modelKey];
+
+  const rows = PHASE4_PREDICTIONS.filter(r => yearSel === 'all' || r.y === parseInt(yearSel, 10)).map(r => {
+    const p = r[modelKey];
+    const pred = p >= 0.5 ? 1 : 0;
+    return Object.assign({}, r, { p: p, pred: pred, correct: pred === r.t });
+  });
+  rows.sort((a, b) => a.t - b.t || a.p - b.p);
+
+  const n = rows.length;
+  const correctCount = rows.filter(r => r.correct).length;
+  const tp = rows.filter(r => r.t === 1 && r.pred === 1).length;
+  const fp = rows.filter(r => r.t === 0 && r.pred === 1).length;
+  const fn = rows.filter(r => r.t === 1 && r.pred === 0).length;
+  const precision = (tp + fp) ? tp / (tp + fp) : 0;
+  const recall = (tp + fn) ? tp / (tp + fn) : 0;
+  const accuracy = n ? correctCount / n : 0;
+
+  document.getElementById('phase4-stats').innerHTML = n ? `
+    <div class="usl-stat"><div class="usl-stat-num">${(accuracy * 100).toFixed(1)}%</div><div class="usl-stat-label">Accuracy</div></div>
+    <div class="usl-stat"><div class="usl-stat-num">${correctCount} / ${n}</div><div class="usl-stat-label">Correct predictions</div></div>
+    <div class="usl-stat"><div class="usl-stat-num">${precision.toFixed(3)}</div><div class="usl-stat-label">Precision</div></div>
+    <div class="usl-stat"><div class="usl-stat-num">${recall.toFixed(3)}</div><div class="usl-stat-label">Recall</div></div>
+  ` : `<div class="usl-stat" style="grid-column:1/-1;">No test events for this selection.</div>`;
+
+  const warnEl = document.getElementById('phase4-warn');
+  if (n > 0 && n < 10) {
+    warnEl.classList.add('show');
+    warnEl.innerHTML = `<strong>Small sample warning:</strong> only ${n} held-out test event${n === 1 ? '' : 's'} exist${n === 1 ? 's' : ''} for this year. Treat any percentage here as illustrative, not a reliable estimate of real performance — this is exactly the thin-data problem the written report discusses.`;
+  } else {
+    warnEl.classList.remove('show');
+  }
+
+  if (n === 0) { document.getElementById('phase4-chart').innerHTML = ''; return; }
+
+  const rowH = 18;
+  const width = 860;
+  const height = n * rowH + 46;
+  const left = 30, right = width - 30;
+  const px = p => left + p * (right - left);
+
+  let svg = `<svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Dot plot of ${modelName} predictions for ${yearSel === 'all' ? 'all years' : yearSel}, colored green for correct and red for incorrect">`;
+  svg += `<line class="usl-gridline" x1="${left}" y1="20" x2="${right}" y2="20"/>`;
+  for (let i = 0; i <= 5; i++) {
+    const x = left + (right - left) * i / 5;
+    svg += `<text class="usl-bar-label" x="${x.toFixed(1)}" y="14" text-anchor="middle" font-size="9">${(i / 5).toFixed(1)}</text>`;
+  }
+  const threshX = px(0.5);
+  svg += `<line x1="${threshX.toFixed(1)}" y1="24" x2="${threshX.toFixed(1)}" y2="${height - 12}" stroke="#9a9488" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+  svg += `<text class="usl-bar-label" x="${threshX.toFixed(1)}" y="${height - 2}" text-anchor="middle" font-size="9">0.5 threshold</text>`;
+  rows.forEach((r, i) => {
+    const cy = 30 + i * rowH;
+    const color = r.correct ? '#4b6b3f' : '#a8402b';
+    svg += `<circle cx="${px(r.p).toFixed(1)}" cy="${cy}" r="5" fill="${color}" opacity="0.85"><title>${r.i} (${r.d}, ${r.y}) — true: ${r.t ? 'escalated' : 'peaceful'}, ${modelName} predicted: ${(r.p * 100).toFixed(1)}%</title></circle>`;
+  });
+  svg += `</svg>`;
+  document.getElementById('phase4-chart').innerHTML = svg;
 }
 
 function openWeatherTool() {

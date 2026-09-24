@@ -3222,8 +3222,16 @@
         <div class="usl-stat"><div class="usl-stat-num">10/yr</div><div class="usl-stat-label">2022, 2023, 2024 each</div></div>
         <div class="usl-stat"><div class="usl-stat-num">~$0</div><div class="usl-stat-label">Cost to fix (ACLED calls only)</div></div>
       </div>
-      <p class="usl-panel-body"><strong>Fixed, not just flagged:</strong> since ACLED API calls cost essentially nothing (small JSON payloads, no BigQuery involved), a separate, individually-capped pool was pulled for each of 2022, 2023, and 2024, and 10 new peaceful protests per year were sampled and added — 30 events, bringing the full expansion to 155 new events (225 total with the original 100, before a second correction below).</p>
+      <p class="usl-panel-body"><strong>Fixed, not just flagged:</strong> since ACLED API calls cost essentially nothing (small JSON payloads, no BigQuery involved), a separate, individually-capped pool was pulled for each of 2022, 2023, and 2024, and 10 new peaceful protests per year were sampled and added — 30 events, bringing the full expansion to 155 new events (255 total with the original 100).</p>
       <p class="usl-sidenote">Why this matters for you specifically: if you ever see "0% of X in this year" in a pull-based dataset, don't trust it as a real-world fact until you've checked whether your OWN query cap ran out before reaching that year. This bit us here, and it's an easy one to miss.</p>
+      <p class="usl-panel-body">That fixes the pipeline. It doesn't fully answer the original question, though — so it was asked again, directly of ACLED's own source metadata across all 255 events, separate from the sampling bug above: <strong>do violent events actually get wider press pickup than peaceful ones?</strong></p>
+      <div class="usl-stat-row">
+        <div class="usl-stat"><div class="usl-stat-num">25.7%</div><div class="usl-stat-label">Escalated events, national-scale source</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">5.5%</div><div class="usl-stat-label">Peaceful events, national-scale source</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">2.31</div><div class="usl-stat-label">Avg. sources cited, escalated</div></div>
+        <div class="usl-stat"><div class="usl-stat-num">1.53</div><div class="usl-stat-label">Avg. sources cited, peaceful</div></div>
+      </div>
+      <p class="usl-panel-body">Yes — and by a wide margin. Escalated events in ACLED's own <code>source_scale</code> field get picked up by a national-scale outlet <strong>4.7x more often</strong> than peaceful ones, and are independently corroborated by more distinct sources on average. This is real, structural media-attention imbalance — not something to fix, but something to account for: it means <code>log_volume</code> and similar GDELT coverage-volume features are partly measuring "how much attention this got," which is entangled with severity, not a clean, independent predictor of it. Any later phase treating volume as a pure risk signal should keep this in mind.</p>
     </div>
 
     <div class="usl-panel">
@@ -3319,6 +3327,16 @@
         </svg>
       </div>
       <p class="usl-panel-body">To let a model actually respond to this instead of silently assuming 2020 is universal, a new <code>year</code> feature was added directly to both models' inputs — a simple, honest way to let a time-varying baseline exist in the model at all, per the mentor note on time-varying parameters.</p>
+      <p class="usl-panel-body"><strong>Being precise about what that does and doesn't fix:</strong> a single additive <code>year</code> feature only lets the model shift its overall baseline by era — it's a time-varying <em>intercept</em>, not time-varying <em>parameters</em> in the fuller sense the note meant, where a feature's whole relationship to the outcome could change shape across eras, not just its starting point. So that was checked directly: the correlation between each GDELT feature and escalation, computed separately for 2020 versus 2021-2024.</p>
+      <table class="usl-table">
+        <tr><th>Feature</th><th>Corr. with escalation, 2020</th><th>Corr. with escalation, 2021-2024</th></tr>
+        <tr><td><code>tone_word_count</code></td><td>+0.227</td><td class="usl-status-no">-0.037</td></tr>
+        <tr><td><code>avg_tone</code></td><td>-0.018</td><td class="usl-status-no">+0.282</td></tr>
+        <tr><td><code>tone_polarity</code></td><td>-0.102</td><td>-0.149</td></tr>
+        <tr><td><code>goldstein_trend</code></td><td>-0.032</td><td>-0.043</td></tr>
+        <tr><td><code>log_volume</code></td><td>-0.146</td><td>-0.069</td></tr>
+      </table>
+      <p class="usl-panel-body">Two of five features don't just weaken across eras, they <strong>flip sign</strong>: longer articles (<code>tone_word_count</code>) went with more escalation in 2020 but essentially nothing in 2021-2024, and average tone went from irrelevant in 2020 to a real positive relationship (less-negative coverage tracking <em>more</em> escalation) afterward. That's genuine evidence of time-varying parameters, not just a time-varying base rate — a single <code>year</code> feature can't capture a sign flip in another feature's own coefficient. The honest fix is a model that lets every coefficient vary with era (interaction terms between <code>year</code> and each feature, or separate per-era models) — flagged here as real, demonstrated-necessary future work, not built in this phase.</p>
     </div>
 
     <div class="usl-panel">

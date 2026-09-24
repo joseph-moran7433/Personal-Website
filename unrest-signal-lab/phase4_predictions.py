@@ -52,6 +52,10 @@ def within_year_split(df):
 
 def main():
     df = load_table()
+    n_before = len(df)
+    df = df[(df["had_gkg_match"] > 0) | (df["had_events_match"] > 0)].reset_index(drop=True)
+    print(f"Dropped {n_before - len(df)}/{n_before} events with zero GDELT signal before modeling "
+          f"(kept in training_table_v2.csv, excluded here -- no real pre-event news behind them).")
     train, test = within_year_split(df)
     X_train, y_train = train[FEATURE_COLS], train["label_escalated"]
     X_test = test[FEATURE_COLS]

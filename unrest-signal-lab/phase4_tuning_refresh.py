@@ -75,6 +75,9 @@ def evaluate(name, y_true, prob, pred):
 
 def main():
     df = load_table()
+    n_before = len(df)
+    df = df[(df["had_gkg_match"] > 0) | (df["had_events_match"] > 0)].reset_index(drop=True)
+    print(f"Dropped {n_before - len(df)}/{n_before} events with zero GDELT signal before modeling.")
     train, test = within_year_split(df)
     X_train, y_train = train[FEATURE_COLS], train["label_escalated"]
     X_test, y_test = test[FEATURE_COLS], test["label_escalated"]

@@ -1008,7 +1008,7 @@
        lines, flat borders, no glow/blur/animation. Same open/close
        overlay mechanics as the rest of the site.
        ═══════════════════════════════════════════════════════════════ */
-    #unrest-hub, #unrest-notebook, #unrest-phase1, #unrest-phase2, #unrest-phase3, #unrest-phase4 {
+    #unrest-hub, #unrest-notebook, #unrest-phase1, #unrest-phase2, #unrest-phase3, #unrest-phase4, #unrest-model-explainer {
       position: fixed; inset: 0; z-index: 150;
       background:
         repeating-linear-gradient(0deg, rgba(38,38,34,0.05) 0px, rgba(38,38,34,0.05) 1px, transparent 1px, transparent 28px),
@@ -1020,8 +1020,9 @@
       font-family: var(--font-body);
       color: var(--usl-text);
     }
-    #unrest-hub.open, #unrest-notebook.open, #unrest-phase1.open, #unrest-phase2.open, #unrest-phase3.open, #unrest-phase4.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+    #unrest-hub.open, #unrest-notebook.open, #unrest-phase1.open, #unrest-phase2.open, #unrest-phase3.open, #unrest-phase4.open, #unrest-model-explainer.open { opacity: 1; transform: translateX(0); pointer-events: all; }
     #unrest-hub { z-index: 151; }
+    #unrest-model-explainer { z-index: 160; }
 
     .usl-nav {
       position: sticky; top: 0; z-index: 10;
@@ -1220,6 +1221,34 @@
       cursor: pointer; font-weight: 700;
     }
     .usl-p4-cta:hover { background: var(--usl-accent-dim); }
+
+    .usl-model-link-btn {
+      display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--font-body-usl);
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.02em; color: var(--usl-accent);
+      background: none; border: 1px solid var(--usl-accent); border-radius: 999px; padding: 0.15rem 0.6rem;
+      cursor: pointer; margin-left: 0.6rem; text-decoration: none; vertical-align: middle;
+    }
+    .usl-model-link-btn:hover { background: var(--usl-accent); color: var(--usl-bg); }
+    .usl-explainer-banner {
+      background: rgba(217,176,115,0.12); border: 1px dashed var(--usl-accent); border-radius: 0.4rem;
+      padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: 0.88rem; color: var(--usl-muted);
+    }
+    .usl-explainer-nav { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; }
+    .usl-explainer-nav a {
+      font-family: var(--font-body-usl); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em;
+      padding: 0.5rem 1rem; border: 1px solid var(--usl-border); border-radius: 999px; color: var(--usl-text);
+      text-decoration: none; transition: border-color 0.15s, color 0.15s;
+    }
+    .usl-explainer-nav a:hover { border-color: var(--usl-accent); color: var(--usl-accent); }
+    .usl-explainer-section { padding: 2.5rem 0; border-bottom: 1px solid var(--usl-border); scroll-margin-top: 1.5rem; }
+    .usl-explainer-section:last-child { border-bottom: none; }
+    .usl-explainer-tagline { font-family: var(--font-display); font-style: italic; font-size: 1.15rem; color: var(--usl-accent); margin: 0.25rem 0 1.25rem; }
+    .usl-explainer-subhead {
+      font-family: var(--font-body-usl); text-transform: uppercase; font-size: 0.74rem; letter-spacing: 0.05em;
+      color: var(--usl-muted); margin: 1.75rem 0 0.6rem;
+    }
+    .usl-explainer-subhead:first-of-type { margin-top: 0.5rem; }
+    .usl-explainer-used-list { padding-left: 1.4rem; font-size: 0.92rem; line-height: 1.85; margin: 0; }
 
     .food-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.5rem; }
     .food-tool-card {
@@ -3926,12 +3955,12 @@
         <div class="usl-picker">
           <label for="phase4-year">Year (held-out test events only)</label>
           <select id="phase4-year" onchange="renderPhase4Tool()">
-            <option value="all" selected>All years, 2020-2024 (n=65)</option>
-            <option value="2020">2020 (n=25)</option>
-            <option value="2021">2021 (n=25)</option>
-            <option value="2022">2022 (n=6)</option>
-            <option value="2023">2023 (n=6)</option>
-            <option value="2024">2024 (n=3)</option>
+            <option value="all" selected>All years, 2020-2024 (n=45)</option>
+            <option value="2020">2020 (n=19)</option>
+            <option value="2021">2021 (n=17)</option>
+            <option value="2022">2022 (n=4)</option>
+            <option value="2023">2023 (n=3)</option>
+            <option value="2024">2024 (n=2)</option>
           </select>
         </div>
       </div>
@@ -3984,15 +4013,15 @@
         <div class="usl-report-section-heading"><span class="usl-report-section-num">1</span><h2>Executive Summary</h2></div>
         <div class="usl-exec-summary">
           <p class="usl-panel-body" style="margin-bottom:0.75rem;">This project asked a specific, doctrine-motivated question: given a U.S. protest is already planned or underway, can pre-event GDELT news coverage predict whether it escalates to violence — the kind of leading indicator ATP 3-39.33 (Crowd Control) already asks commanders to watch for by eye? Built entirely from two public datasets (ACLED and GDELT) across five phases of work.</p>
-          <p class="usl-panel-body" style="margin-bottom:0.75rem;"><strong>The honest answer: partially, and not yet well enough to trust.</strong> The best model at an actual decision threshold (logistic regression, tested on 65 real held-out events across 2020-2024) reaches <strong>68.6% precision and 53.3% recall</strong> — real signal, clearly above a coin flip, but far from reliable enough for an operational tool. Eight different model families were tested, two were properly tuned with cross-validation; one tree-based model (HistGBM) now ranks events slightly better in aggregate (PR-AUC), but still makes worse individual calls than logistic regression at the threshold that matters — evidence the bottleneck is data volume and feature richness, not algorithm choice.</p>
+          <p class="usl-panel-body" style="margin-bottom:0.75rem;"><strong>The honest answer: partially, and not yet well enough to trust.</strong> The best model at an actual decision threshold (logistic regression, tested on 45 real held-out events across 2020-2024 — restricted to events with at least one real GDELT match, see §4.1) reaches <strong>63.3% precision and 63.3% recall</strong> — real signal, clearly above a coin flip, but far from reliable enough for an operational tool. Eight different model families were tested, two were properly tuned with cross-validation; one tree-based model (HistGBM) ranks events better in aggregate (PR-AUC), but still makes far worse individual calls than logistic regression at the threshold that matters — evidence the bottleneck is data volume and feature richness, not algorithm choice.</p>
           <p class="usl-panel-body" style="margin-bottom:0;">Just as important as the accuracy number: this project caught and fixed three real methodological bugs along the way — a self-inflicted sampling bias, a cross-event data-leakage risk, and a train/test split that silently excluded three entire years from training — each documented with real before/after evidence rather than quietly patched. That process, as much as the final model, is the actual deliverable.</p>
         </div>
         <div class="usl-mini-chart-grid">
           <div class="usl-mini-chart-card">
             <div class="usl-mini-chart-title">Best model, held-out performance</div>
             <div class="usl-stat-row" style="margin-bottom:0;">
-              <div class="usl-stat"><div class="usl-stat-num">0.686</div><div class="usl-stat-label">Precision</div></div>
-              <div class="usl-stat"><div class="usl-stat-num">0.533</div><div class="usl-stat-label">Recall</div></div>
+              <div class="usl-stat"><div class="usl-stat-num">0.633</div><div class="usl-stat-label">Precision</div></div>
+              <div class="usl-stat"><div class="usl-stat-num">0.633</div><div class="usl-stat-label">Recall</div></div>
             </div>
           </div>
           <div class="usl-mini-chart-card">
@@ -4057,7 +4086,7 @@
             <text class="usl-bar-label" x="450.6" y="246" text-anchor="middle">(n=81)</text>
           </svg>
         </div>
-        <p class="usl-panel-body"><strong>81 of 255 events (31.8%) have no GDELT signal at all</strong> — no matched article, no Events-table row — after the geo-distance and sequence-anchoring filters remove wrong-location and leakage-risk matches. A Sept. 2026 refill pass closed part of this gap (down from 32.5%/83 events), but these events are not dropped; they're kept with missingness flags (<code>had_gkg_match</code>, <code>had_events_match</code>) that the models can use as their own signal, and it still means roughly a third of the labeled sample is being classified on ACLED-derived features and missingness patterns alone, not real pre-event news content.</p>
+        <p class="usl-panel-body"><strong>81 of 255 events (31.8%) have no GDELT signal at all</strong> — no matched article, no Events-table row — after the geo-distance and sequence-anchoring filters remove wrong-location and leakage-risk matches. A Sept. 2026 refill pass closed part of this gap (down from 32.5%/83 events). These 81 events are kept in <code>training_table_v2.csv</code> for transparency — they're real ACLED events and dropping them from the record would hide how incomplete GDELT's coverage actually is — but as of this update they are <strong>excluded from every model in §5-6</strong>. Earlier versions of this project trained and tested on them anyway, filling their missing tone/Goldstein features with imputed medians and letting the models lean on <code>had_gkg_match</code>/<code>had_events_match</code> as a substitute signal. That meant a third of the "held-out" accuracy numbers were really measuring how well a model guesses from missingness patterns and ACLED metadata alone, not from real pre-event news content — not what this project is supposed to be testing. Modeling now runs only on the <strong>174 events with at least one real match</strong>.</p>
 
         <h3 style="font-family:var(--font-display); font-size:1.15rem; margin:1.5rem 0 0.5rem;">4.2 — Coverage and escalation rate both swing hard by year</h3>
         <div class="usl-mini-chart-grid">
@@ -4126,19 +4155,19 @@
       <div class="usl-report-section" id="p4-s5">
         <div class="usl-report-section-heading"><span class="usl-report-section-num">5</span><h2>Modeling Approach</h2></div>
         <p class="usl-panel-body">Binary classification: <code>label_escalated</code> (0 = Peaceful protest, 1 = everything else, per ACLED's own <code>sub_event_type</code> taxonomy). 13 input features: seven <code>V2Tone</code> sub-values, Goldstein trend, QuadClass ratio, log-transformed coverage volume, two missingness flags, and <code>year</code>. Class weighting used throughout instead of synthetic oversampling, per the plan doc's own preference.</p>
-        <p class="usl-panel-body"><strong>Eight model families were tested</strong> on an identical, corrected <em>within-year</em> time-based split (earliest 75% of each year to training, latest 25% to test — every era gets real training exposure, unlike the global chronological split that silently gave zero 2022-2024 training examples): Logistic Regression, HistGradientBoostingClassifier, Random Forest, Extra Trees, XGBoost, SVM (RBF kernel), Gaussian Naive Bayes, and Balanced Random Forest. Random Forest and XGBoost were additionally tuned with 5-fold stratified cross-validation over a real hyperparameter grid.</p>
+        <p class="usl-panel-body"><strong>Eight model families were tested</strong> on an identical, corrected <em>within-year</em> time-based split (earliest 75% of each year to training, latest 25% to test — every era gets real training exposure, unlike the global chronological split that silently gave zero 2022-2024 training examples), restricted to the <strong>174/255 events with at least one real GDELT match</strong> (§4.1 — the 81 events with zero signal are kept in the dataset but excluded from every model here): Logistic Regression, HistGradientBoostingClassifier, Random Forest, Extra Trees, XGBoost, SVM (RBF kernel), Gaussian Naive Bayes, and Balanced Random Forest. Random Forest and XGBoost were additionally tuned with 5-fold stratified cross-validation over a real hyperparameter grid. Click <i data-lucide="info" style="width:11px;height:11px;vertical-align:-1px;"></i> next to any model name for a plain-language explainer of how it works and why it's here.</p>
         <table class="usl-table">
           <tr><th>Model</th><th>Precision</th><th>Recall</th><th>F1</th><th>PR-AUC</th><th>ROC-AUC</th></tr>
-          <tr><td><strong>Logistic Regression</strong></td><td class="usl-status-yes"><strong>0.686</strong></td><td class="usl-status-yes"><strong>0.533</strong></td><td class="usl-status-yes"><strong>0.600</strong></td><td>0.662</td><td>0.468</td></tr>
-          <tr><td>Random Forest (tuned)</td><td>0.615</td><td>0.356</td><td>0.451</td><td>0.671</td><td>0.443</td></tr>
-          <tr><td>XGBoost (tuned)</td><td>0.591</td><td>0.289</td><td>0.388</td><td>0.650</td><td>0.424</td></tr>
-          <tr><td>HistGBM</td><td>0.667</td><td>0.267</td><td>0.381</td><td class="usl-status-yes"><strong>0.702</strong></td><td class="usl-status-yes"><strong>0.502</strong></td></tr>
-          <tr><td>Extra Trees</td><td>0.583</td><td>0.311</td><td>0.406</td><td>0.681</td><td>0.477</td></tr>
-          <tr><td>Balanced Random Forest</td><td>0.615</td><td>0.356</td><td>0.451</td><td>0.674</td><td>0.461</td></tr>
-          <tr><td>SVM (RBF)</td><td class="usl-status-no">0.000</td><td class="usl-status-no">0.000</td><td>0.000</td><td>0.677</td><td>0.402</td></tr>
-          <tr><td>Gaussian Naive Bayes</td><td>0.333</td><td>0.044</td><td>0.078</td><td>0.660</td><td>0.469</td></tr>
+          <tr><td><strong>Logistic Regression</strong><a href="#" class="usl-model-link-btn" onclick="openModelExplainer('logreg'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td class="usl-status-yes"><strong>0.633</strong></td><td class="usl-status-yes"><strong>0.633</strong></td><td class="usl-status-yes"><strong>0.633</strong></td><td>0.613</td><td>0.389</td></tr>
+          <tr><td>Random Forest (tuned)<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('rf'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.579</td><td>0.367</td><td>0.449</td><td>0.584</td><td>0.389</td></tr>
+          <tr><td>XGBoost (tuned)<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('xgb'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.533</td><td>0.267</td><td>0.356</td><td>0.645</td><td>0.471</td></tr>
+          <tr><td>HistGBM<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('histgbm'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.429</td><td>0.100</td><td>0.162</td><td class="usl-status-yes"><strong>0.653</strong></td><td class="usl-status-yes"><strong>0.498</strong></td></tr>
+          <tr><td>Extra Trees<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('extratrees'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.500</td><td>0.267</td><td>0.348</td><td>0.603</td><td>0.413</td></tr>
+          <tr><td>Balanced Random Forest<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('brf'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.529</td><td>0.300</td><td>0.383</td><td>0.610</td><td>0.451</td></tr>
+          <tr><td>SVM (RBF)<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('svm'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td class="usl-status-no">0.000</td><td class="usl-status-no">0.000</td><td>0.000</td><td>0.641</td><td>0.427</td></tr>
+          <tr><td>Gaussian Naive Bayes<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('gnb'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.500</td><td>0.067</td><td>0.118</td><td>0.611</td><td>0.433</td></tr>
         </table>
-        <p class="usl-panel-body">These numbers shifted after the Sept. 2026 GDELT refill pass (§3) added real coverage to 2023/2024, and the shift is itself informative: <strong>logistic regression still wins every threshold-based metric</strong> — precision, recall, F1, the ones that determine whether a hard yes/no call is actually useful — but HistGBM now edges it out on the two ranking metrics, PR-AUC and ROC-AUC. That's not a contradiction: HistGBM's F1 (0.381) is still well below logistic regression's (0.600), meaning it ranks events better in aggregate without making better individual calls at the 0.5 threshold this project uses everywhere else. It's the same lesson SVM taught in the original version of this table — a ranking metric alone doesn't identify the most useful classifier — just with a less degenerate example this time.</p>
+        <p class="usl-panel-body">These numbers reflect two methodology fixes: the Sept. 2026 GDELT refill pass (§3) that added real coverage to 2023/2024, and excluding the 81 zero-signal events from modeling entirely (§4.1). The result is the cleanest version of the same lesson this table has taught since Phase 3: <strong>logistic regression wins every threshold-based metric outright</strong> — precision, recall, and F1 are all tied at 0.633, the best of any model tested — while HistGBM ranks events better in aggregate (highest PR-AUC and ROC-AUC) without being more <em>useful</em>: its F1 (0.162) is barely a quarter of logistic regression's. A ranking metric alone still doesn't identify the most useful classifier at an actual decision threshold; it just tells a different, narrower story than accuracy at the 0.5 cutoff this project uses everywhere else.</p>
       </div>
 
       <div class="usl-report-section" id="p4-s6">
@@ -4150,8 +4179,8 @@
               <svg class="chart-svg" viewBox="0 0 480 280" role="img" aria-label="ROC curve comparing logistic regression and HistGBM, the current best-PR-AUC model">
                 <line class="usl-gridline" x1="50" y1="20" x2="450" y2="20"/><line class="usl-gridline" x1="50" y1="220" x2="450" y2="220"/>
                 <line x1="50" y1="220" x2="450" y2="20" stroke="#9a9488" stroke-width="1.5" stroke-dasharray="4,3"/>
-                <path d="M50.0,220.0 L70.0,220.0 L70.0,211.2 L130.0,211.2 L130.0,188.8 L150.0,188.8 L150.0,184.4 L190.0,162.2 L190.0,157.8 L210.0,157.8 L210.0,153.4 L230.0,153.4 L230.0,148.8 L250.0,148.8 L250.0,113.4 L270.0,113.4 L270.0,108.8 L290.0,108.8 L290.0,104.4 L330.0,82.2 L350.0,82.2 L350.0,77.8 L370.0,77.8 L370.0,68.8 L370.0,51.2 L390.0,51.2 L390.0,42.2 L390.0,20.0 L450.0,20.0" fill="none" stroke="#4b6b3f" stroke-width="2.5"/>
-                <path d="M50.0,220.0 L50.0,215.6 L70.0,215.6 L70.0,211.2 L110.0,188.8 L130.0,188.8 L130.0,184.4 L150.0,184.4 L150.0,171.2 L170.0,171.2 L170.0,162.2 L190.0,162.2 L190.0,153.4 L210.0,153.4 L250.0,113.4 L270.0,113.4 L270.0,108.8 L290.0,108.8 L290.0,104.4 L310.0,104.4 L310.0,91.2 L330.0,91.2 L330.0,86.6 L330.0,77.8 L330.0,60.0 L350.0,60.0 L390.0,37.8 L390.0,28.8 L410.0,28.8 L410.0,24.4 L430.0,24.4 L430.0,20.0 L450.0,20.0" fill="none" stroke="#a8402b" stroke-width="2.5"/>
+                <path d="M50.0,220.0 L50.0,213.4 L76.8,213.4 L76.8,206.6 L156.8,206.6 L156.8,200.0 L183.2,200.0 L183.2,193.4 L210.0,193.4 L210.0,180.0 L263.2,180.0 L263.2,140.0 L290.0,140.0 L290.0,126.6 L316.8,126.6 L316.8,106.6 L343.2,106.6 L343.2,73.4 L370.0,73.4 L370.0,60.0 L396.8,60.0 L396.8,20.0 L450.0,20.0" fill="none" stroke="#4b6b3f" stroke-width="2.5"/>
+                <path d="M50.0,220.0 L50.0,213.4 L156.8,213.4 L156.8,166.6 L210.0,166.6 L210.0,160.0 L236.8,160.0 L236.8,126.6 L263.2,126.6 L263.2,93.4 L263.2,80.0 L263.2,73.4 L316.8,73.4 L316.8,66.6 L343.2,66.6 L343.2,53.4 L370.0,53.4 L370.0,26.6 L396.8,26.6 L396.8,20.0 L450.0,20.0" fill="none" stroke="#a8402b" stroke-width="2.5"/>
                 <text class="usl-bar-label" x="250" y="255" text-anchor="middle" font-size="10">False Positive Rate &rarr;</text>
                 <rect x="50" y="4" width="10" height="10" rx="2" style="fill:#4b6b3f"/><text class="usl-bar-label" x="64" y="12" font-size="9">Logistic Regression</text>
                 <rect x="290" y="4" width="10" height="10" rx="2" style="fill:#a8402b"/><text class="usl-bar-label" x="304" y="12" font-size="9">HistGBM (best PR-AUC)</text>
@@ -4162,16 +4191,16 @@
             <div class="usl-raw-label">Predictions by year — Logistic Regression, all test events</div>
             <table class="usl-table">
               <tr><th>Year</th><th>Test n</th><th>Accuracy</th></tr>
-              <tr><td>2020</td><td>25</td><td>64.0%</td></tr>
-              <tr><td>2021</td><td>25</td><td>56.0%</td></tr>
-              <tr><td>2022</td><td>6</td><td class="usl-status-no">0.0%</td></tr>
-              <tr><td>2023</td><td>6</td><td class="usl-status-no">0.0%</td></tr>
-              <tr><td>2024</td><td>3</td><td>100.0%</td></tr>
+              <tr><td>2020</td><td>19</td><td>52.6%</td></tr>
+              <tr><td>2021</td><td>17</td><td>64.7%</td></tr>
+              <tr><td>2022</td><td>4</td><td class="usl-status-no">0.0%</td></tr>
+              <tr><td>2023</td><td>3</td><td class="usl-status-no">0.0%</td></tr>
+              <tr><td>2024</td><td>2</td><td>100.0%</td></tr>
             </table>
             <p class="usl-panel-body" style="margin-top:0.75rem;">Explore every one of these numbers yourself, live, in the <a href="#" onclick="switchPhase4View('tool'); return false;" style="color:var(--usl-accent);">interactive tool</a> — pick the model and year directly.</p>
           </div>
         </div>
-        <p class="usl-panel-body"><strong>2022 and 2023 both hit exactly 0% accuracy</strong> — every single one of the 6 test events in each year was mispredicted. 2024's 100% is the mirror-image artifact, on just 3 events. None of these three numbers should be read as "the model works/fails in year X" — each is a single-digit sample size, and this is precisely the small-sample warning the tool itself displays whenever a thin year is selected.</p>
+        <p class="usl-panel-body"><strong>2022 and 2023 both hit exactly 0% accuracy</strong> — every single one of the 4 and 3 test events in those years, respectively, was mispredicted. 2024's 100% is the mirror-image artifact, on just 2 events. None of these three numbers should be read as "the model works/fails in year X" — each is a single-digit sample size, made smaller still by excluding zero-signal events (§4.1, §5), and this is precisely the small-sample warning the tool itself displays whenever a thin year is selected.</p>
       </div>
 
       <div class="usl-report-section" id="p4-s7">
@@ -4179,15 +4208,15 @@
         <p class="usl-panel-body">Five real, evidenced reasons, not speculation:</p>
         <table class="usl-table">
           <tr><th>Reason</th><th>Evidence</th></tr>
-          <tr><td><strong>Sample size</strong></td><td>190 training rows, 13 features. Eight model families of very different inductive bias all cluster within a few points of 0.65-0.68 PR-AUC — the classic signature of a data-limited, not algorithm-limited, ceiling (§5).</td></tr>
-          <tr><td><strong>Partial feature coverage</strong></td><td>31.8% of events have zero GDELT signal (§4.1), down from 32.5% after a Sept. 2026 refill pass; GCAM emotion dimensions were excluded entirely after one event's column alone dry-ran at 22.8 GB.</td></tr>
+          <tr><td><strong>Sample size</strong></td><td>129 training rows, 13 features — smaller still since §4.1's zero-signal events were excluded from modeling. Eight model families of very different inductive bias all cluster within a few points of 0.58-0.65 PR-AUC — the classic signature of a data-limited, not algorithm-limited, ceiling (§5).</td></tr>
+          <tr><td><strong>Partial feature coverage</strong></td><td>31.8% of events have zero GDELT signal (§4.1), down from 32.5% after a Sept. 2026 refill pass. Those events are now excluded from modeling entirely (§5) rather than imputed, which is more honest but shrinks an already-small dataset by another third; GCAM emotion dimensions were excluded entirely after one event's column alone dry-ran at 22.8 GB.</td></tr>
           <tr><td><strong>Weak individual features</strong></td><td>Every feature's peaceful-vs-escalated mean gap is small relative to its own standard deviation (§4.4) — there's no single strong signal to lean on.</td></tr>
           <tr><td><strong>Non-stationary relationships</strong></td><td>Feature-outcome correlations flip sign across eras (§4.5); a model can't learn a stable rule from a relationship that isn't stable.</td></tr>
           <tr><td><strong>Reporting-intensity confound</strong></td><td>Escalated events get national-scale press pickup 4.7x more often than peaceful ones (Phase 2) — volume-based features partly measure "how much attention this got," entangled with, not independent of, severity.</td></tr>
         </table>
         <p class="usl-panel-body"><strong>Concrete steps forward, in priority order:</strong></p>
         <ol style="padding-left:1.5rem; font-size:0.92rem; line-height:1.9;">
-          <li><strong>More labeled events, especially 2022-2024</strong> — still this project's thinnest years (56 events combined vs. 100+99 for 2020-2021). This is the single highest-leverage fix identified across all five phases.</li>
+          <li><strong>More labeled events, especially 2022-2024</strong> — still this project's thinnest years, and thinner again once zero-signal events are excluded from modeling (34 usable events combined vs. 75+65 for 2020-2021 alone). This is the single highest-leverage fix identified across all five phases.</li>
           <li><strong>Keep closing GKG coverage for 2022-2024</strong> — a Sept. 2026 refill pass moved 2023 from 0%&rarr;41% and 2024 from 0%&rarr;50% (§4.2), spending the remaining monthly quota to do it; 2022 (46%) and the rest of 2023/2024 are still a real collection gap, not a real absence of news, and need a fresh month's quota to finish.</li>
           <li><strong>Probability calibration or a genuinely time-varying decision threshold</strong> — Phase 3 showed isotonic calibration helps the Brier score but can't manufacture ranking power a model doesn't have; the real fix needs to travel with more representative training data.</li>
           <li><strong>Richer features</strong> — GCAM emotion dimensions (cost-prohibitive so far), real NLP embeddings instead of bag-of-words tone, structured opposing-actor coding instead of raw entity counts.</li>
@@ -4222,7 +4251,7 @@
 
       <div class="usl-report-section" id="p4-s10">
         <div class="usl-report-section-heading"><span class="usl-report-section-num">10</span><h2>Conclusion &amp; Next Steps</h2></div>
-        <p class="usl-panel-body">This project set out to test whether open-source news signal could give early warning of protest escalation, in the spirit of ATP 3-39.33. Across five phases it built a real, reproducible, safety-conscious data pipeline; caught and fixed three genuine methodological bugs before they reached a model; tested eight model families with real tuning rather than assuming one was good enough; spent a follow-up data-refill pass closing part of a real GDELT collection gap once quota allowed; and built the "top indicators" explainability the original plan always wanted. The resulting model — precision 0.686, recall 0.533 on real held-out data — is honest, defensible, and not yet good enough to operationalize. That gap is attributed, with evidence, to data volume and feature richness rather than to model choice, which is itself a useful, if modest, conclusion: the next phase of this work should spend its effort on data, not on searching for a cleverer algorithm.</p>
+        <p class="usl-panel-body">This project set out to test whether open-source news signal could give early warning of protest escalation, in the spirit of ATP 3-39.33. Across five phases it built a real, reproducible, safety-conscious data pipeline; caught and fixed four genuine methodological bugs before or after they reached a model — most recently, discovering that events with zero real GDELT signal were being trained and tested on anyway, propped up by imputed medians and missingness flags instead of real news content, and excluding them; tested eight model families with real tuning rather than assuming one was good enough; spent a follow-up data-refill pass closing part of a real GDELT collection gap once quota allowed; and built the "top indicators" explainability the original plan always wanted. The resulting model — precision 0.633, recall 0.633 on real held-out data, restricted to events with actual pre-event coverage — is honest, defensible, and not yet good enough to operationalize. That gap is attributed, with evidence, to data volume and feature richness rather than to model choice, which is itself a useful, if modest, conclusion: the next phase of this work should spend its effort on data, not on searching for a cleverer algorithm.</p>
         <p class="usl-panel-body" style="margin-bottom:0;">Every script, every pulled byte, every model, and every honest dead end in this report is committed to the public repository behind this site — nothing here is asserted without a real number backing it up.</p>
       </div>
 
@@ -4232,6 +4261,180 @@
           <span>Back to the interactive tool</span>
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div id="unrest-model-explainer">
+  <div class="usl-nav">
+    <button class="usl-back" onclick="closeModelExplainer()">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Phase 4</span>
+    </button>
+    <div class="usl-breadcrumb"><span>Unrest Predictions</span><span>/</span><span>Phase 4</span><span>/</span><span>Model Explainers</span></div>
+  </div>
+
+  <div class="usl-body" style="max-width:900px; margin:0 auto; padding:2.5rem 1.5rem 5rem;">
+    <div class="usl-hero-badge">Supplementary — Not Part Of The Formal Report</div>
+    <h1 class="usl-title" style="margin-top:0.75rem;">What These Models Actually Are</h1>
+    <p class="usl-summary">Eight sections, one per model tested in this project. Each starts with a plain-language, no-jargon version anyone can follow, then goes deeper into the real mechanics, then covers where the model normally gets used in the world and specifically why it was tried here. This page exists so the report itself can stay dense and technical without losing anyone — if a term in the report is unfamiliar, its model's section here is written for exactly that reader.</p>
+
+    <div class="usl-explainer-banner">This page is a glossary/explainer, written separately from the report so the report itself can assume the reader already knows what these models are. Nothing on this page is a finding — all real results live in the <a href="#" onclick="closeModelExplainer(); switchPhase4View('report'); return false;" style="color:var(--usl-accent);">Phase 4 report</a>.</div>
+
+    <div class="usl-explainer-nav">
+      <a href="#explain-logreg">Logistic Regression</a>
+      <a href="#explain-rf">Random Forest</a>
+      <a href="#explain-xgb">XGBoost</a>
+      <a href="#explain-histgbm">HistGBM</a>
+      <a href="#explain-extratrees">Extra Trees</a>
+      <a href="#explain-svm">SVM (RBF)</a>
+      <a href="#explain-gnb">Gaussian Naive Bayes</a>
+      <a href="#explain-brf">Balanced Random Forest</a>
+    </div>
+
+    <div class="usl-explainer-section" id="explain-logreg">
+      <h2>Logistic Regression</h2>
+      <p class="usl-explainer-tagline">A method that estimates the probability of one of two outcomes by fitting a smooth S-shaped curve to the data.</p>
+      <div class="usl-explainer-subhead">The simple version</div>
+      <p class="usl-panel-body">Imagine deciding "will this protest turn violent, yes or no?" by looking at one number — say, how negative the news coverage sounds. Logistic regression finds the exact point on that number's scale where "yes" starts to outweigh "no." It does this across <em>several</em> numbers at once (tone, article length, word count…), automatically weighing which ones matter more. Instead of a flat yes/no, it outputs something like "73% chance this escalates," and this project rounds that at 0.5 to make the final call.</p>
+      <div class="usl-explainer-subhead">How it actually works</div>
+      <p class="usl-panel-body">The model computes a weighted sum of every input feature — exactly like an ordinary regression line — then squashes that raw number through a <strong>sigmoid function</strong>, which maps any value onto a smooth 0-to-1 curve. The weights are learned by finding whichever combination best separates historical escalated events from peaceful ones, specifically by maximizing <em>log-likelihood</em> (a score for "how well do these probabilities match what actually happened"). Because it's linear, the result is also easy to read afterward: a bigger weight means bigger influence, and its sign tells you the direction.</p>
+      <div class="usl-explainer-subhead">Where it's normally used</div>
+      <ul class="usl-explainer-used-list">
+        <li>Spam filtering and email classification</li>
+        <li>Medical diagnosis (disease present / absent from test results)</li>
+        <li>Credit scoring and loan default prediction</li>
+        <li>Click-through-rate and conversion prediction in advertising</li>
+      </ul>
+      <div class="usl-explainer-subhead">Why this project used it</div>
+      <p class="usl-panel-body">With fewer than 200 training rows, complex models have room to memorize noise instead of finding real signal — Phase 1 demonstrated exactly that. Logistic regression's small number of parameters (one per feature) makes it far less prone to overfitting a dataset this size, and its probability outputs are trivial to explain to a non-technical reader — which is also why it ended up as this project's best-performing model on every threshold-based metric.</p>
+    </div>
+
+    <div class="usl-explainer-section" id="explain-rf">
+      <h2>Random Forest</h2>
+      <p class="usl-explainer-tagline">A "committee" of many decision trees that vote together on the answer.</p>
+      <div class="usl-explainer-subhead">The simple version</div>
+      <p class="usl-panel-body">Picture asking 300 analysts to each look at a slightly different, randomly-shuffled slice of the historical protests, and each writes their own simple flowchart of yes/no questions ("is avg_tone below −2? then check goldstein_trend…"). Average all 300 flowcharts' guesses together. Because each tree sees different data and different features, their individual mistakes tend to cancel out, and the group's combined guess is usually more reliable than any one tree alone.</p>
+      <div class="usl-explainer-subhead">How it actually works</div>
+      <p class="usl-panel-body">Each tree trains on a <strong>bootstrap resample</strong> of the training data (sampling with replacement), and at every split it only considers a random subset of the available features — this randomness is what makes the trees disagree with each other, a technique called <em>bagging</em>. The final prediction averages (for a probability) or majority-votes (for a hard class) across all trees. Settings like <code>max_depth</code> and <code>min_samples_leaf</code> limit how detailed any single tree's flowchart is allowed to get, which stops one tree from over-fitting its own quirks.</p>
+      <div class="usl-explainer-subhead">Where it's normally used</div>
+      <ul class="usl-explainer-used-list">
+        <li>Fraud detection and anomaly flagging</li>
+        <li>Recommendation systems</li>
+        <li>Ecology and species-classification from field data</li>
+        <li>General-purpose tabular data problems needing good out-of-box accuracy with little tuning</li>
+      </ul>
+      <div class="usl-explainer-subhead">Why this project used it</div>
+      <p class="usl-panel-body">This project wanted a fundamentally different kind of model from logistic regression — one that can automatically catch nonlinear patterns and feature interactions a linear model can't (e.g. "tone matters a lot <em>only</em> when volume is also high"). Random Forest was the direct test of whether that extra flexibility would actually beat the simple model here.</p>
+    </div>
+
+    <div class="usl-explainer-section" id="explain-xgb">
+      <h2>XGBoost</h2>
+      <p class="usl-explainer-tagline">A sequence of small decision trees, each one built specifically to fix the mistakes of the trees before it.</p>
+      <div class="usl-explainer-subhead">The simple version</div>
+      <p class="usl-panel-body">Picture the same flowchart-writing analysts as Random Forest, but this time they work one after another, not independently. The second analyst is told exactly which cases the first one got wrong and focuses only on fixing those. The third fixes what the first two still miss, and so on. After many rounds, the chain of small corrections adds up to a sharper prediction than any single flowchart could give.</p>
+      <div class="usl-explainer-subhead">How it actually works</div>
+      <p class="usl-panel-body">This is <strong>gradient boosting</strong>: each new tree is fit not to the original labels, but to the residual error (technically, the gradient of the loss function) left over from the trees built so far. XGBoost adds explicit regularization terms (<code>reg_alpha</code>, <code>reg_lambda</code> in this project's settings) that penalize overly complex trees — this matters a lot on a small dataset like this one, where an unregularized booster would happily memorize the training set. Final predictions are the sum of every tree's small correction, passed through the same sigmoid logistic regression uses, to get a probability.</p>
+      <div class="usl-explainer-subhead">Where it's normally used</div>
+      <ul class="usl-explainer-used-list">
+        <li>Kaggle-winning models on structured/tabular datasets</li>
+        <li>Credit risk and insurance underwriting</li>
+        <li>Search ranking and ad click-through prediction</li>
+      </ul>
+      <div class="usl-explainer-subhead">Why this project used it</div>
+      <p class="usl-panel-body">The original plan doc specifically asked for a boosted-tree model with real L1/L2 regularization knobs, which scikit-learn's own HistGBM doesn't expose as directly. XGBoost was brought in to test whether that extra regularization control could tame overfitting on this small dataset better than an off-the-shelf booster — and after the Sept. 2026 data refill, it became the model with the single best PR-AUC of the eight tested.</p>
+    </div>
+
+    <div class="usl-explainer-section" id="explain-histgbm">
+      <h2>HistGBM <span style="font-size:0.7em; color:var(--usl-muted); font-weight:400;">(HistGradientBoostingClassifier)</span></h2>
+      <p class="usl-explainer-tagline">Scikit-learn's own fast, built-in version of gradient boosting — closely related to XGBoost.</p>
+      <div class="usl-explainer-subhead">The simple version</div>
+      <p class="usl-panel-body">Same "committee that corrects its own mistakes one round at a time" idea as XGBoost, but instead of comparing every individual feature value to find the best split (slow), HistGBM first buckets every feature into a small number of bins — like grouping ages into "0–10, 11–20, 21–30…" instead of every single age. That's dramatically faster on large datasets, at a small cost in split precision.</p>
+      <div class="usl-explainer-subhead">How it actually works</div>
+      <p class="usl-panel-body">HistGBM is a <strong>histogram-based</strong> gradient boosting implementation: it discretizes continuous features into histograms before searching for the best split point, which is what lets it scale to millions of rows. On this project's small dataset that speed advantage barely matters, but it ships with sensible defaults and natively handles missing values (<code>NaN</code>) without a separate imputation step — convenient given this project's very real missing-data problem.</p>
+      <div class="usl-explainer-subhead">Where it's normally used</div>
+      <ul class="usl-explainer-used-list">
+        <li>Large-scale production ML pipelines where training speed matters</li>
+        <li>Churn prediction and logistics forecasting at scale</li>
+        <li>Any large tabular dataset with real missing values</li>
+      </ul>
+      <div class="usl-explainer-subhead">Why this project used it</div>
+      <p class="usl-panel-body">Included as the "fast modern boosting baseline" alongside XGBoost, specifically to check whether XGBoost's extra regularization knobs actually earn their complexity, or whether a simpler, faster booster does just as well on data this size.</p>
+    </div>
+
+    <div class="usl-explainer-section" id="explain-extratrees">
+      <h2>Extra Trees <span style="font-size:0.7em; color:var(--usl-muted); font-weight:400;">(ExtraTreesClassifier)</span></h2>
+      <p class="usl-explainer-tagline">Like Random Forest's committee of trees, but each analyst picks their yes/no questions almost at random instead of carefully searching for the best one.</p>
+      <div class="usl-explainer-subhead">The simple version</div>
+      <p class="usl-panel-body">Random Forest's trees still search for the single best split at each step (among a random subset of features). Extra Trees goes one step further: it picks the threshold value itself randomly too, instead of searching for the optimal cut-point. That sounds worse, but the extra randomness pushes individual trees to make more varied, less-correlated mistakes — which, once averaged across the whole committee, often reduces overfitting even further on noisy data.</p>
+      <div class="usl-explainer-subhead">How it actually works</div>
+      <p class="usl-panel-body">Same bagging/ensembling machinery as Random Forest, but split points are chosen randomly rather than by an exhaustive search, and the full training set (not a bootstrap resample) is typically used per tree — trading a bit of individual-tree accuracy for a lot of speed and variance reduction.</p>
+      <div class="usl-explainer-subhead">Where it's normally used</div>
+      <ul class="usl-explainer-used-list">
+        <li>Image classification feature pipelines</li>
+        <li>Sensor and time-series feature sets</li>
+        <li>Other noisy, high-variance tabular problems where standard Random Forest tends to overfit</li>
+      </ul>
+      <div class="usl-explainer-subhead">Why this project used it</div>
+      <p class="usl-panel-body">Tested as a specifically "more randomized, often more robust on small/noisy data" alternative to Random Forest, to see if the extra randomness helped on this project's noisy, missing-data-heavy features. In the results it performed almost identically to Random Forest — suggesting the extra randomness wasn't the limiting factor here.</p>
+    </div>
+
+    <div class="usl-explainer-section" id="explain-svm">
+      <h2>SVM <span style="font-size:0.7em; color:var(--usl-muted); font-weight:400;">(Support Vector Machine, RBF kernel)</span></h2>
+      <p class="usl-explainer-tagline">A model that draws the widest possible dividing line between the two outcome groups, using a "bent" version of space where that line doesn't have to be straight.</p>
+      <div class="usl-explainer-subhead">The simple version</div>
+      <p class="usl-panel-body">Imagine plotting every historical protest as a dot in space, colored by outcome (peaceful vs. escalated), and trying to draw a boundary that separates the two colors as cleanly as possible, with as much breathing room around it as it can find. If a straight line can't do it, an SVM with an RBF ("radial basis function") kernel effectively warps the space into extra dimensions where a straight boundary <em>can</em> separate the groups, then maps that boundary back down for prediction.</p>
+      <div class="usl-explainer-subhead">How it actually works</div>
+      <p class="usl-panel-body">SVM's objective is to maximize the <strong>margin</strong> — the distance between the dividing boundary and the nearest points of either class (the "support vectors"). The RBF kernel computes similarity between two points as a function of their distance, letting the model draw smoothly curved decision boundaries without ever explicitly computing the higher-dimensional space. <code>class_weight="balanced"</code> reweights the margin penalty so the much-larger "peaceful" class doesn't dominate the boundary.</p>
+      <div class="usl-explainer-subhead">Where it's normally used</div>
+      <ul class="usl-explainer-used-list">
+        <li>Text classification</li>
+        <li>Bioinformatics (gene and protein classification)</li>
+        <li>Image recognition — one of the strongest small/medium-dataset classifiers before deep learning became dominant</li>
+      </ul>
+      <div class="usl-explainer-subhead">Why this project used it</div>
+      <p class="usl-panel-body">Tested specifically as a margin-based method with no tree-overfitting risk, to see if it could find a cleaner separating boundary than the tree-based or linear models. In this project's results it degenerated to predicting "peaceful" for every single test event — a genuinely informative negative finding, and the reason §5 of the report warns that a high ranking-metric score can hide a completely unusable model.</p>
+    </div>
+
+    <div class="usl-explainer-section" id="explain-gnb">
+      <h2>Gaussian Naive Bayes</h2>
+      <p class="usl-explainer-tagline">A very simple, fast probability calculator that assumes every feature affects the outcome completely independently of every other feature.</p>
+      <div class="usl-explainer-subhead">The simple version</div>
+      <p class="usl-panel-body">Imagine estimating "how likely is this protest to escalate" by looking at each clue — article tone, word count, Goldstein score — completely separately: "given historical escalated protests, how likely is this exact tone value?" for each clue individually, then multiplying all those individual likelihoods together. That's Naive Bayes. It's "naive" specifically because it ignores that these clues are often related to each other (longer articles often also have more extreme tone) — it just pretends they aren't.</p>
+      <div class="usl-explainer-subhead">How it actually works</div>
+      <p class="usl-panel-body">For each feature, the model fits a separate Gaussian (bell curve) distribution per class from the training data, then uses <strong>Bayes' theorem</strong> to combine every feature's individual likelihood into one final posterior probability. Because there's no interaction modeling at all, it needs very little training data to fit and runs essentially instantly — but it also can't capture any real relationship between features.</p>
+      <div class="usl-explainer-subhead">Where it's normally used</div>
+      <ul class="usl-explainer-used-list">
+        <li>Classic spam-email filtering</li>
+        <li>Fast baseline classifiers in text and document classification</li>
+        <li>Sanity-check baselines in most classification pipelines</li>
+      </ul>
+      <div class="usl-explainer-subhead">Why this project used it</div>
+      <p class="usl-panel-body">Included as a "does complexity even matter" sanity check — if this simple, assumption-heavy model performs close to the sophisticated ones, that's evidence the sophisticated models aren't finding much real signal either. It clearly performed worse than the field here, which at least confirms some real, non-independent structure exists in the features.</p>
+    </div>
+
+    <div class="usl-explainer-section" id="explain-brf">
+      <h2>Balanced Random Forest</h2>
+      <p class="usl-explainer-tagline">The same "committee of trees" idea as Random Forest, but each tree is specifically forced to train on a class-balanced sample instead of the real, imbalanced mix.</p>
+      <div class="usl-explainer-subhead">The simple version</div>
+      <p class="usl-panel-body">In this project, only about a third of training events are "escalated," so an ordinary model can get decent-looking accuracy by mostly just guessing "peaceful" every time. Balanced Random Forest fixes this at the source: for every tree in the committee, it resamples so that exactly half its training draw comes from each class, forcing every tree to actually learn to distinguish escalated events instead of defaulting to the majority class.</p>
+      <div class="usl-explainer-subhead">How it actually works</div>
+      <p class="usl-panel-body">Identical bagging/tree mechanism to standard Random Forest, except the per-tree bootstrap sample is drawn to enforce a 1:1 class ratio (<code>sampling_strategy="all"</code>, <code>replacement=True</code> in this project's settings), rather than relying solely on a <code>class_weight</code> parameter to reweight errors after the fact.</p>
+      <div class="usl-explainer-subhead">Where it's normally used</div>
+      <ul class="usl-explainer-used-list">
+        <li>Fraud detection (rare fraudulent transactions among many legitimate ones)</li>
+        <li>Rare-disease diagnosis</li>
+        <li>Manufacturing defect detection</li>
+      </ul>
+      <div class="usl-explainer-subhead">Why this project used it</div>
+      <p class="usl-panel-body">This project's mentors specifically flagged class imbalance handling as a requirement. Balanced Random Forest was tested as a direct, resampling-based answer to that requirement, alongside the <code>class_weight="balanced"</code> approach used in every other model.</p>
+    </div>
+
+    <div style="text-align:center; margin:3rem 0 1rem;">
+      <button class="usl-p4-cta" onclick="closeModelExplainer(); switchPhase4View('report');">
+        <i data-lucide="file-text" style="width:16px;height:16px;"></i>
+        <span>Back to the full report</span>
+      </button>
     </div>
   </div>
 </div>
@@ -5614,7 +5817,7 @@ function renderProjectDetail(p) {
 // All full-page food overlays, kept in a list so opening one can reliably
 // close the rest — only one of these (and #project-detail) is ever open
 // at a time, no matter which nav path got you there.
-const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2', 'unrest-phase3', 'unrest-phase4'];
+const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2', 'unrest-phase3', 'unrest-phase4', 'unrest-model-explainer'];
 function closeAllToolOverlays() {
   TOOL_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
 }
@@ -5797,6 +6000,25 @@ function switchPhase4View(view) {
   document.getElementById('phase4-tab-tool').classList.toggle('active', view === 'tool');
   document.getElementById('phase4-tab-report').classList.toggle('active', view === 'report');
   document.querySelector('#unrest-phase4 .usl-body').scrollIntoView({ block: 'start' });
+  lucide.createIcons();
+}
+
+function openModelExplainer(modelKey) {
+  document.getElementById('unrest-phase4').classList.remove('open');
+  document.getElementById('unrest-model-explainer').classList.add('open');
+  document.getElementById('unrest-model-explainer').scrollTop = 0;
+  lucide.createIcons();
+  if (modelKey) {
+    setTimeout(() => {
+      const el = document.getElementById('explain-' + modelKey);
+      if (el) el.scrollIntoView({ block: 'start' });
+    }, 60);
+  }
+}
+
+function closeModelExplainer() {
+  document.getElementById('unrest-model-explainer').classList.remove('open');
+  document.getElementById('unrest-phase4').classList.add('open');
   lucide.createIcons();
 }
 
@@ -6306,73 +6528,52 @@ function renderPredictionPickerV2() {
 // purpose: this project already showed train-set numbers are systematically
 // misleading (Phase 1 overfitting, Phase 2/3 calibration collapse).
 const PHASE4_PREDICTIONS = [
-   {i:'USA908',d:'2020-06-20',y:2020,t:0,logreg:0.6844,rf:0.663,xgb:0.872,histgbm:0.7698},
-   {i:'USA217',d:'2020-06-25',y:2020,t:0,logreg:0.5956,rf:0.7169,xgb:0.7713,histgbm:0.7887},
-   {i:'USA845',d:'2020-06-26',y:2020,t:0,logreg:0.8087,rf:0.5899,xgb:0.5942,histgbm:0.5845},
-   {i:'USA219',d:'2020-06-27',y:2020,t:0,logreg:0.688,rf:0.6231,xgb:0.6196,histgbm:0.5201},
-   {i:'USA969',d:'2020-06-27',y:2020,t:0,logreg:0.5833,rf:0.7219,xgb:0.7784,histgbm:0.8765},
-   {i:'USA740',d:'2020-06-27',y:2020,t:0,logreg:0.405,rf:0.5847,xgb:0.5148,histgbm:0.4648},
-   {i:'USA648',d:'2020-06-27',y:2020,t:0,logreg:0.5059,rf:0.6276,xgb:0.5859,histgbm:0.4006},
-   {i:'USA1004',d:'2020-06-29',y:2020,t:0,logreg:0.5956,rf:0.7169,xgb:0.7713,histgbm:0.7887},
-   {i:'USA1664',d:'2020-07-01',y:2020,t:1,logreg:0.5096,rf:0.5289,xgb:0.4875,histgbm:0.8225},
-   {i:'USA555',d:'2020-07-02',y:2020,t:0,logreg:0.6567,rf:0.6344,xgb:0.6441,histgbm:0.3485},
-   {i:'USA427',d:'2020-07-04',y:2020,t:0,logreg:0.4407,rf:0.5027,xgb:0.2774,histgbm:0.3303},
-   {i:'USA3247',d:'2020-07-13',y:2020,t:1,logreg:0.4978,rf:0.422,xgb:0.327,histgbm:0.1765},
-   {i:'USA3069',d:'2020-07-23',y:2020,t:1,logreg:0.5956,rf:0.7169,xgb:0.7713,histgbm:0.7887},
-   {i:'USA3702',d:'2020-08-01',y:2020,t:1,logreg:0.7105,rf:0.6354,xgb:0.6056,histgbm:0.5434},
-   {i:'USA3784',d:'2020-08-02',y:2020,t:1,logreg:0.5956,rf:0.7169,xgb:0.7713,histgbm:0.7887},
-   {i:'USA4487',d:'2020-08-14',y:2020,t:1,logreg:0.5956,rf:0.7169,xgb:0.7713,histgbm:0.7887},
-   {i:'USA10469',d:'2020-08-16',y:2020,t:1,logreg:0.6323,rf:0.5294,xgb:0.4771,histgbm:0.4731},
-   {i:'USA10993',d:'2020-08-16',y:2020,t:1,logreg:0.5956,rf:0.7169,xgb:0.7713,histgbm:0.7887},
-   {i:'USA11382',d:'2020-08-26',y:2020,t:1,logreg:0.5206,rf:0.5321,xgb:0.4835,histgbm:0.617},
-   {i:'USA11385',d:'2020-08-26',y:2020,t:1,logreg:0.6379,rf:0.6631,xgb:0.7401,histgbm:0.5013},
-   {i:'USA12007',d:'2020-09-03',y:2020,t:1,logreg:0.5652,rf:0.528,xgb:0.4031,histgbm:0.0999},
-   {i:'USA14290',d:'2020-10-04',y:2020,t:1,logreg:0.5956,rf:0.7169,xgb:0.7713,histgbm:0.7887},
-   {i:'USA16482',d:'2020-10-31',y:2020,t:1,logreg:0.7125,rf:0.7345,xgb:0.8755,histgbm:0.9553},
-   {i:'USA18953',d:'2020-11-30',y:2020,t:1,logreg:0.5681,rf:0.4617,xgb:0.4606,histgbm:0.2106},
-   {i:'USA19998',d:'2020-12-31',y:2020,t:1,logreg:0.6214,rf:0.5374,xgb:0.4851,histgbm:0.2474},
-   {i:'USA22052',d:'2021-01-22',y:2021,t:0,logreg:0.6107,rf:0.3865,xgb:0.1424,histgbm:0.0777},
-   {i:'USA22041',d:'2021-01-22',y:2021,t:0,logreg:0.4949,rf:0.3752,xgb:0.1975,histgbm:0.1313},
-   {i:'USA22056',d:'2021-01-22',y:2021,t:0,logreg:0.4521,rf:0.2541,xgb:0.1799,histgbm:0.1181},
-   {i:'USA22147',d:'2021-01-23',y:2021,t:0,logreg:0.4521,rf:0.2541,xgb:0.1799,histgbm:0.1181},
-   {i:'USA22130',d:'2021-01-25',y:2021,t:0,logreg:0.5638,rf:0.2883,xgb:0.2035,histgbm:0.2181},
-   {i:'USA22151',d:'2021-01-27',y:2021,t:0,logreg:0.3146,rf:0.2645,xgb:0.1134,histgbm:0.0152},
-   {i:'USA22093',d:'2021-01-27',y:2021,t:0,logreg:0.5653,rf:0.4058,xgb:0.2409,histgbm:0.0555},
-   {i:'USA26553',d:'2021-03-13',y:2021,t:1,logreg:0.4521,rf:0.2541,xgb:0.1799,histgbm:0.1181},
-   {i:'USA27400',d:'2021-03-27',y:2021,t:1,logreg:0.4521,rf:0.2541,xgb:0.1799,histgbm:0.1181},
-   {i:'USA28214',d:'2021-04-16',y:2021,t:1,logreg:0.5396,rf:0.3051,xgb:0.3243,histgbm:0.4085},
-   {i:'USA30290',d:'2021-05-15',y:2021,t:1,logreg:0.6127,rf:0.3557,xgb:0.1159,histgbm:0.109},
-   {i:'USA30699',d:'2021-06-03',y:2021,t:1,logreg:0.3275,rf:0.2835,xgb:0.1278,histgbm:0.0194},
-   {i:'USA31823',d:'2021-06-18',y:2021,t:1,logreg:0.5907,rf:0.5702,xgb:0.471,histgbm:0.2852},
-   {i:'USA31654',d:'2021-06-23',y:2021,t:1,logreg:0.5571,rf:0.2779,xgb:0.2035,histgbm:0.2094},
-   {i:'USA32055',d:'2021-07-05',y:2021,t:1,logreg:0.3722,rf:0.5368,xgb:0.5466,histgbm:0.549},
-   {i:'USA33390',d:'2021-07-09',y:2021,t:1,logreg:0.6171,rf:0.5044,xgb:0.3866,histgbm:0.3419},
-   {i:'USA32206',d:'2021-07-09',y:2021,t:1,logreg:0.4521,rf:0.2541,xgb:0.1799,histgbm:0.1181},
-   {i:'USA33480',d:'2021-07-31',y:2021,t:1,logreg:0.4521,rf:0.2541,xgb:0.1799,histgbm:0.1181},
-   {i:'USA33273',d:'2021-08-26',y:2021,t:1,logreg:0.6038,rf:0.4903,xgb:0.3976,histgbm:0.3154},
-   {i:'USA33274',d:'2021-08-31',y:2021,t:1,logreg:0.4737,rf:0.3868,xgb:0.1543,histgbm:0.0751},
-   {i:'USA34974',d:'2021-09-19',y:2021,t:1,logreg:0.5536,rf:0.274,xgb:0.1799,histgbm:0.1362},
-   {i:'USA35873',d:'2021-10-16',y:2021,t:1,logreg:0.5297,rf:0.4506,xgb:0.2778,histgbm:0.1332},
-   {i:'USA36760',d:'2021-10-29',y:2021,t:1,logreg:0.4521,rf:0.2541,xgb:0.1799,histgbm:0.1181},
-   {i:'USA36703',d:'2021-11-03',y:2021,t:1,logreg:0.537,rf:0.2959,xgb:0.2314,histgbm:0.2419},
-   {i:'USA48116',d:'2021-11-21',y:2021,t:1,logreg:0.5543,rf:0.2732,xgb:0.2035,histgbm:0.2094},
-   {i:'USA42385',d:'2022-05-01',y:2022,t:1,logreg:0.4104,rf:0.3717,xgb:0.4133,histgbm:0.5346},
-   {i:'USA45700',d:'2022-06-24',y:2022,t:1,logreg:0.305,rf:0.3358,xgb:0.2986,histgbm:0.1474},
-   {i:'USA45045',d:'2022-06-24',y:2022,t:1,logreg:0.316,rf:0.3646,xgb:0.3768,histgbm:0.3675},
-   {i:'USA46678',d:'2022-07-30',y:2022,t:1,logreg:0.316,rf:0.3646,xgb:0.3768,histgbm:0.3675},
-   {i:'USA46614',d:'2022-07-31',y:2022,t:1,logreg:0.316,rf:0.3646,xgb:0.3768,histgbm:0.3675},
-   {i:'USA46887',d:'2022-08-07',y:2022,t:1,logreg:0.316,rf:0.3646,xgb:0.3768,histgbm:0.3675},
-   {i:'USA56421',d:'2023-05-29',y:2023,t:1,logreg:0.2056,rf:0.3587,xgb:0.3768,histgbm:0.3675},
-   {i:'USA56422',d:'2023-05-29',y:2023,t:1,logreg:0.2056,rf:0.3587,xgb:0.3768,histgbm:0.3675},
-   {i:'USA56992',d:'2023-06-10',y:2023,t:1,logreg:0.2056,rf:0.3587,xgb:0.3768,histgbm:0.3675},
-   {i:'USA57302',d:'2023-06-12',y:2023,t:1,logreg:0.2056,rf:0.3587,xgb:0.3768,histgbm:0.3675},
-   {i:'USA58258',d:'2023-07-24',y:2023,t:1,logreg:0.2968,rf:0.4116,xgb:0.4133,histgbm:0.4101},
-   {i:'USA60059',d:'2023-09-25',y:2023,t:1,logreg:0.2056,rf:0.3587,xgb:0.3768,histgbm:0.3675},
-   {i:'USA64524',d:'2024-01-18',y:2024,t:0,logreg:0.0886,rf:0.2862,xgb:0.3731,histgbm:0.306},
-   {i:'USA64612',d:'2024-01-18',y:2024,t:0,logreg:0.1266,rf:0.3544,xgb:0.3651,histgbm:0.3675},
-   {i:'USA64546',d:'2024-01-18',y:2024,t:0,logreg:0.1266,rf:0.3544,xgb:0.3651,histgbm:0.3675}
-];
-const PHASE4_MODEL_NAMES = { logreg: 'Logistic Regression', rf: 'Random Forest', xgb: 'XGBoost', histgbm: 'Gradient-Boosted Trees (HistGBM)' };
+   {i:'USA908',d:'2020-06-20',y:2020,t:0,logreg:0.7201,rf:0.7136,xgb:0.8666,histgbm:0.8828},
+   {i:'USA892',d:'2020-06-20',y:2020,t:0,logreg:0.5086,rf:0.4241,xgb:0.2915,histgbm:0.1166},
+   {i:'USA845',d:'2020-06-26',y:2020,t:0,logreg:0.7635,rf:0.5399,xgb:0.4741,histgbm:0.3513},
+   {i:'USA740',d:'2020-06-27',y:2020,t:0,logreg:0.9813,rf:0.6334,xgb:0.5188,histgbm:0.7123},
+   {i:'USA219',d:'2020-06-27',y:2020,t:0,logreg:0.6375,rf:0.5884,xgb:0.6209,histgbm:0.4186},
+   {i:'USA648',d:'2020-06-27',y:2020,t:0,logreg:0.9846,rf:0.5271,xgb:0.4572,histgbm:0.0924},
+   {i:'USA969',d:'2020-06-27',y:2020,t:0,logreg:0.6076,rf:0.7121,xgb:0.7441,histgbm:0.9229},
+   {i:'USA1664',d:'2020-07-01',y:2020,t:1,logreg:0.5584,rf:0.561,xgb:0.5552,histgbm:0.6206},
+   {i:'USA555',d:'2020-07-02',y:2020,t:0,logreg:0.5941,rf:0.6671,xgb:0.6623,histgbm:0.6644},
+   {i:'USA427',d:'2020-07-04',y:2020,t:0,logreg:0.541,rf:0.5379,xgb:0.354,histgbm:0.4471},
+   {i:'USA3247',d:'2020-07-13',y:2020,t:1,logreg:0.5081,rf:0.3616,xgb:0.3553,histgbm:0.0748},
+   {i:'USA3702',d:'2020-08-01',y:2020,t:1,logreg:0.9873,rf:0.5947,xgb:0.5107,histgbm:0.215},
+   {i:'USA10469',d:'2020-08-16',y:2020,t:1,logreg:0.6157,rf:0.5452,xgb:0.4628,histgbm:0.2068},
+   {i:'USA11385',d:'2020-08-26',y:2020,t:1,logreg:0.6164,rf:0.6144,xgb:0.7266,histgbm:0.3811},
+   {i:'USA11382',d:'2020-08-26',y:2020,t:1,logreg:0.5519,rf:0.5214,xgb:0.4969,histgbm:0.4846},
+   {i:'USA12007',d:'2020-09-03',y:2020,t:1,logreg:0.53,rf:0.4605,xgb:0.4228,histgbm:0.0398},
+   {i:'USA16482',d:'2020-10-31',y:2020,t:1,logreg:0.7074,rf:0.7083,xgb:0.7902,histgbm:0.9239},
+   {i:'USA18953',d:'2020-11-30',y:2020,t:1,logreg:0.5893,rf:0.4822,xgb:0.4726,histgbm:0.1924},
+   {i:'USA19998',d:'2020-12-31',y:2020,t:1,logreg:0.6402,rf:0.5554,xgb:0.4724,histgbm:0.2043},
+   {i:'USA22068',d:'2021-01-22',y:2021,t:0,logreg:0.432,rf:0.2423,xgb:0.2034,histgbm:0.0201},
+   {i:'USA22130',d:'2021-01-25',y:2021,t:0,logreg:0.5258,rf:0.3102,xgb:0.2427,histgbm:0.2205},
+   {i:'USA22151',d:'2021-01-27',y:2021,t:0,logreg:0.3012,rf:0.3013,xgb:0.1306,histgbm:0.0151},
+   {i:'USA22093',d:'2021-01-27',y:2021,t:0,logreg:0.6506,rf:0.3685,xgb:0.2636,histgbm:0.0588},
+   {i:'USA28214',d:'2021-04-16',y:2021,t:1,logreg:0.489,rf:0.3505,xgb:0.4132,histgbm:0.4658},
+   {i:'USA30290',d:'2021-05-15',y:2021,t:1,logreg:0.5676,rf:0.3411,xgb:0.105,histgbm:0.0653},
+   {i:'USA30699',d:'2021-06-03',y:2021,t:1,logreg:0.2992,rf:0.2092,xgb:0.1482,histgbm:0.0361},
+   {i:'USA31823',d:'2021-06-18',y:2021,t:1,logreg:0.5686,rf:0.5124,xgb:0.5706,histgbm:0.3187},
+   {i:'USA31654',d:'2021-06-23',y:2021,t:1,logreg:0.5151,rf:0.3009,xgb:0.2427,histgbm:0.1885},
+   {i:'USA32055',d:'2021-07-05',y:2021,t:1,logreg:0.4473,rf:0.5389,xgb:0.6286,histgbm:0.6386},
+   {i:'USA33390',d:'2021-07-09',y:2021,t:1,logreg:0.5273,rf:0.4017,xgb:0.3897,histgbm:0.3003},
+   {i:'USA33273',d:'2021-08-26',y:2021,t:1,logreg:0.5474,rf:0.4595,xgb:0.48,histgbm:0.4843},
+   {i:'USA33274',d:'2021-08-31',y:2021,t:1,logreg:0.9829,rf:0.3644,xgb:0.1605,histgbm:0.0231},
+   {i:'USA34974',d:'2021-09-19',y:2021,t:1,logreg:0.5085,rf:0.3065,xgb:0.2341,histgbm:0.1715},
+   {i:'USA35873',d:'2021-10-16',y:2021,t:1,logreg:0.5122,rf:0.3934,xgb:0.261,histgbm:0.0455},
+   {i:'USA36703',d:'2021-11-03',y:2021,t:1,logreg:0.4978,rf:0.3335,xgb:0.3191,histgbm:0.3221},
+   {i:'USA48116',d:'2021-11-21',y:2021,t:1,logreg:0.5106,rf:0.3041,xgb:0.2427,histgbm:0.1885},
+   {i:'USA41621',d:'2022-04-11',y:2022,t:1,logreg:0.3982,rf:0.4863,xgb:0.5052,histgbm:0.4938},
+   {i:'USA42637',d:'2022-04-23',y:2022,t:1,logreg:0.3009,rf:0.3889,xgb:0.3857,histgbm:0.4663},
+   {i:'USA42385',d:'2022-05-01',y:2022,t:1,logreg:0.3418,rf:0.317,xgb:0.2854,histgbm:0.2187},
+   {i:'USA45700',d:'2022-06-24',y:2022,t:1,logreg:0.2602,rf:0.2753,xgb:0.1717,histgbm:0.0586},
+   {i:'USA54429',d:'2023-04-01',y:2023,t:1,logreg:0.171,rf:0.3632,xgb:0.3639,histgbm:0.3204},
+   {i:'USA55494',d:'2023-04-05',y:2023,t:1,logreg:0.1921,rf:0.4255,xgb:0.2836,histgbm:0.0622},
+   {i:'USA58258',d:'2023-07-24',y:2023,t:1,logreg:0.2185,rf:0.3818,xgb:0.2974,histgbm:0.3065},
+   {i:'USA64619',d:'2024-01-17',y:2024,t:0,logreg:0.1215,rf:0.3299,xgb:0.1457,histgbm:0.0264},
+   {i:'USA64524',d:'2024-01-18',y:2024,t:0,logreg:0.082,rf:0.2748,xgb:0.2569,histgbm:0.0689}
+];const PHASE4_MODEL_NAMES = { logreg: 'Logistic Regression', rf: 'Random Forest', xgb: 'XGBoost', histgbm: 'Gradient-Boosted Trees (HistGBM)' };
 
 function renderPhase4Tool() {
   const modelEl = document.getElementById('phase4-model');

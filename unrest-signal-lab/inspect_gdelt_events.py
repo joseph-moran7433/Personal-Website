@@ -130,7 +130,14 @@ def main():
     parser.add_argument("sample_path", nargs="?", default=str(HERE / "data" / "acled_sample_100.json"))
     parser.add_argument("out_path", nargs="?", default=str(HERE / "data" / "gdelt_events_sample.json"))
     parser.add_argument("--force-expensive", action="store_true")
+    parser.add_argument("--budget-bytes", type=int, default=None,
+                         help="Override CUMULATIVE_BYTES_ABORT for this run only, e.g. to cap spend "
+                              "against remaining monthly quota rather than the generic 100 GB default.")
     args = parser.parse_args()
+
+    global CUMULATIVE_BYTES_ABORT
+    if args.budget_bytes is not None:
+        CUMULATIVE_BYTES_ABORT = args.budget_bytes
 
     sample_path = Path(args.sample_path)
     out_path = Path(args.out_path)

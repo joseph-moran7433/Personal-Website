@@ -150,12 +150,42 @@
       "rows": 889,
       "bytes": 2332831093,
       "matching_method_version": "v3_batched_window"
+    },
+    {
+      "sequence": 16,
+      "date": "2026-09-24",
+      "script": "inspect_gdelt_events.py",
+      "source": "GDELT_EVENTS",
+      "description": "Batched-window Events-table pull (Goldstein Scale + QuadClass + Lat/Long) across 29/89 events (60 unique windows queried instead of 89 per-event queries).",
+      "rows": 977,
+      "bytes": 7907966714,
+      "matching_method_version": "v3_batched_window"
+    },
+    {
+      "sequence": 17,
+      "date": "2026-09-24",
+      "script": "inspect_gdelt.py",
+      "source": "GDELT_GKG",
+      "description": "Batched-window GKG pull across 7/10 events (7 unique windows queried instead of 10 per-event queries).",
+      "rows": 161,
+      "bytes": 26164924228,
+      "matching_method_version": "v3_batched_window"
+    },
+    {
+      "sequence": 18,
+      "date": "2026-09-24",
+      "script": "inspect_gdelt.py",
+      "source": "GDELT_GKG",
+      "description": "Batched-window GKG pull across 11/22 events (18 unique windows queried instead of 22 per-event queries) (run aborted early by safety cap).",
+      "rows": 159,
+      "bytes": 51138687684,
+      "matching_method_version": "v3_batched_window"
     }
   ],
   "cumulative_bytes_by_source": {
     "ACLED": 2175403,
-    "GDELT_GKG": 956564843966,
-    "GDELT_EVENTS": 23200374506
+    "GDELT_GKG": 1033868455878,
+    "GDELT_EVENTS": 31108341220
   },
-  "cumulative_gdelt_gb_of_monthly_quota_pct": 89.11
+  "cumulative_gdelt_gb_of_monthly_quota_pct": 96.86
 }

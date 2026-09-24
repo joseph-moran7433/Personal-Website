@@ -225,7 +225,14 @@ def main():
                          help="Add back SourceCommonName/DocumentIdentifier (needed only for publisher-frequency analysis).")
     parser.add_argument("--force-expensive", action="store_true",
                          help="Pull windows even if their dry-run estimate exceeds PER_QUERY_BYTES_WARN.")
+    parser.add_argument("--budget-bytes", type=int, default=None,
+                         help="Override CUMULATIVE_BYTES_ABORT for this run only, e.g. to cap spend "
+                              "against remaining monthly quota rather than the generic 500 GB default.")
     args = parser.parse_args()
+
+    global CUMULATIVE_BYTES_ABORT
+    if args.budget_bytes is not None:
+        CUMULATIVE_BYTES_ABORT = args.budget_bytes
 
     sample_path = Path(args.sample_path)
     out_path = Path(args.out_path)

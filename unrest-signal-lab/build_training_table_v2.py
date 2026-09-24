@@ -128,8 +128,10 @@ def assign_sequences(events):
 
 def build():
     acled = load_json("acled_sample_255.json")
-    gkg = load_json("gdelt_sample_100.json") + load_json("gdelt_sample_2021_2025.json") + load_json("gdelt_sample_2021_2025_part2.json")
-    events_tbl = load_json("gdelt_events_sample.json") + load_json("gdelt_events_sample_2021_2025.json") + load_json("gdelt_events_backfill.json")
+    gkg = (load_json("gdelt_sample_100.json") + load_json("gdelt_sample_2021_2025.json") + load_json("gdelt_sample_2021_2025_part2.json")
+           + load_json("gdelt_gkg_missing_2024.json") + load_json("gdelt_gkg_missing_2023.json"))
+    events_tbl = (load_json("gdelt_events_sample.json") + load_json("gdelt_events_sample_2021_2025.json") + load_json("gdelt_events_backfill.json")
+                  + load_json("gdelt_events_missing_fill_2026.json"))
 
     seq_start, sequences_formed, events_reanchored = assign_sequences(acled)
 

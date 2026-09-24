@@ -90,12 +90,72 @@
       "rows": 288,
       "bytes": 74540746628,
       "matching_method_version": "v2_country_theme_filtered"
+    },
+    {
+      "sequence": 10,
+      "date": "2026-09-23",
+      "script": "expand_acled_sample_2021_2025.py",
+      "source": "ACLED",
+      "description": "Drew 125 new events from 2021-01-01..2025-12-31 (excluding the original 100 2020 events) for the Phase 2 expansion.",
+      "rows": 500,
+      "bytes": 411538,
+      "matching_method_version": null
+    },
+    {
+      "sequence": 11,
+      "date": "2026-09-23",
+      "script": "inspect_gdelt.py",
+      "source": "GDELT_GKG",
+      "description": "Batched-window GKG pull across 51/125 events (66 unique windows queried instead of 125 per-event queries) (run aborted early by safety cap).",
+      "rows": 854,
+      "bytes": 83688890043,
+      "matching_method_version": "v3_batched_window"
+    },
+    {
+      "sequence": 12,
+      "date": "2026-09-23",
+      "script": "inspect_gdelt_events.py",
+      "source": "GDELT_EVENTS",
+      "description": "Batched-window Events-table pull (Goldstein Scale + QuadClass + Lat/Long) across 93/125 events (66 unique windows queried instead of 125 per-event queries).",
+      "rows": 3181,
+      "bytes": 8563746438,
+      "matching_method_version": "v3_batched_window"
+    },
+    {
+      "sequence": 13,
+      "date": "2026-09-23",
+      "script": "backfill_peaceful_2022_2024.py",
+      "source": "ACLED",
+      "description": "Corrected a self-caught sampling gap: the original 2021-2025 pull's 250-row per-type cap left zero peaceful protests for 2022/2023. Backfilled 30 peaceful protests (10/year, 2022-2024) from separately-capped per-year pools.",
+      "rows": 750,
+      "bytes": 570764,
+      "matching_method_version": null
+    },
+    {
+      "sequence": 14,
+      "date": "2026-09-23",
+      "script": "inspect_gdelt.py",
+      "source": "GDELT_GKG",
+      "description": "Batched-window GKG pull across 24/104 events (79 unique windows queried instead of 104 per-event queries) (run aborted early by safety cap).",
+      "rows": 444,
+      "bytes": 182235568065,
+      "matching_method_version": "v3_batched_window"
+    },
+    {
+      "sequence": 15,
+      "date": "2026-09-23",
+      "script": "inspect_gdelt_events.py",
+      "source": "GDELT_EVENTS",
+      "description": "Batched-window Events-table pull (Goldstein Scale + QuadClass + Lat/Long) across 21/30 events (20 unique windows queried instead of 30 per-event queries).",
+      "rows": 889,
+      "bytes": 2332831093,
+      "matching_method_version": "v3_batched_window"
     }
   ],
   "cumulative_bytes_by_source": {
-    "ACLED": 1193101,
-    "GDELT_GKG": 690640385858,
-    "GDELT_EVENTS": 12303796975
+    "ACLED": 2175403,
+    "GDELT_GKG": 956564843966,
+    "GDELT_EVENTS": 23200374506
   },
-  "cumulative_gdelt_gb_of_monthly_quota_pct": 63.93
+  "cumulative_gdelt_gb_of_monthly_quota_pct": 89.11
 }

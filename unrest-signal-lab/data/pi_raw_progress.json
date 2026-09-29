@@ -1,11 +1,15 @@
 {
   "done_days": [
     20211226,
-    20211227
+    20211227,
+    20200401,
+    20200402,
+    20200403,
+    20200404
   ],
-  "gkg_matched": 40,
-  "events_matched": 75,
-  "files_downloaded": 384,
+  "gkg_matched": 508,
+  "events_matched": 602,
+  "files_downloaded": 1152,
   "files_missing_404": 0,
-  "bytes_downloaded": 602523136
+  "bytes_downloaded": 3684252655
 }

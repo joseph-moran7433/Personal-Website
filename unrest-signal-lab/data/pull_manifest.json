@@ -180,10 +180,20 @@
       "rows": 159,
       "bytes": 51138687684,
       "matching_method_version": "v3_batched_window"
+    },
+    {
+      "sequence": 19,
+      "date": "2026-09-29",
+      "script": "expand_acled_2022_2026.py",
+      "source": "ACLED",
+      "description": "Drew 250 new events across 5 periods (2022-01-01..2026-09-29), stratified per-period to avoid the original pull's date-order skew. data/acled_sample_full.json now has 505 events total.",
+      "rows": 1410,
+      "bytes": 1313635,
+      "matching_method_version": null
     }
   ],
   "cumulative_bytes_by_source": {
-    "ACLED": 2175403,
+    "ACLED": 3489038,
     "GDELT_GKG": 1033868455878,
     "GDELT_EVENTS": 31108341220
   },

@@ -5,15 +5,17 @@ instead of BigQuery -- no query-scan cost, no monthly quota (BigQuery's
 free tier is already at ~97% for this project this month; see
 data/pull_manifest.json), just bandwidth and time.
 
-Built to run unattended on a schedule (cron, the same pattern Morning-Text
-already uses on this Pi) rather than in one sitting: each invocation
-processes a small, fixed number of unique pre-event-window days (default
-1), appends any matching rows to data/gdelt_gkg_raw.json and
-data/gdelt_events_raw.json, checkpoints each finished day in
-data/pi_raw_progress.json, and exits. Safe to kill at any point -- a
-day is only checkpointed after its 192 files (96 GKG + 96 Events) are
-fully processed, so an interrupted run just repeats that one day next
-time; nothing downstream is double-counted or half-written.
+Built to run unattended and either in short bursts (cron, the same
+pattern Morning-Text already uses on this Pi) or as one long-running
+process working through many days back to back: each day's 192 files
+(96 GKG + 96 Events) download concurrently (ThreadPoolExecutor, measured
+~7.6MB/s aggregate at 5 threads from this Pi -- DOWNLOAD_WORKERS=12
+leaves comfortable margin), matching rows get appended to
+data/gdelt_gkg_raw.json / data/gdelt_events_raw.json, and the day is
+checkpointed in data/pi_raw_progress.json before moving on. Safe to
+kill at any point -- a day is only checkpointed once fully processed,
+so an interrupted run just repeats that one day next time; nothing
+downstream is double-counted or half-written.
 
 Reuses the exact sequence-anchoring and geo-matching logic already in
 build_training_table_v2.py (imported, not copied) so raw-file matches
@@ -26,17 +28,22 @@ Usage (cron-friendly):
     python pi_gdelt_raw_pull.py --days 5    # process up to 5 days, exit
     python pi_gdelt_raw_pull.py --status    # print progress, do nothing
 
-Suggested crontab entry (every 15 minutes, one day per run, narrowed to
-the 2022-2024 backfill, pushing progress to GitHub each time):
-    */15 * * * * cd /home/pi/unrest-signal-lab && .venv/bin/python pi_gdelt_raw_pull.py --years 2022,2023,2024 --push >> .cache/pi_raw_pull.log 2>&1
+For a full-dataset sprint (all years, one long-running process instead
+of many short cron ticks):
+    nohup .venv/bin/python pi_gdelt_raw_pull.py --days 99999 --push --workers 12 >> .cache/pi_raw_pull.log 2>&1 &
+
+For steady background collection instead (cron, one day per tick):
+    */15 * * * * cd /home/pi/unrest-signal-lab && .venv/bin/python pi_gdelt_raw_pull.py --push >> .cache/pi_raw_pull.log 2>&1
 """
 import argparse
 import io
 import json
 import subprocess
+import threading
 import time
 import zipfile
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -52,8 +59,9 @@ EVENTS_OUT_PATH = DATA / "gdelt_events_raw.json"
 
 BASE_URL = "https://data.gdeltproject.org/gdeltv2"
 REQUEST_TIMEOUT = 30
-REQUEST_DELAY_SEC = 0.3  # polite pacing between file downloads
+DOWNLOAD_WORKERS = 12  # measured ~7.6MB/s aggregate at 5 concurrent threads from the Pi -- comfortable margin under 12
 GEO_DISTANCE_LIMIT_MILES = btt.GEO_DISTANCE_LIMIT_MILES
+_progress_lock = threading.Lock()
 
 # Confirmed 2026-09-29 against a live file pull -- column order matches the
 # raw files exactly (GKGRECORDID.. Extras / GLOBALEVENTID.. SOURCEURL).
@@ -137,7 +145,8 @@ def download_and_parse(url, field_names, progress):
         try:
             resp = requests.get(url, timeout=REQUEST_TIMEOUT)
             if resp.status_code == 404:
-                progress["files_missing_404"] += 1
+                with _progress_lock:
+                    progress["files_missing_404"] += 1
                 return []  # some 15-min slots are genuinely missing in GDELT's own history
             resp.raise_for_status()
             break
@@ -145,8 +154,9 @@ def download_and_parse(url, field_names, progress):
             if attempt == 2:
                 return []
             time.sleep(2 * (attempt + 1))
-    progress["files_downloaded"] += 1
-    progress["bytes_downloaded"] += len(resp.content)
+    with _progress_lock:
+        progress["files_downloaded"] += 1
+        progress["bytes_downloaded"] += len(resp.content)
     try:
         with zipfile.ZipFile(io.BytesIO(resp.content)) as zf:
             raw = zf.read(zf.namelist()[0]).decode("utf-8", errors="replace")
@@ -201,18 +211,28 @@ def match_events_rows(raw_rows, day_events):
     return matched
 
 
-def process_day(day_int, day_events, progress):
+def process_day(day_int, day_events, progress, workers=DOWNLOAD_WORKERS):
     d = datetime.strptime(str(day_int), "%Y%m%d")
     slots = [d + timedelta(minutes=15 * i) for i in range(96)]
-    day_gkg, day_events_matched = [], []
+
+    tasks = []
     for slot in slots:
         ts = slot.strftime("%Y%m%d%H%M%S")
-        gkg_rows = download_and_parse(f"{BASE_URL}/{ts}.gkg.csv.zip", GKG_FIELDS, progress)
-        time.sleep(REQUEST_DELAY_SEC)
-        events_rows = download_and_parse(f"{BASE_URL}/{ts}.export.CSV.zip", EVENTS_FIELDS, progress)
-        time.sleep(REQUEST_DELAY_SEC)
-        day_gkg.extend(match_gkg_rows(gkg_rows, day_events))
-        day_events_matched.extend(match_events_rows(events_rows, day_events))
+        tasks.append(("gkg", f"{BASE_URL}/{ts}.gkg.csv.zip"))
+        tasks.append(("events", f"{BASE_URL}/{ts}.export.CSV.zip"))
+
+    def fetch(task):
+        kind, url = task
+        fields = GKG_FIELDS if kind == "gkg" else EVENTS_FIELDS
+        return kind, download_and_parse(url, fields, progress)
+
+    day_gkg, day_events_matched = [], []
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        for kind, rows in pool.map(fetch, tasks):
+            if kind == "gkg":
+                day_gkg.extend(match_gkg_rows(rows, day_events))
+            else:
+                day_events_matched.extend(match_events_rows(rows, day_events))
     return day_gkg, day_events_matched
 
 
@@ -241,6 +261,7 @@ def main():
     parser.add_argument("--status", action="store_true", help="print progress and exit")
     parser.add_argument("--years", type=str, default="", help="comma-separated years to restrict to, e.g. 2022,2023,2024 (default: all years in the event file)")
     parser.add_argument("--push", action="store_true", help="git commit + push after each day (for unattended cron use)")
+    parser.add_argument("--workers", type=int, default=DOWNLOAD_WORKERS, help="concurrent file downloads per day")
     args = parser.parse_args()
     years = {int(y) for y in args.years.split(",") if y.strip()} or None
 
@@ -265,15 +286,19 @@ def main():
     for day_int in remaining_days[:args.days]:
         day_events = needed[day_int]
         print(f"[pi-raw] processing {day_int} ({len(day_events)} events share this pre-event day)...")
-        day_gkg, day_events_matched = process_day(day_int, day_events, progress)
+        t0 = time.time()
+        day_gkg, day_events_matched = process_day(day_int, day_events, progress, workers=args.workers)
+        elapsed = time.time() - t0
         append_rows(GKG_OUT_PATH, day_gkg)
         append_rows(EVENTS_OUT_PATH, day_events_matched)
         progress["gkg_matched"] += len(day_gkg)
         progress["events_matched"] += len(day_events_matched)
         progress["done_days"].append(day_int)
         save_progress(progress)
-        print(f"[pi-raw] {day_int} done: +{len(day_gkg)} GKG rows, +{len(day_events_matched)} Events rows. "
-              f"({len(progress['done_days'])}/{len(needed)} days total)")
+        left = len(needed) - len(progress["done_days"])
+        eta_hr = left * elapsed / 3600
+        print(f"[pi-raw] {day_int} done in {elapsed:.1f}s: +{len(day_gkg)} GKG rows, +{len(day_events_matched)} Events rows. "
+              f"({len(progress['done_days'])}/{len(needed)} days total, {left} left, ETA ~{eta_hr:.1f}h at this rate)")
         if args.push:
             git_commit_and_push(day_int)
 

@@ -1,6 +1,8 @@
 """
-phase5_advisor_qa.py -- Phase 5: five direct advisor questions, answered
-with numbers instead of argued from intuition. Each question maps to one
+phase4_advisor_followup.py -- five direct advisor questions raised after
+Phase 4 shipped, answered with numbers instead of argued from intuition,
+and folded into Phase 4's own "Mentor Concerns -- Addressed" table and
+Analysis section rather than a separate page. Each question maps to one
 function below; run standalone, prints everything needed for the site
 write-up.
 

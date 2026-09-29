@@ -1008,7 +1008,7 @@
        lines, flat borders, no glow/blur/animation. Same open/close
        overlay mechanics as the rest of the site.
        ═══════════════════════════════════════════════════════════════ */
-    #unrest-hub, #unrest-notebook, #unrest-phase1, #unrest-phase2, #unrest-phase3, #unrest-phase4, #unrest-phase5, #unrest-model-explainer {
+    #unrest-hub, #unrest-notebook, #unrest-phase1, #unrest-phase2, #unrest-phase3, #unrest-phase4, #unrest-model-explainer {
       position: fixed; inset: 0; z-index: 150;
       background:
         repeating-linear-gradient(0deg, rgba(38,38,34,0.05) 0px, rgba(38,38,34,0.05) 1px, transparent 1px, transparent 28px),
@@ -1020,7 +1020,7 @@
       font-family: var(--font-body);
       color: var(--usl-text);
     }
-    #unrest-hub.open, #unrest-notebook.open, #unrest-phase1.open, #unrest-phase2.open, #unrest-phase3.open, #unrest-phase4.open, #unrest-phase5.open, #unrest-model-explainer.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+    #unrest-hub.open, #unrest-notebook.open, #unrest-phase1.open, #unrest-phase2.open, #unrest-phase3.open, #unrest-phase4.open, #unrest-model-explainer.open { opacity: 1; transform: translateX(0); pointer-events: all; }
     #unrest-hub { z-index: 151; }
     #unrest-model-explainer { z-index: 160; }
 
@@ -2459,14 +2459,7 @@
           <i data-lucide="file-check-2" style="width:44px;height:44px;"></i>
         </div>
         <h2 class="usl-hub-label-title">PHASE 4 — FINAL REPORT &amp; TOOL</h2>
-        <p class="usl-hub-label-sub">The capstone: a working historical-lookup tool (pick a model, pick a year, see real held-out predictions) and a full written report — data, exploration, models, honest analysis, pitfalls, and every mentor concern addressed in one place.</p>
-      </div>
-      <div class="usl-hub-item">
-        <div class="usl-hub-icon-stage" onclick="openUnrestPhase5()" role="button" tabindex="0" aria-label="Open the Phase 5 advisor follow-up page" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openUnrestPhase5();}">
-          <i data-lucide="help-circle" style="width:44px;height:44px;"></i>
-        </div>
-        <h2 class="usl-hub-label-title">PHASE 5 — ADVISOR FOLLOW-UP</h2>
-        <p class="usl-hub-label-sub">Five specific questions raised after Phase 4 — the SVM's odd behavior, whether two "top" tone features actually hold up statistically, real year-over-year drift, a scraper-health check, and the pre-event window design — each answered with a real test run against the current data, not an argument from intuition.</p>
+        <p class="usl-hub-label-sub">The capstone: a working historical-lookup tool (pick a model, pick a year, see real held-out predictions) and a full written report — data, exploration, models, honest analysis, pitfalls, and every mentor concern addressed in one place, including a follow-up round answered directly with new test runs (§9).</p>
       </div>
     </div>
   </div>
@@ -4221,6 +4214,17 @@
           <tr><td><strong>Non-stationary relationships</strong></td><td>Feature-outcome correlations flip sign across eras (§4.5); a model can't learn a stable rule from a relationship that isn't stable.</td></tr>
           <tr><td><strong>Reporting-intensity confound</strong></td><td>Escalated events get national-scale press pickup 4.7x more often than peaceful ones (Phase 2) — volume-based features partly measure "how much attention this got," entangled with, not independent of, severity.</td></tr>
         </table>
+        <p class="usl-panel-body">Which specific features actually move most between eras, checked directly (2021 vs. 2024, effect size alongside significance so "how big" and "how sure" are on the same line):</p>
+        <table class="usl-table">
+          <tr><th>Feature</th><th>2021 mean (n=99)</th><th>2024 mean (n=10)</th><th>Cohen's d</th><th>p-value</th></tr>
+          <tr><td>avg_tone</td><td>&minus;3.106</td><td>&minus;1.412</td><td>0.71 (moderate)</td><td>0.125</td></tr>
+          <tr><td>quad_class_ratio</td><td>0.516</td><td>0.692</td><td>0.58 (moderate)</td><td>0.168</td></tr>
+          <tr><td>tone_negative_score</td><td>5.287</td><td>4.645</td><td>&minus;0.36 (small)</td><td>0.288</td></tr>
+          <tr><td>log_volume</td><td>1.190</td><td>1.559</td><td>0.26 (small)</td><td>0.511</td></tr>
+          <tr><td>tone_word_count</td><td>1155.0</td><td>1258.9</td><td>0.16 (small)</td><td>0.782</td></tr>
+          <tr><td>goldstein_trend</td><td>0.234</td><td>0.341</td><td>0.04 (negligible)</td><td>0.833</td></tr>
+        </table>
+        <p class="usl-panel-body" style="font-size:0.85rem; color:var(--usl-muted);">n=10 in 2024 means none of these clear significance — the direction and rough size are worth trusting, the exact numbers aren't, until 2024 has more labeled events.</p>
         <p class="usl-panel-body"><strong>Concrete steps forward, in priority order:</strong></p>
         <ol style="padding-left:1.5rem; font-size:0.92rem; line-height:1.9;">
           <li><strong>More labeled events, especially 2022-2024</strong> — still this project's thinnest years, and thinner again once zero-signal events are excluded from modeling (34 usable events combined vs. 75+65 for 2020-2021 alone). This is the single highest-leverage fix identified across all five phases.</li>
@@ -4250,10 +4254,14 @@
           <tr><th>Concern raised</th><th>How it was addressed</th></tr>
           <tr><td>What does ACLED register as a "protest"?</td><td>Documented directly from ACLED's own published methodology (Phase 2, §2 above): a Protest is a non-violent public gathering; a Riot involves violent or destructive acts. <code>sub_event_type</code> is the direct label source.</td></tr>
           <tr><td>Are peaceful protests under-reported relative to violent ones?</td><td>Two-part answer. (1) A self-caught pull-design bug had silently produced 0% peaceful protests for 2022-2023 — fixed with a per-year backfill, near-zero cost (Phase 2). (2) Checked ACLED's own source metadata directly afterward: escalated events do get picked up by national-scale outlets 4.7x more often — a real, structural finding, not a bug (Phase 2).</td></tr>
-          <tr><td>Publishing date must be before the <em>first</em> protest in a correlated sequence.</td><td>Built directly: events within 5 days of each other in the same state are chained into one sequence, and every event anchors its pre-event window to the sequence's earliest date, not its own (Phase 2). Re-anchored 44/255 events; dropped 141 GKG and 373 Events-table rows that had been sitting past the corrected cutoff.</td></tr>
+          <tr><td>Publishing date must be before the <em>first</em> protest in a correlated sequence — and should the pre-event window stay fixed to that first date, or move with each individual event?</td><td>Built directly: events within 5 days of each other in the same state are chained into one sequence, and every event anchors its pre-event window to the sequence's earliest date, not its own (Phase 2). Re-anchored 44/255 events; dropped 141 GKG and 373 Events-table rows sitting past the corrected cutoff. The stay-vs-move question argued explicitly: 13.7% of events (35/255) sit in a multi-event sequence, so a <em>moving</em> window would let a later event's "pre-event" news include real coverage of the earlier, already-labeled event in the same wave — leakage, not a modeling choice. Staying anchored costs one assumption (a day-3 event scored on the same window as day 1) against leaking validity on 1 in 7 events. Stay wins.</td></tr>
           <tr><td>Make sure GDELT is only pulled from before the actual ACLED event.</td><td>True by construction since Phase 0 (window ends the day before event date) and re-verified at every phase; strengthened further by the sequence-anchoring fix above.</td></tr>
-          <tr><td>Time-varying sparsity and time-varying parameters.</td><td>Sparsity: GKG coverage by year charted directly (§4.2) — real, non-constant, and traced to specific collection decisions. Parameters: a <code>year</code> feature was added (a time-varying <em>intercept</em>), then checked more rigorously — two features' correlations with escalation flip sign across eras (§4.5), real evidence the fuller time-varying-parameters problem isn't solved by one feature, honestly flagged as future work (Phase 3).</td></tr>
+          <tr><td>Time-varying sparsity and time-varying parameters — is the year-to-year swing in predictions coming from a real shift in the underlying inputs?</td><td>Sparsity: GKG coverage by year charted directly (§4.2) — real, non-constant, and traced to specific collection decisions. Parameters: a <code>year</code> feature was added (a time-varying <em>intercept</em>), then checked more rigorously — two features' correlations with escalation flip sign across eras (§4.5), honestly flagged as future work (Phase 3). Checked again directly, 2021 vs. 2024: <code>avg_tone</code> shifts a moderate amount (Cohen's d=0.71, less negative by 2024) and so does <code>quad_class_ratio</code> (d=0.58) — real-sized effects, but with only 10 labeled events in 2024 vs. 99 in 2021, neither clears p&lt;.05 (§7 table). Trust the direction, not the exact magnitude, until 2024 has more data.</td></tr>
+          <tr><td>Do <code>avg_tone</code> and <code>tone_negative_score</code> actually separate escalated from peaceful events — is the difference (and the spread) between them statistically significant?</td><td>Checked directly with Welch's t-test and Levene's test on the training split: neither feature clears p&lt;.05 on the means (avg_tone p=0.681, tone_negative_score p=0.501), and their variances aren't distinguishable either (p=0.814, p=0.821). Both stay in the model because it combines them with 11 other features, not because either is a proven standalone discriminator at n=105 — stated here rather than implied by the feature-importance chart alone (<code>phase4_advisor_followup.py</code>).</td></tr>
+          <tr><td>Is the RBF-kernel SVM in §6's model comparison overfitting?</td><td>No — checked with a direct train-vs-test comparison: PR-AUC 0.780 (train) vs. 0.641 (test), a 0.14 gap, not the near-perfect-train / collapsed-test signature overfitting actually looks like. The real defect: predicted probabilities never leave a 0.29–0.38 band on <em>either</em> split, so nothing crosses the 0.5 decision threshold (0 positive predictions on both). That's sklearn's internal probability calibration collapsing toward the class prior on a small, imbalanced sample — fixable with a lower threshold or <code>CalibratedClassifierCV</code>, not evidence of memorization.</td></tr>
+          <tr><td>Is the newer-year GDELT pull thinner because the scraper is breaking down as the years go on?</td><td>No — raw GKG rows pulled per event by year: 2020=14.7, 2021=10.3, 2022=11.5, 2023=7.2, 2024=16.1 — noisy, not a falling trend; 2024 is the highest year on record. The coverage-rate drop (67% in 2020 vs. 41–50% in 2021-2024, §4.2) is almost entirely a 2020-vs-everything-else step, matching the documented, deliberate BigQuery cost cap on the 2021-2024 pull (Phase 2), not a scraper that degrades further each year it runs.</td></tr>
         </table>
+        <p class="usl-panel-body" style="margin-top:1rem;">All six numeric answers above reproduce from one committed script (<code>phase4_advisor_followup.py</code>) run directly against the current <code>training_table_v2.csv</code> — none were hand-typed or eyeballed off a chart, and two of them are honest negatives (the tone-feature significance test, the SVM's real defect) rather than confirmations.</p>
       </div>
 
       <div class="usl-report-section" id="p4-s10">
@@ -4269,80 +4277,6 @@
         </button>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════ UNREST PREDICTIONS — PHASE 5: ADVISOR FOLLOW-UP (full-page) ═══════════════════════════════════════ -->
-<div id="unrest-phase5">
-  <div class="usl-nav">
-    <button class="usl-back" onclick="closeUnrestPhase5()">
-      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
-      <span>Back to Unrest Predictions</span>
-    </button>
-    <div class="usl-breadcrumb"><span>Unrest Predictions</span><span>/</span><span>Phase 5</span></div>
-  </div>
-
-  <div class="usl-hero">
-    <div class="usl-hero-badge">Phase 5 — Advisor Follow-Up</div>
-    <h1 class="usl-title">Five More Questions</h1>
-    <p class="usl-summary">Five specific questions came back after Phase 4. Each one got an actual test run against the current data (<code>phase5_advisor_qa.py</code>) instead of a written argument — including the one where the honest answer is "no, that pattern isn't statistically real."</p>
-  </div>
-
-  <div class="usl-body">
-    <div class="usl-stat-row">
-      <div class="usl-stat"><div class="usl-stat-num">p=0.68</div><div class="usl-stat-label">avg_tone, escalated vs. peaceful</div></div>
-      <div class="usl-stat"><div class="usl-stat-num">0.14</div><div class="usl-stat-label">SVM train&ndash;test PR-AUC gap</div></div>
-      <div class="usl-stat"><div class="usl-stat-num">13.7%</div><div class="usl-stat-label">events in a chained sequence</div></div>
-      <div class="usl-stat"><div class="usl-stat-num">16.1</div><div class="usl-stat-label">2024 raw GKG rows/event &mdash; a high, not a low</div></div>
-    </div>
-
-    <div class="usl-report-section" id="p5-s1">
-      <div class="usl-report-section-heading"><span class="usl-report-section-num">1</span><h2>The Five Questions, Answered</h2></div>
-      <table class="usl-table usl-mentor-table">
-        <tr><th>Question raised</th><th>Verdict</th><th>Answer</th></tr>
-        <tr>
-          <td>Should the pre-event window stay fixed to the protest wave, or move with each individual event?</td>
-          <td class="usl-status-yes">Stay</td>
-          <td>13.7% of events (35/255) sit inside a multi-event sequence &mdash; a chain of protests &le;5 days apart in the same state. If the window moved with each event, a later event's "pre-event" news could include real coverage <em>of</em> the earlier, already-labeled event in the same wave &mdash; that is leakage, not a modeling choice. Anchoring every event in a sequence to the wave's first date costs one assumption (an event on day 3 of a wave is scored on the same news window as day 1); the alternative costs validity on 1 in 7 events. Stay wins.</td>
-        </tr>
-        <tr>
-          <td>Do <code>avg_tone</code> and <code>tone_negative_score</code> actually separate escalated from peaceful events &mdash; and is the spread (variance) between them significantly different?</td>
-          <td class="usl-status-no">Not significant</td>
-          <td>Welch's t-test on the training split: <code>avg_tone</code> p=0.681, <code>tone_negative_score</code> p=0.501 &mdash; neither clears p&lt;.05 on the means. Levene's test on the variances comes back the same way (p=0.814, p=0.821): the spread isn't distinguishable either. Both features stay in the model because the trained models combine them with 11 other inputs, not because either one alone is a proven discriminator on this sample &mdash; worth stating plainly rather than implying more than n=105 supports.</td>
-        </tr>
-        <tr>
-          <td>Is the RBF-kernel SVM overfitting?</td>
-          <td class="usl-status-partial">No &mdash; miscalibrated, not overfit</td>
-          <td>Train PR-AUC 0.780 vs. test PR-AUC 0.641 &mdash; a 0.14 gap, not the near-perfect-train / collapsed-test signature overfitting actually looks like. The real defect: predicted probabilities never leave a 0.29&ndash;0.38 band on <em>either</em> split, so nothing ever crosses the 0.5 decision threshold (0 positive predictions on both train and test). That is sklearn's internal Platt-scaling probability estimate collapsing toward the class prior on a small, imbalanced sample &mdash; a calibration defect, not memorization. A lower decision threshold or <code>CalibratedClassifierCV</code> would surface the ranking signal the PR-AUC shows is already there.</td>
-        </tr>
-        <tr>
-          <td>Is the year-to-year swing in predictions (2021&rarr;2024) coming from a real shift in the underlying input variables?</td>
-          <td class="usl-status-partial">Partly &mdash; direction real, size underpowered</td>
-          <td><code>avg_tone</code> moves a moderate amount from 2021 to 2024 (Cohen's d=0.71, tone gets less negative) and so does <code>quad_class_ratio</code> (d=0.58, more conflict-coded coverage). Real-sized effects &mdash; but with only 10 labeled events in 2024 vs. 99 in 2021, neither clears p&lt;.05. Trust the direction; don't trust the exact magnitude until 2024 has more than 10 events.</td>
-        </tr>
-        <tr>
-          <td>Is the newer-year GDELT pull thinner because the scraper is breaking down as the years go on?</td>
-          <td class="usl-status-yes">No &mdash; a budget cap, not decay</td>
-          <td>Raw GKG rows pulled per event by year: 2020=14.7, 2021=10.3, 2022=11.5, 2023=7.2, 2024=16.1 &mdash; noisy, not a falling trend; 2024 is the highest year on record. The coverage-rate drop (67% in 2020 vs. 41&ndash;50% in 2021&ndash;2024) is almost entirely a 2020-vs-everything-else step, which lines up with the documented, deliberate BigQuery cost cap on the 2021&ndash;2024 pull (Phase 2), not a scraper that degrades further each year it runs.</td>
-        </tr>
-      </table>
-    </div>
-
-    <div class="usl-report-section" id="p5-s2">
-      <div class="usl-report-section-heading"><span class="usl-report-section-num">2</span><h2>2021 vs. 2024, Feature by Feature</h2></div>
-      <p class="usl-panel-body">The two features with the largest year-to-year movement, for the question above &mdash; effect size (Cohen's d) alongside the significance test, so both "how big" and "how sure" are on the same line.</p>
-      <table class="usl-table">
-        <tr><th>Feature</th><th>2021 mean (n=99)</th><th>2024 mean (n=10)</th><th>Cohen's d</th><th>p-value</th></tr>
-        <tr><td>avg_tone</td><td>&minus;3.106</td><td>&minus;1.412</td><td>0.71 (moderate)</td><td>0.125</td></tr>
-        <tr><td>quad_class_ratio</td><td>0.516</td><td>0.692</td><td>0.58 (moderate)</td><td>0.168</td></tr>
-        <tr><td>tone_negative_score</td><td>5.287</td><td>4.645</td><td>&minus;0.36 (small)</td><td>0.288</td></tr>
-        <tr><td>log_volume</td><td>1.190</td><td>1.559</td><td>0.26 (small)</td><td>0.511</td></tr>
-        <tr><td>tone_word_count</td><td>1155.0</td><td>1258.9</td><td>0.16 (small)</td><td>0.782</td></tr>
-        <tr><td>goldstein_trend</td><td>0.234</td><td>0.341</td><td>0.04 (negligible)</td><td>0.833</td></tr>
-      </table>
-    </div>
-
-    <p class="usl-note">All five answers reproduce from one script (<code>phase5_advisor_qa.py</code>, committed alongside every other phase's code) run directly against the current <code>training_table_v2.csv</code> &mdash; no numbers here were hand-typed or eyeballed off a chart. Two of the five verdicts are honest negatives (the tone-feature significance test, the SVM's real defect) rather than confirmations; that is the point of running the test instead of arguing from the feature-importance chart alone.</p>
   </div>
 </div>
 
@@ -5898,7 +5832,7 @@ function renderProjectDetail(p) {
 // All full-page food overlays, kept in a list so opening one can reliably
 // close the rest — only one of these (and #project-detail) is ever open
 // at a time, no matter which nav path got you there.
-const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2', 'unrest-phase3', 'unrest-phase4', 'unrest-phase5', 'unrest-model-explainer'];
+const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2', 'unrest-phase3', 'unrest-phase4', 'unrest-model-explainer'];
 function closeAllToolOverlays() {
   TOOL_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
 }
@@ -6082,21 +6016,6 @@ function switchPhase4View(view) {
   document.getElementById('phase4-tab-report').classList.toggle('active', view === 'report');
   document.querySelector('#unrest-phase4 .usl-body').scrollIntoView({ block: 'start' });
   lucide.createIcons();
-}
-
-function openUnrestPhase5() {
-  document.getElementById('project-detail').classList.remove('open');
-  closeAllToolOverlays();
-  document.getElementById('unrest-phase5').classList.add('open');
-  document.getElementById('main-site').classList.add('hidden');
-  window.scrollTo(0, 0);
-  lucide.createIcons();
-}
-
-function closeUnrestPhase5() {
-  document.getElementById('unrest-phase5').classList.remove('open');
-  document.getElementById('unrest-hub').classList.add('open');
-  window.scrollTo(0, 0);
 }
 
 function openModelExplainer(modelKey) {

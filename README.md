@@ -12,13 +12,15 @@ Personal portfolio site for Joseph Moran, Cadet at the United States Military Ac
 ## Theme
 The site is a light, professional theme (`--bg`/`--surface`/`--text`/etc. in `:root`). Two components stay intentionally dark as accent panels: the hero band (`--hero-*` variables) and the travel board. Code blocks (`.code-block`) are hardcoded to a dark editor palette independent of the page theme.
 
-## Deploy on Netlify
-1. Go to [netlify.com](https://netlify.com)
-2. Click **Add new site → Import from Git**
+## Deploy on Cloudflare Pages
+1. Go to the [Cloudflare dashboard](https://dash.cloudflare.com) → **Workers & Pages**
+2. Click **Create → Pages → Connect to Git**
 3. Connect GitHub and select **joseph-moran7433/Personal-Website**
 4. Build command: *(leave blank)*
-5. Publish directory: *(leave blank or set to `/`)*
-6. Click **Deploy site**
+5. Build output directory: *(leave blank or set to `/`)*
+6. Click **Save and Deploy**
+
+(Previously hosted on Netlify; migrated to Cloudflare Pages. The `handleForm()` contact-form submit in `index.html` still needs a real Cloudflare-compatible backend — see the note in that function.)
 
 ## To Update
 - **Swap headshot**: Replace `assets/headshot.jpg` with a new photo (matches the frame's 3:4 aspect ratio best)

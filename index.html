@@ -2116,8 +2116,7 @@
         </a>
       </div>
     </div>
-    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form" onsubmit="handleForm(event)">
-      <input type="hidden" name="form-name" value="contact" />
+    <form name="contact" method="POST" class="contact-form" onsubmit="handleForm(event)">
       <p style="position:absolute; left:-9999px;"><label>Leave this field blank: <input name="bot-field" /></label></p>
       <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" name="name" placeholder="Your name" required /></div>
       <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" name="email" placeholder="your@email.com" required /></div>
@@ -8743,6 +8742,13 @@ function nextIngredientRound() {
 
 function handleForm(e) {
   e.preventDefault();
+  // NOTE: this POST-to-'/' pattern is a leftover from when this site was
+  // on Netlify -- Netlify's build step auto-detected the data-netlify form
+  // and routed submissions server-side. Cloudflare Pages does none of that:
+  // there is currently no real backend receiving this POST, so submissions
+  // are not actually being captured anywhere. Needs a Cloudflare Pages
+  // Function + email service, or a third-party form endpoint (Formspree,
+  // Web3Forms, etc.), before this can be trusted to deliver messages.
   const form = e.target;
   const btn = form.querySelector('.form-submit');
   const originalLabel = btn.textContent;

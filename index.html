@@ -1136,6 +1136,22 @@
     }
     .usl-picker-overfit-warn.show { display: block; }
 
+    .usl-dash-card { background: var(--usl-card); border: 1px solid var(--usl-border); border-radius: 0.4rem; padding: 1.5rem 1.75rem; margin-bottom: 0; }
+    .usl-dash-card .usl-panel-heading { font-size: 1.2rem; margin-bottom: 0.2rem; }
+    .usl-dash-note { font-size: 0.82rem; color: var(--usl-muted); line-height: 1.65; margin-top: 0.75rem; margin-bottom: 0; }
+    .usl-cm-grid { display: grid; grid-template-columns: 96px repeat(2, 1fr); gap: 0.5rem; margin: 0.5rem 0 0.25rem; }
+    .usl-cm-colhead { font-family: var(--font-body-usl); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--usl-muted); text-align: center; align-self: end; padding-bottom: 0.35rem; }
+    .usl-cm-rowhead { font-family: var(--font-body-usl); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--usl-muted); display: flex; align-items: center; justify-content: flex-end; text-align: right; line-height: 1.2; }
+    .usl-cm-cell { border-radius: 0.3rem; padding: 0.9rem 0.5rem; text-align: center; border: 1px solid var(--usl-border); }
+    .usl-cm-cell.good { background: rgba(75,107,63,0.12); border-color: rgba(75,107,63,0.35); }
+    .usl-cm-cell.bad { background: rgba(168,64,43,0.08); border-color: rgba(168,64,43,0.3); }
+    .usl-cm-count { font-family: var(--font-body-usl); font-weight: 700; font-size: 1.5rem; color: var(--usl-text); line-height: 1.1; }
+    .usl-cm-pct { font-size: 0.72rem; color: var(--usl-muted); margin-top: 0.1rem; }
+    .usl-cm-label { font-size: 0.65rem; color: var(--usl-muted); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.03em; }
+    .usl-legend-row { display: flex; gap: 1.1rem; margin-bottom: 0.4rem; }
+    .usl-legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; color: var(--usl-muted); }
+    .usl-legend-swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
     .usl-sidenote {
       font-family: 'Caveat', var(--font-body-usl); font-size: 1.35rem; line-height: 1.4;
       color: #6b5638; background: rgba(217,176,115,0.12); border-left: 3px solid #d9b073;
@@ -3966,8 +3982,41 @@
       </div>
       <div id="phase4-warn" class="usl-picker-overfit-warn"></div>
       <div id="phase4-stats" class="usl-picker-stats"></div>
-      <div id="phase4-chart" class="usl-chart-wrap"></div>
-      <p class="usl-panel-body">Green = correct prediction, red = wrong, dashed line = the 0.5 decision threshold used everywhere in this project. Hover any dot for its real event ID, date, and predicted probability.</p>
+
+      <div class="usl-raw-grid">
+        <div class="usl-dash-card">
+          <div class="usl-panel-label">Discrimination, Every Threshold At Once</div>
+          <h3 class="usl-panel-heading">ROC Curve</h3>
+          <div id="phase4-roc" class="usl-chart-wrap"></div>
+          <p class="usl-dash-note">Sweeps every possible decision cutoff, not just 0.5. A model with real signal bows toward the top-left corner; a model with none sits on the dashed diagonal. AUC is the single-number summary — 0.5 is a coin flip, 1.0 is perfect separation.</p>
+        </div>
+        <div class="usl-dash-card">
+          <div class="usl-panel-label">At The 0.5 Cutoff This Project Uses</div>
+          <h3 class="usl-panel-heading">Confusion Matrix</h3>
+          <div id="phase4-confusion"></div>
+          <p class="usl-dash-note">The four ways a call can land. The two "wrong" boxes aren't equally bad here: a false negative is a protest that turned violent with no warning at all, while a false positive is a false alarm on one that stayed peaceful.</p>
+        </div>
+      </div>
+
+      <div class="usl-raw-grid" style="margin-top:1.5rem;">
+        <div class="usl-dash-card">
+          <div class="usl-panel-label">Where The Model Puts Its Confidence</div>
+          <h3 class="usl-panel-heading">Predicted-Probability Distribution</h3>
+          <div class="usl-legend-row">
+            <div class="usl-legend-item"><span class="usl-legend-swatch" style="background:#4b6b3f;"></span>Peaceful</div>
+            <div class="usl-legend-item"><span class="usl-legend-swatch" style="background:#a8402b;"></span>Escalated</div>
+          </div>
+          <div id="phase4-histogram" class="usl-chart-wrap"></div>
+          <p class="usl-dash-note">Real signal pushes escalated events (red) right and peaceful events (green) left, into two separate piles. Heavy overlap in the middle means the model can rank events better than it can call any single one with confidence.</p>
+        </div>
+        <div class="usl-dash-card">
+          <div class="usl-panel-label">Every Held-Out Event, One Dot</div>
+          <h3 class="usl-panel-heading">Prediction Spread</h3>
+          <div id="phase4-chart" class="usl-chart-wrap"></div>
+          <p class="usl-dash-note">Green = correct prediction, red = wrong, dashed line = the 0.5 threshold. Hover any dot for its real event ID, date, and predicted probability.</p>
+        </div>
+      </div>
+
       <div style="text-align:center; margin-top:2rem; padding-bottom:2rem;">
         <button class="usl-p4-cta" onclick="switchPhase4View('report')">
           <i data-lucide="file-text" style="width:16px;height:16px;"></i>
@@ -6590,6 +6639,97 @@ const PHASE4_PREDICTIONS = [
    {i:'USA64524',d:'2024-01-18',y:2024,t:0,logreg:0.082,rf:0.2748,xgb:0.2569,histgbm:0.0689}
 ];const PHASE4_MODEL_NAMES = { logreg: 'Logistic Regression', rf: 'Random Forest', xgb: 'XGBoost', histgbm: 'Gradient-Boosted Trees (HistGBM)' };
 
+function phase4ROCPoints(rows) {
+  const pos = rows.filter(r => r.t === 1).length;
+  const neg = rows.filter(r => r.t === 0).length;
+  if (pos === 0 || neg === 0) return null;
+  const sorted = [...rows].sort((a, b) => b.p - a.p);
+  let tp = 0, fp = 0;
+  const pts = [[0, 0]];
+  sorted.forEach(r => {
+    if (r.t === 1) tp++; else fp++;
+    pts.push([fp / neg, tp / pos]);
+  });
+  return pts;
+}
+
+function phase4AUC(pts) {
+  let auc = 0;
+  for (let i = 1; i < pts.length; i++) {
+    auc += (pts[i][0] - pts[i - 1][0]) * (pts[i][1] + pts[i - 1][1]) / 2;
+  }
+  return auc;
+}
+
+function buildPhase4ROC(rows, modelName) {
+  const pts = phase4ROCPoints(rows);
+  if (!pts) return `<p class="usl-dash-note" style="margin-top:0;">This selection has only one true outcome (all peaceful or all escalated) — not enough class variety to trace a curve.</p>`;
+  const auc = phase4AUC(pts);
+  const W = 420, H = 250, left = 42, right = W - 14, top = 14, bottom = H - 34;
+  const px = x => left + x * (right - left);
+  const py = y => bottom - y * (bottom - top);
+  let svg = `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="ROC curve for ${modelName} on the current selection, AUC ${auc.toFixed(3)}">`;
+  [0, 0.5, 1].forEach(v => {
+    svg += `<line class="usl-gridline" x1="${left}" y1="${py(v).toFixed(1)}" x2="${right}" y2="${py(v).toFixed(1)}"/>`;
+    svg += `<text class="usl-bar-label" x="${(left - 6).toFixed(1)}" y="${(py(v) + 3).toFixed(1)}" text-anchor="end" font-size="9">${v}</text>`;
+    svg += `<text class="usl-bar-label" x="${px(v).toFixed(1)}" y="${bottom + 14}" text-anchor="middle" font-size="9">${v}</text>`;
+  });
+  svg += `<line x1="${px(0).toFixed(1)}" y1="${py(0).toFixed(1)}" x2="${px(1).toFixed(1)}" y2="${py(1).toFixed(1)}" stroke="#9a9488" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+  const path = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${px(p[0]).toFixed(1)},${py(p[1]).toFixed(1)}`).join(' ');
+  svg += `<path d="${path}" fill="none" stroke="#a8402b" stroke-width="2.5"/>`;
+  svg += `<text class="usl-bar-label" x="${((left + right) / 2).toFixed(1)}" y="${H - 4}" text-anchor="middle" font-size="10">False Positive Rate</text>`;
+  svg += `<text class="usl-bar-label" x="12" y="${((top + bottom) / 2).toFixed(1)}" text-anchor="middle" font-size="10" transform="rotate(-90 12 ${((top + bottom) / 2).toFixed(1)})">True Positive Rate</text>`;
+  svg += `<rect x="${right - 78}" y="${top - 2}" width="80" height="16" fill="var(--usl-card)" opacity="0.85"/>`;
+  svg += `<text x="${right}" y="${top + 11}" text-anchor="end" font-size="12" font-weight="700" fill="var(--usl-accent-dim)">AUC = ${auc.toFixed(3)}</text>`;
+  svg += `</svg>`;
+  return svg;
+}
+
+function buildPhase4Confusion(tn, fp, fn, tp, n) {
+  const cell = (count, tone) => `<div class="usl-cm-cell ${tone}"><div class="usl-cm-count">${count}</div><div class="usl-cm-pct">${n ? (count / n * 100).toFixed(0) : 0}%</div></div>`;
+  return `
+    <div class="usl-cm-grid">
+      <div></div>
+      <div class="usl-cm-colhead">Predicted<br>Peaceful</div>
+      <div class="usl-cm-colhead">Predicted<br>Escalated</div>
+      <div class="usl-cm-rowhead">Actual<br>Peaceful</div>
+      ${cell(tn, 'good')}
+      ${cell(fp, 'bad')}
+      <div class="usl-cm-rowhead">Actual<br>Escalated</div>
+      ${cell(fn, 'bad')}
+      ${cell(tp, 'good')}
+    </div>`;
+}
+
+function buildPhase4Histogram(rows, modelName) {
+  const edges = [0, 0.2, 0.4, 0.6, 0.8, 1.0];
+  const bins = edges.slice(0, -1).map((lo, i) => {
+    const hi = edges[i + 1];
+    const inBin = rows.filter(r => r.p >= lo && (i === edges.length - 2 ? r.p <= hi : r.p < hi));
+    return { lo, hi, peaceful: inBin.filter(r => r.t === 0).length, escalated: inBin.filter(r => r.t === 1).length };
+  });
+  const maxCount = Math.max(1, ...bins.map(b => b.peaceful + b.escalated));
+  const W = 420, H = 230, left = 30, right = W - 10, top = 16, bottom = H - 38;
+  const bw = (right - left) / bins.length;
+  const scaleY = v => (bottom - top) * v / maxCount;
+  let svg = `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Distribution of predicted probabilities for ${modelName}, colored by true outcome">`;
+  svg += `<line class="usl-gridline" x1="${left}" y1="${bottom}" x2="${right}" y2="${bottom}"/>`;
+  bins.forEach((b, i) => {
+    const x = left + i * bw + bw * 0.15;
+    const w = bw * 0.7;
+    const hPeace = scaleY(b.peaceful), hEsc = scaleY(b.escalated);
+    const yPeaceTop = bottom - hPeace;
+    const yEscTop = yPeaceTop - hEsc;
+    if (b.peaceful) svg += `<rect x="${x.toFixed(1)}" y="${yPeaceTop.toFixed(1)}" width="${w.toFixed(1)}" height="${hPeace.toFixed(1)}" fill="#4b6b3f" opacity="0.85"><title>${b.lo.toFixed(1)}-${b.hi.toFixed(1)}: ${b.peaceful} peaceful</title></rect>`;
+    if (b.escalated) svg += `<rect x="${x.toFixed(1)}" y="${yEscTop.toFixed(1)}" width="${w.toFixed(1)}" height="${hEsc.toFixed(1)}" fill="#a8402b" opacity="0.85"><title>${b.lo.toFixed(1)}-${b.hi.toFixed(1)}: ${b.escalated} escalated</title></rect>`;
+    svg += `<text class="usl-bar-label" x="${(x + w / 2).toFixed(1)}" y="${bottom + 14}" text-anchor="middle" font-size="9">${b.lo.toFixed(1)}-${b.hi.toFixed(1)}</text>`;
+  });
+  const threshX = left + 0.5 * (right - left);
+  svg += `<line x1="${threshX.toFixed(1)}" y1="${top}" x2="${threshX.toFixed(1)}" y2="${bottom}" stroke="#9a9488" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+  svg += `</svg>`;
+  return svg;
+}
+
 function renderPhase4Tool() {
   const modelEl = document.getElementById('phase4-model');
   const yearEl = document.getElementById('phase4-year');
@@ -6610,9 +6750,14 @@ function renderPhase4Tool() {
   const tp = rows.filter(r => r.t === 1 && r.pred === 1).length;
   const fp = rows.filter(r => r.t === 0 && r.pred === 1).length;
   const fn = rows.filter(r => r.t === 1 && r.pred === 0).length;
+  const tn = n - tp - fp - fn;
   const precision = (tp + fp) ? tp / (tp + fp) : 0;
   const recall = (tp + fn) ? tp / (tp + fn) : 0;
   const accuracy = n ? correctCount / n : 0;
+
+  document.getElementById('phase4-roc').innerHTML = n ? buildPhase4ROC(rows, modelName) : '';
+  document.getElementById('phase4-confusion').innerHTML = n ? buildPhase4Confusion(tn, fp, fn, tp, n) : '';
+  document.getElementById('phase4-histogram').innerHTML = n ? buildPhase4Histogram(rows, modelName) : '';
 
   document.getElementById('phase4-stats').innerHTML = n ? `
     <div class="usl-stat"><div class="usl-stat-num">${(accuracy * 100).toFixed(1)}%</div><div class="usl-stat-label">Accuracy</div></div>

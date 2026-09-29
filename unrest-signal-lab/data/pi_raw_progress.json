@@ -5,11 +5,12 @@
     20200401,
     20200402,
     20200403,
-    20200404
+    20200404,
+    20200405
   ],
-  "gkg_matched": 508,
-  "events_matched": 602,
-  "files_downloaded": 1152,
+  "gkg_matched": 550,
+  "events_matched": 672,
+  "files_downloaded": 1344,
   "files_missing_404": 0,
-  "bytes_downloaded": 3684252655
+  "bytes_downloaded": 4106783678
 }

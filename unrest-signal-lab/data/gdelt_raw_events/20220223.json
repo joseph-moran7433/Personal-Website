@@ -1,0 +1,5336 @@
+[
+  {
+    "GLOBALEVENTID": "1029751657",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029751725",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029751870",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.5",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029751879",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029751890",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029752274",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029752290",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029752843",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029753053",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029753054",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029753103",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029753214",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029753235",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029753963",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029753967",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029754024",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029754031",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.5",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029754034",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029754051",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "6.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029754062",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029754130",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029754133",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029754136",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029754159",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029754164",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029754168",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029754255",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029754285",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029754397",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029756015",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.5",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029756076",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029756079",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029756144",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029756440",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029756462",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029756938",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029757067",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029757363",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.5",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029758139",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029758211",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029758243",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029758249",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029758350",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029758573",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029758575",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029758631",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029758639",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029758732",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029760221",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029760656",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029761531",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029762679",
+    "SQLDATE": "20220216",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029762682",
+    "SQLDATE": "20220216",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029762689",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029762690",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029762843",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029763516",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029763535",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029763549",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029763552",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029763553",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029763563",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029763667",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029763668",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029763669",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029763972",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029764072",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029764084",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029764112",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029764119",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029764120",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029764198",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029764322",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.3",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029764349",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029765472",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029767449",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029767968",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029768062",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029768063",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029768515",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029768516",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029768613",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029768628",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029770491",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029771965",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029772699",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029772804",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029773303",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029773417",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029774141",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.5",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029774367",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.5",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029774368",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.5",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029774405",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.2",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029774406",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.2",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029775447",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029775492",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029776326",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029776429",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029776538",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029776573",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029776728",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029776745",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029776829",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029776845",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029777065",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029777329",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029777330",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029777331",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029777810",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029777828",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029777832",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029777842",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029777865",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.4",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029777907",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029777936",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029778030",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029778113",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029781648",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029782586",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029782590",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "6.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029782616",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "6.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029783380",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029783489",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029783980",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029784300",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029784765",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029787385",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029787386",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029787391",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029787394",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029787953",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029787955",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029788266",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029788272",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029788275",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029788363",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029788403",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029788448",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029788449",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029791466",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029792355",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029792482",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029793083",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029793236",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029793237",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029794242",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029794244",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029794246",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029797253",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029800325",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029800599",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029800659",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029800668",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029800940",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029808420",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029809799",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029809803",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029809939",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029809946",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029810032",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029810851",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029810890",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029810905",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029811040",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029811060",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029811061",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029811522",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029812026",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029812063",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029812094",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029812095",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029812101",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029812102",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029812103",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029814231",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029814532",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029814768",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029814823",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.5",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029815079",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.5",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029822198",
+    "SQLDATE": "20220216",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822239",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029822260",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822261",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822262",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822264",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822271",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822278",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.2",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029822413",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029822473",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029822539",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029822572",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029822694",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029822702",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822703",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822704",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822710",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822711",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822712",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822722",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029822728",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029822909",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822910",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822911",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822912",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822959",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822960",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029822961",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029826028",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826029",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826030",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826246",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826247",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826398",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826428",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826506",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826507",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826877",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826903",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826905",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029826925",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029828117",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029828499",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029828695",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029829013",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830032",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830033",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830034",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830222",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830224",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830225",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830226",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830228",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830229",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830230",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830231",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830232",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830233",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830234",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830235",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029830236",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029831105",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029831114",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029831115",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029831116",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029831117",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029831118",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029831119",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029831120",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029834968",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029834977",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029834979",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "6.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029834980",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029834981",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029834982",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029835125",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029835126",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029835270",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029835287",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "6.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029835297",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029835298",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029835360",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029835375",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029836745",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029836830",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029837552",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029838853",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029840073",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029844566",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029844568",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029844569",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029844871",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029844872",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029844874",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845348",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845827",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845838",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845856",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845881",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845884",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845907",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845945",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845946",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845947",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845951",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029845952",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029845955",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029845973",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029847350",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029848467",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "6.4",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029848886",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029848887",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029849570",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029853274",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "8.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029853509",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029853654",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029853880",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029853889",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029854344",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029858154",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029858174",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029858191",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029858195",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029858259",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.5",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029858260",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.5",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029858704",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029858994",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.4",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029859003",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029859053",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029860167",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029860423",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029860718",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029860759",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029860862",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029860864",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029860865",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029861234",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029861263",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029861281",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029868757",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029868759",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029869835",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029871331",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029871337",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029871342",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029871343",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029871344",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029871444",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.5",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029871454",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.5",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029872087",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029872088",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029872461",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029872491",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029873897",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029873898",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029875302",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029875303",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029876544",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "6.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029876719",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029876727",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029876879",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029876888",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029876904",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029876979",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "6.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029876981",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "6.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029877375",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029877862",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "6.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029877863",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029878046",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029878050",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029878054",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029878259",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029878793",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029879048",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029879052",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029879057",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029879059",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029879111",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029879149",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029881961",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029882287",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029882315",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029882316",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029882352",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029882397",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029883827",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029884398",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029884399",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "6.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029884400",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029884404",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029884416",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029884417",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029887518",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029888844",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029888848",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029888849",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029888851",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029888852",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029889049",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029889099",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029889221",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029889222",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029889236",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029889237",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029889238",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029889267",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029889268",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029889269",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029889270",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029889271",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029889357",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029890423",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029890424",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029890539",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029891828",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029891961",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892232",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892235",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892236",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892558",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892559",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892560",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892561",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892672",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029892748",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892749",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892791",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892792",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892889",
+    "SQLDATE": "20210223",
+    "GoldsteinScale": "7.4",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029892890",
+    "SQLDATE": "20210223",
+    "GoldsteinScale": "7.4",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029893089",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029893114",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029894177",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.4",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029894178",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.4",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029894179",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.4",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029894208",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029898936",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029898962",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029899015",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029899016",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029899035",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029899038",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029899152",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029899162",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.4",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029899592",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029899662",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029899686",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029899687",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029899692",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.5",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029899696",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900196",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900197",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900198",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900203",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900204",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900206",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900473",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029900483",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900486",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900488",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900516",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900518",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900522",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900533",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029900536",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029900583",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "8.3",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900622",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900623",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900624",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900646",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "8.3",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900648",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900649",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900650",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900714",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "8.3",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900716",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900717",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029900719",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029904915",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.4",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029905555",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029905568",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029905569",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029906247",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029906307",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029906308",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029906365",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029906410",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029907411",
+    "SQLDATE": "20210223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907534",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029907550",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-6.5",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907552",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907737",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907748",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907749",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-6.5",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907750",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-6.5",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907779",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907781",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907785",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907786",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907787",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907802",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907803",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029907814",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908059",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.1",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029908060",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.1",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029908089",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908262",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908263",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908264",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908281",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908282",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908283",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908448",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-6.5",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908449",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908450",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908451",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908687",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908689",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908730",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908731",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908750",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908760",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908775",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908778",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908780",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908785",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908786",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908790",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908791",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908793",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908857",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908858",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908859",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908860",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908876",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908877",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908878",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908880",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908890",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908912",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-6.5",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908915",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908917",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908919",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908923",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908935",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908949",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908955",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908962",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029908963",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029909353",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029910219",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029910239",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029910347",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029910384",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029910395",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029912156",
+    "SQLDATE": "20220222",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029912400",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029912507",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029913715",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029913776",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029913786",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029913800",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029913801",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029913848",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029914708",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029914735",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029915348",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029915500",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029916440",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029916636",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029916946",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029917217",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029917692",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029917978",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029917998",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029921492",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029921493",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029921792",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029921796",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029921871",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029922251",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029922268",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029922804",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029926040",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029927328",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029927387",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029927388",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029927419",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029927442",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029927447",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029927467",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029927936",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029927981",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029927982",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029928231",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029928237",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029928295",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029928296",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029928322",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029928366",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029929964",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029929965",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029930430",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029930479",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029930483",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029930559",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029930616",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029931575",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029931577",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.5",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029931604",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.5",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029931695",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029931696",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029931715",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029931805",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029931810",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029931828",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029931877",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029932462",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029932466",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029932472",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029932532",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.5",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029932600",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029932601",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029932602",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029935064",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029935066",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029935152",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029935159",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029935306",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029935413",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029935414",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029936194",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029936195",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029936212",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029936214",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029937877",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029937922",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029937967",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029937973",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938202",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938203",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938212",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938213",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938254",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938255",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938311",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938344",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938345",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.4",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938720",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029938721",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029938745",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938747",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029938753",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939291",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939359",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939409",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939464",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939465",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939508",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939512",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939539",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939546",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939617",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939695",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029939696",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029939896",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029939975",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029940250",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029940792",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029943244",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029943246",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029943701",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944497",
+    "SQLDATE": "20220124",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944498",
+    "SQLDATE": "20220124",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944499",
+    "SQLDATE": "20220124",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944500",
+    "SQLDATE": "20220124",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944504",
+    "SQLDATE": "20220124",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944505",
+    "SQLDATE": "20220124",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944506",
+    "SQLDATE": "20220124",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944507",
+    "SQLDATE": "20220124",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944521",
+    "SQLDATE": "20220216",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029944561",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944562",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944567",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944568",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944716",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "5.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029944828",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944847",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029944879",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029944903",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029944904",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029944912",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029944930",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029945201",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029945212",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029945571",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029945572",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029945756",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029945757",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029945776",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029945777",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029945778",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029945779",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029945789",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029945823",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029945830",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029946693",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.4",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029946696",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.4",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029946699",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029946724",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029946725",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029946947",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029946948",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-9.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029947472",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029947755",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029947936",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029948039",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029949247",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029949685",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029949686",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029949845",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029949847",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029949848",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029950053",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029952054",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029952163",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029952310",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029952993",
+    "SQLDATE": "20210223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029952994",
+    "SQLDATE": "20210223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029953071",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029953092",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029953290",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029953311",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029953312",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029953721",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029953753",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029954025",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029954029",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029954075",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029954109",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029954168",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029954209",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029954210",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029954224",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029954277",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029955778",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029955890",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029956189",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029956280",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029956349",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029957315",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029958425",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029959052",
+    "SQLDATE": "20210223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029959076",
+    "SQLDATE": "20210223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029959643",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029959644",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029959663",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029959703",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029959710",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029960014",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029960018",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029960076",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029960108",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "3.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029960109",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "7.0",
+    "QuadClass": "2",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029960198",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "1.9",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029960204",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029960205",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-0.4",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029960211",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029960244",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029961770",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029961789",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029961793",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029961794",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029961875",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029961876",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029961917",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029962485",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "2.8",
+    "QuadClass": "1",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029962761",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029962963",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029962964",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-10.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029963066",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029963098",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-2.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA39702"
+  },
+  {
+    "GLOBALEVENTID": "1029963422",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA41464"
+  },
+  {
+    "GLOBALEVENTID": "1029963537",
+    "SQLDATE": "20220223",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA41464"
+  }
+]

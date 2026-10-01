@@ -244,11 +244,12 @@
     20210917,
     20210918,
     20211009,
-    20211010
+    20211010,
+    20211011
   ],
-  "gkg_matched": 93458,
-  "events_matched": 377671,
-  "files_downloaded": 42858,
+  "gkg_matched": 93969,
+  "events_matched": 378318,
+  "files_downloaded": 43050,
   "files_missing_404": 1162,
-  "bytes_downloaded": 128351102323
+  "bytes_downloaded": 128858888840
 }

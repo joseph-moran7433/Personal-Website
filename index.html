@@ -4016,6 +4016,27 @@
         </div>
       </div>
 
+      <div class="usl-dash-card" style="margin-top:1.5rem;">
+        <div class="usl-panel-label">Before Trusting Any Number Above</div>
+        <h3 class="usl-panel-heading">Known Data Limits</h3>
+        <table class="usl-table usl-mentor-table">
+          <tr><th>Question</th><th>Answer</th></tr>
+          <tr>
+            <td>Does a protest spanning multiple days/events signal faster escalation?</td>
+            <td><strong>No — tested directly, and the opposite is true.</strong> Events chained into a multi-event sequence (same state, &le;5 days apart) escalate <strong>21.3%</strong> of the time (n=122) vs <strong>47.8%</strong> for standalone events (&chi;&sup2; p&lt;0.0001). Escalated events average a 1.32-day sequence span vs. 1.80 for peaceful ones (p=0.00008) — longer unrest waves in this sample run calmer, not more volatile.</td>
+          </tr>
+          <tr>
+            <td>Is violence structurally overrepresented in the data?</td>
+            <td><strong>Partly — documented two different ways.</strong> ACLED's own source metadata shows violent events get national-scale press pickup <strong>4.7x</strong> more often than peaceful ones (Phase 2). Checked again here, directly: whether GDELT matches an event <em>at all</em> isn't significantly biased by outcome (37.9% vs. 43.5% escalation rate, p=0.25) — the bias is in <em>which kind</em> of outlet covers it, not whether anything does.</td>
+          </tr>
+          <tr>
+            <td>Does that make this fundamentally impossible?</td>
+            <td><strong>No, but it narrows the honest claim.</strong> This can rank relative risk among events that generate real news signal; it cannot, and should never be read as, a general "X% of protests turn violent" estimate (§8) — the reporting bias above means coverage intensity is tangled with the outcome, not independent of it.</td>
+          </tr>
+        </table>
+        <p class="usl-dash-note">All three answers reproduce from <code>phase6_data_limits.py</code>, run directly against the current 505-event table.</p>
+      </div>
+
       <div style="text-align:center; margin-top:2rem; padding-bottom:2rem;">
         <button class="usl-p4-cta" onclick="switchPhase4View('report')">
           <i data-lucide="file-text" style="width:16px;height:16px;"></i>

@@ -381,11 +381,12 @@
     20220630,
     20220701,
     20220702,
-    20220703
+    20220703,
+    20220723
   ],
-  "gkg_matched": 140355,
-  "events_matched": 495644,
-  "files_downloaded": 64104,
+  "gkg_matched": 140356,
+  "events_matched": 495851,
+  "files_downloaded": 64296,
   "files_missing_404": 1164,
-  "bytes_downloaded": 182199967575
+  "bytes_downloaded": 182497843201
 }

@@ -1,0 +1,44 @@
+[
+  {
+    "GLOBALEVENTID": "925689957",
+    "SQLDATE": "20100530",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA6021"
+  },
+  {
+    "GLOBALEVENTID": "925689958",
+    "SQLDATE": "20100530",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA6021"
+  },
+  {
+    "GLOBALEVENTID": "925758069",
+    "SQLDATE": "20100530",
+    "GoldsteinScale": "0.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA4739"
+  },
+  {
+    "GLOBALEVENTID": "925802431",
+    "SQLDATE": "20100530",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA4986"
+  },
+  {
+    "GLOBALEVENTID": "925802432",
+    "SQLDATE": "20100530",
+    "GoldsteinScale": "4.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA4986"
+  },
+  {
+    "GLOBALEVENTID": "925802433",
+    "SQLDATE": "20100530",
+    "GoldsteinScale": "-4.0",
+    "QuadClass": "3",
+    "_acled_event_id": "USA4986"
+  }
+]

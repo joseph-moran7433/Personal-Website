@@ -1,0 +1,30 @@
+[
+  {
+    "GLOBALEVENTID": "940480501",
+    "SQLDATE": "20200806",
+    "GoldsteinScale": "3.0",
+    "QuadClass": "1",
+    "_acled_event_id": "USA10469"
+  },
+  {
+    "GLOBALEVENTID": "940519854",
+    "SQLDATE": "20200806",
+    "GoldsteinScale": "-7.2",
+    "QuadClass": "4",
+    "_acled_event_id": "USA10469"
+  },
+  {
+    "GLOBALEVENTID": "940629066",
+    "SQLDATE": "20200806",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA10993"
+  },
+  {
+    "GLOBALEVENTID": "940629066",
+    "SQLDATE": "20200806",
+    "GoldsteinScale": "-5.0",
+    "QuadClass": "4",
+    "_acled_event_id": "USA4487"
+  }
+]

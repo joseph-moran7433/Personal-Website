@@ -4,589 +4,599 @@
     "date": "2020-06-20",
     "year": 2020,
     "true": 0,
-    "logreg": 0.6649,
-    "rf": 0.7858,
-    "xgb": 0.845,
-    "histgbm": 0.9491
+    "logreg": 0.6665,
+    "rf": 0.781,
+    "xgb": 0.8538,
+    "histgbm": 0.9329
   },
   {
     "event_id": "USA217",
     "date": "2020-06-25",
     "year": 2020,
     "true": 0,
-    "logreg": 0.2125,
-    "rf": 0.362,
-    "xgb": 0.3903,
-    "histgbm": 0.1999
+    "logreg": 0.2328,
+    "rf": 0.3632,
+    "xgb": 0.4423,
+    "histgbm": 0.146
   },
   {
     "event_id": "USA845",
     "date": "2020-06-26",
     "year": 2020,
     "true": 0,
-    "logreg": 0.6367,
-    "rf": 0.7986,
-    "xgb": 0.8517,
-    "histgbm": 0.9065
+    "logreg": 0.6296,
+    "rf": 0.7803,
+    "xgb": 0.8512,
+    "histgbm": 0.8931
   },
   {
     "event_id": "USA648",
     "date": "2020-06-27",
     "year": 2020,
     "true": 0,
-    "logreg": 0.5582,
-    "rf": 0.4998,
-    "xgb": 0.7956,
-    "histgbm": 0.5841
+    "logreg": 0.5572,
+    "rf": 0.4543,
+    "xgb": 0.7436,
+    "histgbm": 0.6069
   },
   {
     "event_id": "USA219",
     "date": "2020-06-27",
     "year": 2020,
     "true": 0,
-    "logreg": 0.6861,
-    "rf": 0.5306,
-    "xgb": 0.4737,
-    "histgbm": 0.2347
+    "logreg": 0.6874,
+    "rf": 0.5341,
+    "xgb": 0.4539,
+    "histgbm": 0.1639
   },
   {
     "event_id": "USA740",
     "date": "2020-06-27",
     "year": 2020,
     "true": 0,
-    "logreg": 0.6549,
-    "rf": 0.5927,
-    "xgb": 0.7557,
-    "histgbm": 0.9763
+    "logreg": 0.6513,
+    "rf": 0.5766,
+    "xgb": 0.7564,
+    "histgbm": 0.9722
   },
   {
     "event_id": "USA969",
     "date": "2020-06-27",
     "year": 2020,
     "true": 0,
-    "logreg": 0.6974,
-    "rf": 0.7182,
-    "xgb": 0.8664,
-    "histgbm": 0.9202
+    "logreg": 0.7005,
+    "rf": 0.7265,
+    "xgb": 0.8537,
+    "histgbm": 0.8949
   },
   {
     "event_id": "USA1004",
     "date": "2020-06-29",
     "year": 2020,
     "true": 0,
-    "logreg": 0.6261,
-    "rf": 0.5641,
-    "xgb": 0.7161,
-    "histgbm": 0.276
+    "logreg": 0.6193,
+    "rf": 0.5287,
+    "xgb": 0.6902,
+    "histgbm": 0.2709
   },
   {
     "event_id": "USA1664",
     "date": "2020-07-01",
     "year": 2020,
     "true": 1,
-    "logreg": 0.7038,
-    "rf": 0.3883,
-    "xgb": 0.6981,
-    "histgbm": 0.454
+    "logreg": 0.7004,
+    "rf": 0.3657,
+    "xgb": 0.6605,
+    "histgbm": 0.3595
   },
   {
     "event_id": "USA555",
     "date": "2020-07-02",
     "year": 2020,
     "true": 0,
-    "logreg": 0.5532,
-    "rf": 0.5454,
-    "xgb": 0.6209,
-    "histgbm": 0.3308
+    "logreg": 0.5566,
+    "rf": 0.5283,
+    "xgb": 0.6178,
+    "histgbm": 0.3107
   },
   {
     "event_id": "USA427",
     "date": "2020-07-04",
     "year": 2020,
     "true": 0,
-    "logreg": 0.6993,
-    "rf": 0.3872,
-    "xgb": 0.6981,
-    "histgbm": 0.454
+    "logreg": 0.6964,
+    "rf": 0.3664,
+    "xgb": 0.6605,
+    "histgbm": 0.3595
   },
   {
     "event_id": "USA3247",
     "date": "2020-07-13",
     "year": 2020,
     "true": 1,
-    "logreg": 0.7273,
-    "rf": 0.8143,
-    "xgb": 0.8594,
-    "histgbm": 0.9371
+    "logreg": 0.7233,
+    "rf": 0.826,
+    "xgb": 0.8789,
+    "histgbm": 0.9416
   },
   {
     "event_id": "USA3069",
     "date": "2020-07-23",
     "year": 2020,
     "true": 1,
-    "logreg": 0.6252,
-    "rf": 0.7401,
-    "xgb": 0.7725,
-    "histgbm": 0.7409
+    "logreg": 0.6313,
+    "rf": 0.7301,
+    "xgb": 0.7547,
+    "histgbm": 0.7598
   },
   {
     "event_id": "USA3702",
     "date": "2020-08-01",
     "year": 2020,
     "true": 1,
-    "logreg": 0.5336,
-    "rf": 0.5149,
-    "xgb": 0.5475,
-    "histgbm": 0.32
+    "logreg": 0.5413,
+    "rf": 0.5452,
+    "xgb": 0.5421,
+    "histgbm": 0.3952
   },
   {
     "event_id": "USA3784",
     "date": "2020-08-02",
     "year": 2020,
     "true": 1,
-    "logreg": 0.4991,
-    "rf": 0.5227,
-    "xgb": 0.5866,
-    "histgbm": 0.5289
+    "logreg": 0.5036,
+    "rf": 0.5063,
+    "xgb": 0.5356,
+    "histgbm": 0.5296
   },
   {
     "event_id": "USA4487",
     "date": "2020-08-14",
     "year": 2020,
     "true": 1,
-    "logreg": 0.6761,
-    "rf": 0.7992,
-    "xgb": 0.8312,
-    "histgbm": 0.8879
+    "logreg": 0.6765,
+    "rf": 0.7907,
+    "xgb": 0.8297,
+    "histgbm": 0.8861
   },
   {
     "event_id": "USA10469",
     "date": "2020-08-16",
     "year": 2020,
     "true": 1,
-    "logreg": 0.7396,
-    "rf": 0.6628,
-    "xgb": 0.7372,
-    "histgbm": 0.8777
+    "logreg": 0.7363,
+    "rf": 0.6403,
+    "xgb": 0.7679,
+    "histgbm": 0.9045
   },
   {
     "event_id": "USA10993",
     "date": "2020-08-16",
     "year": 2020,
     "true": 1,
-    "logreg": 0.6761,
-    "rf": 0.7992,
-    "xgb": 0.8312,
-    "histgbm": 0.8879
+    "logreg": 0.6765,
+    "rf": 0.7907,
+    "xgb": 0.8297,
+    "histgbm": 0.8861
   },
   {
     "event_id": "USA11382",
     "date": "2020-08-26",
     "year": 2020,
     "true": 1,
-    "logreg": 0.7043,
-    "rf": 0.7535,
-    "xgb": 0.8155,
-    "histgbm": 0.8878
+    "logreg": 0.7005,
+    "rf": 0.7339,
+    "xgb": 0.8247,
+    "histgbm": 0.9143
   },
   {
     "event_id": "USA11385",
     "date": "2020-08-26",
     "year": 2020,
     "true": 1,
-    "logreg": 0.7897,
-    "rf": 0.8092,
-    "xgb": 0.8883,
-    "histgbm": 0.9602
+    "logreg": 0.7836,
+    "rf": 0.8145,
+    "xgb": 0.8865,
+    "histgbm": 0.9615
   },
   {
     "event_id": "USA12007",
     "date": "2020-09-03",
     "year": 2020,
     "true": 1,
-    "logreg": 0.6379,
-    "rf": 0.5209,
-    "xgb": 0.679,
-    "histgbm": 0.8152
+    "logreg": 0.6441,
+    "rf": 0.5222,
+    "xgb": 0.6893,
+    "histgbm": 0.7435
   },
   {
     "event_id": "USA14290",
     "date": "2020-10-04",
     "year": 2020,
     "true": 1,
-    "logreg": 0.5369,
-    "rf": 0.5717,
-    "xgb": 0.7815,
-    "histgbm": 0.7646
+    "logreg": 0.535,
+    "rf": 0.5808,
+    "xgb": 0.7642,
+    "histgbm": 0.7441
   },
   {
     "event_id": "USA16482",
     "date": "2020-10-31",
     "year": 2020,
     "true": 1,
-    "logreg": 0.6497,
-    "rf": 0.8094,
-    "xgb": 0.8481,
-    "histgbm": 0.8712
+    "logreg": 0.649,
+    "rf": 0.8081,
+    "xgb": 0.8491,
+    "histgbm": 0.8709
   },
   {
     "event_id": "USA18953",
     "date": "2020-11-30",
     "year": 2020,
     "true": 1,
-    "logreg": 0.7638,
-    "rf": 0.7449,
-    "xgb": 0.8199,
-    "histgbm": 0.7529
+    "logreg": 0.7593,
+    "rf": 0.7299,
+    "xgb": 0.8445,
+    "histgbm": 0.7694
   },
   {
     "event_id": "USA19998",
     "date": "2020-12-31",
     "year": 2020,
     "true": 1,
-    "logreg": 0.7523,
-    "rf": 0.6076,
-    "xgb": 0.7812,
-    "histgbm": 0.8572
+    "logreg": 0.7491,
+    "rf": 0.5893,
+    "xgb": 0.7998,
+    "histgbm": 0.8734
   },
   {
-    "event_id": "USA22041",
+    "event_id": "USA22057",
     "date": "2021-01-22",
     "year": 2021,
     "true": 0,
-    "logreg": 0.5219,
-    "rf": 0.3686,
-    "xgb": 0.2463,
-    "histgbm": 0.0544
-  },
-  {
-    "event_id": "USA22056",
-    "date": "2021-01-22",
-    "year": 2021,
-    "true": 0,
-    "logreg": 0.4564,
-    "rf": 0.1833,
-    "xgb": 0.1522,
-    "histgbm": 0.0133
-  },
-  {
-    "event_id": "USA22044",
-    "date": "2021-01-22",
-    "year": 2021,
-    "true": 0,
-    "logreg": 0.5292,
-    "rf": 0.3502,
-    "xgb": 0.205,
-    "histgbm": 0.0908
-  },
-  {
-    "event_id": "USA22064",
-    "date": "2021-01-22",
-    "year": 2021,
-    "true": 0,
-    "logreg": 0.6549,
-    "rf": 0.2925,
-    "xgb": 0.2548,
-    "histgbm": 0.1236
+    "logreg": 0.427,
+    "rf": 0.2418,
+    "xgb": 0.1971,
+    "histgbm": 0.0646
   },
   {
     "event_id": "USA22052",
     "date": "2021-01-22",
     "year": 2021,
     "true": 0,
-    "logreg": 0.2988,
-    "rf": 0.2029,
-    "xgb": 0.0883,
-    "histgbm": 0.0385
+    "logreg": 0.3037,
+    "rf": 0.2336,
+    "xgb": 0.1065,
+    "histgbm": 0.0379
+  },
+  {
+    "event_id": "USA22041",
+    "date": "2021-01-22",
+    "year": 2021,
+    "true": 0,
+    "logreg": 0.5122,
+    "rf": 0.3165,
+    "xgb": 0.2535,
+    "histgbm": 0.0712
+  },
+  {
+    "event_id": "USA22056",
+    "date": "2021-01-22",
+    "year": 2021,
+    "true": 0,
+    "logreg": 0.4382,
+    "rf": 0.1765,
+    "xgb": 0.1362,
+    "histgbm": 0.0133
   },
   {
     "event_id": "USA22147",
     "date": "2021-01-23",
     "year": 2021,
     "true": 0,
-    "logreg": 0.0959,
-    "rf": 0.1268,
-    "xgb": 0.0664,
-    "histgbm": 0.0198
+    "logreg": 0.1061,
+    "rf": 0.1346,
+    "xgb": 0.0887,
+    "histgbm": 0.0167
   },
   {
     "event_id": "USA22130",
     "date": "2021-01-25",
     "year": 2021,
     "true": 0,
-    "logreg": 0.3749,
-    "rf": 0.3103,
-    "xgb": 0.2222,
-    "histgbm": 0.2914
+    "logreg": 0.3685,
+    "rf": 0.318,
+    "xgb": 0.2374,
+    "histgbm": 0.2349
   },
   {
     "event_id": "USA22093",
     "date": "2021-01-27",
     "year": 2021,
     "true": 0,
-    "logreg": 0.3891,
-    "rf": 0.3149,
-    "xgb": 0.3166,
-    "histgbm": 0.0976
+    "logreg": 0.3858,
+    "rf": 0.3429,
+    "xgb": 0.297,
+    "histgbm": 0.1072
   },
   {
     "event_id": "USA22151",
     "date": "2021-01-27",
     "year": 2021,
     "true": 0,
-    "logreg": 0.3381,
-    "rf": 0.1855,
-    "xgb": 0.1625,
-    "histgbm": 0.0318
+    "logreg": 0.3442,
+    "rf": 0.1856,
+    "xgb": 0.131,
+    "histgbm": 0.0278
   },
   {
     "event_id": "USA26553",
     "date": "2021-03-13",
     "year": 2021,
     "true": 1,
-    "logreg": 0.429,
-    "rf": 0.3107,
-    "xgb": 0.2362,
-    "histgbm": 0.1787
+    "logreg": 0.4302,
+    "rf": 0.2835,
+    "xgb": 0.2277,
+    "histgbm": 0.2064
   },
   {
     "event_id": "USA27400",
     "date": "2021-03-27",
     "year": 2021,
     "true": 1,
-    "logreg": 0.4088,
-    "rf": 0.2936,
-    "xgb": 0.206,
-    "histgbm": 0.1507
+    "logreg": 0.4075,
+    "rf": 0.2983,
+    "xgb": 0.2437,
+    "histgbm": 0.0851
   },
   {
     "event_id": "USA28214",
     "date": "2021-04-16",
     "year": 2021,
     "true": 1,
-    "logreg": 0.3568,
-    "rf": 0.1976,
-    "xgb": 0.1568,
-    "histgbm": 0.0379
+    "logreg": 0.2796,
+    "rf": 0.2074,
+    "xgb": 0.0854,
+    "histgbm": 0.0405
   },
   {
     "event_id": "USA30290",
     "date": "2021-05-15",
     "year": 2021,
     "true": 1,
-    "logreg": 0.3025,
-    "rf": 0.2489,
-    "xgb": 0.116,
-    "histgbm": 0.0257
+    "logreg": 0.5043,
+    "rf": 0.3849,
+    "xgb": 0.3379,
+    "histgbm": 0.1626
   },
   {
     "event_id": "USA30699",
     "date": "2021-06-03",
     "year": 2021,
     "true": 1,
-    "logreg": 0.1084,
-    "rf": 0.1618,
-    "xgb": 0.0902,
-    "histgbm": 0.0156
+    "logreg": 0.2663,
+    "rf": 0.2564,
+    "xgb": 0.1556,
+    "histgbm": 0.2989
   },
   {
     "event_id": "USA31823",
     "date": "2021-06-18",
     "year": 2021,
     "true": 1,
-    "logreg": 0.5703,
-    "rf": 0.3791,
-    "xgb": 0.4373,
-    "histgbm": 0.0934
+    "logreg": 0.6387,
+    "rf": 0.3813,
+    "xgb": 0.3462,
+    "histgbm": 0.0983
   },
   {
     "event_id": "USA31654",
     "date": "2021-06-23",
     "year": 2021,
     "true": 1,
-    "logreg": 0.4187,
-    "rf": 0.3015,
-    "xgb": 0.1608,
-    "histgbm": 0.0477
+    "logreg": 0.5088,
+    "rf": 0.3037,
+    "xgb": 0.2582,
+    "histgbm": 0.162
   },
   {
     "event_id": "USA32055",
     "date": "2021-07-05",
     "year": 2021,
     "true": 1,
-    "logreg": 0.2643,
-    "rf": 0.2217,
-    "xgb": 0.1154,
-    "histgbm": 0.0249
+    "logreg": 0.2701,
+    "rf": 0.2054,
+    "xgb": 0.0817,
+    "histgbm": 0.0581
+  },
+  {
+    "event_id": "USA32206",
+    "date": "2021-07-09",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.4156,
+    "rf": 0.268,
+    "xgb": 0.1628,
+    "histgbm": 0.1087
   },
   {
     "event_id": "USA33390",
     "date": "2021-07-09",
     "year": 2021,
     "true": 1,
-    "logreg": 0.2894,
-    "rf": 0.3113,
-    "xgb": 0.2721,
-    "histgbm": 0.0142
+    "logreg": 0.4277,
+    "rf": 0.2863,
+    "xgb": 0.2615,
+    "histgbm": 0.1273
+  },
+  {
+    "event_id": "USA33480",
+    "date": "2021-07-31",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.4108,
+    "rf": 0.2375,
+    "xgb": 0.2161,
+    "histgbm": 0.0116
   },
   {
     "event_id": "USA33273",
     "date": "2021-08-26",
     "year": 2021,
     "true": 1,
-    "logreg": 0.4574,
-    "rf": 0.3246,
-    "xgb": 0.2639,
-    "histgbm": 0.2151
+    "logreg": 0.5345,
+    "rf": 0.2875,
+    "xgb": 0.2678,
+    "histgbm": 0.1849
   },
   {
     "event_id": "USA33274",
     "date": "2021-08-31",
     "year": 2021,
     "true": 1,
-    "logreg": 0.3732,
-    "rf": 0.3232,
-    "xgb": 0.135,
-    "histgbm": 0.0064
+    "logreg": 0.4653,
+    "rf": 0.3135,
+    "xgb": 0.1956,
+    "histgbm": 0.0827
   },
   {
     "event_id": "USA34974",
     "date": "2021-09-19",
     "year": 2021,
     "true": 1,
-    "logreg": 0.4162,
-    "rf": 0.2938,
-    "xgb": 0.132,
-    "histgbm": 0.0111
+    "logreg": 0.4766,
+    "rf": 0.2646,
+    "xgb": 0.2294,
+    "histgbm": 0.1181
   },
   {
     "event_id": "USA35873",
     "date": "2021-10-16",
     "year": 2021,
     "true": 1,
-    "logreg": 0.3681,
-    "rf": 0.2999,
-    "xgb": 0.2342,
-    "histgbm": 0.1779
+    "logreg": 0.5161,
+    "rf": 0.2525,
+    "xgb": 0.212,
+    "histgbm": 0.0918
   },
   {
     "event_id": "USA36703",
     "date": "2021-11-03",
     "year": 2021,
     "true": 1,
-    "logreg": 0.4222,
-    "rf": 0.2598,
-    "xgb": 0.1568,
-    "histgbm": 0.0178
+    "logreg": 0.4249,
+    "rf": 0.2623,
+    "xgb": 0.1533,
+    "histgbm": 0.0258
   },
   {
     "event_id": "USA48116",
     "date": "2021-11-21",
     "year": 2021,
     "true": 1,
-    "logreg": 0.407,
-    "rf": 0.3003,
-    "xgb": 0.1566,
-    "histgbm": 0.0507
+    "logreg": 0.4107,
+    "rf": 0.2855,
+    "xgb": 0.1402,
+    "histgbm": 0.0871
   },
   {
     "event_id": "USA40567",
     "date": "2022-03-16",
     "year": 2022,
     "true": 1,
-    "logreg": 0.1796,
-    "rf": 0.2779,
-    "xgb": 0.1602,
-    "histgbm": 0.2077
+    "logreg": 0.177,
+    "rf": 0.2922,
+    "xgb": 0.1858,
+    "histgbm": 0.201
   },
   {
     "event_id": "USA41621",
     "date": "2022-04-11",
     "year": 2022,
     "true": 1,
-    "logreg": 0.3403,
-    "rf": 0.384,
-    "xgb": 0.3609,
-    "histgbm": 0.2249
+    "logreg": 0.3266,
+    "rf": 0.3946,
+    "xgb": 0.3487,
+    "histgbm": 0.3031
   },
   {
     "event_id": "USA42637",
     "date": "2022-04-23",
     "year": 2022,
     "true": 1,
-    "logreg": 0.1261,
-    "rf": 0.2643,
-    "xgb": 0.3176,
-    "histgbm": 0.1916
+    "logreg": 0.1326,
+    "rf": 0.2925,
+    "xgb": 0.3411,
+    "histgbm": 0.1716
   },
   {
     "event_id": "USA42385",
     "date": "2022-05-01",
     "year": 2022,
     "true": 1,
-    "logreg": 0.2133,
-    "rf": 0.3371,
-    "xgb": 0.2324,
-    "histgbm": 0.1528
+    "logreg": 0.2148,
+    "rf": 0.3295,
+    "xgb": 0.2298,
+    "histgbm": 0.2275
   },
   {
     "event_id": "USA45700",
     "date": "2022-06-24",
     "year": 2022,
     "true": 1,
-    "logreg": 0.0977,
-    "rf": 0.2254,
-    "xgb": 0.145,
-    "histgbm": 0.127
+    "logreg": 0.1023,
+    "rf": 0.2442,
+    "xgb": 0.1872,
+    "histgbm": 0.1987
   },
   {
     "event_id": "USA54429",
     "date": "2023-04-01",
     "year": 2023,
     "true": 1,
-    "logreg": 0.0556,
-    "rf": 0.3163,
-    "xgb": 0.2954,
-    "histgbm": 0.0822
+    "logreg": 0.0593,
+    "rf": 0.3287,
+    "xgb": 0.2858,
+    "histgbm": 0.1228
   },
   {
     "event_id": "USA55494",
     "date": "2023-04-05",
     "year": 2023,
     "true": 1,
-    "logreg": 0.0852,
-    "rf": 0.3996,
-    "xgb": 0.4142,
-    "histgbm": 0.7355
+    "logreg": 0.0835,
+    "rf": 0.3946,
+    "xgb": 0.3765,
+    "histgbm": 0.7138
   },
   {
     "event_id": "USA58258",
     "date": "2023-07-24",
     "year": 2023,
     "true": 1,
-    "logreg": 0.106,
-    "rf": 0.2941,
-    "xgb": 0.3151,
-    "histgbm": 0.3213
+    "logreg": 0.105,
+    "rf": 0.2972,
+    "xgb": 0.2952,
+    "histgbm": 0.361
   },
   {
     "event_id": "USA64619",
     "date": "2024-01-17",
     "year": 2024,
     "true": 0,
-    "logreg": 0.0329,
-    "rf": 0.2335,
-    "xgb": 0.1811,
-    "histgbm": 0.0851
+    "logreg": 0.032,
+    "rf": 0.2772,
+    "xgb": 0.1697,
+    "histgbm": 0.1119
   },
   {
     "event_id": "USA64524",
     "date": "2024-01-18",
     "year": 2024,
     "true": 0,
-    "logreg": 0.0189,
-    "rf": 0.2007,
-    "xgb": 0.1326,
-    "histgbm": 0.1269
+    "logreg": 0.0193,
+    "rf": 0.2065,
+    "xgb": 0.1545,
+    "histgbm": 0.1015
   }
 ]

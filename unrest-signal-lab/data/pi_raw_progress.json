@@ -276,11 +276,12 @@
     20220101,
     20220102,
     20220103,
-    20220104
+    20220104,
+    20220105
   ],
-  "gkg_matched": 112943,
-  "events_matched": 416930,
-  "files_downloaded": 46307,
+  "gkg_matched": 115859,
+  "events_matched": 426342,
+  "files_downloaded": 46499,
   "files_missing_404": 1162,
-  "bytes_downloaded": 136982758799
+  "bytes_downloaded": 137541352528
 }

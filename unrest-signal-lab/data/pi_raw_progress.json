@@ -301,11 +301,12 @@
     20220126,
     20220127,
     20220128,
-    20220216
+    20220216,
+    20220217
   ],
-  "gkg_matched": 129191,
-  "events_matched": 444456,
-  "files_downloaded": 51105,
+  "gkg_matched": 129214,
+  "events_matched": 444906,
+  "files_downloaded": 51297,
   "files_missing_404": 1164,
-  "bytes_downloaded": 149686459726
+  "bytes_downloaded": 150264442818
 }

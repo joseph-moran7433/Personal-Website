@@ -11,7 +11,7 @@ process working through many days back to back: each day's 192 files
 (96 GKG + 96 Events) download concurrently (ThreadPoolExecutor, measured
 ~7.6MB/s aggregate at 5 threads from this Pi -- DOWNLOAD_WORKERS=12
 leaves comfortable margin), matching rows get appended to
-data/gdelt_gkg_raw.json / data/gdelt_events_raw.json, and the day is
+data/gdelt_raw_gkg/{day}.json / data/gdelt_raw_events/{day}.json, and the day is
 checkpointed in data/pi_raw_progress.json before moving on. Safe to
 kill at any point -- a day is only checkpointed once fully processed,
 so an interrupted run just repeats that one day next time; nothing
@@ -54,8 +54,17 @@ import build_training_table_v2 as btt  # reuse assign_sequences / haversine / ma
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "data"
 PROGRESS_PATH = DATA / "pi_raw_progress.json"
-GKG_OUT_PATH = DATA / "gdelt_gkg_raw.json"
-EVENTS_OUT_PATH = DATA / "gdelt_events_raw.json"
+GKG_OUT_DIR = DATA / "gdelt_raw_gkg"
+EVENTS_OUT_DIR = DATA / "gdelt_raw_events"
+# One small file per day instead of one ever-growing array: the first version
+# of this script appended every matched row into two giant JSON files, which
+# hit 1.7GB/673MB within a day -- big enough to OOM git's pack-objects and,
+# worse, to exceed GitHub's 100MB-per-file push limit outright. Per-day files
+# also matches how every other pull script in this project already stores
+# its output (gdelt_sample_100.json, gdelt_gkg_missing_2023.json, etc. --
+# one file per chunk, never one unbounded file).
+GKG_KEEP_FIELDS = ["GKGRECORDID", "DATE", "V2Tone", "_acled_event_id"]
+EVENTS_KEEP_FIELDS = ["GLOBALEVENTID", "SQLDATE", "GoldsteinScale", "QuadClass", "_acled_event_id"]
 
 BASE_URL = "https://data.gdeltproject.org/gdeltv2"
 REQUEST_TIMEOUT = 30
@@ -131,12 +140,11 @@ def save_progress(p):
     PROGRESS_PATH.write_text(json.dumps(p, indent=2), encoding="utf-8")
 
 
-def append_rows(path, rows):
+def write_day_file(out_dir, day_int, rows):
     if not rows:
         return
-    existing = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
-    existing.extend(rows)
-    path.write_text(json.dumps(existing, indent=2), encoding="utf-8")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / f"{day_int}.json").write_text(json.dumps(rows, indent=2), encoding="utf-8")
 
 
 def download_and_parse(url, field_names, progress):
@@ -179,7 +187,7 @@ def match_gkg_rows(raw_rows, day_events):
         for e in day_events:
             hits = btt.matching_location_distances(r["V2Locations"], e["location"], float(e["latitude"]), float(e["longitude"]))
             if hits and hits[0][0] <= GEO_DISTANCE_LIMIT_MILES:
-                out = dict(r)
+                out = {k: r.get(k, "") for k in GKG_KEEP_FIELDS}
                 out["_acled_event_id"] = e["event_id_cnty"]
                 matched.append(out)
     return matched
@@ -205,7 +213,7 @@ def match_events_rows(raw_rows, day_events):
             else:
                 is_ok = m["state_abbr"] is None or row_state == m["state_abbr"]
             if is_ok:
-                out = dict(r)
+                out = {k: r.get(k, "") for k in EVENTS_KEEP_FIELDS}
                 out["_acled_event_id"] = m["id"]
                 matched.append(out)
     return matched
@@ -240,16 +248,21 @@ def git_commit_and_push(day_int):
     # Mirrors the Morning-Text Pi's own pattern (local cron job -> commit ->
     # push), so progress reaches GitHub without anyone watching this run.
     # Never raises -- a failed push just means next run's commit carries
-    # this one's changes too; the local files are never at risk.
+    # this one's changes too; the local files are never at risk. Pulls
+    # (rebase) before pushing so a remote change (e.g. someone pushing from
+    # another machine) doesn't permanently wedge every push after it --
+    # the first version of this script lacked this and silently piled up
+    # 140+ un-pushed local commits once origin moved ahead of it.
     try:
-        subprocess.run(["git", "add", "data/gdelt_gkg_raw.json", "data/gdelt_events_raw.json", "data/pi_raw_progress.json"],
+        subprocess.run(["git", "add", "data/gdelt_raw_gkg", "data/gdelt_raw_events", "data/pi_raw_progress.json"],
                         cwd=HERE, check=True, capture_output=True)
         result = subprocess.run(["git", "commit", "-m", f"pi_gdelt_raw_pull: day {day_int}"],
                                  cwd=HERE, capture_output=True, text=True)
         if result.returncode != 0 and "nothing to commit" not in result.stdout:
             print(f"[pi-raw] git commit warning: {result.stdout.strip()} {result.stderr.strip()}")
             return
-        subprocess.run(["git", "push"], cwd=HERE, check=True, capture_output=True, timeout=60)
+        subprocess.run(["git", "pull", "--rebase", "origin", "main"], cwd=HERE, check=True, capture_output=True, timeout=60)
+        subprocess.run(["git", "push", "origin", "main"], cwd=HERE, check=True, capture_output=True, timeout=60)
         print(f"[pi-raw] pushed day {day_int} to GitHub")
     except Exception as exc:
         print(f"[pi-raw] git push skipped (will retry on next run): {exc}")
@@ -289,8 +302,8 @@ def main():
         t0 = time.time()
         day_gkg, day_events_matched = process_day(day_int, day_events, progress, workers=args.workers)
         elapsed = time.time() - t0
-        append_rows(GKG_OUT_PATH, day_gkg)
-        append_rows(EVENTS_OUT_PATH, day_events_matched)
+        write_day_file(GKG_OUT_DIR, day_int, day_gkg)
+        write_day_file(EVENTS_OUT_DIR, day_int, day_events_matched)
         progress["gkg_matched"] += len(day_gkg)
         progress["events_matched"] += len(day_events_matched)
         progress["done_days"].append(day_int)

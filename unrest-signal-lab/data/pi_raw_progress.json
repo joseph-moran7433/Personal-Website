@@ -265,11 +265,12 @@
     20211114,
     20211115,
     20211116,
-    20211117
+    20211117,
+    20211118
   ],
-  "gkg_matched": 95952,
-  "events_matched": 382699,
-  "files_downloaded": 44195,
+  "gkg_matched": 95961,
+  "events_matched": 383603,
+  "files_downloaded": 44387,
   "files_missing_404": 1162,
-  "bytes_downloaded": 132237067878
+  "bytes_downloaded": 132842330559
 }

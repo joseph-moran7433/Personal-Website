@@ -156,11 +156,12 @@
     20210121,
     20210122,
     20210123,
-    20210124
+    20210124,
+    20210125
   ],
-  "gkg_matched": 86204,
-  "events_matched": 331743,
-  "files_downloaded": 26675,
+  "gkg_matched": 86205,
+  "events_matched": 332552,
+  "files_downloaded": 26867,
   "files_missing_404": 1080,
-  "bytes_downloaded": 84296400397
+  "bytes_downloaded": 84890405137
 }

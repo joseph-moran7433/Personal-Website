@@ -298,11 +298,12 @@
     20220123,
     20220124,
     20220125,
-    20220126
+    20220126,
+    20220127
   ],
-  "gkg_matched": 128588,
-  "events_matched": 443507,
-  "files_downloaded": 50529,
+  "gkg_matched": 128919,
+  "events_matched": 443729,
+  "files_downloaded": 50721,
   "files_missing_404": 1164,
-  "bytes_downloaded": 147922446037
+  "bytes_downloaded": 148535807288
 }

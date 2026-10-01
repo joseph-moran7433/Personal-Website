@@ -293,11 +293,12 @@
     20220118,
     20220119,
     20220120,
-    20220121
+    20220121,
+    20220122
   ],
-  "gkg_matched": 127420,
-  "events_matched": 442385,
-  "files_downloaded": 49569,
+  "gkg_matched": 127617,
+  "events_matched": 442595,
+  "files_downloaded": 49761,
   "files_missing_404": 1164,
-  "bytes_downloaded": 145602190207
+  "bytes_downloaded": 145944841183
 }

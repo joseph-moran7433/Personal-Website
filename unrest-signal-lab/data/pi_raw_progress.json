@@ -414,11 +414,12 @@
     20221103,
     20221104,
     20221105,
-    20221106
+    20221106,
+    20221107
   ],
   "gkg_matched": 140414,
-  "events_matched": 526233,
-  "files_downloaded": 70438,
+  "events_matched": 526312,
+  "files_downloaded": 70630,
   "files_missing_404": 1166,
-  "bytes_downloaded": 196604673727
+  "bytes_downloaded": 197063440723
 }

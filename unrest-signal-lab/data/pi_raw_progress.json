@@ -351,11 +351,12 @@
     20220419,
     20220420,
     20220421,
-    20220422
+    20220422,
+    20220424
   ],
   "gkg_matched": 132683,
-  "events_matched": 477941,
-  "files_downloaded": 58344,
+  "events_matched": 478251,
+  "files_downloaded": 58536,
   "files_missing_404": 1164,
-  "bytes_downloaded": 168325564947
+  "bytes_downloaded": 168616792464
 }

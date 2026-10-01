@@ -427,11 +427,12 @@
     20221118,
     20221123,
     20221124,
-    20221125
+    20221125,
+    20221126
   ],
-  "gkg_matched": 141325,
-  "events_matched": 529529,
-  "files_downloaded": 72932,
+  "gkg_matched": 141503,
+  "events_matched": 529590,
+  "files_downloaded": 73124,
   "files_missing_404": 1168,
-  "bytes_downloaded": 202612948126
+  "bytes_downloaded": 202864411594
 }

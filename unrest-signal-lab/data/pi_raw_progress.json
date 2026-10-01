@@ -190,11 +190,12 @@
     20210527,
     20210528,
     20210529,
-    20210530
+    20210530,
+    20210531
   ],
-  "gkg_matched": 86385,
-  "events_matched": 343097,
-  "files_downloaded": 32572,
+  "gkg_matched": 86405,
+  "events_matched": 343144,
+  "files_downloaded": 32764,
   "files_missing_404": 1080,
-  "bytes_downloaded": 101502881332
+  "bytes_downloaded": 101902941112
 }

@@ -1,0 +1,592 @@
+[
+  {
+    "event_id": "USA670",
+    "date": "2020-06-20",
+    "year": 2020,
+    "true": 0,
+    "logreg": 0.6649,
+    "rf": 0.7858,
+    "xgb": 0.845,
+    "histgbm": 0.9491
+  },
+  {
+    "event_id": "USA217",
+    "date": "2020-06-25",
+    "year": 2020,
+    "true": 0,
+    "logreg": 0.2125,
+    "rf": 0.362,
+    "xgb": 0.3903,
+    "histgbm": 0.1999
+  },
+  {
+    "event_id": "USA845",
+    "date": "2020-06-26",
+    "year": 2020,
+    "true": 0,
+    "logreg": 0.6367,
+    "rf": 0.7986,
+    "xgb": 0.8517,
+    "histgbm": 0.9065
+  },
+  {
+    "event_id": "USA648",
+    "date": "2020-06-27",
+    "year": 2020,
+    "true": 0,
+    "logreg": 0.5582,
+    "rf": 0.4998,
+    "xgb": 0.7956,
+    "histgbm": 0.5841
+  },
+  {
+    "event_id": "USA219",
+    "date": "2020-06-27",
+    "year": 2020,
+    "true": 0,
+    "logreg": 0.6861,
+    "rf": 0.5306,
+    "xgb": 0.4737,
+    "histgbm": 0.2347
+  },
+  {
+    "event_id": "USA740",
+    "date": "2020-06-27",
+    "year": 2020,
+    "true": 0,
+    "logreg": 0.6549,
+    "rf": 0.5927,
+    "xgb": 0.7557,
+    "histgbm": 0.9763
+  },
+  {
+    "event_id": "USA969",
+    "date": "2020-06-27",
+    "year": 2020,
+    "true": 0,
+    "logreg": 0.6974,
+    "rf": 0.7182,
+    "xgb": 0.8664,
+    "histgbm": 0.9202
+  },
+  {
+    "event_id": "USA1004",
+    "date": "2020-06-29",
+    "year": 2020,
+    "true": 0,
+    "logreg": 0.6261,
+    "rf": 0.5641,
+    "xgb": 0.7161,
+    "histgbm": 0.276
+  },
+  {
+    "event_id": "USA1664",
+    "date": "2020-07-01",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.7038,
+    "rf": 0.3883,
+    "xgb": 0.6981,
+    "histgbm": 0.454
+  },
+  {
+    "event_id": "USA555",
+    "date": "2020-07-02",
+    "year": 2020,
+    "true": 0,
+    "logreg": 0.5532,
+    "rf": 0.5454,
+    "xgb": 0.6209,
+    "histgbm": 0.3308
+  },
+  {
+    "event_id": "USA427",
+    "date": "2020-07-04",
+    "year": 2020,
+    "true": 0,
+    "logreg": 0.6993,
+    "rf": 0.3872,
+    "xgb": 0.6981,
+    "histgbm": 0.454
+  },
+  {
+    "event_id": "USA3247",
+    "date": "2020-07-13",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.7273,
+    "rf": 0.8143,
+    "xgb": 0.8594,
+    "histgbm": 0.9371
+  },
+  {
+    "event_id": "USA3069",
+    "date": "2020-07-23",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.6252,
+    "rf": 0.7401,
+    "xgb": 0.7725,
+    "histgbm": 0.7409
+  },
+  {
+    "event_id": "USA3702",
+    "date": "2020-08-01",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.5336,
+    "rf": 0.5149,
+    "xgb": 0.5475,
+    "histgbm": 0.32
+  },
+  {
+    "event_id": "USA3784",
+    "date": "2020-08-02",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.4991,
+    "rf": 0.5227,
+    "xgb": 0.5866,
+    "histgbm": 0.5289
+  },
+  {
+    "event_id": "USA4487",
+    "date": "2020-08-14",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.6761,
+    "rf": 0.7992,
+    "xgb": 0.8312,
+    "histgbm": 0.8879
+  },
+  {
+    "event_id": "USA10469",
+    "date": "2020-08-16",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.7396,
+    "rf": 0.6628,
+    "xgb": 0.7372,
+    "histgbm": 0.8777
+  },
+  {
+    "event_id": "USA10993",
+    "date": "2020-08-16",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.6761,
+    "rf": 0.7992,
+    "xgb": 0.8312,
+    "histgbm": 0.8879
+  },
+  {
+    "event_id": "USA11382",
+    "date": "2020-08-26",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.7043,
+    "rf": 0.7535,
+    "xgb": 0.8155,
+    "histgbm": 0.8878
+  },
+  {
+    "event_id": "USA11385",
+    "date": "2020-08-26",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.7897,
+    "rf": 0.8092,
+    "xgb": 0.8883,
+    "histgbm": 0.9602
+  },
+  {
+    "event_id": "USA12007",
+    "date": "2020-09-03",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.6379,
+    "rf": 0.5209,
+    "xgb": 0.679,
+    "histgbm": 0.8152
+  },
+  {
+    "event_id": "USA14290",
+    "date": "2020-10-04",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.5369,
+    "rf": 0.5717,
+    "xgb": 0.7815,
+    "histgbm": 0.7646
+  },
+  {
+    "event_id": "USA16482",
+    "date": "2020-10-31",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.6497,
+    "rf": 0.8094,
+    "xgb": 0.8481,
+    "histgbm": 0.8712
+  },
+  {
+    "event_id": "USA18953",
+    "date": "2020-11-30",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.7638,
+    "rf": 0.7449,
+    "xgb": 0.8199,
+    "histgbm": 0.7529
+  },
+  {
+    "event_id": "USA19998",
+    "date": "2020-12-31",
+    "year": 2020,
+    "true": 1,
+    "logreg": 0.7523,
+    "rf": 0.6076,
+    "xgb": 0.7812,
+    "histgbm": 0.8572
+  },
+  {
+    "event_id": "USA22041",
+    "date": "2021-01-22",
+    "year": 2021,
+    "true": 0,
+    "logreg": 0.5219,
+    "rf": 0.3686,
+    "xgb": 0.2463,
+    "histgbm": 0.0544
+  },
+  {
+    "event_id": "USA22056",
+    "date": "2021-01-22",
+    "year": 2021,
+    "true": 0,
+    "logreg": 0.4564,
+    "rf": 0.1833,
+    "xgb": 0.1522,
+    "histgbm": 0.0133
+  },
+  {
+    "event_id": "USA22044",
+    "date": "2021-01-22",
+    "year": 2021,
+    "true": 0,
+    "logreg": 0.5292,
+    "rf": 0.3502,
+    "xgb": 0.205,
+    "histgbm": 0.0908
+  },
+  {
+    "event_id": "USA22064",
+    "date": "2021-01-22",
+    "year": 2021,
+    "true": 0,
+    "logreg": 0.6549,
+    "rf": 0.2925,
+    "xgb": 0.2548,
+    "histgbm": 0.1236
+  },
+  {
+    "event_id": "USA22052",
+    "date": "2021-01-22",
+    "year": 2021,
+    "true": 0,
+    "logreg": 0.2988,
+    "rf": 0.2029,
+    "xgb": 0.0883,
+    "histgbm": 0.0385
+  },
+  {
+    "event_id": "USA22147",
+    "date": "2021-01-23",
+    "year": 2021,
+    "true": 0,
+    "logreg": 0.0959,
+    "rf": 0.1268,
+    "xgb": 0.0664,
+    "histgbm": 0.0198
+  },
+  {
+    "event_id": "USA22130",
+    "date": "2021-01-25",
+    "year": 2021,
+    "true": 0,
+    "logreg": 0.3749,
+    "rf": 0.3103,
+    "xgb": 0.2222,
+    "histgbm": 0.2914
+  },
+  {
+    "event_id": "USA22093",
+    "date": "2021-01-27",
+    "year": 2021,
+    "true": 0,
+    "logreg": 0.3891,
+    "rf": 0.3149,
+    "xgb": 0.3166,
+    "histgbm": 0.0976
+  },
+  {
+    "event_id": "USA22151",
+    "date": "2021-01-27",
+    "year": 2021,
+    "true": 0,
+    "logreg": 0.3381,
+    "rf": 0.1855,
+    "xgb": 0.1625,
+    "histgbm": 0.0318
+  },
+  {
+    "event_id": "USA26553",
+    "date": "2021-03-13",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.429,
+    "rf": 0.3107,
+    "xgb": 0.2362,
+    "histgbm": 0.1787
+  },
+  {
+    "event_id": "USA27400",
+    "date": "2021-03-27",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.4088,
+    "rf": 0.2936,
+    "xgb": 0.206,
+    "histgbm": 0.1507
+  },
+  {
+    "event_id": "USA28214",
+    "date": "2021-04-16",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.3568,
+    "rf": 0.1976,
+    "xgb": 0.1568,
+    "histgbm": 0.0379
+  },
+  {
+    "event_id": "USA30290",
+    "date": "2021-05-15",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.3025,
+    "rf": 0.2489,
+    "xgb": 0.116,
+    "histgbm": 0.0257
+  },
+  {
+    "event_id": "USA30699",
+    "date": "2021-06-03",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.1084,
+    "rf": 0.1618,
+    "xgb": 0.0902,
+    "histgbm": 0.0156
+  },
+  {
+    "event_id": "USA31823",
+    "date": "2021-06-18",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.5703,
+    "rf": 0.3791,
+    "xgb": 0.4373,
+    "histgbm": 0.0934
+  },
+  {
+    "event_id": "USA31654",
+    "date": "2021-06-23",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.4187,
+    "rf": 0.3015,
+    "xgb": 0.1608,
+    "histgbm": 0.0477
+  },
+  {
+    "event_id": "USA32055",
+    "date": "2021-07-05",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.2643,
+    "rf": 0.2217,
+    "xgb": 0.1154,
+    "histgbm": 0.0249
+  },
+  {
+    "event_id": "USA33390",
+    "date": "2021-07-09",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.2894,
+    "rf": 0.3113,
+    "xgb": 0.2721,
+    "histgbm": 0.0142
+  },
+  {
+    "event_id": "USA33273",
+    "date": "2021-08-26",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.4574,
+    "rf": 0.3246,
+    "xgb": 0.2639,
+    "histgbm": 0.2151
+  },
+  {
+    "event_id": "USA33274",
+    "date": "2021-08-31",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.3732,
+    "rf": 0.3232,
+    "xgb": 0.135,
+    "histgbm": 0.0064
+  },
+  {
+    "event_id": "USA34974",
+    "date": "2021-09-19",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.4162,
+    "rf": 0.2938,
+    "xgb": 0.132,
+    "histgbm": 0.0111
+  },
+  {
+    "event_id": "USA35873",
+    "date": "2021-10-16",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.3681,
+    "rf": 0.2999,
+    "xgb": 0.2342,
+    "histgbm": 0.1779
+  },
+  {
+    "event_id": "USA36703",
+    "date": "2021-11-03",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.4222,
+    "rf": 0.2598,
+    "xgb": 0.1568,
+    "histgbm": 0.0178
+  },
+  {
+    "event_id": "USA48116",
+    "date": "2021-11-21",
+    "year": 2021,
+    "true": 1,
+    "logreg": 0.407,
+    "rf": 0.3003,
+    "xgb": 0.1566,
+    "histgbm": 0.0507
+  },
+  {
+    "event_id": "USA40567",
+    "date": "2022-03-16",
+    "year": 2022,
+    "true": 1,
+    "logreg": 0.1796,
+    "rf": 0.2779,
+    "xgb": 0.1602,
+    "histgbm": 0.2077
+  },
+  {
+    "event_id": "USA41621",
+    "date": "2022-04-11",
+    "year": 2022,
+    "true": 1,
+    "logreg": 0.3403,
+    "rf": 0.384,
+    "xgb": 0.3609,
+    "histgbm": 0.2249
+  },
+  {
+    "event_id": "USA42637",
+    "date": "2022-04-23",
+    "year": 2022,
+    "true": 1,
+    "logreg": 0.1261,
+    "rf": 0.2643,
+    "xgb": 0.3176,
+    "histgbm": 0.1916
+  },
+  {
+    "event_id": "USA42385",
+    "date": "2022-05-01",
+    "year": 2022,
+    "true": 1,
+    "logreg": 0.2133,
+    "rf": 0.3371,
+    "xgb": 0.2324,
+    "histgbm": 0.1528
+  },
+  {
+    "event_id": "USA45700",
+    "date": "2022-06-24",
+    "year": 2022,
+    "true": 1,
+    "logreg": 0.0977,
+    "rf": 0.2254,
+    "xgb": 0.145,
+    "histgbm": 0.127
+  },
+  {
+    "event_id": "USA54429",
+    "date": "2023-04-01",
+    "year": 2023,
+    "true": 1,
+    "logreg": 0.0556,
+    "rf": 0.3163,
+    "xgb": 0.2954,
+    "histgbm": 0.0822
+  },
+  {
+    "event_id": "USA55494",
+    "date": "2023-04-05",
+    "year": 2023,
+    "true": 1,
+    "logreg": 0.0852,
+    "rf": 0.3996,
+    "xgb": 0.4142,
+    "histgbm": 0.7355
+  },
+  {
+    "event_id": "USA58258",
+    "date": "2023-07-24",
+    "year": 2023,
+    "true": 1,
+    "logreg": 0.106,
+    "rf": 0.2941,
+    "xgb": 0.3151,
+    "histgbm": 0.3213
+  },
+  {
+    "event_id": "USA64619",
+    "date": "2024-01-17",
+    "year": 2024,
+    "true": 0,
+    "logreg": 0.0329,
+    "rf": 0.2335,
+    "xgb": 0.1811,
+    "histgbm": 0.0851
+  },
+  {
+    "event_id": "USA64524",
+    "date": "2024-01-18",
+    "year": 2024,
+    "true": 0,
+    "logreg": 0.0189,
+    "rf": 0.2007,
+    "xgb": 0.1326,
+    "histgbm": 0.1269
+  }
+]

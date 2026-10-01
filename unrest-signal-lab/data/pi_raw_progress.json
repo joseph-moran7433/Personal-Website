@@ -274,11 +274,12 @@
     20211230,
     20211231,
     20220101,
-    20220102
+    20220102,
+    20220103
   ],
-  "gkg_matched": 106572,
-  "events_matched": 402295,
-  "files_downloaded": 45923,
+  "gkg_matched": 109735,
+  "events_matched": 407787,
+  "files_downloaded": 46115,
   "files_missing_404": 1162,
-  "bytes_downloaded": 136046088137
+  "bytes_downloaded": 136455494939
 }

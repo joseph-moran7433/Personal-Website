@@ -306,11 +306,12 @@
     20220218,
     20220219,
     20220220,
-    20220221
+    20220221,
+    20220222
   ],
-  "gkg_matched": 129332,
-  "events_matched": 446360,
-  "files_downloaded": 52065,
+  "gkg_matched": 129351,
+  "events_matched": 446782,
+  "files_downloaded": 52257,
   "files_missing_404": 1164,
-  "bytes_downloaded": 151842086121
+  "bytes_downloaded": 152397283101
 }

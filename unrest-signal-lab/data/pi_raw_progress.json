@@ -476,11 +476,12 @@
     20230131,
     20230201,
     20230213,
-    20230214
+    20230214,
+    20230215
   ],
-  "gkg_matched": 158106,
-  "events_matched": 622606,
-  "files_downloaded": 80072,
+  "gkg_matched": 158129,
+  "events_matched": 622680,
+  "files_downloaded": 80264,
   "files_missing_404": 1168,
-  "bytes_downloaded": 218398048074
+  "bytes_downloaded": 218919063401
 }

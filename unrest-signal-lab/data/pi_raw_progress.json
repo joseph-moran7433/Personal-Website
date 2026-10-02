@@ -550,11 +550,12 @@
     20230805,
     20230806,
     20230807,
-    20230808
+    20230808,
+    20230809
   ],
-  "gkg_matched": 163892,
-  "events_matched": 674341,
-  "files_downloaded": 88264,
+  "gkg_matched": 163978,
+  "events_matched": 674444,
+  "files_downloaded": 88456,
   "files_missing_404": 1178,
-  "bytes_downloaded": 247297841647
+  "bytes_downloaded": 248043162629
 }

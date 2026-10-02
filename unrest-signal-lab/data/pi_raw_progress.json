@@ -563,11 +563,12 @@
     20230818,
     20230901,
     20230902,
-    20230903
+    20230903,
+    20230904
   ],
-  "gkg_matched": 164210,
-  "events_matched": 675781,
-  "files_downloaded": 90760,
+  "gkg_matched": 164217,
+  "events_matched": 675804,
+  "files_downloaded": 90952,
   "files_missing_404": 1178,
-  "bytes_downloaded": 255274824889
+  "bytes_downloaded": 255786107477
 }

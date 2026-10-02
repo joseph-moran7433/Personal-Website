@@ -521,11 +521,12 @@
     20230526,
     20230527,
     20230528,
-    20230603
+    20230603,
+    20230604
   ],
   "gkg_matched": 163658,
-  "events_matched": 657281,
-  "files_downloaded": 85555,
+  "events_matched": 657527,
+  "files_downloaded": 85747,
   "files_missing_404": 1174,
-  "bytes_downloaded": 238097486123
+  "bytes_downloaded": 238483861792
 }

@@ -565,11 +565,12 @@
     20230902,
     20230903,
     20230904,
-    20230905
+    20230905,
+    20230906
   ],
-  "gkg_matched": 164237,
-  "events_matched": 675858,
-  "files_downloaded": 91142,
+  "gkg_matched": 164242,
+  "events_matched": 675937,
+  "files_downloaded": 91334,
   "files_missing_404": 1180,
-  "bytes_downloaded": 256470302910
+  "bytes_downloaded": 257229365003
 }

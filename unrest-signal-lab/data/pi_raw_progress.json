@@ -453,11 +453,12 @@
     20230107,
     20230108,
     20230109,
-    20230110
+    20230110,
+    20230111
   ],
-  "gkg_matched": 143423,
-  "events_matched": 566051,
-  "files_downloaded": 75656,
+  "gkg_matched": 144130,
+  "events_matched": 579938,
+  "files_downloaded": 75848,
   "files_missing_404": 1168,
-  "bytes_downloaded": 208206660329
+  "bytes_downloaded": 208746362121
 }

@@ -525,11 +525,12 @@
     20230604,
     20230605,
     20230606,
-    20230607
+    20230607,
+    20230608
   ],
-  "gkg_matched": 163664,
-  "events_matched": 662908,
-  "files_downloaded": 86323,
+  "gkg_matched": 163672,
+  "events_matched": 665910,
+  "files_downloaded": 86515,
   "files_missing_404": 1174,
-  "bytes_downloaded": 240801646286
+  "bytes_downloaded": 241615103947
 }

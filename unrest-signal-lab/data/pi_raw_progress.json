@@ -560,11 +560,12 @@
     20230815,
     20230816,
     20230817,
-    20230818
+    20230818,
+    20230901
   ],
-  "gkg_matched": 164188,
-  "events_matched": 675581,
-  "files_downloaded": 90184,
+  "gkg_matched": 164205,
+  "events_matched": 675705,
+  "files_downloaded": 90376,
   "files_missing_404": 1178,
-  "bytes_downloaded": 253812532695
+  "bytes_downloaded": 254540496738
 }

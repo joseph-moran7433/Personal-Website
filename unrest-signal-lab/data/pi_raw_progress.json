@@ -502,11 +502,12 @@
     20230328,
     20230329,
     20230330,
-    20230331
+    20230331,
+    20230401
   ],
-  "gkg_matched": 161081,
-  "events_matched": 624653,
-  "files_downloaded": 81913,
+  "gkg_matched": 161730,
+  "events_matched": 624863,
+  "files_downloaded": 82105,
   "files_missing_404": 1168,
-  "bytes_downloaded": 225216905777
+  "bytes_downloaded": 225735504710
 }

@@ -495,11 +495,12 @@
     20230321,
     20230322,
     20230323,
-    20230324
+    20230324,
+    20230325
   ],
-  "gkg_matched": 158145,
-  "events_matched": 622755,
-  "files_downloaded": 80601,
+  "gkg_matched": 158152,
+  "events_matched": 622798,
+  "files_downloaded": 80761,
   "files_missing_404": 1168,
-  "bytes_downloaded": 219750925081
+  "bytes_downloaded": 220212826432
 }

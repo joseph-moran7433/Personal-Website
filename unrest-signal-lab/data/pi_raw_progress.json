@@ -451,11 +451,12 @@
     20230105,
     20230106,
     20230107,
-    20230108
+    20230108,
+    20230109
   ],
-  "gkg_matched": 142693,
-  "events_matched": 542522,
-  "files_downloaded": 75272,
+  "gkg_matched": 142991,
+  "events_matched": 552654,
+  "files_downloaded": 75464,
   "files_missing_404": 1168,
-  "bytes_downloaded": 207253058283
+  "bytes_downloaded": 207697981932
 }

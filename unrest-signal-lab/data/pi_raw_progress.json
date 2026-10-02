@@ -469,11 +469,12 @@
     20230123,
     20230124,
     20230126,
-    20230127
+    20230127,
+    20230128
   ],
-  "gkg_matched": 158026,
-  "events_matched": 622401,
-  "files_downloaded": 78728,
+  "gkg_matched": 158029,
+  "events_matched": 622410,
+  "files_downloaded": 78920,
   "files_missing_404": 1168,
-  "bytes_downloaded": 215308273032
+  "bytes_downloaded": 215601722280
 }

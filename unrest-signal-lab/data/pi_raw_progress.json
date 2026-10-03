@@ -696,11 +696,12 @@
     20240616,
     20240617,
     20240618,
-    20240619
+    20240619,
+    20240620
   ],
-  "gkg_matched": 184976,
-  "events_matched": 748973,
-  "files_downloaded": 106239,
+  "gkg_matched": 184979,
+  "events_matched": 748991,
+  "files_downloaded": 106431,
   "files_missing_404": 1182,
-  "bytes_downloaded": 303032994501
+  "bytes_downloaded": 303700161024
 }

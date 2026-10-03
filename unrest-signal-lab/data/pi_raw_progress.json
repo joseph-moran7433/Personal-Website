@@ -678,11 +678,12 @@
     20240527,
     20240530,
     20240531,
-    20240601
+    20240601,
+    20240602
   ],
   "gkg_matched": 184104,
-  "events_matched": 735483,
-  "files_downloaded": 103512,
+  "events_matched": 736400,
+  "files_downloaded": 103704,
   "files_missing_404": 1182,
-  "bytes_downloaded": 294594476159
+  "bytes_downloaded": 294914843046
 }

@@ -646,11 +646,12 @@
     20240217,
     20240218,
     20240219,
-    20240220
+    20240220,
+    20240221
   ],
-  "gkg_matched": 180162,
-  "events_matched": 724592,
-  "files_downloaded": 100688,
+  "gkg_matched": 180194,
+  "events_matched": 724630,
+  "files_downloaded": 100880,
   "files_missing_404": 1182,
-  "bytes_downloaded": 285962484530
+  "bytes_downloaded": 286683126575
 }

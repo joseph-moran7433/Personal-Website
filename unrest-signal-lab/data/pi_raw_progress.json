@@ -688,11 +688,12 @@
     20240608,
     20240609,
     20240610,
-    20240611
+    20240611,
+    20240612
   ],
-  "gkg_matched": 184607,
-  "events_matched": 748713,
-  "files_downloaded": 105432,
+  "gkg_matched": 184874,
+  "events_matched": 748815,
+  "files_downloaded": 105624,
   "files_missing_404": 1182,
-  "bytes_downloaded": 300267665814
+  "bytes_downloaded": 300956002572
 }

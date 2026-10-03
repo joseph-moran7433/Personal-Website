@@ -622,11 +622,12 @@
     20240108,
     20240109,
     20240110,
-    20240111
+    20240111,
+    20240112
   ],
-  "gkg_matched": 179682,
-  "events_matched": 722225,
-  "files_downloaded": 99370,
+  "gkg_matched": 179939,
+  "events_matched": 723124,
+  "files_downloaded": 99562,
   "files_missing_404": 1182,
-  "bytes_downloaded": 282623266992
+  "bytes_downloaded": 283287494770
 }

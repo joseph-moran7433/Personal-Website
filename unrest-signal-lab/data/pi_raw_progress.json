@@ -705,11 +705,12 @@
     20240625,
     20240626,
     20240627,
-    20240628
+    20240628,
+    20240707
   ],
-  "gkg_matched": 185166,
-  "events_matched": 773408,
-  "files_downloaded": 107967,
+  "gkg_matched": 185193,
+  "events_matched": 773526,
+  "files_downloaded": 108159,
   "files_missing_404": 1182,
-  "bytes_downloaded": 308383154837
+  "bytes_downloaded": 308690580430
 }

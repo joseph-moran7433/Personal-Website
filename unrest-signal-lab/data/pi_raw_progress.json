@@ -710,11 +710,12 @@
     20240708,
     20240709,
     20240710,
-    20240711
+    20240711,
+    20240712
   ],
-  "gkg_matched": 186301,
-  "events_matched": 775006,
-  "files_downloaded": 108927,
+  "gkg_matched": 186548,
+  "events_matched": 775422,
+  "files_downloaded": 109119,
   "files_missing_404": 1182,
-  "bytes_downloaded": 311262415133
+  "bytes_downloaded": 311897328984
 }

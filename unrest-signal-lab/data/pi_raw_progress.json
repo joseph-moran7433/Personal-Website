@@ -615,11 +615,12 @@
     20240101,
     20240102,
     20240103,
-    20240104
+    20240104,
+    20240105
   ],
-  "gkg_matched": 175722,
-  "events_matched": 704601,
-  "files_downloaded": 98026,
+  "gkg_matched": 176979,
+  "events_matched": 710033,
+  "files_downloaded": 98218,
   "files_missing_404": 1182,
-  "bytes_downloaded": 278626442956
+  "bytes_downloaded": 279256598443
 }

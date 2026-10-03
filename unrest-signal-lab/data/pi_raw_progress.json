@@ -651,11 +651,12 @@
     20240222,
     20240223,
     20240224,
-    20240421
+    20240421,
+    20240422
   ],
-  "gkg_matched": 180339,
-  "events_matched": 724865,
-  "files_downloaded": 101648,
+  "gkg_matched": 180426,
+  "events_matched": 724924,
+  "files_downloaded": 101840,
   "files_missing_404": 1182,
-  "bytes_downloaded": 288850240378
+  "bytes_downloaded": 289478676945
 }

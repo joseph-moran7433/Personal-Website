@@ -623,11 +623,12 @@
     20240109,
     20240110,
     20240111,
-    20240112
+    20240112,
+    20240113
   ],
-  "gkg_matched": 179939,
-  "events_matched": 723124,
-  "files_downloaded": 99562,
+  "gkg_matched": 180033,
+  "events_matched": 723686,
+  "files_downloaded": 99754,
   "files_missing_404": 1182,
-  "bytes_downloaded": 283287494770
+  "bytes_downloaded": 283671128275
 }

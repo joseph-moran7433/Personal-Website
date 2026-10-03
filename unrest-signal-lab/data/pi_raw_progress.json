@@ -709,11 +709,12 @@
     20240707,
     20240708,
     20240709,
-    20240710
+    20240710,
+    20240711
   ],
-  "gkg_matched": 186112,
-  "events_matched": 774579,
-  "files_downloaded": 108735,
+  "gkg_matched": 186301,
+  "events_matched": 775006,
+  "files_downloaded": 108927,
   "files_missing_404": 1182,
-  "bytes_downloaded": 310596964578
+  "bytes_downloaded": 311262415133
 }

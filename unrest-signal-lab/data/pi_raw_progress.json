@@ -706,11 +706,12 @@
     20240626,
     20240627,
     20240628,
-    20240707
+    20240707,
+    20240708
   ],
-  "gkg_matched": 185193,
-  "events_matched": 773526,
-  "files_downloaded": 108159,
+  "gkg_matched": 185461,
+  "events_matched": 773854,
+  "files_downloaded": 108351,
   "files_missing_404": 1182,
-  "bytes_downloaded": 308690580430
+  "bytes_downloaded": 309277716762
 }

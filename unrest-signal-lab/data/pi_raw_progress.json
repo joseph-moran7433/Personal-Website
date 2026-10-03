@@ -689,11 +689,12 @@
     20240609,
     20240610,
     20240611,
-    20240612
+    20240612,
+    20240613
   ],
-  "gkg_matched": 184874,
-  "events_matched": 748815,
-  "files_downloaded": 105624,
+  "gkg_matched": 184971,
+  "events_matched": 748933,
+  "files_downloaded": 105816,
   "files_missing_404": 1182,
-  "bytes_downloaded": 300956002572
+  "bytes_downloaded": 301652556783
 }

@@ -674,11 +674,12 @@
     20240523,
     20240524,
     20240525,
-    20240526
+    20240526,
+    20240527
   ],
-  "gkg_matched": 182721,
-  "events_matched": 728194,
-  "files_downloaded": 102744,
+  "gkg_matched": 184104,
+  "events_matched": 728839,
+  "files_downloaded": 102936,
   "files_missing_404": 1182,
-  "bytes_downloaded": 292353931746
+  "bytes_downloaded": 292814096412
 }

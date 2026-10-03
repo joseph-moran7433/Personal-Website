@@ -712,11 +712,12 @@
     20240710,
     20240711,
     20240712,
-    20240713
+    20240713,
+    20240810
   ],
-  "gkg_matched": 186619,
-  "events_matched": 775587,
-  "files_downloaded": 109311,
+  "gkg_matched": 186652,
+  "events_matched": 777784,
+  "files_downloaded": 109503,
   "files_missing_404": 1182,
-  "bytes_downloaded": 312274555561
+  "bytes_downloaded": 312657038934
 }

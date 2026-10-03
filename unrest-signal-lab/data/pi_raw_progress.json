@@ -702,11 +702,12 @@
     20240622,
     20240623,
     20240624,
-    20240625
+    20240625,
+    20240626
   ],
-  "gkg_matched": 185047,
-  "events_matched": 764695,
-  "files_downloaded": 107391,
+  "gkg_matched": 185101,
+  "events_matched": 769140,
+  "files_downloaded": 107583,
   "files_missing_404": 1182,
-  "bytes_downloaded": 306314759442
+  "bytes_downloaded": 307013317944
 }

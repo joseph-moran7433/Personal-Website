@@ -613,11 +613,12 @@
     20231230,
     20231231,
     20240101,
-    20240102
+    20240102,
+    20240103
   ],
-  "gkg_matched": 172951,
-  "events_matched": 695086,
-  "files_downloaded": 97642,
+  "gkg_matched": 174371,
+  "events_matched": 699477,
+  "files_downloaded": 97834,
   "files_missing_404": 1182,
-  "bytes_downloaded": 277357594545
+  "bytes_downloaded": 277978607438
 }

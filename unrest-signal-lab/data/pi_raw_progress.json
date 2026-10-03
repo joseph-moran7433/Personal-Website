@@ -703,11 +703,12 @@
     20240623,
     20240624,
     20240625,
-    20240626
+    20240626,
+    20240627
   ],
-  "gkg_matched": 185101,
-  "events_matched": 769140,
-  "files_downloaded": 107583,
+  "gkg_matched": 185128,
+  "events_matched": 773348,
+  "files_downloaded": 107775,
   "files_missing_404": 1182,
-  "bytes_downloaded": 307013317944
+  "bytes_downloaded": 307699230653
 }

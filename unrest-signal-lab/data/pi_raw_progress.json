@@ -885,11 +885,12 @@
     20260101,
     20260102,
     20260103,
-    20260104
+    20260104,
+    20260105
   ],
-  "gkg_matched": 225042,
-  "events_matched": 1011679,
-  "files_downloaded": 139028,
+  "gkg_matched": 226292,
+  "events_matched": 1017556,
+  "files_downloaded": 139220,
   "files_missing_404": 2540,
-  "bytes_downloaded": 389231497138
+  "bytes_downloaded": 389718166216
 }

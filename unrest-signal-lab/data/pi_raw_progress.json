@@ -920,11 +920,12 @@
     20260219,
     20260228,
     20260301,
-    20260302
+    20260302,
+    20260303
   ],
-  "gkg_matched": 233589,
-  "events_matched": 1045385,
-  "files_downloaded": 144588,
+  "gkg_matched": 233593,
+  "events_matched": 1052173,
+  "files_downloaded": 144780,
   "files_missing_404": 2540,
-  "bytes_downloaded": 402961612629
+  "bytes_downloaded": 403532250250
 }

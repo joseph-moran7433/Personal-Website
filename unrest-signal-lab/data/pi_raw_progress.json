@@ -740,11 +740,12 @@
     20241011,
     20241012,
     20241013,
-    20241014
+    20241014,
+    20241214
   ],
   "gkg_matched": 186854,
-  "events_matched": 796576,
-  "files_downloaded": 112546,
+  "events_matched": 796916,
+  "files_downloaded": 112738,
   "files_missing_404": 1182,
-  "bytes_downloaded": 321355638142
+  "bytes_downloaded": 321720151373
 }

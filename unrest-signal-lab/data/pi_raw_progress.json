@@ -830,11 +830,12 @@
     20250628,
     20250629,
     20250706,
-    20250707
+    20250707,
+    20250708
   ],
-  "gkg_matched": 215288,
-  "events_matched": 958061,
-  "files_downloaded": 128468,
+  "gkg_matched": 215520,
+  "events_matched": 958221,
+  "files_downloaded": 128660,
   "files_missing_404": 2540,
-  "bytes_downloaded": 363619529254
+  "bytes_downloaded": 364238290479
 }

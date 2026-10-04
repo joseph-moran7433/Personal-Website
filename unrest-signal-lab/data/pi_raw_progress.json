@@ -770,11 +770,12 @@
     20250113,
     20250114,
     20250115,
-    20250126
+    20250126,
+    20250127
   ],
-  "gkg_matched": 191178,
-  "events_matched": 872401,
-  "files_downloaded": 118304,
+  "gkg_matched": 191434,
+  "events_matched": 872957,
+  "files_downloaded": 118496,
   "files_missing_404": 1184,
-  "bytes_downloaded": 335788512025
+  "bytes_downloaded": 336330802821
 }

@@ -914,11 +914,12 @@
     20260213,
     20260214,
     20260215,
-    20260216
+    20260216,
+    20260217
   ],
-  "gkg_matched": 233566,
-  "events_matched": 1030953,
-  "files_downloaded": 143436,
+  "gkg_matched": 233570,
+  "events_matched": 1031057,
+  "files_downloaded": 143628,
   "files_missing_404": 2540,
-  "bytes_downloaded": 400109226407
+  "bytes_downloaded": 400638280023
 }

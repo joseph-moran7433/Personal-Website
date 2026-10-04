@@ -931,11 +931,12 @@
     20260310,
     20260311,
     20260312,
-    20260313
+    20260313,
+    20260314
   ],
-  "gkg_matched": 257842,
-  "events_matched": 1100518,
-  "files_downloaded": 146700,
+  "gkg_matched": 257845,
+  "events_matched": 1100622,
+  "files_downloaded": 146892,
   "files_missing_404": 2540,
-  "bytes_downloaded": 408688499419
+  "bytes_downloaded": 409010558149
 }

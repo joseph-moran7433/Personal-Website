@@ -806,11 +806,12 @@
     20250428,
     20250429,
     20250430,
-    20250501
+    20250501,
+    20250502
   ],
   "gkg_matched": 192814,
-  "events_matched": 923132,
-  "files_downloaded": 125208,
+  "events_matched": 924029,
+  "files_downloaded": 125400,
   "files_missing_404": 1192,
-  "bytes_downloaded": 355184436749
+  "bytes_downloaded": 355783091991
 }

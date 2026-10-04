@@ -923,11 +923,12 @@
     20260302,
     20260303,
     20260304,
-    20260305
+    20260305,
+    20260306
   ],
-  "gkg_matched": 233604,
-  "events_matched": 1064773,
-  "files_downloaded": 145164,
+  "gkg_matched": 238869,
+  "events_matched": 1076731,
+  "files_downloaded": 145356,
   "files_missing_404": 2540,
-  "bytes_downloaded": 404712460928
+  "bytes_downloaded": 405274029636
 }

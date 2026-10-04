@@ -965,11 +965,12 @@
     20260719,
     20260720,
     20260721,
-    20260722
+    20260722,
+    20260723
   ],
-  "gkg_matched": 257860,
-  "events_matched": 1109967,
-  "files_downloaded": 153228,
+  "gkg_matched": 257868,
+  "events_matched": 1110119,
+  "files_downloaded": 153420,
   "files_missing_404": 2540,
-  "bytes_downloaded": 424005986179
+  "bytes_downloaded": 424520330017
 }

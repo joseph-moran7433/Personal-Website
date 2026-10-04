@@ -883,11 +883,12 @@
     20251230,
     20251231,
     20260101,
-    20260102
+    20260102,
+    20260103
   ],
-  "gkg_matched": 223690,
-  "events_matched": 1003128,
-  "files_downloaded": 138644,
+  "gkg_matched": 224566,
+  "events_matched": 1007542,
+  "files_downloaded": 138836,
   "files_missing_404": 2540,
-  "bytes_downloaded": 388682510233
+  "bytes_downloaded": 388974947130
 }

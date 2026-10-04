@@ -796,11 +796,12 @@
     20250322,
     20250323,
     20250324,
-    20250325
+    20250325,
+    20250326
   ],
-  "gkg_matched": 192703,
-  "events_matched": 884181,
-  "files_downloaded": 123294,
+  "gkg_matched": 192749,
+  "events_matched": 884329,
+  "files_downloaded": 123486,
   "files_missing_404": 1186,
-  "bytes_downloaded": 349562330494
+  "bytes_downloaded": 350222762146
 }

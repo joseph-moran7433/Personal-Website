@@ -947,11 +947,12 @@
     20260412,
     20260413,
     20260414,
-    20260415
+    20260415,
+    20260416
   ],
-  "gkg_matched": 257848,
-  "events_matched": 1101406,
-  "files_downloaded": 149772,
+  "gkg_matched": 257849,
+  "events_matched": 1101460,
+  "files_downloaded": 149964,
   "files_missing_404": 2540,
-  "bytes_downloaded": 415729476359
+  "bytes_downloaded": 416290496868
 }

@@ -865,11 +865,12 @@
     20251209,
     20251210,
     20251211,
-    20251212
+    20251212,
+    20251213
   ],
-  "gkg_matched": 217600,
-  "events_matched": 972786,
-  "files_downloaded": 135188,
+  "gkg_matched": 217627,
+  "events_matched": 972831,
+  "files_downloaded": 135380,
   "files_missing_404": 2540,
-  "bytes_downloaded": 381826410607
+  "bytes_downloaded": 382142092905
 }

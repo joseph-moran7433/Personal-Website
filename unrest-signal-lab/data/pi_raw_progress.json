@@ -834,11 +834,12 @@
     20250708,
     20250709,
     20250710,
-    20250711
+    20250711,
+    20250712
   ],
-  "gkg_matched": 215819,
-  "events_matched": 958752,
-  "files_downloaded": 129236,
+  "gkg_matched": 215880,
+  "events_matched": 958827,
+  "files_downloaded": 129428,
   "files_missing_404": 2540,
-  "bytes_downloaded": 366062327837
+  "bytes_downloaded": 366398397776
 }

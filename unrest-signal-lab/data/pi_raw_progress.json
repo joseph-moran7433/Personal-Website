@@ -944,11 +944,12 @@
     20260326,
     20260327,
     20260411,
-    20260412
+    20260412,
+    20260413
   ],
   "gkg_matched": 257848,
-  "events_matched": 1101326,
-  "files_downloaded": 149196,
+  "events_matched": 1101359,
+  "files_downloaded": 149388,
   "files_missing_404": 2540,
-  "bytes_downloaded": 414169098575
+  "bytes_downloaded": 414643485750
 }

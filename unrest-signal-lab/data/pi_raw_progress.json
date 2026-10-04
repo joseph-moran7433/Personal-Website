@@ -808,11 +808,12 @@
     20250430,
     20250501,
     20250502,
-    20250503
+    20250503,
+    20250504
   ],
   "gkg_matched": 192814,
-  "events_matched": 924657,
-  "files_downloaded": 125590,
+  "events_matched": 924963,
+  "files_downloaded": 125782,
   "files_missing_404": 1194,
-  "bytes_downloaded": 356124333243
+  "bytes_downloaded": 356404690795
 }

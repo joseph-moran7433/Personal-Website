@@ -748,11 +748,12 @@
     20241218,
     20241219,
     20241220,
-    20241225
+    20241225,
+    20241226
   ],
-  "gkg_matched": 186860,
-  "events_matched": 799295,
-  "files_downloaded": 114082,
+  "gkg_matched": 186863,
+  "events_matched": 799518,
+  "files_downloaded": 114274,
   "files_missing_404": 1182,
-  "bytes_downloaded": 325432436822
+  "bytes_downloaded": 325822423315
 }

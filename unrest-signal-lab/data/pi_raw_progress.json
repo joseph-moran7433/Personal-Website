@@ -846,11 +846,12 @@
     20250720,
     20250721,
     20250722,
-    20250723
+    20250723,
+    20250903
   ],
-  "gkg_matched": 215890,
-  "events_matched": 970553,
-  "files_downloaded": 131540,
+  "gkg_matched": 215994,
+  "events_matched": 970600,
+  "files_downloaded": 131732,
   "files_missing_404": 2540,
-  "bytes_downloaded": 372025487021
+  "bytes_downloaded": 372641889393
 }

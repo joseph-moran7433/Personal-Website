@@ -733,11 +733,12 @@
     20241002,
     20241003,
     20241004,
-    20241005
+    20241005,
+    20241008
   ],
   "gkg_matched": 186853,
-  "events_matched": 796425,
-  "files_downloaded": 111202,
+  "events_matched": 796446,
+  "files_downloaded": 111394,
   "files_missing_404": 1182,
-  "bytes_downloaded": 317468790419
+  "bytes_downloaded": 318143250364
 }

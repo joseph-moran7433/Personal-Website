@@ -921,11 +921,12 @@
     20260228,
     20260301,
     20260302,
-    20260303
+    20260303,
+    20260304
   ],
-  "gkg_matched": 233593,
-  "events_matched": 1052173,
-  "files_downloaded": 144780,
+  "gkg_matched": 233596,
+  "events_matched": 1058317,
+  "files_downloaded": 144972,
   "files_missing_404": 2540,
-  "bytes_downloaded": 403532250250
+  "bytes_downloaded": 404111936964
 }

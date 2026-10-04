@@ -776,11 +776,12 @@
     20250129,
     20250130,
     20250131,
-    20250201
+    20250201,
+    20250202
   ],
-  "gkg_matched": 192528,
-  "events_matched": 876656,
-  "files_downloaded": 119456,
+  "gkg_matched": 192612,
+  "events_matched": 876669,
+  "files_downloaded": 119648,
   "files_missing_404": 1184,
-  "bytes_downloaded": 339334028665
+  "bytes_downloaded": 339656690718
 }

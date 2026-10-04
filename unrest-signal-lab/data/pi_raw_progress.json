@@ -812,11 +812,12 @@
     20250504,
     20250505,
     20250506,
-    20250602
+    20250602,
+    20250603
   ],
-  "gkg_matched": 193753,
-  "events_matched": 927762,
-  "files_downloaded": 126356,
+  "gkg_matched": 197368,
+  "events_matched": 931651,
+  "files_downloaded": 126548,
   "files_missing_404": 1196,
-  "bytes_downloaded": 358030765755
+  "bytes_downloaded": 358627526487
 }

@@ -755,11 +755,12 @@
     20241229,
     20241230,
     20241231,
-    20250101
+    20250101,
+    20250102
   ],
-  "gkg_matched": 187309,
-  "events_matched": 814805,
-  "files_downloaded": 115426,
+  "gkg_matched": 187563,
+  "events_matched": 818644,
+  "files_downloaded": 115618,
   "files_missing_404": 1182,
-  "bytes_downloaded": 328137409448
+  "bytes_downloaded": 328639027279
 }

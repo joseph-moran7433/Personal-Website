@@ -849,11 +849,12 @@
     20250723,
     20250903,
     20250904,
-    20250905
+    20250905,
+    20250906
   ],
-  "gkg_matched": 216829,
-  "events_matched": 970672,
-  "files_downloaded": 132116,
+  "gkg_matched": 216877,
+  "events_matched": 970696,
+  "files_downloaded": 132308,
   "files_missing_404": 2540,
-  "bytes_downloaded": 373861123376
+  "bytes_downloaded": 374189313804
 }

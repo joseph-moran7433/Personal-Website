@@ -924,11 +924,12 @@
     20260303,
     20260304,
     20260305,
-    20260306
+    20260306,
+    20260307
   ],
-  "gkg_matched": 238869,
-  "events_matched": 1076731,
-  "files_downloaded": 145356,
+  "gkg_matched": 241487,
+  "events_matched": 1080564,
+  "files_downloaded": 145548,
   "files_missing_404": 2540,
-  "bytes_downloaded": 405274029636
+  "bytes_downloaded": 405617010160
 }

@@ -911,11 +911,12 @@
     20260210,
     20260211,
     20260212,
-    20260213
+    20260213,
+    20260214
   ],
-  "gkg_matched": 233557,
-  "events_matched": 1030837,
-  "files_downloaded": 142860,
+  "gkg_matched": 233562,
+  "events_matched": 1030887,
+  "files_downloaded": 143052,
   "files_missing_404": 2540,
-  "bytes_downloaded": 399089405361
+  "bytes_downloaded": 399423458891
 }

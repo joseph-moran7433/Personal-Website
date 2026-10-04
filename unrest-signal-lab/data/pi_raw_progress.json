@@ -882,11 +882,12 @@
     20251229,
     20251230,
     20251231,
-    20260101
+    20260101,
+    20260102
   ],
-  "gkg_matched": 222697,
-  "events_matched": 998220,
-  "files_downloaded": 138452,
+  "gkg_matched": 223690,
+  "events_matched": 1003128,
+  "files_downloaded": 138644,
   "files_missing_404": 2540,
-  "bytes_downloaded": 388294984932
+  "bytes_downloaded": 388682510233
 }

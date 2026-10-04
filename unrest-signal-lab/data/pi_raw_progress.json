@@ -780,11 +780,12 @@
     20250202,
     20250211,
     20250212,
-    20250213
+    20250213,
+    20250214
   ],
   "gkg_matched": 192616,
-  "events_matched": 877208,
-  "files_downloaded": 120224,
+  "events_matched": 877379,
+  "files_downloaded": 120416,
   "files_missing_404": 1184,
-  "bytes_downloaded": 341579657915
+  "bytes_downloaded": 342205015482
 }

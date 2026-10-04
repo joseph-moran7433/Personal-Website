@@ -946,11 +946,12 @@
     20260411,
     20260412,
     20260413,
-    20260414
+    20260414,
+    20260415
   ],
   "gkg_matched": 257848,
-  "events_matched": 1101395,
-  "files_downloaded": 149580,
+  "events_matched": 1101406,
+  "files_downloaded": 149772,
   "files_missing_404": 2540,
-  "bytes_downloaded": 415181220183
+  "bytes_downloaded": 415729476359
 }

@@ -759,11 +759,12 @@
     20250102,
     20250103,
     20250104,
-    20250105
+    20250105,
+    20250106
   ],
-  "gkg_matched": 188212,
-  "events_matched": 826088,
-  "files_downloaded": 116192,
+  "gkg_matched": 188546,
+  "events_matched": 827642,
+  "files_downloaded": 116384,
   "files_missing_404": 1184,
-  "bytes_downloaded": 329799376460
+  "bytes_downloaded": 330361335024
 }

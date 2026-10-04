@@ -807,11 +807,12 @@
     20250429,
     20250430,
     20250501,
-    20250502
+    20250502,
+    20250503
   ],
   "gkg_matched": 192814,
-  "events_matched": 924029,
-  "files_downloaded": 125400,
-  "files_missing_404": 1192,
-  "bytes_downloaded": 355783091991
+  "events_matched": 924657,
+  "files_downloaded": 125590,
+  "files_missing_404": 1194,
+  "bytes_downloaded": 356124333243
 }

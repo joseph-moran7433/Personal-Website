@@ -136,8 +136,10 @@ def build():
         goldstein_trend = None
         if len(kept_events_sorted) >= 4:
             mid = len(kept_events_sorted) // 2
-            first_half = v2.mean([float(r["GoldsteinScale"]) for r in kept_events_sorted[:mid]])
-            second_half = v2.mean([float(r["GoldsteinScale"]) for r in kept_events_sorted[mid:]])
+            # 3 of ~1.1M raw-pull rows have a blank GoldsteinScale; skip them like bad QuadClass values below.
+            gs = lambda rs: [float(r["GoldsteinScale"]) for r in rs if str(r.get("GoldsteinScale", "")).strip()]
+            first_half = v2.mean(gs(kept_events_sorted[:mid]))
+            second_half = v2.mean(gs(kept_events_sorted[mid:]))
             if first_half is not None and second_half is not None:
                 goldstein_trend = second_half - first_half
 

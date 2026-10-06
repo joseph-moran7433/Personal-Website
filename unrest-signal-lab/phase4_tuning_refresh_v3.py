@@ -45,16 +45,23 @@ def load_table():
     return df
 
 
-def within_year_split(df):
-    train_parts, test_parts = [], []
-    for year, sub in df.groupby("year"):
-        sub = sub.sort_values("event_date")
-        cut = max(1, int(len(sub) * 0.75))
-        train_parts.append(sub.iloc[:cut])
-        test_parts.append(sub.iloc[cut:])
-    train = pd.concat(train_parts).sort_values("event_date").reset_index(drop=True)
-    test = pd.concat(test_parts).sort_values("event_date").reset_index(drop=True)
-    return train, test
+def stratified_random_split(df):
+    """Random 75/25 split stratified on year x label.
+
+    Replaces the earlier within-year chronological split (last 25% of each
+    year by date = test). The ACLED sample's peaceful events are bunched in
+    January (the 2022-2024 backfill took one date-ordered page of 250 rows
+    per year), so "latest 25% of the year" made the test set ~85% escalated
+    vs ~26% in training -- date order alone leaked the label. Stratifying on
+    year x label keeps both sets at the same escalation rate within every
+    year. It does NOT remove the underlying January confound in the sample;
+    see the Known Data Limits card in Phase 4.
+    """
+    from sklearn.model_selection import train_test_split
+    strata = df["year"].astype(str) + "_" + df["label_escalated"].astype(str)
+    train, test = train_test_split(df, test_size=0.25, stratify=strata, random_state=42)
+    return (train.sort_values("event_date").reset_index(drop=True),
+            test.sort_values("event_date").reset_index(drop=True))
 
 
 def evaluate(name, y_true, prob, pred):
@@ -78,7 +85,7 @@ def main():
     n_before = len(df)
     df = df[(df["had_gkg_match"] > 0) | (df["had_events_match"] > 0)].reset_index(drop=True)
     print(f"Dropped {n_before - len(df)}/{n_before} events with zero GDELT signal before modeling.")
-    train, test = within_year_split(df)
+    train, test = stratified_random_split(df)
     X_train, y_train = train[FEATURE_COLS], train["label_escalated"]
     X_test, y_test = test[FEATURE_COLS], test["label_escalated"]
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)

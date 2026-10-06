@@ -3988,12 +3988,14 @@
         <div class="usl-picker">
           <label for="phase4-year">Year (held-out test events only)</label>
           <select id="phase4-year" onchange="renderPhase4Tool()">
-            <option value="all" selected>All years, 2020-2024 (n=60)</option>
+            <option value="all" selected>All years, 2020-2026 (n=121)</option>
             <option value="2020">2020 (n=25)</option>
-            <option value="2021">2021 (n=25)</option>
-            <option value="2022">2022 (n=5)</option>
-            <option value="2023">2023 (n=3)</option>
-            <option value="2024">2024 (n=2)</option>
+            <option value="2021">2021 (n=24)</option>
+            <option value="2022">2022 (n=19)</option>
+            <option value="2023">2023 (n=14)</option>
+            <option value="2024">2024 (n=14)</option>
+            <option value="2025">2025 (n=12)</option>
+            <option value="2026">2026 (n=13)</option>
           </select>
         </div>
       </div>
@@ -4040,19 +4042,23 @@
         <table class="usl-table usl-mentor-table">
           <tr><th>Question</th><th>Answer</th></tr>
           <tr>
+            <td><strong>Can the date alone give away the answer?</strong></td>
+            <td class="usl-status-no"><strong>Yes — the biggest open problem in this dataset.</strong> <strong>243 of 282</strong> peaceful events in the modeled sample are dated in January (escalation rate 6.2% in January vs. <strong>82.4%</strong> Feb–Dec). Cause: the peaceful-event backfill took one date-ordered page of 250 ACLED rows per year, which only reaches early January. A no-news rule — "not January &rArr; escalated" — scores <strong>ROC-AUC 0.880</strong> on the test set, <em>higher than every model</em> (best: 0.755). Until the peaceful events are re-pulled across the whole year, the numbers on this page can't separate news signal from season.</td>
+          </tr>
+          <tr>
             <td>Does a protest spanning multiple days/events signal faster escalation?</td>
             <td><strong>No — tested directly, and the opposite is true.</strong> Events chained into a multi-event sequence (same state, &le;5 days apart) escalate <strong>21.3%</strong> of the time (n=122) vs <strong>47.8%</strong> for standalone events (&chi;&sup2; p&lt;0.0001). Escalated events average a 1.32-day sequence span vs. 1.80 for peaceful ones (p=0.00008) — longer unrest waves in this sample run calmer, not more volatile.</td>
           </tr>
           <tr>
             <td>Is violence structurally overrepresented in the data?</td>
-            <td><strong>Partly — documented two different ways.</strong> ACLED's own source metadata shows violent events get national-scale press pickup <strong>4.7x</strong> more often than peaceful ones (Phase 2). Checked again here, directly: whether GDELT matches an event <em>at all</em> isn't significantly biased by outcome (39.5% vs. 42.6% escalation rate, p=0.55) — the bias is in <em>which kind</em> of outlet covers it, not whether anything does.</td>
+            <td><strong>Partly — documented two different ways.</strong> ACLED's own source metadata shows violent events get national-scale press pickup <strong>4.7x</strong> more often than peaceful ones (Phase 2). Checked again here, directly: whether GDELT matches an event <em>at all</em> isn't significantly biased by outcome (40.1% escalation among matched events vs. 45.7% among unmatched, p=0.33) — the bias is in <em>which kind</em> of outlet covers it, not whether anything does.</td>
           </tr>
           <tr>
             <td>Does that make this fundamentally impossible?</td>
             <td><strong>No, but it narrows the honest claim.</strong> This can rank relative risk among events that generate real news signal; it cannot, and should never be read as, a general "X% of protests turn violent" estimate (§8) — the reporting bias above means coverage intensity is tangled with the outcome, not independent of it.</td>
           </tr>
         </table>
-        <p class="usl-dash-note">All three answers reproduce from <code>phase6_data_limits.py</code>, run directly against the current 505-event table.</p>
+        <p class="usl-dash-note">The calendar-confound row reproduces from <code>phase4_season_check.py</code>; the other three from <code>phase6_data_limits.py</code>, run directly against the current 505-event table.</p>
       </div>
 
       <div style="text-align:center; margin-top:2rem; padding-bottom:2rem;">
@@ -4100,15 +4106,15 @@
         <div class="usl-report-section-heading"><span class="usl-report-section-num">1</span><h2>Executive Summary</h2></div>
         <div class="usl-exec-summary">
           <p class="usl-panel-body" style="margin-bottom:0.75rem;">This project asked a specific, doctrine-motivated question: given a U.S. protest is already planned or underway, can pre-event GDELT news coverage predict whether it escalates to violence — the kind of leading indicator ATP 3-39.33 (Crowd Control) already asks commanders to watch for by eye? Built entirely from two public datasets (ACLED and GDELT) across five phases of work.</p>
-          <p class="usl-panel-body" style="margin-bottom:0.75rem;"><strong>The honest answer: partially, and improving as more data arrives.</strong> With the ACLED sample doubled to 505 events (2020-2026) and a background GDELT re-pull now 248/992 days into closing the coverage gap outside BigQuery's cost cap, the best-ranking model (Random Forest, tested on 60 real held-out events across 2020-2024 — restricted to events with at least one real GDELT match, see §4.1) reaches a PR-AUC of <strong>0.736</strong> (up from 0.676 on the original 255-event table) while, at the actual 0.5 decision threshold, <strong>logistic regression now wins precision, recall, and F1 outright</strong> (66.7% / 50.0% / 0.571) — a real, measurable jump from the previous snapshot's 0.462 F1. Eight model families were tested; no one model still wins every metric, but every metric moved in the right direction as coverage grew from 231 to 233 usable events in the time between this update and the last.</p>
-          <p class="usl-panel-body" style="margin-bottom:0;">Just as important as the accuracy number: this project caught and fixed real methodological bugs at every phase — a self-inflicted sampling bias, a cross-event data-leakage risk, a train/test split that silently excluded three entire years from training, and (most recently) a raw-data pipeline that grew past GitHub's file-size limit and had to be redesigned mid-run — each documented with real before/after evidence rather than quietly patched. That process, as much as the final model, is the actual deliverable. <strong>This snapshot is itself partial</strong>: GDELT re-coverage for the 250 newly-added events is still running in the background (§3.1), so these numbers will keep improving as it finishes.</p>
+          <p class="usl-panel-body" style="margin-bottom:0.75rem;"><strong>The honest answer: not yet provable — and the full data run found out why.</strong> The background GDELT re-pull finished (all 992 pre-event days, 1.1M Events-table and 260K GKG rows), so <strong>481 of 505 events</strong> now carry real pre-event news signal, up from 233. On that full table the best dashboard model (Random Forest, 121 held-out events across 2020-2026) reaches <strong>ROC-AUC 0.738 / PR-AUC 0.694</strong> against a 0.405 no-skill baseline, with precision 64.2% and recall 69.4%. <strong>But a rule that uses no news at all — "not January &rArr; escalated" — scores ROC-AUC 0.880</strong>, because 243 of the 282 peaceful events in the sample are dated in January (a pull-design artifact, §8). Until peaceful events are re-sampled across the whole year, these numbers cannot separate real news signal from season.</p>
+          <p class="usl-panel-body" style="margin-bottom:0;">Just as important as the accuracy number: this project caught and fixed real methodological bugs at every phase — a self-inflicted sampling bias, a cross-event data-leakage risk, a train/test split that silently excluded three entire years from training, and (most recently) a raw-data pipeline that grew past GitHub's file-size limit and had to be redesigned mid-run — each documented with real before/after evidence rather than quietly patched. That process, as much as the final model, is the actual deliverable. The full-data run added two more to that list: the old within-year chronological split turned out to be leaking the label through that January skew (test set 85% escalated vs. 26% in training, every model scoring <em>below</em> chance), and was replaced with a stratified random split; the January skew itself is the next fix, not yet made.</p>
         </div>
         <div class="usl-mini-chart-grid">
           <div class="usl-mini-chart-card">
-            <div class="usl-mini-chart-title">Best-ranking model, held-out performance</div>
+            <div class="usl-mini-chart-title">Best model vs. a no-news date rule, held-out</div>
             <div class="usl-stat-row" style="margin-bottom:0;">
-              <div class="usl-stat"><div class="usl-stat-num">0.667</div><div class="usl-stat-label">Precision</div></div>
-              <div class="usl-stat"><div class="usl-stat-num">0.350</div><div class="usl-stat-label">Recall</div></div>
+              <div class="usl-stat"><div class="usl-stat-num">0.738</div><div class="usl-stat-label">ROC-AUC, Random Forest</div></div>
+              <div class="usl-stat"><div class="usl-stat-num">0.880</div><div class="usl-stat-label">ROC-AUC, "not January" rule (no news)</div></div>
             </div>
           </div>
           <div class="usl-mini-chart-card">
@@ -4242,52 +4248,56 @@
       <div class="usl-report-section" id="p4-s5">
         <div class="usl-report-section-heading"><span class="usl-report-section-num">5</span><h2>Modeling Approach</h2></div>
         <p class="usl-panel-body">Binary classification: <code>label_escalated</code> (0 = Peaceful protest, 1 = everything else, per ACLED's own <code>sub_event_type</code> taxonomy). 13 input features: seven <code>V2Tone</code> sub-values, Goldstein trend, QuadClass ratio, log-transformed coverage volume, two missingness flags, and <code>year</code>. Class weighting used throughout instead of synthetic oversampling, per the plan doc's own preference.</p>
-        <p class="usl-panel-body"><strong>Eight model families were tested</strong> on an identical, corrected <em>within-year</em> time-based split (earliest 75% of each year to training, latest 25% to test — every era gets real training exposure, unlike the global chronological split that silently gave zero 2022-2024 training examples), restricted to the <strong>233/505 events with at least one real GDELT match</strong> (§4.1 — the 272 events with zero signal, mostly the newly-added 2022-2026 events still waiting on the background GDELT backfill, are kept in the dataset but excluded from every model here): Logistic Regression, HistGradientBoostingClassifier, Random Forest, Extra Trees, XGBoost, SVM (RBF kernel), Gaussian Naive Bayes, and Balanced Random Forest. Random Forest and XGBoost were additionally tuned with 5-fold stratified cross-validation over a real hyperparameter grid. Click <i data-lucide="info" style="width:11px;height:11px;vertical-align:-1px;"></i> next to any model name for a plain-language explainer of how it works and why it's here.</p>
+        <p class="usl-panel-body"><strong>Eight model families were tested</strong> on an identical <strong>stratified random 75/25 split</strong> (stratified on year &times; label, so every year keeps the same escalation rate in train and test — 41.7% vs. 40.5%). This replaced the earlier within-year chronological split (latest 25% of each year to test), which on the full data put an 85%-escalated test set against a 26%-escalated training set, because the sample's peaceful events sit in January (§8): date order was leaking the label, and every model scored below chance (ROC-AUC 0.33-0.48). Modeling is restricted to the <strong>481/505 events with at least one real GDELT match</strong> (§4.1; 24 zero-signal events are kept in the dataset but excluded): Logistic Regression, HistGradientBoostingClassifier, Random Forest, Extra Trees, XGBoost, SVM (RBF kernel), Gaussian Naive Bayes, and Balanced Random Forest. Random Forest and XGBoost were additionally tuned with 5-fold stratified cross-validation over a real hyperparameter grid. Click <i data-lucide="info" style="width:11px;height:11px;vertical-align:-1px;"></i> next to any model name for a plain-language explainer of how it works and why it's here.</p>
         <table class="usl-table">
           <tr><th>Model</th><th>Precision</th><th>Recall</th><th>F1</th><th>PR-AUC</th><th>ROC-AUC</th></tr>
-          <tr><td><strong>Logistic Regression</strong><a href="#" class="usl-model-link-btn" onclick="openModelExplainer('logreg'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.667</td><td class="usl-status-yes"><strong>0.500</strong></td><td class="usl-status-yes"><strong>0.571</strong></td><td>0.728</td><td>0.522</td></tr>
-          <tr><td>Random Forest (tuned)<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('rf'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.667</td><td>0.350</td><td>0.459</td><td>0.714</td><td>0.542</td></tr>
-          <tr><td>XGBoost (tuned)<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('xgb'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.636</td><td>0.350</td><td>0.452</td><td>0.716</td><td>0.546</td></tr>
-          <tr><td>HistGBM<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('histgbm'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td class="usl-status-yes"><strong>0.737</strong></td><td>0.350</td><td>0.475</td><td>0.699</td><td class="usl-status-yes"><strong>0.581</strong></td></tr>
-          <tr><td>Extra Trees<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('extratrees'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.652</td><td>0.375</td><td>0.476</td><td class="usl-status-yes"><strong>0.734</strong></td><td>0.541</td></tr>
-          <tr><td>Balanced Random Forest<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('brf'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.636</td><td>0.350</td><td>0.452</td><td>0.707</td><td>0.524</td></tr>
-          <tr><td>SVM (RBF)<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('svm'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.688</td><td>0.275</td><td>0.393</td><td>0.689</td><td>0.502</td></tr>
-          <tr><td>Gaussian Naive Bayes<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('gnb'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.650</td><td>0.325</td><td>0.433</td><td>0.704</td><td>0.541</td></tr>
+          <tr><td><strong>Logistic Regression</strong><a href="#" class="usl-model-link-btn" onclick="openModelExplainer('logreg'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.482</td><td>0.551</td><td>0.514</td><td>0.512</td><td>0.618</td></tr>
+          <tr><td>Random Forest (tuned)<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('rf'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.571</td><td>0.571</td><td>0.571</td><td>0.652</td><td>0.712</td></tr>
+          <tr><td>XGBoost (tuned)<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('xgb'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.621</td><td class="usl-status-yes"><strong>0.735</strong></td><td class="usl-status-yes"><strong>0.673</strong></td><td>0.696</td><td class="usl-status-yes"><strong>0.755</strong></td></tr>
+          <tr><td>HistGBM<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('histgbm'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.569</td><td>0.592</td><td>0.580</td><td>0.627</td><td>0.717</td></tr>
+          <tr><td>Extra Trees<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('extratrees'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td class="usl-status-yes"><strong>0.627</strong></td><td>0.653</td><td>0.640</td><td class="usl-status-yes"><strong>0.724</strong></td><td>0.735</td></tr>
+          <tr><td>Balanced Random Forest<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('brf'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.611</td><td>0.673</td><td>0.641</td><td>0.661</td><td>0.720</td></tr>
+          <tr><td>SVM (RBF)<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('svm'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.538</td><td>0.143</td><td>0.226</td><td>0.527</td><td>0.640</td></tr>
+          <tr><td>Gaussian Naive Bayes<a href="#" class="usl-model-link-btn" onclick="openModelExplainer('gnb'); return false;">explain <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i></a></td><td>0.500</td><td>0.020</td><td>0.039</td><td>0.597</td><td>0.663</td></tr>
+          <tr style="opacity:0.8;"><td><em>Reference: "not January &rArr; escalated" (no news)</em></td><td>0.836</td><td>0.898</td><td>0.866</td><td>0.773</td><td>0.880</td></tr>
         </table>
-        <p class="usl-panel-body">These numbers are a live snapshot of the 505-event doubling pass (§3.1), not a finished result — 272 events, concentrated in 2022-2026, still have zero GDELT signal while the background raw-file backfill works through them (248/992 days done as of this update). <strong>Logistic regression now wins precision, recall, and F1 outright</strong> — a real shift from the previous snapshot, where no model swept the threshold metrics — while HistGBM still ranks best on ROC-AUC and Extra Trees on PR-AUC. SVM (RBF) remains fixed (it used to collapse to all-zero predictions before the ACLED doubling pass, per Phase 5's calibration finding). This table has changed meaningfully between two checks less than a day apart; it should keep being rerun as the backfill finishes.</p>
+        <p class="usl-panel-body">Final-data numbers (GDELT backfill complete, 992/992 days). Tuned XGBoost leads on recall, F1 and ROC-AUC, Extra Trees on precision and PR-AUC, and every model now clears both chance (ROC-AUC 0.5) and the PR-AUC no-skill baseline (0.405). The last row is the honest catch: <strong>a one-line date rule with no news input beats every model on every metric.</strong> These models are therefore not yet evidence that pre-event news predicts escalation; they may be learning the same seasonal pattern indirectly (e.g. through <code>year</code> and coverage-volume features). Reproduce with <code>phase3_model_search_v3.py</code>, <code>phase4_tuning_refresh_v3.py</code> and <code>phase4_season_check.py</code>.</p>
       </div>
 
       <div class="usl-report-section" id="p4-s6">
         <div class="usl-report-section-heading"><span class="usl-report-section-num">6</span><h2>Results</h2></div>
         <div class="usl-raw-grid">
           <div>
-            <div class="usl-raw-label">ROC curve — best two models</div>
+            <div class="usl-raw-label">ROC curve — best dashboard model vs. a no-news date rule</div>
             <div class="usl-chart-wrap">
-              <svg class="chart-svg" viewBox="0 0 480 280" role="img" aria-label="ROC curve comparing logistic regression and Random Forest, the current best-PR-AUC model, on the 505-event table">
+              <svg class="chart-svg" viewBox="0 0 480 280" role="img" aria-label="ROC curve: Random Forest (AUC 0.738) versus a no-news rule that predicts escalation for every non-January event (AUC 0.880)">
                 <line class="usl-gridline" x1="50" y1="20" x2="450" y2="20"/><line class="usl-gridline" x1="50" y1="220" x2="450" y2="220"/>
                 <line x1="50" y1="220" x2="450" y2="20" stroke="#9a9488" stroke-width="1.5" stroke-dasharray="4,3"/>
-                <path d="M50.0,220.0 L50.0,215.0 L50.0,210.0 L50.0,205.0 L50.0,200.0 L50.0,195.0 L70.0,195.0 L70.0,190.0 L70.0,185.0 L90.0,185.0 L110.0,185.0 L110.0,180.0 L110.0,175.0 L130.0,175.0 L150.0,175.0 L150.0,170.0 L150.0,165.0 L150.0,160.0 L150.0,155.0 L170.0,155.0 L190.0,155.0 L210.0,155.0 L230.0,155.0 L230.0,150.0 L230.0,145.0 L230.0,140.0 L230.0,135.0 L250.0,135.0 L250.0,130.0 L250.0,125.0 L250.0,120.0 L250.0,115.0 L250.0,110.0 L270.0,110.0 L270.0,105.0 L270.0,100.0 L290.0,100.0 L290.0,95.0 L290.0,90.0 L290.0,85.0 L290.0,80.0 L290.0,75.0 L310.0,75.0 L330.0,75.0 L350.0,75.0 L350.0,70.0 L370.0,70.0 L370.0,65.0 L370.0,60.0 L370.0,55.0 L390.0,55.0 L390.0,50.0 L390.0,45.0 L390.0,40.0 L410.0,40.0 L410.0,35.0 L410.0,30.0 L410.0,25.0 L410.0,20.0 L430.0,20.0 L450.0,20.0" fill="none" stroke="#4b6b3f" stroke-width="2.5"/>
-                <path d="M50.0,220.0 L50.0,215.0 L50.0,210.0 L50.0,205.0 L50.0,200.0 L50.0,195.0 L70.0,195.0 L90.0,195.0 L90.0,190.0 L90.0,185.0 L90.0,180.0 L110.0,180.0 L110.0,175.0 L110.0,170.0 L110.0,165.0 L130.0,165.0 L130.0,160.0 L150.0,160.0 L170.0,160.0 L190.0,160.0 L190.0,155.0 L190.0,150.0 L210.0,150.0 L210.0,145.0 L210.0,140.0 L210.0,135.0 L210.0,130.0 L230.0,130.0 L230.0,125.0 L250.0,125.0 L270.0,125.0 L270.0,120.0 L270.0,115.0 L290.0,115.0 L310.0,115.0 L310.0,110.0 L310.0,105.0 L310.0,100.0 L310.0,95.0 L310.0,90.0 L310.0,85.0 L310.0,80.0 L310.0,75.0 L310.0,70.0 L310.0,65.0 L330.0,65.0 L330.0,60.0 L330.0,55.0 L330.0,50.0 L330.0,45.0 L330.0,40.0 L330.0,35.0 L350.0,35.0 L350.0,30.0 L370.0,30.0 L370.0,25.0 L390.0,25.0 L390.0,20.0 L410.0,20.0 L430.0,20.0 L450.0,20.0" fill="none" stroke="#a8402b" stroke-width="2.5"/>
+                <path d="M50.0,220.0 L50.0,215.9 L50.0,195.5 L61.1,195.5 L61.1,162.9 L66.7,162.9 L66.7,154.7 L83.3,154.7 L83.3,150.6 L94.4,150.6 L94.4,138.4 L105.6,138.4 L105.6,122.0 L133.3,122.0 L133.3,101.6 L133.3,93.5 L133.3,89.4 L138.9,89.4 L138.9,85.3 L155.6,85.3 L155.6,81.2 L177.8,81.2 L177.8,73.1 L200.0,73.1 L200.0,69.0 L216.7,69.0 L216.7,64.9 L233.3,64.9 L233.3,60.8 L244.4,60.8 L244.4,56.7 L255.6,56.7 L255.6,52.7 L261.1,52.7 L261.1,48.6 L266.7,48.6 L266.7,44.5 L338.9,44.5 L338.9,40.4 L400.0,40.4 L400.0,36.3 L433.3,36.3 L433.3,24.1 L444.4,24.1 L444.4,20.0 L450.0,20.0" fill="none" stroke="#a8402b" stroke-width="2.5"/>
+                <path d="M50.0,220.0 L105.6,40.4 L450.0,20.0" fill="none" stroke="#4b6b3f" stroke-width="2" stroke-dasharray="6,3"/>
+                <circle cx="105.6" cy="40.4" r="4" style="fill:#4b6b3f"/>
                 <text class="usl-bar-label" x="250" y="255" text-anchor="middle" font-size="10">False Positive Rate &rarr;</text>
-                <rect x="50" y="4" width="10" height="10" rx="2" style="fill:#4b6b3f"/><text class="usl-bar-label" x="64" y="12" font-size="9">Logistic Regression (AUC 0.522)</text>
-                <rect x="290" y="4" width="10" height="10" rx="2" style="fill:#a8402b"/><text class="usl-bar-label" x="304" y="12" font-size="9">Random Forest (best PR-AUC, AUC 0.552)</text>
+                <rect x="50" y="4" width="10" height="10" rx="2" style="fill:#a8402b"/><text class="usl-bar-label" x="64" y="12" font-size="9">Random Forest (AUC 0.738)</text>
+                <rect x="250" y="4" width="10" height="10" rx="2" style="fill:#4b6b3f"/><text class="usl-bar-label" x="264" y="12" font-size="9">"Not January" rule, no news (AUC 0.880)</text>
               </svg>
             </div>
           </div>
           <div>
             <div class="usl-raw-label">Predictions by year — Random Forest, all test events</div>
             <table class="usl-table">
-              <tr><th>Year</th><th>Test n</th><th>Accuracy</th></tr>
-              <tr><td>2020</td><td>25</td><td>68.0%</td></tr>
-              <tr><td>2021</td><td>25</td><td>32.0%</td></tr>
-              <tr><td>2022</td><td>5</td><td class="usl-status-no">0.0%</td></tr>
-              <tr><td>2023</td><td>3</td><td class="usl-status-no">0.0%</td></tr>
-              <tr><td>2024</td><td>2</td><td>100.0%</td></tr>
+              <tr><th>Year</th><th>Test n</th><th>Escalated</th><th>Accuracy</th></tr>
+              <tr><td>2020</td><td>25</td><td>60.0%</td><td>80.0%</td></tr>
+              <tr><td>2021</td><td>24</td><td>20.8%</td><td>75.0%</td></tr>
+              <tr><td>2022</td><td>19</td><td>42.1%</td><td>84.2%</td></tr>
+              <tr><td>2023</td><td>14</td><td>42.9%</td><td>64.3%</td></tr>
+              <tr><td>2024</td><td>14</td><td>35.7%</td><td>64.3%</td></tr>
+              <tr><td>2025</td><td>12</td><td>41.7%</td><td class="usl-status-no">41.7%</td></tr>
+              <tr><td>2026</td><td>13</td><td>38.5%</td><td>76.9%</td></tr>
             </table>
             <p class="usl-panel-body" style="margin-top:0.75rem;">Explore every one of these numbers yourself, live, in the <a href="#" onclick="switchPhase4View('tool'); return false;" style="color:var(--usl-accent);">interactive tool</a> — pick the model and year directly.</p>
           </div>
         </div>
-        <p class="usl-panel-body"><strong>2022 and 2023 both hit exactly 0% accuracy</strong> — every single one of the 5 and 3 test events in those years, respectively, was mispredicted. 2024's 100% is the mirror-image artifact, on just 2 events. None of these should be read as "the model works/fails in year X" — each is a single-digit sample size, made smaller still by excluding zero-signal events (§4.1, §5) and by those years' GDELT re-coverage still being incomplete (§3.1) — this is precisely the small-sample warning the tool itself displays whenever a thin year is selected.</p>
+        <p class="usl-panel-body">With the backfill complete, every year now has 12-25 held-out events (up from 2-5 for 2022-2024), and Random Forest's accuracy ranges from 42% to 84% by year — 2025, at 42% on 12 events, is the one year at or below a coin flip. The chart on the left is the headline, though: the dashed green line is a rule that never looks at the news — it predicts "escalated" for every event not dated in January — and it sits above the model's curve almost everywhere. That gap is the January sampling artifact (§8), not a property of protests, and it has to be removed from the sample before any model here can be credited with reading the news.</p>
       </div>
 
       <div class="usl-report-section" id="p4-s7">
@@ -4295,7 +4305,8 @@
         <p class="usl-panel-body">Five real, evidenced reasons, not speculation:</p>
         <table class="usl-table">
           <tr><th>Reason</th><th>Evidence</th></tr>
-          <tr><td><strong>Sample size</strong></td><td>129 training rows, 13 features — smaller still since §4.1's zero-signal events were excluded from modeling. Eight model families of very different inductive bias all cluster within a few points of 0.58-0.65 PR-AUC — the classic signature of a data-limited, not algorithm-limited, ceiling (§5).</td></tr>
+          <tr><td><strong>Calendar confound (new, largest)</strong></td><td>243 of 282 peaceful events are dated in January, so date predicts the label better than any model (ROC-AUC 0.880 vs. 0.618-0.755, §5-6). Until that is fixed, model accuracy can't be attributed to news signal at all.</td></tr>
+          <tr><td><strong>Sample size</strong></td><td>360 training rows, 13 features, after the GDELT backfill finished. Eight model families of very different inductive bias span 0.51-0.72 PR-AUC, with tree ensembles clustered at the top — consistent with a data-limited, not algorithm-limited, ceiling (§5).</td></tr>
           <tr><td><strong>Partial feature coverage</strong></td><td>31.8% of events have zero GDELT signal (§4.1), down from 32.5% after a Sept. 2026 refill pass. Those events are now excluded from modeling entirely (§5) rather than imputed, which is more honest but shrinks an already-small dataset by another third; GCAM emotion dimensions were excluded entirely after one event's column alone dry-ran at 22.8 GB.</td></tr>
           <tr><td><strong>Weak individual features</strong></td><td>Every feature's peaceful-vs-escalated mean gap is small relative to its own standard deviation (§4.4) — there's no single strong signal to lean on.</td></tr>
           <tr><td><strong>Non-stationary relationships</strong></td><td>Feature-outcome correlations flip sign across eras (§4.5); a model can't learn a stable rule from a relationship that isn't stable.</td></tr>
@@ -4325,7 +4336,8 @@
       <div class="usl-report-section" id="p4-s8">
         <div class="usl-report-section-heading"><span class="usl-report-section-num">8</span><h2>Pitfalls &amp; Limitations</h2></div>
         <ul class="usl-pitfall-list">
-          <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>Not a random sample.</strong> ACLED events were pulled stratified by type (Protests vs. Riots), so the 42.7% escalation rate is a sampling artifact, never a real-world base rate. Nothing in this report should be read as "X% of U.S. protests turn violent."</div></li>
+          <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>Peaceful events are bunched in January.</strong> <code>backfill_peaceful_2022_2024.py</code> requested one page of 250 date-ordered ACLED protests per year, which only covers early January; the original 2020-21 pull has a similar January/June skew. Result: 243/282 peaceful events are January events and a date-only rule beats every model (§5-6). Fix: page through each full year (or sample random dates) before stratifying, re-run the Pi's GDELT pull for the new event days, and rerun the four v3 scripts. Not done yet.</div></li>
+          <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>Not a random sample.</strong> ACLED events were pulled stratified by type (Protests vs. Riots), so the ~41% escalation rate is a sampling artifact, never a real-world base rate. Nothing in this report should be read as "X% of U.S. protests turn violent."</div></li>
           <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>Geo-matching is fixed but not perfect.</strong> The lat/long distance filter (Phase 1) catches wrong-state matches like Portland ME vs. OR, but the Events-table check still falls back to a coarser state-code comparison for events pulled before its lat/long fields were added.</div></li>
           <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>Sequence-anchoring is a coarse proxy.</strong> "Same state, within 5 days" approximates a correlated protest wave; it isn't a verified causal link between events.</div></li>
           <li><i data-lucide="alert-triangle" class="usl-pitfall-icon"></i><div class="usl-pitfall-body"><strong>Small-n statistical fragility.</strong> A first hyperparameter-tuning attempt produced NaN cross-validation scores because some folds didn't contain both classes — a direct symptom of how little data this is to tune, not just to train.</div></li>
@@ -4353,7 +4365,7 @@
 
       <div class="usl-report-section" id="p4-s10">
         <div class="usl-report-section-heading"><span class="usl-report-section-num">10</span><h2>Conclusion &amp; Next Steps</h2></div>
-        <p class="usl-panel-body">This project set out to test whether open-source news signal could give early warning of protest escalation, in the spirit of ATP 3-39.33. Across five phases it built a real, reproducible, safety-conscious data pipeline; caught and fixed five genuine methodological bugs before or after they reached a model — most recently, a raw-file GDELT pipeline that quietly grew a tracked file past GitHub's size limit mid-run and had to be redesigned (one-file-per-day, minimal fields, a cron watchdog instead of a session-tied process) without losing the real data already collected; tested eight model families with real tuning rather than assuming one was good enough; doubled the ACLED sample to 505 events (2020-2026) and started a from-scratch GDELT re-pull outside BigQuery's cost cap once that quota ran out; and built the "top indicators" explainability the original plan always wanted. The resulting model — PR-AUC 0.734 (Extra Trees) at best, logistic regression sweeping precision/recall/F1 at the actual decision threshold, on real held-out data restricted to events with actual pre-event coverage — is honest, defensible, and not yet good enough to operationalize. That gap is attributed, with evidence, to data volume and feature richness rather than to model choice; the background backfill directly tests that claim, and this report should be rerun once it finishes to see whether more coverage actually closes the gap or just confirms it.</p>
+        <p class="usl-panel-body">This project set out to test whether open-source news signal could give early warning of protest escalation, in the spirit of ATP 3-39.33. Across five phases it built a real, reproducible, safety-conscious data pipeline; caught and fixed five genuine methodological bugs before or after they reached a model — most recently, a raw-file GDELT pipeline that quietly grew a tracked file past GitHub's size limit mid-run and had to be redesigned (one-file-per-day, minimal fields, a cron watchdog instead of a session-tied process) without losing the real data already collected; tested eight model families with real tuning rather than assuming one was good enough; doubled the ACLED sample to 505 events (2020-2026) and started a from-scratch GDELT re-pull outside BigQuery's cost cap once that quota ran out; and built the "top indicators" explainability the original plan always wanted. The background backfill has now finished (992/992 days, 481/505 events with real coverage), and the full-data run did what it was meant to do — test the claim — but the answer it gave is about the sample, not the news: on a corrected stratified split the best models reach ROC-AUC 0.74-0.76, yet a no-news "not January" rule reaches 0.88, because the peaceful-event pull landed almost entirely in January. So the honest conclusion is: <strong>not yet evidence that pre-event news predicts escalation, and not yet evidence that it doesn't.</strong> The single next step is re-sampling peaceful events across the full calendar year, re-pulling GDELT for those days on the Pi, and rerunning this report — the pipeline to do that end-to-end already exists.</p>
         <p class="usl-panel-body" style="margin-bottom:0;">Every script, every pulled byte, every model, and every honest dead end in this report is committed to the public repository behind this site — nothing here is asserted without a real number backing it up.</p>
       </div>
 
@@ -6669,70 +6681,131 @@ function renderPredictionPickerV2() {
 }
 
 // Phase 4 tool -- real held-out (TEST ONLY) predictions from four models,
-// tagged by year, on the within-year split. No train-set option exists on
+// tagged by year, on the stratified random split (year x label). No train-set option exists on
 // purpose: this project already showed train-set numbers are systematically
 // misleading (Phase 1 overfitting, Phase 2/3 calibration collapse).
 const PHASE4_PREDICTIONS = [
-  {i:'USA670',d:'2020-06-20',y:2020,t:0,logreg:0.6665,rf:0.781,xgb:0.8538,histgbm:0.9329},
-  {i:'USA217',d:'2020-06-25',y:2020,t:0,logreg:0.2328,rf:0.3632,xgb:0.4423,histgbm:0.146},
-  {i:'USA845',d:'2020-06-26',y:2020,t:0,logreg:0.6296,rf:0.7803,xgb:0.8512,histgbm:0.8931},
-  {i:'USA648',d:'2020-06-27',y:2020,t:0,logreg:0.5572,rf:0.4543,xgb:0.7436,histgbm:0.6069},
-  {i:'USA219',d:'2020-06-27',y:2020,t:0,logreg:0.6874,rf:0.5341,xgb:0.4539,histgbm:0.1639},
-  {i:'USA740',d:'2020-06-27',y:2020,t:0,logreg:0.6513,rf:0.5766,xgb:0.7564,histgbm:0.9722},
-  {i:'USA969',d:'2020-06-27',y:2020,t:0,logreg:0.7005,rf:0.7265,xgb:0.8537,histgbm:0.8949},
-  {i:'USA1004',d:'2020-06-29',y:2020,t:0,logreg:0.6193,rf:0.5287,xgb:0.6902,histgbm:0.2709},
-  {i:'USA1664',d:'2020-07-01',y:2020,t:1,logreg:0.7004,rf:0.3657,xgb:0.6605,histgbm:0.3595},
-  {i:'USA555',d:'2020-07-02',y:2020,t:0,logreg:0.5566,rf:0.5283,xgb:0.6178,histgbm:0.3107},
-  {i:'USA427',d:'2020-07-04',y:2020,t:0,logreg:0.6964,rf:0.3664,xgb:0.6605,histgbm:0.3595},
-  {i:'USA3247',d:'2020-07-13',y:2020,t:1,logreg:0.7233,rf:0.826,xgb:0.8789,histgbm:0.9416},
-  {i:'USA3069',d:'2020-07-23',y:2020,t:1,logreg:0.6313,rf:0.7301,xgb:0.7547,histgbm:0.7598},
-  {i:'USA3702',d:'2020-08-01',y:2020,t:1,logreg:0.5413,rf:0.5452,xgb:0.5421,histgbm:0.3952},
-  {i:'USA3784',d:'2020-08-02',y:2020,t:1,logreg:0.5036,rf:0.5063,xgb:0.5356,histgbm:0.5296},
-  {i:'USA4487',d:'2020-08-14',y:2020,t:1,logreg:0.6765,rf:0.7907,xgb:0.8297,histgbm:0.8861},
-  {i:'USA10469',d:'2020-08-16',y:2020,t:1,logreg:0.7363,rf:0.6403,xgb:0.7679,histgbm:0.9045},
-  {i:'USA10993',d:'2020-08-16',y:2020,t:1,logreg:0.6765,rf:0.7907,xgb:0.8297,histgbm:0.8861},
-  {i:'USA11382',d:'2020-08-26',y:2020,t:1,logreg:0.7005,rf:0.7339,xgb:0.8247,histgbm:0.9143},
-  {i:'USA11385',d:'2020-08-26',y:2020,t:1,logreg:0.7836,rf:0.8145,xgb:0.8865,histgbm:0.9615},
-  {i:'USA12007',d:'2020-09-03',y:2020,t:1,logreg:0.6441,rf:0.5222,xgb:0.6893,histgbm:0.7435},
-  {i:'USA14290',d:'2020-10-04',y:2020,t:1,logreg:0.535,rf:0.5808,xgb:0.7642,histgbm:0.7441},
-  {i:'USA16482',d:'2020-10-31',y:2020,t:1,logreg:0.649,rf:0.8081,xgb:0.8491,histgbm:0.8709},
-  {i:'USA18953',d:'2020-11-30',y:2020,t:1,logreg:0.7593,rf:0.7299,xgb:0.8445,histgbm:0.7694},
-  {i:'USA19998',d:'2020-12-31',y:2020,t:1,logreg:0.7491,rf:0.5893,xgb:0.7998,histgbm:0.8734},
-  {i:'USA22057',d:'2021-01-22',y:2021,t:0,logreg:0.427,rf:0.2418,xgb:0.1971,histgbm:0.0646},
-  {i:'USA22052',d:'2021-01-22',y:2021,t:0,logreg:0.3037,rf:0.2336,xgb:0.1065,histgbm:0.0379},
-  {i:'USA22041',d:'2021-01-22',y:2021,t:0,logreg:0.5122,rf:0.3165,xgb:0.2535,histgbm:0.0712},
-  {i:'USA22056',d:'2021-01-22',y:2021,t:0,logreg:0.4382,rf:0.1765,xgb:0.1362,histgbm:0.0133},
-  {i:'USA22147',d:'2021-01-23',y:2021,t:0,logreg:0.1061,rf:0.1346,xgb:0.0887,histgbm:0.0167},
-  {i:'USA22130',d:'2021-01-25',y:2021,t:0,logreg:0.3685,rf:0.318,xgb:0.2374,histgbm:0.2349},
-  {i:'USA22093',d:'2021-01-27',y:2021,t:0,logreg:0.3858,rf:0.3429,xgb:0.297,histgbm:0.1072},
-  {i:'USA22151',d:'2021-01-27',y:2021,t:0,logreg:0.3442,rf:0.1856,xgb:0.131,histgbm:0.0278},
-  {i:'USA26553',d:'2021-03-13',y:2021,t:1,logreg:0.4302,rf:0.2835,xgb:0.2277,histgbm:0.2064},
-  {i:'USA27400',d:'2021-03-27',y:2021,t:1,logreg:0.4075,rf:0.2983,xgb:0.2437,histgbm:0.0851},
-  {i:'USA28214',d:'2021-04-16',y:2021,t:1,logreg:0.2796,rf:0.2074,xgb:0.0854,histgbm:0.0405},
-  {i:'USA30290',d:'2021-05-15',y:2021,t:1,logreg:0.5043,rf:0.3849,xgb:0.3379,histgbm:0.1626},
-  {i:'USA30699',d:'2021-06-03',y:2021,t:1,logreg:0.2663,rf:0.2564,xgb:0.1556,histgbm:0.2989},
-  {i:'USA31823',d:'2021-06-18',y:2021,t:1,logreg:0.6387,rf:0.3813,xgb:0.3462,histgbm:0.0983},
-  {i:'USA31654',d:'2021-06-23',y:2021,t:1,logreg:0.5088,rf:0.3037,xgb:0.2582,histgbm:0.162},
-  {i:'USA32055',d:'2021-07-05',y:2021,t:1,logreg:0.2701,rf:0.2054,xgb:0.0817,histgbm:0.0581},
-  {i:'USA32206',d:'2021-07-09',y:2021,t:1,logreg:0.4156,rf:0.268,xgb:0.1628,histgbm:0.1087},
-  {i:'USA33390',d:'2021-07-09',y:2021,t:1,logreg:0.4277,rf:0.2863,xgb:0.2615,histgbm:0.1273},
-  {i:'USA33480',d:'2021-07-31',y:2021,t:1,logreg:0.4108,rf:0.2375,xgb:0.2161,histgbm:0.0116},
-  {i:'USA33273',d:'2021-08-26',y:2021,t:1,logreg:0.5345,rf:0.2875,xgb:0.2678,histgbm:0.1849},
-  {i:'USA33274',d:'2021-08-31',y:2021,t:1,logreg:0.4653,rf:0.3135,xgb:0.1956,histgbm:0.0827},
-  {i:'USA34974',d:'2021-09-19',y:2021,t:1,logreg:0.4766,rf:0.2646,xgb:0.2294,histgbm:0.1181},
-  {i:'USA35873',d:'2021-10-16',y:2021,t:1,logreg:0.5161,rf:0.2525,xgb:0.212,histgbm:0.0918},
-  {i:'USA36703',d:'2021-11-03',y:2021,t:1,logreg:0.4249,rf:0.2623,xgb:0.1533,histgbm:0.0258},
-  {i:'USA48116',d:'2021-11-21',y:2021,t:1,logreg:0.4107,rf:0.2855,xgb:0.1402,histgbm:0.0871},
-  {i:'USA40567',d:'2022-03-16',y:2022,t:1,logreg:0.177,rf:0.2922,xgb:0.1858,histgbm:0.201},
-  {i:'USA41621',d:'2022-04-11',y:2022,t:1,logreg:0.3266,rf:0.3946,xgb:0.3487,histgbm:0.3031},
-  {i:'USA42637',d:'2022-04-23',y:2022,t:1,logreg:0.1326,rf:0.2925,xgb:0.3411,histgbm:0.1716},
-  {i:'USA42385',d:'2022-05-01',y:2022,t:1,logreg:0.2148,rf:0.3295,xgb:0.2298,histgbm:0.2275},
-  {i:'USA45700',d:'2022-06-24',y:2022,t:1,logreg:0.1023,rf:0.2442,xgb:0.1872,histgbm:0.1987},
-  {i:'USA54429',d:'2023-04-01',y:2023,t:1,logreg:0.0593,rf:0.3287,xgb:0.2858,histgbm:0.1228},
-  {i:'USA55494',d:'2023-04-05',y:2023,t:1,logreg:0.0835,rf:0.3946,xgb:0.3765,histgbm:0.7138},
-  {i:'USA58258',d:'2023-07-24',y:2023,t:1,logreg:0.105,rf:0.2972,xgb:0.2952,histgbm:0.361},
-  {i:'USA64619',d:'2024-01-17',y:2024,t:0,logreg:0.032,rf:0.2772,xgb:0.1697,histgbm:0.1119},
-  {i:'USA64524',d:'2024-01-18',y:2024,t:0,logreg:0.0193,rf:0.2065,xgb:0.1545,histgbm:0.1015},
+  {i:'USA20408',d:'2020-04-08',y:2020,t:1,logreg:0.3825,rf:0.2856,xgb:0.469,histgbm:0.4189},
+  {i:'USA4941',d:'2020-05-30',y:2020,t:1,logreg:0.6429,rf:0.5411,xgb:0.5782,histgbm:0.34},
+  {i:'USA5015',d:'2020-05-30',y:2020,t:1,logreg:0.6334,rf:0.6268,xgb:0.7258,histgbm:0.6558},
+  {i:'USA5723',d:'2020-05-31',y:2020,t:1,logreg:0.4659,rf:0.5146,xgb:0.5267,histgbm:0.3294},
+  {i:'USA11656',d:'2020-05-31',y:2020,t:1,logreg:0.4813,rf:0.5445,xgb:0.4922,histgbm:0.7582},
+  {i:'USA5479',d:'2020-05-31',y:2020,t:1,logreg:0.6053,rf:0.6208,xgb:0.6138,histgbm:0.6595},
+  {i:'USA6021',d:'2020-06-01',y:2020,t:1,logreg:0.3826,rf:0.4748,xgb:0.4933,histgbm:0.3281},
+  {i:'USA5967',d:'2020-06-01',y:2020,t:1,logreg:0.5932,rf:0.6514,xgb:0.7172,histgbm:0.7045},
+  {i:'USA6015',d:'2020-06-01',y:2020,t:1,logreg:0.5549,rf:0.6342,xgb:0.6425,histgbm:0.8194},
+  {i:'USA6138',d:'2020-06-01',y:2020,t:1,logreg:0.5559,rf:0.6249,xgb:0.6699,histgbm:0.5952},
+  {i:'USA793',d:'2020-06-15',y:2020,t:0,logreg:0.3743,rf:0.3392,xgb:0.4692,histgbm:0.1628},
+  {i:'USA949',d:'2020-06-17',y:2020,t:0,logreg:0.3841,rf:0.4285,xgb:0.3366,histgbm:0.1115},
+  {i:'USA80',d:'2020-06-18',y:2020,t:0,logreg:0.3307,rf:0.512,xgb:0.5703,histgbm:0.1722},
+  {i:'USA384',d:'2020-06-19',y:2020,t:0,logreg:0.386,rf:0.3055,xgb:0.3089,histgbm:0.1212},
+  {i:'USA997',d:'2020-06-19',y:2020,t:0,logreg:0.2391,rf:0.4199,xgb:0.4739,histgbm:0.1293},
+  {i:'USA823',d:'2020-06-19',y:2020,t:0,logreg:0.5509,rf:0.5902,xgb:0.6835,histgbm:0.7966},
+  {i:'USA391',d:'2020-06-19',y:2020,t:0,logreg:0.4765,rf:0.3472,xgb:0.3081,histgbm:0.2338},
+  {i:'USA917',d:'2020-06-20',y:2020,t:0,logreg:0.2776,rf:0.335,xgb:0.3604,histgbm:0.2599},
+  {i:'USA217',d:'2020-06-25',y:2020,t:0,logreg:0.1739,rf:0.342,xgb:0.4999,histgbm:0.3601},
+  {i:'USA1004',d:'2020-06-29',y:2020,t:0,logreg:0.4561,rf:0.5599,xgb:0.673,histgbm:0.7051},
+  {i:'USA3069',d:'2020-07-23',y:2020,t:1,logreg:0.5789,rf:0.6593,xgb:0.718,histgbm:0.708},
+  {i:'USA3784',d:'2020-08-02',y:2020,t:1,logreg:0.4724,rf:0.518,xgb:0.6146,histgbm:0.6633},
+  {i:'USA10469',d:'2020-08-16',y:2020,t:1,logreg:0.5756,rf:0.7015,xgb:0.7478,histgbm:0.9115},
+  {i:'USA12007',d:'2020-09-03',y:2020,t:1,logreg:0.5275,rf:0.6606,xgb:0.8415,histgbm:0.9596},
+  {i:'USA14290',d:'2020-10-04',y:2020,t:1,logreg:0.4417,rf:0.5498,xgb:0.6248,histgbm:0.5027},
+  {i:'USA20038',d:'2021-01-02',y:2021,t:0,logreg:0.5518,rf:0.4933,xgb:0.4788,histgbm:0.2793},
+  {i:'USA20090',d:'2021-01-04',y:2021,t:0,logreg:0.5523,rf:0.4416,xgb:0.4158,histgbm:0.2026},
+  {i:'USA20083',d:'2021-01-04',y:2021,t:0,logreg:0.4221,rf:0.3999,xgb:0.4382,histgbm:0.1987},
+  {i:'USA20127',d:'2021-01-05',y:2021,t:0,logreg:0.4007,rf:0.2738,xgb:0.2186,histgbm:0.0603},
+  {i:'USA20118',d:'2021-01-05',y:2021,t:0,logreg:0.6385,rf:0.6345,xgb:0.704,histgbm:0.7289},
+  {i:'USA20126',d:'2021-01-05',y:2021,t:0,logreg:0.6528,rf:0.4626,xgb:0.5107,histgbm:0.339},
+  {i:'USA20239',d:'2021-01-06',y:2021,t:1,logreg:0.4003,rf:0.2827,xgb:0.3225,histgbm:0.1307},
+  {i:'USA20212',d:'2021-01-06',y:2021,t:0,logreg:0.5199,rf:0.2962,xgb:0.3274,histgbm:0.1757},
+  {i:'USA20164',d:'2021-01-06',y:2021,t:1,logreg:0.639,rf:0.6343,xgb:0.704,histgbm:0.7289},
+  {i:'USA20260',d:'2021-01-07',y:2021,t:0,logreg:0.5706,rf:0.5113,xgb:0.5113,histgbm:0.5568},
+  {i:'USA20296',d:'2021-01-07',y:2021,t:0,logreg:0.5494,rf:0.4835,xgb:0.4788,histgbm:0.2793},
+  {i:'USA21072',d:'2021-01-09',y:2021,t:0,logreg:0.6391,rf:0.4941,xgb:0.5319,histgbm:0.4421},
+  {i:'USA21236',d:'2021-01-13',y:2021,t:0,logreg:0.5181,rf:0.4936,xgb:0.55,histgbm:0.5154},
+  {i:'USA21234',d:'2021-01-13',y:2021,t:0,logreg:0.5072,rf:0.4195,xgb:0.4035,histgbm:0.3115},
+  {i:'USA21791',d:'2021-01-16',y:2021,t:0,logreg:0.3883,rf:0.3539,xgb:0.2491,histgbm:0.2395},
+  {i:'USA21837',d:'2021-01-17',y:2021,t:0,logreg:0.5332,rf:0.3145,xgb:0.3253,histgbm:0.1757},
+  {i:'USA21918',d:'2021-01-18',y:2021,t:0,logreg:0.5818,rf:0.4867,xgb:0.3365,histgbm:0.4174},
+  {i:'USA21894',d:'2021-01-18',y:2021,t:0,logreg:0.4426,rf:0.4197,xgb:0.4112,histgbm:0.2749},
+  {i:'USA21944',d:'2021-01-19',y:2021,t:0,logreg:0.2754,rf:0.4831,xgb:0.4061,histgbm:0.3963},
+  {i:'USA21988',d:'2021-01-20',y:2021,t:0,logreg:0.3494,rf:0.4497,xgb:0.3503,histgbm:0.5003},
+  {i:'USA21978',d:'2021-01-20',y:2021,t:0,logreg:0.5722,rf:0.5524,xgb:0.5904,histgbm:0.535},
+  {i:'USA28214',d:'2021-04-16',y:2021,t:1,logreg:0.3579,rf:0.4269,xgb:0.3386,histgbm:0.398},
+  {i:'USA30699',d:'2021-06-03',y:2021,t:1,logreg:0.3908,rf:0.2845,xgb:0.3344,histgbm:0.1524},
+  {i:'USA34974',d:'2021-09-19',y:2021,t:1,logreg:0.6186,rf:0.6064,xgb:0.6251,histgbm:0.4977},
+  {i:'USA37834',d:'2022-01-03',y:2022,t:0,logreg:0.3705,rf:0.2503,xgb:0.202,histgbm:0.0358},
+  {i:'USA37886',d:'2022-01-06',y:2022,t:0,logreg:0.5077,rf:0.4546,xgb:0.5049,histgbm:0.4994},
+  {i:'USA37991',d:'2022-01-06',y:2022,t:0,logreg:0.544,rf:0.516,xgb:0.5223,histgbm:0.3694},
+  {i:'USA37896',d:'2022-01-06',y:2022,t:0,logreg:0.3867,rf:0.4755,xgb:0.4199,histgbm:0.4306},
+  {i:'USA37843',d:'2022-01-07',y:2022,t:0,logreg:0.4983,rf:0.2996,xgb:0.3249,histgbm:0.1495},
+  {i:'USA38177',d:'2022-01-08',y:2022,t:0,logreg:0.5728,rf:0.6109,xgb:0.6539,histgbm:0.7443},
+  {i:'USA38189',d:'2022-01-08',y:2022,t:0,logreg:0.3731,rf:0.4252,xgb:0.4067,histgbm:0.3363},
+  {i:'USA38098',d:'2022-01-10',y:2022,t:0,logreg:0.4733,rf:0.4606,xgb:0.3831,histgbm:0.4053},
+  {i:'USA38123',d:'2022-01-11',y:2022,t:0,logreg:0.5109,rf:0.3984,xgb:0.3417,histgbm:0.2129},
+  {i:'USA38035',d:'2022-01-13',y:2022,t:0,logreg:0.5087,rf:0.4749,xgb:0.4868,histgbm:0.3526},
+  {i:'USA38265',d:'2022-01-15',y:2022,t:0,logreg:0.3156,rf:0.3193,xgb:0.2433,histgbm:0.3724},
+  {i:'USA38633',d:'2022-01-29',y:2022,t:1,logreg:0.6273,rf:0.5367,xgb:0.5056,histgbm:0.7212},
+  {i:'USA41633',d:'2022-03-21',y:2022,t:1,logreg:0.5492,rf:0.547,xgb:0.5731,histgbm:0.6797},
+  {i:'USA41198',d:'2022-04-01',y:2022,t:1,logreg:0.5296,rf:0.53,xgb:0.5612,histgbm:0.6104},
+  {i:'USA45053',d:'2022-06-18',y:2022,t:1,logreg:0.4874,rf:0.4337,xgb:0.4292,histgbm:0.3039},
+  {i:'USA45045',d:'2022-06-24',y:2022,t:1,logreg:0.476,rf:0.5656,xgb:0.5849,histgbm:0.7052},
+  {i:'USA46614',d:'2022-07-31',y:2022,t:1,logreg:0.5356,rf:0.5518,xgb:0.5777,histgbm:0.6716},
+  {i:'USA46842',d:'2022-08-01',y:2022,t:1,logreg:0.4056,rf:0.5055,xgb:0.6152,histgbm:0.72},
+  {i:'USA49248',d:'2022-10-26',y:2022,t:1,logreg:0.6238,rf:0.6041,xgb:0.6111,histgbm:0.6261},
+  {i:'USA51248',d:'2023-01-08',y:2023,t:0,logreg:0.4866,rf:0.3206,xgb:0.3453,histgbm:0.1849},
+  {i:'USA51299',d:'2023-01-08',y:2023,t:0,logreg:0.521,rf:0.3297,xgb:0.341,histgbm:0.1346},
+  {i:'USA51212',d:'2023-01-10',y:2023,t:0,logreg:0.2949,rf:0.3218,xgb:0.2658,histgbm:0.0249},
+  {i:'USA51167',d:'2023-01-11',y:2023,t:0,logreg:0.4443,rf:0.3035,xgb:0.2324,histgbm:0.0576},
+  {i:'USA51493',d:'2023-01-18',y:2023,t:0,logreg:0.5546,rf:0.5323,xgb:0.5194,histgbm:0.555},
+  {i:'USA51448',d:'2023-01-20',y:2023,t:0,logreg:0.5207,rf:0.5467,xgb:0.6531,histgbm:0.8122},
+  {i:'USA51401',d:'2023-01-20',y:2023,t:0,logreg:0.3366,rf:0.2715,xgb:0.1977,histgbm:0.0231},
+  {i:'USA51475',d:'2023-01-20',y:2023,t:0,logreg:0.2606,rf:0.3422,xgb:0.2679,histgbm:0.5163},
+  {i:'USA52175',d:'2023-02-02',y:2023,t:1,logreg:0.3481,rf:0.3196,xgb:0.2787,histgbm:0.2597},
+  {i:'USA56422',d:'2023-05-29',y:2023,t:1,logreg:0.2663,rf:0.2614,xgb:0.2653,histgbm:0.1235},
+  {i:'USA57302',d:'2023-06-12',y:2023,t:1,logreg:0.5207,rf:0.5237,xgb:0.5271,histgbm:0.4156},
+  {i:'USA58746',d:'2023-08-12',y:2023,t:1,logreg:0.5763,rf:0.4552,xgb:0.4349,histgbm:0.1319},
+  {i:'USA60059',d:'2023-09-25',y:2023,t:1,logreg:0.4962,rf:0.6317,xgb:0.6566,histgbm:0.8438},
+  {i:'USA60032',d:'2023-09-27',y:2023,t:1,logreg:0.5287,rf:0.5232,xgb:0.5215,histgbm:0.4824},
+  {i:'USA63674',d:'2024-01-02',y:2024,t:0,logreg:0.5452,rf:0.4011,xgb:0.4792,histgbm:0.3974},
+  {i:'USA63709',d:'2024-01-03',y:2024,t:0,logreg:0.489,rf:0.636,xgb:0.6721,histgbm:0.7988},
+  {i:'USA64374',d:'2024-01-06',y:2024,t:0,logreg:0.5123,rf:0.4651,xgb:0.4092,histgbm:0.3067},
+  {i:'USA64369',d:'2024-01-07',y:2024,t:0,logreg:0.3944,rf:0.4045,xgb:0.3083,histgbm:0.3345},
+  {i:'USA64323',d:'2024-01-08',y:2024,t:0,logreg:0.5347,rf:0.4265,xgb:0.3692,histgbm:0.1832},
+  {i:'USA64407',d:'2024-01-10',y:2024,t:0,logreg:0.7006,rf:0.573,xgb:0.6437,histgbm:0.7193},
+  {i:'USA64335',d:'2024-01-10',y:2024,t:0,logreg:0.6392,rf:0.4768,xgb:0.5251,histgbm:0.4604},
+  {i:'USA64477',d:'2024-01-12',y:2024,t:0,logreg:0.4796,rf:0.5344,xgb:0.5777,histgbm:0.7572},
+  {i:'USA64619',d:'2024-01-17',y:2024,t:0,logreg:0.4343,rf:0.4229,xgb:0.3909,histgbm:0.2443},
+  {i:'USA70003',d:'2024-05-28',y:2024,t:1,logreg:0.565,rf:0.6432,xgb:0.719,histgbm:0.8561},
+  {i:'USA70310',d:'2024-06-06',y:2024,t:1,logreg:0.5008,rf:0.5209,xgb:0.5271,histgbm:0.42},
+  {i:'USA70999',d:'2024-06-22',y:2024,t:1,logreg:0.2162,rf:0.3512,xgb:0.267,histgbm:0.4434},
+  {i:'USA72082',d:'2024-08-17',y:2024,t:1,logreg:0.5164,rf:0.5209,xgb:0.5223,histgbm:0.501},
+  {i:'USA72927',d:'2024-09-15',y:2024,t:1,logreg:0.448,rf:0.4486,xgb:0.4346,histgbm:0.4044},
+  {i:'USA75655',d:'2025-01-06',y:2025,t:0,logreg:0.3482,rf:0.4462,xgb:0.4302,histgbm:0.5751},
+  {i:'USA75339',d:'2025-01-10',y:2025,t:0,logreg:0.481,rf:0.5076,xgb:0.5512,histgbm:0.5602},
+  {i:'USA75401',d:'2025-01-10',y:2025,t:0,logreg:0.4585,rf:0.533,xgb:0.5805,histgbm:0.6915},
+  {i:'USA75343',d:'2025-01-10',y:2025,t:0,logreg:0.4336,rf:0.5454,xgb:0.6308,histgbm:0.8173},
+  {i:'USA75797',d:'2025-01-11',y:2025,t:0,logreg:0.4245,rf:0.4995,xgb:0.413,histgbm:0.5023},
+  {i:'USA75826',d:'2025-01-14',y:2025,t:0,logreg:0.468,rf:0.5314,xgb:0.5614,histgbm:0.5952},
+  {i:'USA75810',d:'2025-01-14',y:2025,t:0,logreg:0.376,rf:0.4879,xgb:0.5092,histgbm:0.5254},
+  {i:'USA79953',d:'2025-03-16',y:2025,t:1,logreg:0.2716,rf:0.4899,xgb:0.3983,histgbm:0.56},
+  {i:'USA84187',d:'2025-06-09',y:2025,t:1,logreg:0.6521,rf:0.6624,xgb:0.7415,histgbm:0.6873},
+  {i:'USA87587',d:'2025-07-13',y:2025,t:1,logreg:0.5457,rf:0.4883,xgb:0.4778,histgbm:0.4374},
+  {i:'USA88532',d:'2025-07-20',y:2025,t:1,logreg:0.279,rf:0.4378,xgb:0.3706,histgbm:0.3296},
+  {i:'USA90509',d:'2025-09-29',y:2025,t:1,logreg:0.6281,rf:0.6176,xgb:0.6374,histgbm:0.8496},
+  {i:'USA94998',d:'2026-01-02',y:2026,t:0,logreg:0.4177,rf:0.5793,xgb:0.5591,histgbm:0.733},
+  {i:'USA94927',d:'2026-01-02',y:2026,t:0,logreg:0.3935,rf:0.343,xgb:0.3666,histgbm:0.217},
+  {i:'USA95158',d:'2026-01-03',y:2026,t:0,logreg:0.4795,rf:0.366,xgb:0.2788,histgbm:0.4651},
+  {i:'USA95167',d:'2026-01-03',y:2026,t:0,logreg:0.3339,rf:0.3397,xgb:0.2884,histgbm:0.1454},
+  {i:'USA95202',d:'2026-01-03',y:2026,t:0,logreg:0.2704,rf:0.3979,xgb:0.2963,histgbm:0.2697},
+  {i:'USA95261',d:'2026-01-03',y:2026,t:0,logreg:0.4751,rf:0.3224,xgb:0.2192,histgbm:0.0641},
+  {i:'USA95150',d:'2026-01-06',y:2026,t:0,logreg:0.6108,rf:0.5337,xgb:0.5768,histgbm:0.3238},
+  {i:'USA95191',d:'2026-01-09',y:2026,t:0,logreg:0.5452,rf:0.4356,xgb:0.3436,histgbm:0.1571},
+  {i:'USA96889',d:'2026-01-22',y:2026,t:1,logreg:0.6004,rf:0.6251,xgb:0.6838,histgbm:0.6031},
+  {i:'USA97293',d:'2026-01-23',y:2026,t:1,logreg:0.5797,rf:0.5356,xgb:0.5964,histgbm:0.6902},
+  {i:'USA102906',d:'2026-04-18',y:2026,t:1,logreg:0.3934,rf:0.4787,xgb:0.596,histgbm:0.7471},
+  {i:'USA105692',d:'2026-07-21',y:2026,t:1,logreg:0.488,rf:0.5304,xgb:0.5336,histgbm:0.5714},
+  {i:'USA106893',d:'2026-09-08',y:2026,t:1,logreg:0.4841,rf:0.5245,xgb:0.5336,histgbm:0.4318}
 ];const PHASE4_MODEL_NAMES = { logreg: 'Logistic Regression', rf: 'Random Forest', xgb: 'XGBoost', histgbm: 'Gradient-Boosted Trees (HistGBM)' };
 
 function phase4ROCPoints(rows) {

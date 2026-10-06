@@ -1,11 +1,12 @@
 """
 phase3_model_search.py -- Phase 3 revisited: re-run the FULL model
-exploration on the within-year split (the actual fix, not the broken
-global-chronological split every earlier chart was built on), and
+exploration on a stratified random split (2026-10-06: replaced the
+within-year chronological split, which leaked the label through the
+sample's January skew -- see stratified_random_split), and
 empirically test several model families neither Phase 1 nor Phase 2
 ever tried, instead of assuming the original two were good enough.
 
-Tested, all on the identical within-year split / identical 13 features:
+Tested, all on the identical split / identical 13 features:
   - Logistic Regression        (Phase 1-3 baseline)
   - HistGradientBoostingClassifier (Phase 1-3 baseline)
   - Random Forest              (bagging -- should overfit less than
@@ -26,7 +27,7 @@ Tested, all on the identical within-year split / identical 13 features:
                                  answer to the plan doc's "handles
                                  rare-event imbalance" requirement)
 
-All results are on the honest within-year time-based split, all with
+All results are on the same stratified random split, all with
 class weighting (not synthetic duplication, per the original plan
 doc), and reported without cherry-picking -- worse results get printed
 too.
@@ -67,16 +68,23 @@ def load_table():
     return df
 
 
-def within_year_split(df):
-    train_parts, test_parts = [], []
-    for year, sub in df.groupby("year"):
-        sub = sub.sort_values("event_date")
-        cut = max(1, int(len(sub) * 0.75))
-        train_parts.append(sub.iloc[:cut])
-        test_parts.append(sub.iloc[cut:])
-    train = pd.concat(train_parts).sort_values("event_date").reset_index(drop=True)
-    test = pd.concat(test_parts).sort_values("event_date").reset_index(drop=True)
-    return train, test
+def stratified_random_split(df):
+    """Random 75/25 split stratified on year x label.
+
+    Replaces the earlier within-year chronological split (last 25% of each
+    year by date = test). The ACLED sample's peaceful events are bunched in
+    January (the 2022-2024 backfill took one date-ordered page of 250 rows
+    per year), so "latest 25% of the year" made the test set ~85% escalated
+    vs ~26% in training -- date order alone leaked the label. Stratifying on
+    year x label keeps both sets at the same escalation rate within every
+    year. It does NOT remove the underlying January confound in the sample;
+    see the Known Data Limits card in Phase 4.
+    """
+    from sklearn.model_selection import train_test_split
+    strata = df["year"].astype(str) + "_" + df["label_escalated"].astype(str)
+    train, test = train_test_split(df, test_size=0.25, stratify=strata, random_state=42)
+    return (train.sort_values("event_date").reset_index(drop=True),
+            test.sort_values("event_date").reset_index(drop=True))
 
 
 def evaluate(name, y_true, prob, pred):
@@ -106,7 +114,7 @@ def main():
     print(f"Dropped {n_before - len(df)}/{n_before} events with zero GDELT signal (neither table matched) "
           f"before modeling -- kept in training_table_v3.csv, but not trained or tested on since there is "
           f"no real pre-event news content behind them, only imputed feature values.\n")
-    train, test = within_year_split(df)
+    train, test = stratified_random_split(df)
     X_train, y_train = train[FEATURE_COLS], train["label_escalated"]
     X_test, y_test = test[FEATURE_COLS], test["label_escalated"]
     scale_pos_weight = (y_train == 0).sum() / (y_train == 1).sum()
@@ -126,7 +134,7 @@ def main():
         "Balanced Random Forest": BalancedRandomForestClassifier(n_estimators=300, max_depth=5, min_samples_leaf=4, random_state=42, sampling_strategy="all", replacement=True),
     }
 
-    print(f"Within-year split -- train n={len(train)}, test n={len(test)}, "
+    print(f"Stratified random split -- train n={len(train)}, test n={len(test)}, "
           f"train escalated rate={y_train.mean():.1%}, test escalated rate={y_test.mean():.1%}\n")
 
     results = {}

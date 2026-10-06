@@ -1,0 +1,184 @@
+/* ═══════════════════════════════════════════════════════════════
+   NYC DATA EXPLORER -- its own room of the site, like the Kitchen,
+   Tactical Tools, and Unrest Predictions. Civic-data look: clean
+   off-white, ink text, subway-line colored tab bullets, monospace for
+   field names and raw values. Purpose is understanding the data, so
+   the styling stays out of the way of the charts.
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --nyc-bg: #f6f6f2;
+  --nyc-surface: #ffffff;
+  --nyc-text: #1b1d22;
+  --nyc-muted: #5d616b;
+  --nyc-faint: #9a9ea8;
+  --nyc-border: rgba(27,29,34,0.13);
+  --nyc-grid: rgba(27,29,34,0.07);
+  --nyc-accent: #0039a6;          /* A/C/E blue */
+  --nyc-accent-soft: rgba(0,57,166,0.08);
+  --nyc-warn: #b4540a;
+  --nyc-warn-soft: rgba(255,99,25,0.09);
+  --nyc-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  /* subway line colors used as tab bullets + chart series */
+  --nyc-l-blue: #0039a6;  --nyc-l-red: #ee352e;   --nyc-l-green: #00933c;
+  --nyc-l-orange: #ff6319; --nyc-l-purple: #b933ad; --nyc-l-yellow: #fccc0a;
+  --nyc-l-gray: #808183;  --nyc-l-brown: #996633; --nyc-l-teal: #00add0;
+}
+
+#nyc-explorer {
+  position: fixed; inset: 0; z-index: 150;
+  background: var(--nyc-bg);
+  overflow-y: auto; overflow-x: hidden;
+  opacity: 0; transform: translateX(60px); pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  font-family: var(--font-body); color: var(--nyc-text);
+}
+#nyc-explorer.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+
+.nyc-top {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(246,246,242,0.94); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--nyc-border);
+}
+.nyc-nav { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 3rem 0.4rem; }
+.nyc-back {
+  display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-body);
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.03em;
+  color: var(--nyc-accent); background: none; border: none; cursor: pointer; padding: 0.4rem 0;
+}
+.nyc-back:hover { text-decoration: underline; }
+.nyc-crumb { font-size: 0.75rem; color: var(--nyc-faint); font-family: var(--nyc-mono); }
+
+.nyc-tabs {
+  display: flex; gap: 0.4rem; padding: 0.35rem 3rem 0.75rem;
+  overflow-x: auto; scrollbar-width: thin;
+}
+.nyc-tab {
+  display: inline-flex; align-items: center; gap: 0.5rem; flex: 0 0 auto;
+  padding: 0.38rem 0.85rem 0.38rem 0.4rem; border-radius: 999px;
+  border: 1px solid var(--nyc-border); background: var(--nyc-surface);
+  font-family: var(--font-body); font-size: 0.82rem; font-weight: 600; color: var(--nyc-muted);
+  cursor: pointer; transition: border-color var(--transition), color var(--transition), box-shadow var(--transition);
+}
+.nyc-tab:hover { color: var(--nyc-text); border-color: rgba(27,29,34,0.3); }
+.nyc-tab.active { color: var(--nyc-text); border-color: var(--nyc-text); box-shadow: 0 1px 0 var(--nyc-text); }
+.nyc-bullet {
+  width: 1.45rem; height: 1.45rem; border-radius: 50%; flex: 0 0 auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 0.78rem; font-weight: 700; font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+.nyc-bullet.dark-text { color: #1b1d22; }
+
+.nyc-wrap { max-width: 1120px; padding: 2.25rem 3rem 6rem; }
+.nyc-hero { margin-bottom: 1.75rem; }
+.nyc-eyebrow {
+  font-family: var(--nyc-mono); font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--nyc-accent); margin-bottom: 0.6rem;
+}
+.nyc-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1.1; margin-bottom: 0.75rem; }
+.nyc-lede { color: var(--nyc-muted); max-width: 720px; line-height: 1.7; font-size: 0.98rem; }
+.nyc-lede a, .nyc-panel a { color: var(--nyc-accent); text-decoration: underline; text-underline-offset: 2px; }
+
+.nyc-panel {
+  background: var(--nyc-surface); border: 1px solid var(--nyc-border); border-radius: var(--radius);
+  padding: 1.5rem 1.6rem; margin-bottom: 1.25rem; min-width: 0;
+}
+.nyc-panel h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.35rem; }
+.nyc-panel h3 { font-size: 0.92rem; font-weight: 700; margin: 1.1rem 0 0.4rem; }
+.nyc-panel p { color: var(--nyc-muted); font-size: 0.9rem; line-height: 1.65; max-width: 780px; }
+.nyc-panel p + p { margin-top: 0.6rem; }
+.nyc-panel p strong { color: var(--nyc-text); }
+.nyc-kicker { font-family: var(--nyc-mono); font-size: 0.7rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--nyc-faint); margin-bottom: 0.3rem; }
+.nyc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.nyc-row > .nyc-panel { margin-bottom: 0; }
+.nyc-row + .nyc-panel, .nyc-row + .nyc-row { margin-top: 1.25rem; }
+.nyc-row:last-child { margin-bottom: 1.25rem; }
+
+.nyc-meta { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1.25rem; font-size: 0.86rem; margin-top: 0.75rem; }
+.nyc-meta dt { color: var(--nyc-faint); font-family: var(--nyc-mono); font-size: 0.76rem; padding-top: 0.12rem; }
+.nyc-meta dd { color: var(--nyc-text); }
+
+.nyc-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; margin-bottom: 1.25rem; }
+.nyc-stat { background: var(--nyc-surface); border: 1px solid var(--nyc-border); border-radius: var(--radius); padding: 0.95rem 1.05rem; }
+.nyc-stat-num { font-size: 1.55rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.nyc-stat-label { font-size: 0.76rem; color: var(--nyc-muted); margin-top: 0.3rem; line-height: 1.4; }
+
+.nyc-table-wrap { overflow-x: auto; margin-top: 0.75rem; }
+.nyc-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.nyc-table th { text-align: left; font-weight: 600; color: var(--nyc-faint); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--nyc-border); white-space: nowrap; }
+.nyc-table td { padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--nyc-grid); vertical-align: top; color: var(--nyc-text); }
+.nyc-table td.mono, .nyc-table code, .nyc-panel code { font-family: var(--nyc-mono); font-size: 0.78rem; }
+.nyc-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.nyc-table td.muted { color: var(--nyc-muted); }
+.nyc-table.sample td { white-space: nowrap; font-family: var(--nyc-mono); font-size: 0.75rem; }
+.nyc-missbar { display: inline-block; width: 64px; height: 6px; background: var(--nyc-grid); border-radius: 3px; vertical-align: middle; margin-right: 0.45rem; overflow: hidden; }
+.nyc-missbar > span { display: block; height: 100%; background: var(--nyc-warn); }
+
+.nyc-gotchas { list-style: none; margin-top: 0.75rem; display: grid; gap: 0.6rem; }
+.nyc-gotchas li {
+  background: var(--nyc-warn-soft); border-left: 3px solid var(--nyc-l-orange); border-radius: 0 6px 6px 0;
+  padding: 0.65rem 0.9rem; font-size: 0.86rem; line-height: 1.6; color: var(--nyc-text);
+}
+.nyc-gotchas li strong { color: var(--nyc-warn); }
+.nyc-note { background: var(--nyc-accent-soft); border-left: 3px solid var(--nyc-accent); border-radius: 0 6px 6px 0; padding: 0.65rem 0.9rem; font-size: 0.86rem; line-height: 1.6; margin-top: 0.75rem; }
+
+.nyc-chart { width: 100%; margin-top: 0.75rem; position: relative; }
+.nyc-chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.nyc-chart text { font-family: var(--font-body); fill: var(--nyc-muted); font-size: 11px; }
+.nyc-chart .axis path, .nyc-chart .axis line { stroke: var(--nyc-border); }
+.nyc-chart .gridline line { stroke: var(--nyc-grid); }
+.nyc-chart .gridline path { display: none; }
+.nyc-chart .bar-label { fill: var(--nyc-text); font-variant-numeric: tabular-nums; }
+.nyc-map { position: relative; width: 100%; max-width: 640px; aspect-ratio: 800 / 760; margin: 0.75rem auto 0; }
+.nyc-map svg, .nyc-map canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.nyc-map path.nta { stroke: #fff; stroke-width: 0.5; }
+.nyc-map path.nta:hover { stroke: var(--nyc-text); stroke-width: 1.4; }
+.nyc-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; align-items: center; font-size: 0.76rem; color: var(--nyc-muted); margin-top: 0.6rem; }
+.nyc-legend i { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-right: 0.35rem; vertical-align: -1px; }
+.nyc-ramp { display: flex; align-items: center; gap: 0.5rem; }
+.nyc-ramp-bar { width: 160px; height: 9px; border-radius: 2px; }
+
+.nyc-controls { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+.nyc-chip {
+  font-family: var(--font-body); font-size: 0.78rem; font-weight: 600; color: var(--nyc-muted);
+  background: var(--nyc-bg); border: 1px solid var(--nyc-border); border-radius: 999px; padding: 0.28rem 0.75rem; cursor: pointer;
+}
+.nyc-chip:hover { color: var(--nyc-text); }
+.nyc-chip.active { background: var(--nyc-text); color: #fff; border-color: var(--nyc-text); }
+
+.nyc-tip {
+  position: fixed; z-index: 400; pointer-events: none; opacity: 0;
+  background: #1b1d22; color: #fff; font-size: 0.76rem; line-height: 1.45;
+  padding: 0.45rem 0.65rem; border-radius: 6px; max-width: 260px; transition: opacity 0.1s;
+}
+.nyc-tip b { font-weight: 700; }
+.nyc-tip .mono { font-family: var(--nyc-mono); opacity: 0.75; }
+
+.nyc-loading { color: var(--nyc-faint); font-family: var(--nyc-mono); font-size: 0.85rem; padding: 2rem 0; }
+.nyc-error { color: var(--nyc-l-red); font-size: 0.9rem; padding: 1rem 0; }
+
+/* coverage timeline strip on the Overview tab */
+.nyc-cov-label { font-size: 12px; fill: var(--nyc-text) !important; font-weight: 600; }
+.nyc-cov-sub { font-size: 10.5px; }
+
+/* portal tile on the project detail page */
+.portal-tile.nyc {
+  background: #f6f6f2; color: #1b1d22; border: 1px solid rgba(27,29,34,0.18);
+}
+.portal-tile.nyc::after { background: linear-gradient(90deg, #0039a6 0 20%, #ee352e 20% 40%, #00933c 40% 60%, #ff6319 60% 80%, #b933ad 80% 100%); inset: auto 0 0 0; height: 5px; }
+.portal-tile.nyc .portal-tile-title { font-family: var(--font-display); }
+.portal-tile.nyc .portal-tile-cta { color: #0039a6; }
+.portal-tile.nyc:hover { box-shadow: 0 18px 36px rgba(0,57,166,0.16); }
+
+@media (max-width: 860px) {
+  .nyc-row { grid-template-columns: 1fr; }
+  .nyc-row > .nyc-panel + .nyc-panel { margin-top: 0; }
+}
+@media (max-width: 640px) {
+  .nyc-nav { padding: 0.8rem 1rem 0.3rem; }
+  .nyc-tabs { padding: 0.3rem 1rem 0.65rem; }
+  .nyc-wrap { padding: 1.5rem 1rem 4rem; }
+  .nyc-panel { padding: 1.1rem 1rem; }
+  .nyc-meta { grid-template-columns: 1fr; gap: 0.1rem; }
+  .nyc-meta dd { margin-bottom: 0.45rem; }
+  .nyc-crumb { display: none; }
+}

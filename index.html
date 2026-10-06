@@ -1771,6 +1771,7 @@
       .recipe-grid { grid-template-columns: 1fr; }
     }
   </style>
+  <link rel="stylesheet" href="assets/nyc-explorer/explorer.css">
 </head>
 <body>
 
@@ -2421,6 +2422,23 @@
     </button>
     <div id="wx-modal-content"></div>
   </div>
+</div>
+
+<!-- ═══════════════════════════════════════ NYC DATA EXPLORER ═══════════════════════════════════════
+     Tabs + content are rendered by assets/nyc-explorer/explorer.js from the
+     JSON that nyc-data-explorer/build_explorer_data.py precomputes. -->
+<div id="nyc-explorer">
+  <div class="nyc-top">
+    <div class="nyc-nav">
+      <button class="nyc-back" onclick="closeNycExplorer()">
+        <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+        <span>Back to Site</span>
+      </button>
+      <div class="nyc-crumb" id="nyc-crumb">/ NYC Data Explorer</div>
+    </div>
+    <nav class="nyc-tabs" id="nyc-tabs" aria-label="Datasets"></nav>
+  </div>
+  <main class="nyc-wrap" id="nyc-main"></main>
 </div>
 
 <!-- ═══════════════════════════════════════ UNREST PREDICTIONS HUB ═══════════════════════════════════════ -->
@@ -4881,6 +4899,49 @@ const projects = [
     }
   },
   {
+    id: 9,
+    isHub: true,
+    date: "Currently working on it",
+    sortKey: 202610,
+    title: "NYC Data Explorer",
+    desc: "MA491 project two: before picking a research question, get to know the data. A tab-by-tab explorer of the NYC open datasets that could speak to food and neighborhood change: restaurant inspections, property sales, liquor licenses, neighborhood boundaries, and food access. Each tab has charts, maps, and the quality traps found along the way.",
+    tags: ["NYC Open Data", "Data Profiling", "D3.js", "Python", "Maps"],
+    detail: {
+      summary: "The assignment: explore a major city's open data portal and find a research question the data can actually support. This explorer is step one. It doesn't test anything; it just makes each candidate dataset easy to understand before any analysis touches it.",
+      sections: [
+        {
+          label: "Where To Go",
+          heading: "Open the explorer",
+          body: `<p>One tab per dataset. Each shows what one row is, which years and neighborhoods it covers, every field in plain English with how often it's blank, the key distributions, real sample rows, and the gotchas found while profiling it.</p>
+          <div class="portal-grid">
+            <button type="button" class="portal-tile nyc" onclick="openNycExplorer()">
+              <div class="portal-tile-icon">🗽</div>
+              <div class="portal-tile-title">NYC Data Explorer</div>
+              <div class="portal-tile-desc">Inspections &middot; Sales &middot; Liquor Licenses &middot; Neighborhoods &middot; Food Access</div>
+              <div class="portal-tile-cta">Open the explorer &rarr;</div>
+            </button>
+          </div>`
+        },
+        {
+          label: "Why Start Here",
+          heading: "Understand the data before asking it anything",
+          body: `<p>The direction I'm interested in is food and neighborhood change: whether a neighborhood's restaurants say anything about where it's headed. Profiling first already changed what's possible. The restaurant inspection data only keeps about three years of history and drops restaurants once they close. The state's active liquor-license file reset its "original issue" dates in a records migration. Property sales are the only dataset here with a clean, full run back to 2016. Those facts decide which questions are answerable, so they come first.</p>`,
+          stats: [
+            { num: "8", label: "datasets profiled so far" },
+            { num: "1.2M", label: "rows described" },
+            { num: "0", label: "API keys needed to rebuild" }
+          ]
+        },
+        {
+          label: "How It's Built",
+          heading: "Live APIs, counted server-side",
+          body: `<p>A Python script queries the NYC and NY State open-data APIs directly, lets the server do the counting (so nothing gets bulk-downloaded), and writes small JSON files the page draws with D3. Rerunning it refreshes every tab with the current data.</p>`
+        }
+      ],
+      reflection: `This stays open-ended on purpose. New datasets get their own tab as they come up (the 2017 restaurant-inspection archive and 311 food complaints are next), and a research question only gets picked once the data underneath it is clearly understood.`
+    }
+  },
+  {
     id: 0,
     date: "Summer 2025",
     sortKey: 202507,
@@ -5901,7 +5962,7 @@ function renderProjectDetail(p) {
 // All full-page food overlays, kept in a list so opening one can reliably
 // close the rest — only one of these (and #project-detail) is ever open
 // at a time, no matter which nav path got you there.
-const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2', 'unrest-phase3', 'unrest-phase4', 'unrest-model-explainer'];
+const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2', 'unrest-phase3', 'unrest-phase4', 'unrest-model-explainer', 'nyc-explorer'];
 function closeAllToolOverlays() {
   TOOL_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
 }
@@ -8815,5 +8876,6 @@ function handleForm(e) {
 
 lucide.createIcons();
 </script>
+<script src="assets/nyc-explorer/explorer.js"></script>
 </body>
 </html>

@@ -1,0 +1,57 @@
+{
+  "9nt8-h7nd": {
+    "label": "2020 Neighborhood Tabulation Areas",
+    "rows": 262,
+    "pulled_at": "2026-10-06T12:07:37+00:00"
+  },
+  "4kc9-zrs2": {
+    "label": "Emergency Food Supply Gap",
+    "rows": 786,
+    "pulled_at": "2026-10-06T12:10:33+00:00",
+    "first": "2022",
+    "last": "2025"
+  },
+  "8vwk-6iz2": {
+    "label": "NYC Farmers Markets",
+    "rows": 2218,
+    "pulled_at": "2026-10-06T12:10:33+00:00",
+    "first": "2009",
+    "last": "2026"
+  },
+  "tc6u-8rnp": {
+    "label": "Directory of SNAP Centers",
+    "rows": 13,
+    "pulled_at": "2026-10-06T12:10:33+00:00"
+  },
+  "9s3h-dpkz": {
+    "label": "NYS Liquor Authority active licenses",
+    "rows": 59858,
+    "pulled_at": "2026-10-06T11:59:58+00:00",
+    "nyc_rows": 24772,
+    "first": "2020-08-03T00:00:00.000",
+    "last": "2026-10-05T00:00:00.000"
+  },
+  "6dg3-2z7i": {
+    "label": "NYS Liquor Authority inactive licenses",
+    "rows": 63403,
+    "pulled_at": "2026-10-06T12:00:06+00:00",
+    "nyc_rows": 29742,
+    "first": "1981-05-28T00:00:00.000",
+    "last": "2026-10-05T00:00:00.000"
+  },
+  "w2pb-icbu": {
+    "label": "NYC Citywide Annualized Calendar Sales",
+    "rows": 845607,
+    "pulled_at": "2026-10-06T11:59:26+00:00",
+    "first": "2016-01-01T00:00:00.000",
+    "last": "2025-12-31T00:00:00.000"
+  },
+  "43nn-pn8j": {
+    "label": "DOHMH Restaurant Inspection Results",
+    "rows": 296450,
+    "pulled_at": "2026-10-06T11:59:53+00:00",
+    "first": "2007-08-10T09:06:00.000",
+    "last": "2026-10-03T00:00:00.000",
+    "restaurants": 31463
+  }
+}

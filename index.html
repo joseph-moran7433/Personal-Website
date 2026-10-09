@@ -1771,7 +1771,7 @@
       .recipe-grid { grid-template-columns: 1fr; }
     }
   </style>
-  <link rel="stylesheet" href="assets/nyc-explorer/explorer.css?v=20261006d">
+  <link rel="stylesheet" href="assets/nyc-explorer/explorer.css?v=20261009b">
 </head>
 <body>
 
@@ -4931,6 +4931,12 @@ const projects = [
               <div class="portal-tile-title">NYC Data Explorer</div>
               <div class="portal-tile-desc">Inspections &middot; Sales &middot; Liquor Licenses &middot; Neighborhoods &middot; Food Access</div>
               <div class="portal-tile-cta">Open the explorer &rarr;</div>
+            </button>
+            <button type="button" class="portal-tile nyc" onclick="openNycCaseStudy()">
+              <div class="portal-tile-icon">🔎</div>
+              <div class="portal-tile-title">Case Study: Bushwick</div>
+              <div class="portal-tile-desc">One gentrified neighborhood across every dataset &middot; what changed, when, and the pre-factors &middot; time-series notes</div>
+              <div class="portal-tile-cta">Open the case study &rarr;</div>
             </button>
           </div>`
         },
@@ -8949,6 +8955,6 @@ function handleForm(e) {
 
 lucide.createIcons();
 </script>
-<script src="assets/nyc-explorer/explorer.js?v=20261006d"></script>
+<script src="assets/nyc-explorer/explorer.js?v=20261009b"></script>
 </body>
 </html>

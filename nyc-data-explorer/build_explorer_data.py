@@ -12,7 +12,8 @@ Heavy lifting happens server-side through SoQL aggregation ($select ...
 $group), so no dataset is ever bulk-downloaded -- the biggest pull is one
 row per restaurant for the dot map (~31K rows).
 
-Needs only `requests` (+ stdlib). No API keys.
+Needs only `requests` (+ stdlib). The `acs` builder needs a free Census key
+(CENSUS_API_KEY env var or a gitignored .census_key file); nothing else does.
 
 Usage:
     python build_explorer_data.py              # rebuild every tab
@@ -811,6 +812,112 @@ def build_rent():
                    "neighborhoods": len(hoods), "name_matches_nta": matched})
 
 
+CENSUS = "https://api.census.gov/data"
+NYC_FIPS = {"005": "Bronx", "047": "Brooklyn", "061": "Manhattan", "081": "Queens", "085": "Staten Island"}
+# variable -> (short name, description). E = estimate, M = margin of error (90%).
+ACS_VARS = {"B25064_001": ("gross_rent", "Median gross rent (contract rent + utilities), renter-occupied units paying cash rent"),
+            "B25058_001": ("contract_rent", "Median contract rent (rent as agreed, without utilities)"),
+            "B19013_001": ("hh_income", "Median household income, past 12 months, in that vintage's dollars"),
+            "B25003_001": ("tenure_total", "Occupied housing units"),
+            "B25003_003": ("renter_units", "Renter-occupied housing units")}
+
+
+def census_key():
+    """CENSUS_API_KEY env var, else the gitignored nyc-data-explorer/.census_key file."""
+    import os
+    key = os.environ.get("CENSUS_API_KEY")
+    if not key and (HERE / ".census_key").exists():
+        key = (HERE / ".census_key").read_text(encoding="utf-8").strip()
+    if not key:
+        raise SystemExit("acs: set CENSUS_API_KEY or put the key in nyc-data-explorer/.census_key")
+    return key
+
+
+def census_get(path, params, key):
+    """One Census API call -> list of dicts. Errors never echo the URL (it carries the key)."""
+    for attempt in range(4):
+        try:
+            r = requests.get(f"{CENSUS}/{path}", params={**params, "key": key}, timeout=120)
+            if r.status_code == 204 or r.status_code == 404:
+                return None  # vintage/table not published
+            r.raise_for_status()
+            rows = r.json()
+            return [dict(zip(rows[0], v)) for v in rows[1:]]
+        except (requests.RequestException, ValueError) as e:
+            if attempt == 3:
+                print(f"   census {path}: {type(e).__name__} (gave up)")
+                return None
+            time.sleep(5 * (attempt + 1))
+
+
+def build_acs():
+    print("Census ACS (rent paid, income, tenure) ...")
+    key = census_key()
+    get = ",".join(f"{v}{s}" for v in ACS_VARS for s in ("E", "M"))
+
+    def val(x):
+        v = num(x, None)
+        return None if v is None or v < 0 else v  # negatives are Census "no estimate" sentinels
+
+    def pctile(vals, p):
+        return round(vals[min(len(vals) - 1, int(p * len(vals)))]) if vals else None
+
+    # ── 5-year estimates, tract level, every NYC tract, each vintage
+    tract_vintages, total_rows = {}, 0
+    for year in range(2009, datetime.now().year):
+        rows = census_get(f"{year}/acs/acs5", {"get": get, "for": "tract:*",
+                                               "in": f"state:36 county:{','.join(NYC_FIPS)}"}, key)
+        if not rows:
+            continue
+        total_rows += len(rows)
+        out = {"tracts": len(rows), "vars": {}}
+        for v, (short, _) in ACS_VARS.items():
+            est = [val(r.get(v + "E")) for r in rows]
+            moe = [val(r.get(v + "M")) for r in rows]
+            have = sorted(e for e in est if e is not None)
+            rel = sorted(m / e for e, m in zip(est, moe) if e and m is not None)
+            top = max(have) if have else None
+            out["vars"][short] = {
+                "n": len(have), "missing": len(rows) - len(have),
+                "p10": pctile(have, .1), "p25": pctile(have, .25), "p50": pctile(have, .5),
+                "p75": pctile(have, .75), "p90": pctile(have, .9), "max": top,
+                "at_max": sum(1 for e in have if e == top),
+                "moe_rel_p50": round(100 * rel[len(rel) // 2], 1) if rel else None,
+                "moe_rel_over_30": sum(1 for x in rel if x > .3),
+            }
+        by_boro = {}
+        for r in rows:
+            b = NYC_FIPS[r["county"]]
+            by_boro.setdefault(b, []).append(val(r.get("B25064_001E")))
+        out["gross_rent_missing_by_boro"] = {b: sum(1 for x in xs if x is None) for b, xs in by_boro.items()}
+        out["tracts_by_boro"] = {b: len(xs) for b, xs in by_boro.items()}
+        tract_vintages[year] = out
+        print(f"   acs5 {year}: {len(rows)} tracts")
+
+    # ── 1-year estimates, borough (county) level: the only annual series (no 2020 release)
+    county = {}
+    for year in range(2005, datetime.now().year):
+        rows = census_get(f"{year}/acs/acs1", {"get": get, "for": f"county:{','.join(NYC_FIPS)}", "in": "state:36"}, key)
+        if not rows:
+            continue
+        for r in rows:
+            county.setdefault(NYC_FIPS[r["county"]], {})[year] = {
+                short: [val(r.get(v + "E")), val(r.get(v + "M"))] for v, (short, _) in ACS_VARS.items()}
+    # Same idea at county level from the 5-year file, for comparison with the 1-year line.
+    county5 = {}
+    for year in tract_vintages:
+        rows = census_get(f"{year}/acs/acs5", {"get": "B25064_001E", "for": f"county:{','.join(NYC_FIPS)}", "in": "state:36"}, key) or []
+        for r in rows:
+            county5.setdefault(NYC_FIPS[r["county"]], {})[year] = val(r.get("B25064_001E"))
+
+    years5 = sorted(tract_vintages)
+    manifest["census-acs"] = {"label": "Census ACS 5-yr (tracts) + 1-yr (boroughs): rent, income, tenure",
+                              "rows": total_rows, "pulled_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                              "first": years5[0] if years5 else None, "last": years5[-1] if years5 else None}
+    write("acs", {"variables": {short: [v, desc] for v, (short, desc) in ACS_VARS.items()},
+                  "tract_vintages": tract_vintages, "county_acs1": county, "county_acs5_gross_rent": county5})
+
+
 def build_values():
     print("Property values (DOF assessment roll) ...")
     D = VALUATION
@@ -1027,10 +1134,18 @@ def build_crime():
     law = soql(NYC, D, select="law_cat_cd as l, count(*) as n", group="l", order="n desc")
     bad_dates = int(scalar(NYC, D, "count(*)", "cmplnt_fr_dt < '2000-01-01'"))
     lag = int(scalar(NYC, D, "count(*)", "rpt_dt >= '2025-01-01' and cmplnt_fr_dt < '2024-01-01'"))
-    rob_pts = soql_all(NYC, D, select="latitude, longitude",
-                       where="ofns_desc = 'ROBBERY' and rpt_dt >= '2025-01-01' and latitude is not null")
-    lonlat = [(num(p["longitude"]), num(p["latitude"])) for p in rob_pts]
-    lonlat = [(x, y) for x, y in lonlat if in_nyc(x, y)]
+    # Robbery points for every report year (historic file + current YTD), binned per year for the map's year picker.
+    rob_by_year = {}
+    for ds in (D, NYPD_YTD):
+        rob_pts = soql_all(NYC, ds, select="date_extract_y(rpt_dt) as y, latitude, longitude", order=":id",
+                           where="ofns_desc = 'ROBBERY' and latitude is not null")
+        for p in rob_pts:
+            x, y = num(p.get("longitude")), num(p.get("latitude"))
+            if p.get("y") and in_nyc(x, y):
+                rob_by_year.setdefault(int(p["y"]), []).append((x, y))
+    rob_years = {y: {"n": len(pts), "grid": grid_bin(pts)} for y, pts in sorted(rob_by_year.items())}
+    write("crime_robbery_years", {"cell_deg": 0.004, "partial_year": int(ytd_last[:4]) if ytd_last else None,
+                                  "years": rob_years})
     fields = ["cmplnt_num", "rpt_dt", "cmplnt_fr_dt", "ofns_desc", "pd_desc", "law_cat_cd", "crm_atpt_cptd_cd",
               "boro_nm", "addr_pct_cd", "prem_typ_desc", "loc_of_occur_desc", "latitude", "susp_age_group", "vic_age_group"]
     miss = missingness(NYC, D, fields, total)
@@ -1044,7 +1159,7 @@ def build_crime():
         "offenses": rows_to_pairs(offenses, "o"), "robbery_types": rows_to_pairs(robbery, "d"),
         "premises": rows_to_pairs(premises, "p"), "law": rows_to_pairs(law, "l"),
         "bad_dates": bad_dates, "late_reports_2025": lag, "missing_pct": miss,
-        "robbery_grid_2025": grid_bin(lonlat), "robbery_2025": len(lonlat),
+        "robbery_by_year": {y: v["n"] for y, v in rob_years.items()},
     })
 
 
@@ -1116,7 +1231,7 @@ def build_fires():
 
 BUILDERS = {"nta": build_nta, "inspections": build_inspections, "sales": build_sales,
             "licenses": build_licenses, "food_access": build_food_access,
-            "turnover": build_turnover, "chains": build_chains, "rent": build_rent, "values": build_values,
+            "turnover": build_turnover, "chains": build_chains, "rent": build_rent, "acs": build_acs, "values": build_values,
             "construction": build_construction, "capital": build_capital, "schools": build_schools,
             "crime": build_crime, "subway": build_subway, "fires": build_fires}
 

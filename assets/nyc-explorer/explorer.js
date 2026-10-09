@@ -31,7 +31,7 @@
       cache[name] = fetch(BASE + name + '.json').then((r) => {
         if (!r.ok) throw new Error(name + '.json: HTTP ' + r.status);
         return r.json();
-      }).then((j) => (name === 'nta2020' ? rewind(j) : j));
+      }).then((j) => (name === 'nta2020' ? rewind(j) : name === 'case_bushwick_tracts' ? (rewind(j.geo), j) : j));
     }
     return cache[name];
   }
@@ -170,7 +170,7 @@
       const cv = d3.select(el).append('canvas').attr('width', MW * 2).attr('height', MH * 2).style('pointer-events', 'none').node();
       const ctx = cv.getContext('2d'); ctx.scale(2, 2);
       if (o.grid) {
-        const maxN = d3.max(o.grid, (d) => d[2]);
+        const maxN = o.gridMax || d3.max(o.grid, (d) => d[2]);
         const col = d3.scaleSequentialLog(o.gridInterp || d3.interpolatePuRd).domain([1, maxN]);
         const cell = o.cellDeg || 0.004;
         o.grid.forEach(([lon, lat, n]) => {
@@ -777,7 +777,7 @@
   // x is a 'YYYY-MM' string (o.time) or a number (year). null y = gap.
   function lines(sel, series, o = {}) {
     const el = document.querySelector(sel); if (!el) return;
-    const W = 680, H = o.height || 240, m = { t: 10, r: o.right || 12, b: 28, l: 56 };
+    const W = o.width || 680, H = o.height || 240, m = { t: 10, r: o.right || 12, b: 28, l: 56 };
     const px = o.time ? (v) => new Date(v + '-15T12:00:00') : (v) => +v;
     const all = series.flatMap((s) => s.values.filter((v) => v[1] != null));
     const x = (o.time ? d3.scaleTime() : d3.scaleLinear()).domain(d3.extent(all, (v) => px(v[0]))).range([m.l, W - m.r]);
@@ -788,6 +788,14 @@
     svg.append('g').attr('class', 'axis').attr('transform', `translate(0,${H - m.b})`)
       .call(d3.axisBottom(x).ticks(o.ticks || 10).tickFormat(o.time ? d3.timeFormat('%Y') : d3.format('d')));
     const line = d3.line().defined((v) => v[1] != null).x((v) => x(px(v[0]))).y((v) => y(v[1]));
+    if (o.hline != null) { // reference level, e.g. 1.0 on a ratio chart
+      svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(o.hline)).attr('y2', y(o.hline)).attr('stroke', C.gray).attr('stroke-width', 1);
+    }
+    (o.marks || []).forEach(([at, label]) => { // dashed verticals for breaks / events
+      const xx = x(px(at)); if (!(xx >= m.l && xx <= W - m.r)) return;
+      svg.append('line').attr('x1', xx).attr('x2', xx).attr('y1', m.t).attr('y2', H - m.b).attr('stroke', C.gray).attr('stroke-dasharray', '3 3');
+      if (label) svg.append('text').attr('x', xx + 3).attr('y', m.t + 9).attr('font-size', 10).text(label);
+    });
     series.forEach((s) => {
       svg.append('path').datum(s.values).attr('fill', 'none').attr('stroke', s.color).attr('stroke-width', s.width || 2)
         .attr('stroke-dasharray', s.dash || null).attr('opacity', s.opacity ?? 1).attr('d', line);
@@ -837,8 +845,8 @@
       'Restaurant inspections, chain names matched from the business name (DBA)', '~2022–2026 (rolling window)', 'lat/long, BBL',
       'Current chain locations are complete. <b>When</b> each opened is only visible from 2022 on. An older 2017 inspection snapshot exists off-portal (Kaggle / p8105).'],
     ['Rent price over time', 'rent', 'partial',
-      'StreetEasy median asking rent (monthly) · DOF storefront rent per sq ft (by census tract)', '2010–2026 · 2019–2024', 'StreetEasy neighborhood names (≠ NTA) · census tract',
-      'Asking rent for listed apartments, not what tenants pay. Census ACS median gross rent needs a free API key (not pulled yet).'],
+      'StreetEasy median asking rent (monthly) · Census ACS median gross rent · DOF storefront rent per sq ft', '2010–2026 · 2005–2024 · 2019–2024', 'StreetEasy names (≠ NTA) · tract / borough · tract',
+      'StreetEasy is asking rent on listed units. ACS is rent actually paid, but tract values are overlapping 5-year averages on boundaries that change in 2010 and 2020.'],
     ['Property value % change over time', 'values', 'good',
       'DOF sales (every recorded sale) · DOF assessment roll (market value of every lot, yearly)', '2016–2025 · 2010/11–2018/19 + 2023–2027', 'BBL, 2020 NTA (sales)',
       'Assessment rolls are missing 2019/20–2022/23 on the portal. Sales are thin in some NTA-years (see tab).'],
@@ -893,7 +901,7 @@
     // Coverage strip of every signal dataset (years with real volume)
     const spans = [
       ['Storefront registry', C.blue, 2019, 2024, 'yearly filings'], ['DCWP licenses', C.blue, 2010, 2026, 'non-food businesses'],
-      ['Inspections (chains)', C.red, 2022, 2026, 'rolling window'], ['StreetEasy rent', C.orange, 2010, 2026, 'monthly'],
+      ['Inspections (chains)', C.red, 2022, 2026, 'rolling window'], ['StreetEasy rent', C.orange, 2010, 2026, 'monthly'], ['Census ACS rent', C.orange, 2005, 2024, '1-yr boroughs · 5-yr tracts'],
       ['DOF sales', C.purple, 2016, 2025, ''], ['Assessment roll (old)', C.purple, 2010, 2018, 'gap 2019–22'], ['Assessment roll (new)', C.purple, 2023, 2027, 'fiscal years'],
       ['Housing Database', C.green, 2010, 2026, 'completions'], ['DOB permits (BIS)', C.green, 1990, 2020, 'fades out → DOB NOW'], ['DOB NOW permits', C.green, 2018, 2026, ''],
       ['Capital plan editions', C.brown, 2016, 2026, 'no location'], ['School tests', C.teal, 2013, 2023, 'no 2020–21'], ['School Quality Reports', C.teal, 2015, 2024, ''],
@@ -919,8 +927,7 @@
           ['Own neighborhood names', 'StreetEasy (176 areas, not NTAs)'],
         ]), 'Join keys'),
         panel('Still missing', gotchas([
-          `<strong>Residential rent actually paid.</strong> Census ACS median gross rent by tract needs a free Census API key (the API now refuses keyless requests). StreetEasy only has <em>asking</em> rents on listed units.`,
-          `<strong>Who lives there.</strong> Income, education, race, and age by neighborhood also come from ACS, so the same key unblocks them.`,
+          `<strong>Who lives there.</strong> Rent paid, household income and renter share are now pulled from Census ACS (Rent tab). Education, race and age come from the same API and aren't pulled yet.`,
           `<strong>Restaurant reviews / buzz.</strong> Yelp and Google review data aren't open. Michelin is the only published list found with coordinates.`,
           `<strong>Historical subway station work.</strong> No archive of past station closures or planned-work notices was found.`,
           `<strong>News lead-time.</strong> GDELT is reachable, but it wasn't profiled for this question yet.`,
@@ -1128,7 +1135,7 @@
           `<strong>Coverage is uneven.</strong> Only ${full} of ${d.neighborhoods} neighborhoods have ≥ 90% of months. ${thin} have under five years, mostly outer-borough areas with few listings, which are often exactly the areas a gentrification question cares about.`,
           `<strong>StreetEasy neighborhoods aren't NTAs.</strong> ${d.name_matches_nta} of ${d.neighborhoods} names match a piece of some 2020 NTA name (e.g. "Astoria"), but a shared name isn't a shared boundary: StreetEasy draws its own lines and publishes no shapes. Linking needs a hand-built crosswalk, and the other ${d.neighborhoods - d.name_matches_nta} have no name match at all.`,
           `<strong>Storefront rent is suppressed in small tracts</strong> (shown as "*" when too few storefronts report). ${tr['2024'] ? tr['2024'].suppressed + ' of ' + tr['2024'].tracts + ' tracts in 2024.' : ''}`,
-          `<strong>Rent actually paid</strong> would come from Census ACS median gross rent (tract level, 5-year averages). It needs a free Census API key, which this build doesn't have yet.`,
+          `<strong>Rent actually paid</strong> comes from Census ACS, profiled in the section below.`,
         ]))
       )}
       ${row(
@@ -1151,17 +1158,61 @@
     };
     pick.addEventListener('change', drawHood); drawHood();
     columns('#nyc-r-cov', [{ name: 'months', color: C.orange, values: hoods.map((h) => [h.name, h.n_months]) }], { sortX: false, height: 180, maxTicks: 1, xFmt: () => '', unit: 'months' });
-    const el = document.getElementById('nyc-r-tract');
-    const ty = Object.entries(tr).map(([y, t]) => ({ y: +y, ...t }));
-    const W = 680, H = 200, m = { t: 10, r: 10, b: 26, l: 50 };
-    const x = d3.scaleLinear().domain(d3.extent(ty, (t) => t.y)).range([m.l, W - m.r]);
-    const y = d3.scaleLinear().domain([0, d3.max(ty, (t) => t.p90)]).nice().range([H - m.b, m.t]);
-    const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`);
-    svg.append('g').attr('class', 'axis').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickFormat((v) => '$' + v));
-    svg.append('g').attr('class', 'axis').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(ty.length).tickFormat(d3.format('d')));
-    svg.append('path').datum(ty).attr('fill', C.orange).attr('opacity', 0.12).attr('d', d3.area().x((t) => x(t.y)).y0((t) => y(t.p10)).y1((t) => y(t.p90)));
-    svg.append('path').datum(ty).attr('fill', C.orange).attr('opacity', 0.25).attr('d', d3.area().x((t) => x(t.y)).y0((t) => y(t.p25)).y1((t) => y(t.p75)));
-    svg.append('path').datum(ty).attr('fill', 'none').attr('stroke', C.orange).attr('stroke-width', 2).attr('d', d3.line().x((t) => x(t.y)).y((t) => y(t.p50)));
+    // Percentile band chart: line = median tract, bands = p25–p75 and p10–p90.
+    const band = (sel, ty, color, yFmt, marks = []) => {
+      const el = document.getElementById(sel);
+      const W = 680, H = 200, m = { t: 10, r: 10, b: 26, l: 50 };
+      const x = d3.scaleLinear().domain(d3.extent(ty, (t) => t.y)).range([m.l, W - m.r]);
+      const y = d3.scaleLinear().domain([0, d3.max(ty, (t) => t.p90)]).nice().range([H - m.b, m.t]);
+      const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`);
+      svg.append('g').attr('class', 'axis').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(yFmt));
+      svg.append('g').attr('class', 'axis').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(ty.length).tickFormat(d3.format('d')));
+      marks.forEach(([yr, label]) => {
+        svg.append('line').attr('x1', x(yr - 0.5)).attr('x2', x(yr - 0.5)).attr('y1', m.t).attr('y2', H - m.b).attr('stroke', C.gray).attr('stroke-dasharray', '3 3');
+        svg.append('text').attr('x', x(yr - 0.5) + 4).attr('y', m.t + 10).attr('font-size', 10).attr('fill', C.gray).text(label);
+      });
+      svg.append('path').datum(ty).attr('fill', color).attr('opacity', 0.12).attr('d', d3.area().x((t) => x(t.y)).y0((t) => y(t.p10)).y1((t) => y(t.p90)));
+      svg.append('path').datum(ty).attr('fill', color).attr('opacity', 0.25).attr('d', d3.area().x((t) => x(t.y)).y0((t) => y(t.p25)).y1((t) => y(t.p75)));
+      svg.append('path').datum(ty).attr('fill', 'none').attr('stroke', color).attr('stroke-width', 2).attr('d', d3.line().x((t) => x(t.y)).y((t) => y(t.p50)));
+    };
+    band('nyc-r-tract', Object.entries(tr).map(([y, t]) => ({ y: +y, ...t })), C.orange, (v) => '$' + v);
+
+    // ── Census ACS: rent actually paid (tract 5-year + borough 1-year)
+    const acs = await load('acs');
+    const tv = Object.entries(acs.tract_vintages).map(([y, t]) => ({ y: +y, ...t }));
+    const gr = (t) => t.vars.gross_rent;
+    const last = tv[tv.length - 1], first = tv[0], mid = tv.find((t) => t.y === 2015);
+    const acsYears = Object.keys(acs.county_acs1[Object.keys(acs.county_acs1)[0]]).map(Number).sort((a, b) => a - b);
+    const boroSeries = (key) => Object.entries(acs.county_acs1).map(([b, byY]) => ({
+      name: b, color: BORO_COLORS[b] || C.gray,
+      values: d3.range(acsYears[0], acsYears[acsYears.length - 1] + 1).map((y) => [y, byY[y] ? byY[y][key][0] : null]) }));
+    const geoOf = (y) => (y <= 2009 ? '2000' : y <= 2019 ? '2010' : '2020');
+    const usd = (v) => (v == null ? '—' : '$' + fmt(v));
+    main.insertAdjacentHTML('beforeend', `
+      ${panel('Rent actually paid: Census ACS', `<p>The American Community Survey asks a sample of households what they pay. <b>Median gross rent</b> = contract rent + utilities, for renter units paying cash rent, rent-stabilized units included. Two products: <b>1-year</b> estimates (annual, but only for big areas like boroughs) and <b>5-year</b> estimates (down to census tracts, but each value pools five years of responses). Pulled from <a href="https://api.census.gov/data.html" target="_blank" rel="noopener">api.census.gov ↗</a>: table B25064, plus B25058 (contract rent), B19013 (household income) and B25003 (renters vs. owners).</p>
+        ${stats([
+          [`${first.y}–${last.y}`, '5-year vintages, tract level'], [`${acsYears[0]}–${acsYears[acsYears.length - 1]}`, '1-year estimates, borough level'],
+          [fmt(last.tracts), `NYC tracts in the ${last.y} vintage`], [usd(gr(last).p50), `median tract, gross rent (${last.y} 5-yr)`],
+          [fmt(gr(last).missing), `tracts with no rent estimate (${last.y})`],
+        ])}`, 'Census ACS')}
+      ${row(
+        panel('Median gross rent by borough (1-year ACS)', `<p>Nominal dollars, not adjusted for inflation. No point for 2020: the Census Bureau didn't release standard 1-year estimates that year because pandemic response rates were too low.</p>${chartDiv('nyc-r-acs1')}`, 'Coverage over time'),
+        panel('Spread across tracts (5-year ACS)', `<p>Tract-level median gross rent for each 5-year vintage. Line = median tract, bands = 25th–75th and 10th–90th percentile. Dashed lines mark where the tract boundaries change.</p>${chartDiv('nyc-r-acs5')}`, 'Distributions')
+      )}
+      ${panel('Per-vintage profile: gross rent by tract', simpleTable(['Vintage', 'Covers', 'Tract map', 'Tracts', 'No estimate', 'Median tract', 'Top code', 'Tracts at top code', 'Median MOE', 'MOE > 30%'],
+          tv.map((t) => [t.y, `${t.y - 4}–${t.y}`, geoOf(t.y), fmt(t.tracts), fmt(gr(t).missing), usd(gr(t).p50), usd(gr(t).max), fmt(gr(t).at_max), gr(t).moe_rel_p50 + '%', fmt(gr(t).moe_rel_over_30)])), 'Completeness')}
+      ${panel('Gotchas found while profiling: Census ACS', gotchas([
+          `<strong>5-year vintages overlap.</strong> The "${last.y}" value pools ${last.y - 4}–${last.y} responses, and "${last.y - 1}" shares four of those five years. Back-to-back vintages aren't independent snapshots. The Census Bureau's guidance is to compare non-overlapping vintages (e.g. ${last.y - 10}, ${last.y - 5}, ${last.y}).`,
+          `<strong>The tract map changes twice.</strong> The ${first.y} vintage uses 2000 tracts (${fmt(first.tracts)}), 2010–2019 use 2010 tracts (${fmt(mid.tracts)}), and 2020+ use 2020 tracts (${fmt(last.tracts)}). A tract ID can mean a different area across those breaks. Following one place over time needs the Census tract relationship files. Mapping tracts to 2020 NTAs uses the city's crosswalk <code>hm78-6dwm</code>.`,
+          `<strong>Rents are top-coded, and the cap moved.</strong> Anything above the cap is reported as the cap plus $1: $${fmt(first.vars.gross_rent.max)} through 2014, $${fmt(last.vars.gross_rent.max)} after. ${fmt(gr(last).at_max)} tracts sit at the cap in ${last.y}, up from ${fmt(mid.vars.gross_rent.at_max)} in 2015, so the most expensive tracts can't show any further increase. Household income is capped at $250,001.`,
+          `<strong>Small samples, wide error bars.</strong> Every estimate has a 90% margin of error (MOE). In ${last.y} the median tract's MOE is ${gr(last).moe_rel_p50}% of its rent, and ${fmt(gr(last).moe_rel_over_30)} tracts are over 30%. A few-hundred-dollar change in one tract can be noise.`,
+          `<strong>No estimate shows up as a sentinel value.</strong> The API returns codes like <code>-666666666</code> when there's no estimate (parks, airports, tracts with too few renters). The build treats every negative value as missing: ${fmt(gr(last).missing)} tracts in ${last.y}.`,
+          `<strong>Paid rent ≠ asking rent.</strong> ACS includes every renter, including long-time and rent-stabilized tenants, so it moves slowly. StreetEasy asking rents (above) only cover new listings. The two series measure different things, so expect them to differ.`,
+          `<strong>Dollars are nominal.</strong> Each vintage reports values in its own end-year dollars. Comparing across years needs an inflation adjustment (the Census Bureau uses CPI-U-RS).`,
+        ]))}
+    `);
+    lines('#nyc-r-acs1', boroSeries('gross_rent'), { height: 230, yFmt: (v) => '$' + d3.format(',')(v), valFmt: (v) => '$' + fmt(v) });
+    band('nyc-r-acs5', tv.map((t) => ({ y: t.y, ...gr(t) })), C.orange, (v) => '$' + d3.format(',')(v), [[2010, '2010 tracts'], [2020, '2020 tracts']]);
   }
 
   // ── PROPERTY VALUES ──────────────────────────────────────────────
@@ -1346,6 +1397,8 @@
     const d = await load('crime');
     const st = pivot(d.street);
     const last = d.by_year[d.by_year.length - 1];
+    const robYears = Object.keys(d.robbery_by_year).map(Number).sort((a, b) => a - b);
+    const robDefault = robYears.includes(last[0]) ? last[0] : robYears[robYears.length - 1];
     main.innerHTML = `
       ${hero(C.ink, 'Signal · Street crime', 'Crime (NYPD Complaints)',
         `Every felony, misdemeanor, and violation reported to the NYPD since 2006, one row per complaint, with offense type, premise, and a map point. "Street crime" isn't a field. The closest pieces are the offense category (robbery, felony assault, larceny…), its sub-type (<code>pd_desc</code>, e.g. "ROBBERY, PERSONAL ELECTRONIC DEVICE"), and premise = STREET. ${portalLink(d.datasets.hist, 'Historic ↗')} · ${portalLink(d.datasets.ytd, 'Year-to-date ↗')}`)}
@@ -1355,7 +1408,9 @@
       ])}
       ${panel('Street-type offenses reported per year', `<p>Six offense categories, by report year. 2026 is a partial year (YTD file).</p>${chartDiv('nyc-x-street')}`, 'Coverage over time')}
       ${row(
-        panel('Robberies reported in 2025', `<p>Density of ${fmt(d.robbery_2025)} robbery complaints on a ~400 m grid.</p>${mapDiv('nyc-x-map')}`, 'Coverage over space'),
+        panel('Robberies reported, by year', `<p>Density of robbery complaints on a ~400 m grid, by the year they were reported. Drag to change the year. Every year uses the same color scale, so darker means more robberies, not just a relatively busier cell.</p>
+          <div class="nyc-year-pick"><input type="range" id="nyc-x-year" min="${robYears[0]}" max="${robYears[robYears.length - 1]}" step="1" value="${robDefault}" aria-label="Year">
+          <span id="nyc-x-year-label" class="nyc-year-label"></span></div>${mapDiv('nyc-x-map')}`, 'Coverage over space'),
         panel('Gotchas found while profiling', gotchas([
           `<strong>Reported ≠ committed.</strong> Complaints depend on people calling the police, and willingness to report can itself differ by neighborhood and change over time.`,
           `<strong>Two files.</strong> Historic (through ${d.by_year[d.by_year.length - 1][0]}) and current year-to-date (lags ~1 quarter). A full series has to stack them.`,
@@ -1382,7 +1437,26 @@
       )}
     `;
     lines('#nyc-x-street', Object.entries(st).map(([o, v], i) => ({ name: o.toLowerCase(), color: PALETTE[i], values: v })), { height: 260 });
-    await nycMap('#nyc-x-map', { grid: d.robbery_grid_2025, gridInterp: d3.interpolateGreys, gridLegend: 'robberies per cell' });
+    const rob = await load('crime_robbery_years');
+    const robMax = d3.max(Object.values(rob.years), (v) => d3.max(v.grid, (g) => g[2]));
+    const slider = document.getElementById('nyc-x-year');
+    const drawRob = async () => {
+      const y = +slider.value, v = rob.years[y];
+      document.getElementById('nyc-x-year-label').innerHTML = `<b>${y}</b> · ${v ? fmt(v.n) : 0} robberies${y === rob.partial_year ? ` <span class="muted">(partial year, through ${day(d.ytd_last)})</span>` : ''}`;
+      const mapEl = document.getElementById('nyc-x-map');
+      if (mapEl.nextElementSibling?.classList.contains('nyc-legend')) mapEl.nextElementSibling.remove();
+      await nycMap('#nyc-x-map', { grid: v ? v.grid : [], gridMax: robMax, cellDeg: rob.cell_deg, gridInterp: d3.interpolateGreys, gridLegend: 'robberies per cell' });
+    };
+    // One redraw at a time; a drag mid-redraw just triggers one more pass with the latest year.
+    let busy = false, again = false;
+    const redraw = async () => {
+      if (busy) { again = true; return; }
+      busy = true;
+      do { again = false; await drawRob(); } while (again);
+      busy = false;
+    };
+    slider.addEventListener('input', redraw);
+    await redraw();
     barH('#nyc-x-rob', d.robbery_types, { color: C.ink, barHeight: 13, labelWidth: 280 });
     barH('#nyc-x-prem', d.premises, { color: C.gray, barHeight: 13, labelWidth: 220, total: d.rows });
     barH('#nyc-x-off', d.offenses.slice(0, 18), { color: C.ink, barHeight: 12, labelWidth: 250, total: d.rows });
@@ -1464,6 +1538,330 @@
     barH('#nyc-f2-boro', d.structural_boro, { color: C.red, labelWidth: 200, total: d3.sum(d.structural_boro, (b) => b[1]) });
   }
 
+  // ── CASE STUDY: BUSHWICK ─────────────────────────────────────────
+  // One neighborhood the published reports call gentrified, lined up
+  // across every dataset and year we have. Built by
+  // nyc-data-explorer/build_case_study.py. Still descriptive: what changed
+  // and when, next to comparison areas. No models.
+  const CASE_C = { Bushwick: C.orange, Williamsburg: C.blue, 'East New York': C.gray, NYC: C.ink, Brooklyn: C.purple };
+  const CASE_S = { Bushwick: { width: 3 }, Williamsburg: { width: 1.6 }, 'East New York': { width: 1.6, dash: '5 4' }, NYC: { width: 1.4, dash: '2 3' }, Brooklyn: { width: 1.4, dash: '2 3' } };
+  const caseSeries = (names, fn) => names.map((n) => ({ name: n, color: CASE_C[n], ...CASE_S[n], values: fn(n) }));
+  const usd = (v) => (v == null ? '—' : '$' + fmt(Math.round(v)));
+  const pctTxt = (v) => (v == null ? '—' : fmt1(v) + '%');
+  const CASE_IND = [
+    { k: 'rent', label: 'Median gross rent (paid)', f: usd, money: true },
+    { k: 'income', label: 'Median household income', f: usd, money: true },
+    { k: 'ba_pct', label: "Adults 25+ with a bachelor's degree", f: pctTxt },
+    { k: 'white_pct', label: 'Non-Hispanic white residents', f: pctTxt },
+    { k: 'hisp_pct', label: 'Hispanic residents', f: pctTxt },
+    { k: 'age2034_pct', label: 'Residents aged 20–34', f: pctTxt },
+    { k: 'poverty_pct', label: 'Residents below the poverty line', f: pctTxt },
+    { k: 'renter_pct', label: 'Homes that are rented', f: pctTxt },
+  ];
+  const CASE_EVENTS = [
+    [2005, 'Williamsburg–Greenpoint waterfront rezoning'],
+    [2008, 'Financial crisis; Roberta’s opens on Moore St'],
+    [2013, 'Rheingold brewery site rezoned for housing'],
+    [2015, 'Citywide rush to permit before the 421-a tax break lapses'],
+    [2019, 'L-train tunnel repairs (nights/weekends, Apr 2019–Apr 2020)'],
+    [2020, 'COVID-19; no standard 1-year ACS release'],
+    [2022, 'Census redraws the Bushwick PUMA (series break)'],
+  ];
+
+  async function renderCase(main) {
+    const d = await load('case_bushwick');
+    const T = await load('case_bushwick_tracts');
+    const A = d.acs1;
+    const years = d3.range(2005, d3.max(Object.keys(A.Bushwick).map(Number)) + 1);
+    const y0 = years[0], y1 = years[years.length - 1];
+    const at = (area, y, k) => (A[area][y] ? A[area][y][k] : null);
+    const annual = (k) => (n) => years.map((y) => [y, at(n, y, k)]);
+    const BREAKS = [[2020, 'no 2020'], [2022, 'PUMA redrawn']];
+    const CRIME_SHOWN = ['total', 'ROBBERY', 'FELONY ASSAULT', 'DANGEROUS DRUGS'];
+
+    // Change tiles: first year -> last year, Bushwick vs NYC
+    const tiles = CASE_IND.map((ind) => {
+      const a = at('Bushwick', y0, ind.k), b = at('Bushwick', y1, ind.k);
+      const ca = at('NYC', y0, ind.k), cb = at('NYC', y1, ind.k);
+      const ch = (p, q) => (p == null || q == null ? null : ind.money ? 100 * (q - p) / p : q - p);
+      const bw = ch(a, b), ny = ch(ca, cb);
+      const unit = ind.money ? '%' : ' pts';
+      const sign = (v) => (v == null ? '—' : (v > 0 ? '+' : '') + fmt1(v) + unit);
+      const mx = Math.max(Math.abs(bw || 0), Math.abs(ny || 0)) || 1;
+      const bar = (v, color, who) => `<div class="case-bar-row"><span>${who}</span><div class="case-bar-track"><div class="case-bar" style="width:${(100 * Math.abs(v || 0) / mx).toFixed(1)}%;background:${color}"></div></div><b>${sign(v)}</b></div>`;
+      return `<div class="case-tile"><div class="case-tile-label">${ind.label}</div>
+        <div class="case-tile-nums"><span class="muted">${ind.f(a)}</span><span class="case-arrow">→</span><span>${ind.f(b)}</span></div>
+        ${bar(bw, C.orange, 'Bushwick')}${bar(ny, C.ink, 'NYC')}</div>`;
+    }).join('');
+
+    // Furman/Comptroller-style placement of every NYC PUMA, 2012 -> 2019
+    const P12 = d.pumas['2012'], P19 = d.pumas['2019'];
+    const pts = Object.keys(P12).filter((c) => P19[c] && P12[c].income && P12[c].rent && P19[c].rent).map((c) => ({
+      code: c, name: P12[c].name, cd: P12[c].cd, inc: P12[c].income, rent12: P12[c].rent,
+      rg: 100 * (P19[c].rent - P12[c].rent) / P12[c].rent, bag: P19[c].ba_pct - P12[c].ba_pct,
+    }));
+    const incCut = d3.quantile(pts.map((p) => p.inc).sort(d3.ascending), 0.4);
+    const rgMed = d3.median(pts, (p) => p.rg), bagMed = d3.median(pts, (p) => p.bag);
+    const rentMed12 = d3.median(pts, (p) => p.rent12);
+    const bwP = pts.find((p) => p.code === d.areas.Bushwick.puma_old);
+    const rankOf = (arr, v, desc) => 1 + arr.filter((x) => (desc ? x > v : x < v)).length;
+    const check = (ok, text) => `<li class="${ok ? 'yes' : 'no'}"><span class="case-check">${ok ? '✓' : '✗'}</span>${text}</li>`;
+
+    // Pre-factor dot plot rows (shares), first year
+    const preRows = ['renter_pct', 'poverty_pct', 'hisp_pct', 'ba_pct', 'white_pct', 'age2034_pct'];
+    const se = d.streeteasy;
+    const seAnnual = (n, y) => { const v = se.months.map((m, i) => [m, se.series[n] ? se.series[n][i] : null]).filter(([m, x]) => m.startsWith(String(y)) && x != null); return v.length ? d3.mean(v, (q) => q[1]) : null; };
+    const seFirst = +se.months[0].slice(0, 4);
+    const gap0 = seAnnual('Bushwick', seFirst) / seAnnual('Williamsburg', seFirst);
+
+    main.innerHTML = `
+      ${hero(C.orange, 'Case study · one neighborhood', 'Bushwick, Brooklyn: what gentrification looked like in the data',
+        `Before analyzing the whole city, here's one place the published research calls gentrified, followed through every dataset we have, year by year. Bushwick is on the <a href="https://furmancenter.org/research/sonychan/2015-report" target="_blank" rel="noopener">NYU Furman Center's</a> list of 15 gentrifying neighborhoods and the <a href="https://comptroller.nyc.gov/reports/nyc-neighborhood-economic-profiles/" target="_blank" rel="noopener">NYC Comptroller's</a> 2010–2016 neighborhood profiles. Its biggest shift happened <em>inside</em> our data window (roughly 2008–2019), and its police precinct (the 83rd) lines up almost exactly with its community district. Orange is always Bushwick. The comparisons are <b style="color:${C.blue}">Williamsburg</b> (next door, changed first), <b>East New York</b> (also low-income, but <em>not</em> on Furman's gentrifying list), and <b>NYC</b>.`)}
+
+      ${panel(`${y0} → ${y1}: what changed`, `<p>Census ACS 1-year estimates for the Bushwick PUMA (Community District 4). Bars compare the size of the change in Bushwick with the change citywide. Dollar rows are % change, nominal. Share rows are percentage-point change. The ${y1} values use the PUMA boundaries the Census redrew in 2022, so part of any change is the new boundary, not the neighborhood.</p><div class="case-tiles">${tiles}</div>`, 'The headline')}
+
+      ${panel('Timeline', `<p>Events that matter for reading the charts below. Dashed lines on later charts mark data breaks, not events.</p>${chartDiv('case-timeline')}`, 'Context')}
+
+      ${row(
+        panel('How the sources define “gentrifying”', `
+          <div class="case-defs">
+            <div><b>NYU Furman Center (2016)</b><span>Sub-borough area was <b>low-income in 1990</b> (bottom 40%) <b>and</b> had <b>above-median rent growth</b> 1990–2014. 15 of 55 areas qualified, Bushwick among them.</span></div>
+            <div><b>NYC Comptroller (2017)</b><span>Neighborhood had <b>below-median rent in 2010</b>, <b>above-average rent growth</b> to 2016, <b>and</b> faster-than-median growth in <b>bachelor's degrees</b>. 24 neighborhoods qualified.</span></div>
+            <div><b>Urban Displacement Project</b><span>Tract-level stages (at risk → early/ongoing → advanced → exclusive). A tract is first <b>vulnerable</b> (mostly low-income, renter, non-white, few college grads vs. the region), then shows <b>demographic change</b> (college-educated share and income rising faster than the region) <b>plus a hot market</b> (rents or home values rising faster than the region).</span></div>
+          </div>
+          <p>Shared ingredients: <b>a low-income starting point</b>, <b>rent rising faster than the city</b>, and <b>who lives there changing</b> (education, income, race, age).</p>`, 'Definitions'),
+        panel('Does Bushwick meet them in our data? (2012 → 2019)', `
+          <p>Same tests, using our data: all ${pts.length} NYC PUMAs, 2012 vs. 2019 (one set of boundaries, before COVID). This is a replication of the <em>rules</em>, not the original studies' years.</p>
+          <ul class="case-checks">
+            ${check(bwP.inc <= incCut, `Low-income start: 2012 median income ${usd(bwP.inc)}, #${rankOf(pts.map((p) => p.inc), bwP.inc)} lowest of ${pts.length} (bottom-40% cutoff ${usd(incCut)})`)}
+            ${check(bwP.rent12 <= rentMed12, `Below-median rent at the start: ${usd(bwP.rent12)} vs. PUMA median ${usd(rentMed12)}`)}
+            ${check(bwP.rg > rgMed, `Rent growth ${fmt1(bwP.rg)}%, #${rankOf(pts.map((p) => p.rg), bwP.rg, true)} fastest (median ${fmt1(rgMed)}%)`)}
+            ${check(bwP.bag > bagMed, `Bachelor's share +${fmt1(bwP.bag)} pts, #${rankOf(pts.map((p) => p.bag), bwP.bag, true)} fastest (median +${fmt1(bagMed)} pts)`)}
+          </ul>
+          ${bwP.rent12 > rentMed12 ? `<p class="case-note">The one miss says something about timing: by 2012 Bushwick's rent had already climbed to the middle of the pack. The change started before 2012, which matches the 2005–2012 rise in the charts below.</p>` : ''}
+          ${chartDiv('case-quad')}
+          <p class="case-note">Each dot is a PUMA. Left of the vertical line = low-income start (bottom 40%). Above the horizontal line = faster-than-median rent growth. The shaded corner is where both hold. Hover for names.</p>`, 'Definitions, applied')
+      )}
+
+      ${panel('Every indicator, every year', `<p>ACS 1-year estimates (PUMA level, annual since ${y0}). Dashed verticals are <b>data breaks</b>: no standard 2020 release, and new PUMA boundaries from 2022. Hover the dots for values.</p>
+        <div class="case-grid">${CASE_IND.map((ind) => `<div><h3>${ind.label}</h3>${chartDiv('case-ts-' + ind.k)}</div>`).join('')}</div>
+        <div class="nyc-legend">${['Bushwick', 'Williamsburg', 'East New York', 'NYC'].map((n) => `<span><i style="background:${CASE_C[n]}"></i>${n}</span>`).join('')}</div>`, 'Change over time')}
+
+      ${row(
+        panel('Before it happened: the pre-factors', `<p>What Bushwick looked like in ${y0} next to the city. These are the conditions the definitions treat as “vulnerable.” Dot = share of residents/homes.</p>${chartDiv('case-pre')}
+          <ul class="case-facts">
+            <li><b>Cheaper than the neighbor.</b> In ${seFirst}, Bushwick asking rents were ${Math.round(100 * gap0)}% of Williamsburg's.</li>
+            <li><b>Same subway line.</b> The L train runs straight through Williamsburg into Bushwick and on to Manhattan.</li>
+            <li><b>Mostly renters, older housing</b>, plus industrial lofts near the Williamsburg border.</li>
+          </ul>`, 'Pre-factors'),
+        panel('Catching up to the neighbor', `<p>StreetEasy median <em>asking</em> rent (monthly). The bottom chart is Bushwick as a share of Williamsburg: a rising line means Bushwick is closing the gap. That spread from one neighborhood to the next is the pattern a time-series model would test.</p>${chartDiv('case-se')}${chartDiv('case-se-ratio')}`, 'Spillover')
+      )}
+
+      ${panel('Inside Bushwick: tract by tract', `<p>Census ACS 5-year estimates for Bushwick's ${T.geo.features.length} census tracts in three <b>non-overlapping</b> windows. All three maps share one color scale. Pick a measure:</p>
+        <div class="case-btns" id="case-map-btns">${[['ba_pct', "Bachelor's degree"], ['white_pct', 'Non-Hispanic white'], ['hisp_pct', 'Hispanic'], ['rent', 'Gross rent'], ['income', 'Household income'], ['age2034_pct', 'Age 20–34']].map(([k, l], i) => `<button type="button" data-k="${k}" class="${i ? '' : 'on'}">${l}</button>`).join('')}</div>
+        <div class="case-maps" id="case-maps"></div><div id="case-map-legend"></div>`, 'Where inside the neighborhood')}
+
+      ${row(
+        panel('New housing permitted and completed', `<p>NYC Housing Database, Community District 4, net new units from new buildings. The 2015 spike is the citywide rush to file before the 421-a tax break lapsed (${fmt(d.housing.NYC.permitted_units['2015'])} units permitted citywide that year vs. ${fmt(d.housing.NYC.permitted_units['2014'])} in 2014).</p>${chartDiv('case-housing')}`, 'Market signals'),
+        panel('Home sale prices', `<p>DOF sales, median price of 1–3 family buildings (Bushwick's typical building), market sales only (over $10K). 2007–2015 from DOF's yearly spreadsheets, 2016+ from the open-data API.</p>${chartDiv('case-sales')}`, 'Market signals')
+      )}
+
+      ${panel('Crime complaints, indexed', `<p>NYPD complaints by precinct (83rd = Bushwick, 90th = Williamsburg, 75th = East New York), each line indexed to its own 2006 level = 100, so the lines show change rather than size. Drug complaints mostly track enforcement policy (marijuana enforcement fell sharply in the late 2010s), not drug use. The 83rd's jump since 2021 is worth checking before reading anything into it.</p>
+        <div class="case-grid">${CRIME_SHOWN.map((g) => `<div><h3>${g === 'total' ? 'All complaints' : g.toLowerCase()}</h3>${chartDiv('case-cr-' + g.replace(/\W/g, ''))}</div>`).join('')}</div>`, 'Other signals')}
+
+      ${panel('Thinking ahead: this will be a time series', `
+        <p>Every source, the years it covers for Bushwick, and the breaks to handle before any model:</p>${chartDiv('case-cov')}
+        <div class="case-notes">
+          <div><b>Mixed frequencies</b><span>StreetEasy is monthly. ACS, sales, permits and crime are annual. Pick one clock (annual is safest) or model the frequencies separately.</span></div>
+          <div><b>Structural breaks</b><span>No 2020 ACS 1-year, PUMA redraw in 2022, the 421-a spike in 2015, COVID in 2020. Treat these as known shocks, not signal.</span></div>
+          <div><b>Overlapping windows</b><span>5-year ACS values share 4 of 5 years with their neighbors. Use 1-year PUMA data for annual series and non-overlapping 5-year windows for tracts.</span></div>
+          <div><b>Relative, not absolute</b><span>Everything rose citywide. Gentrification is about rising <em>faster than the city</em>, so the natural series is Bushwick ÷ NYC (or minus NYC).</span></div>
+          <div><b>A comparison group</b><span>East New York-style “low-income but didn't gentrify” areas are the counterfactual. Two groups over time is the setup for difference-in-differences.</span></div>
+          <div><b>Leading vs. lagging</b><span>Asking rents, sales and permits move first. ACS income and education move later and are smoothed. The interesting question is which series <em>leads</em> and by how much.</span></div>
+          <div><b>Short series</b><span>~20 annual points per area. That's enough to describe, not enough to fit a complicated model to one neighborhood. Pooling many neighborhoods is what makes it work.</span></div>
+          <div><b>Nominal dollars</b><span>All $ values are in their own year's dollars. Deflate (CPI) or use ratios to the city before comparing across years.</span></div>
+        </div>`, 'Time-series notes')}
+
+      ${panel('Sources', `<ul class="case-facts">
+        <li>NYU Furman Center, <a href="https://furmancenter.org/research/sonychan/2015-report" target="_blank" rel="noopener">State of NYC's Housing &amp; Neighborhoods 2015</a> (gentrification focus) and its <a href="https://www.furmancenter.org/data-tool/state-of-the-city/" target="_blank" rel="noopener">data tool</a></li>
+        <li>NYC Comptroller, <a href="https://comptroller.nyc.gov/reports/nyc-neighborhood-economic-profiles/" target="_blank" rel="noopener">Neighborhood Economic Profiles</a> and <a href="https://comptroller.nyc.gov/reports/new-york-a-city-of-diverse-evolving-neighborhoods/" target="_blank" rel="noopener">A City of Diverse, Evolving Neighborhoods</a></li>
+        <li>Urban Displacement Project, <a href="https://www.urbandisplacement.org/maps/new-york-gentrification-and-displacement/" target="_blank" rel="noopener">New York gentrification &amp; displacement map</a></li>
+        <li>Data: Census ACS (1-year PUMA, 5-year tract), StreetEasy, NYC Housing Database, DOF rolling sales, NYPD complaints. Built ${day(d.built_at)}.</li></ul>`, 'Sources')}
+    `;
+
+    // timeline strip
+    (() => {
+      const el = document.getElementById('case-timeline');
+      const W = 1000, H = 112, m = { l: 20, r: 20 };
+      const x = d3.scaleLinear().domain([2004, 2026]).range([m.l, W - m.r]);
+      const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`);
+      svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', 60).attr('y2', 60).attr('stroke', C.ink).attr('stroke-width', 1.5);
+      svg.append('g').attr('class', 'axis').attr('transform', 'translate(0,60)').call(d3.axisBottom(x).ticks(11).tickFormat(d3.format('d')).tickSize(4));
+      svg.append('rect').attr('x', x(2008)).attr('width', x(2019) - x(2008)).attr('y', 52).attr('height', 8).attr('fill', C.orange).attr('opacity', 0.25);
+      svg.append('text').attr('x', x(2013.5)).attr('y', 48).attr('text-anchor', 'middle').attr('font-size', 11).style('fill', C.orange).text('main shift in the data');
+      CASE_EVENTS.forEach(([yr, label], i) => {
+        const g = svg.append('g').attr('transform', `translate(${x(yr)},${i % 2 ? 92 : 28})`);
+        svg.append('line').attr('x1', x(yr)).attr('x2', x(yr)).attr('y1', i % 2 ? 64 : 38).attr('y2', i % 2 ? 82 : 56).attr('stroke', C.gray);
+        svg.append('circle').attr('cx', x(yr)).attr('cy', 60).attr('r', 4).attr('fill', C.ink);
+        g.append('circle').attr('r', 11).attr('fill', C.ink);
+        g.append('text').attr('text-anchor', 'middle').attr('dy', '0.35em').attr('font-size', 11).attr('font-weight', 700).style('fill', '#fff').text(i + 1);
+        g.append('title').text(`${yr}: ${label}`);
+      });
+      el.insertAdjacentHTML('beforeend', `<ol class="case-events">${CASE_EVENTS.map(([yr, label]) => `<li><b>${yr}</b> ${esc(label)}</li>`).join('')}</ol>`);
+    })();
+
+    // quadrant
+    (() => {
+      const el = document.getElementById('case-quad');
+      const W = 560, H = 300, m = { t: 10, r: 14, b: 36, l: 50 };
+      const x = d3.scaleLinear().domain(d3.extent(pts, (p) => p.inc)).nice().range([m.l, W - m.r]);
+      const y = d3.scaleLinear().domain(d3.extent(pts, (p) => p.rg)).nice().range([H - m.b, m.t]);
+      const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`);
+      svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', x(incCut) - m.l).attr('height', y(rgMed) - m.t).attr('fill', C.orange).attr('opacity', 0.07);
+      svg.append('g').attr('class', 'axis').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(6).tickFormat((v) => '$' + d3.format('~s')(v)));
+      svg.append('g').attr('class', 'axis').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickFormat((v) => v + '%'));
+      svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', H - 4).attr('text-anchor', 'middle').text('2012 median household income');
+      svg.append('text').attr('transform', `translate(12,${(m.t + H - m.b) / 2}) rotate(-90)`).attr('text-anchor', 'middle').text('rent growth 2012→19');
+      svg.append('line').attr('x1', x(incCut)).attr('x2', x(incCut)).attr('y1', m.t).attr('y2', H - m.b).attr('stroke', C.gray).attr('stroke-dasharray', '4 3');
+      svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(rgMed)).attr('y2', y(rgMed)).attr('stroke', C.gray).attr('stroke-dasharray', '4 3');
+      svg.append('text').attr('x', m.l + 6).attr('y', m.t + 12).attr('font-size', 10).style('fill', C.orange).text('gentrifying by these rules');
+      const special = { [d.areas.Bushwick.puma_old]: 'Bushwick', [d.areas.Williamsburg.puma_old]: 'Williamsburg', [d.areas['East New York'].puma_old]: 'East New York' };
+      svg.append('g').selectAll('circle').data([...pts].sort((a, b) => (special[a.code] ? 1 : 0) - (special[b.code] ? 1 : 0))).join('circle')
+        .attr('cx', (p) => x(p.inc)).attr('cy', (p) => y(p.rg)).attr('r', (p) => (special[p.code] ? 7 : 4.5))
+        .attr('fill', (p) => CASE_C[special[p.code]] || '#c9cbd1').attr('stroke', '#fff').attr('stroke-width', 1.5)
+        .on('mousemove', (ev, p) => tip(`<b>${esc(p.name)}</b><br>${esc(p.cd)}<br>2012 income ${usd(p.inc)}<br>rent growth ${fmt1(p.rg)}%<br>bachelor's +${fmt1(p.bag)} pts`, ev))
+        .on('mouseleave', () => tip(null));
+      pts.filter((p) => special[p.code]).forEach((p) => svg.append('text').attr('x', x(p.inc) + 10).attr('y', y(p.rg) + 4).attr('font-weight', 700).style('fill', 'var(--nyc-text)').text(special[p.code]));
+    })();
+
+    // small multiples
+    const four = ['NYC', 'East New York', 'Williamsburg', 'Bushwick'];
+    CASE_IND.forEach((ind) => lines('#case-ts-' + ind.k, caseSeries(four, annual(ind.k)),
+      { width: 420, height: 230, marks: BREAKS.map(([x]) => [x, '']), yMin: ind.money ? 0 : undefined, yFmt: ind.money ? (v) => '$' + d3.format('~s')(v) : (v) => v + '%', valFmt: ind.f }));
+    document.querySelectorAll('.case-grid .nyc-legend').forEach((l) => l.remove());
+
+    // pre-factor dot plot
+    (() => {
+      const el = document.getElementById('case-pre');
+      const rowsP = preRows.map((k) => ({ k, label: CASE_IND.find((i) => i.k === k).label, v: Object.fromEntries(['Bushwick', 'Williamsburg', 'NYC'].map((n) => [n, at(n, y0, k)])) }));
+      const W = 560, rh = 34, lw = 190, H = rowsP.length * rh + 24;
+      const x = d3.scaleLinear().domain([0, 100]).range([lw, W - 14]);
+      const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`);
+      svg.append('g').attr('class', 'axis').attr('transform', `translate(0,${H - 22})`).call(d3.axisBottom(x).ticks(5).tickFormat((v) => v + '%'));
+      rowsP.forEach((r, i) => {
+        const yy = i * rh + 14;
+        svg.append('text').attr('x', lw - 10).attr('y', yy + 4).attr('text-anchor', 'end').style('fill', 'var(--nyc-text)').text(r.label);
+        const vals = Object.values(r.v).filter((v) => v != null);
+        svg.append('line').attr('x1', x(d3.min(vals))).attr('x2', x(d3.max(vals))).attr('y1', yy).attr('y2', yy).attr('stroke', C.gray).attr('stroke-width', 1.5);
+        ['NYC', 'Williamsburg', 'Bushwick'].forEach((n) => r.v[n] != null && svg.append('circle').attr('cx', x(r.v[n])).attr('cy', yy).attr('r', n === 'Bushwick' ? 7 : 5)
+          .attr('fill', CASE_C[n]).attr('stroke', '#fff').attr('stroke-width', 1.5)
+          .on('mousemove', (ev) => tip(`<b>${n}</b>, ${y0}<br>${esc(r.label)}: ${pctTxt(r.v[n])}`, ev)).on('mouseleave', () => tip(null)));
+      });
+      el.insertAdjacentHTML('beforeend', `<div class="nyc-legend">${['Bushwick', 'Williamsburg', 'NYC'].map((n) => `<span><i style="background:${CASE_C[n]}"></i>${n}</span>`).join('')}</div>`);
+    })();
+
+    // StreetEasy level + ratio
+    const seS = (n) => se.months.map((m, i) => [m, se.series[n] ? se.series[n][i] : null]);
+    lines('#case-se', caseSeries(['Brooklyn', 'Williamsburg', 'Bushwick'].filter((n) => se.series[n]), seS),
+      { time: true, height: 210, yFmt: (v) => '$' + d3.format(',')(v), valFmt: usd });
+    lines('#case-se-ratio', [{ name: 'Bushwick ÷ Williamsburg', color: C.orange, width: 2.5,
+      values: se.months.map((m, i) => { const a = se.series.Bushwick?.[i], b = se.series.Williamsburg?.[i]; return [m, a && b ? Math.round(1000 * a / b) / 10 : null]; }) }],
+    { time: true, height: 150, yMin: 50, yFmt: (v) => v + '%', valFmt: (v) => v + '% of Williamsburg' });
+
+    // tract maps
+    const drawMaps = (k) => {
+      const box = document.getElementById('case-maps'); box.innerHTML = '';
+      const all = Object.values(T.values).flatMap((v) => Object.values(v).map((r) => r[k])).filter((v) => v != null);
+      const col = d3.scaleSequential(d3.interpolateOranges).domain([d3.min(all), d3.max(all)]);
+      const f = CASE_IND.find((i) => i.k === k).f;
+      const MWc = 300, MHc = 300;
+      const proj = d3.geoMercator().fitExtent([[6, 6], [MWc - 6, MHc - 6]], T.geo);
+      const path = d3.geoPath(proj);
+      Object.entries(T.windows).forEach(([yr, label]) => {
+        const cell = document.createElement('div'); cell.className = 'case-map';
+        cell.innerHTML = `<div class="case-map-title">${label}</div>`;
+        box.appendChild(cell);
+        const svg = d3.select(cell).append('svg').attr('viewBox', `0 0 ${MWc} ${MHc}`);
+        svg.selectAll('path').data(T.geo.features).join('path').attr('d', path)
+          .attr('fill', (ft) => { const v = T.values[yr][ft.properties.tract]?.[k]; return v == null ? '#e4e4de' : col(v); })
+          .attr('stroke', '#fff').attr('stroke-width', 0.8)
+          .on('mousemove', (ev, ft) => tip(`<b>Tract ${esc(ft.properties.tract)}</b> · ${esc(ft.properties.ntaname)}<br>${label}: ${f(T.values[yr][ft.properties.tract]?.[k])}`, ev))
+          .on('mouseleave', () => tip(null));
+      });
+      document.getElementById('case-map-legend').innerHTML = rampLegend(d3.interpolateOranges, f(d3.min(all)), f(d3.max(all)), CASE_IND.find((i) => i.k === k).label) +
+        '<p class="case-note">Gray = no estimate. Tract IDs and shapes are the 2020 ones. All 29 IDs also exist on the 2010 map, which these windows (2006–10, 2011–15) use.</p>';
+    };
+    document.getElementById('case-map-btns').addEventListener('click', (ev) => {
+      const b = ev.target.closest('button'); if (!b) return;
+      document.querySelectorAll('#case-map-btns button').forEach((x) => x.classList.toggle('on', x === b));
+      drawMaps(b.dataset.k);
+    });
+    drawMaps('ba_pct');
+
+    // housing + sales
+    const hy = d3.range(2005, 2026);
+    columns('#case-housing', [
+      { name: 'permitted', color: C.orange, values: hy.map((y) => [y, d.housing.Bushwick.permitted_units[y] || 0]) },
+      { name: 'completed', color: C.gray, values: hy.map((y) => [y, d.housing.Bushwick.completed_units[y] || 0]) }],
+    { height: 220, unit: 'units', maxTicks: 11 });
+    const sy = Object.keys(d.sales.Bushwick).map(Number).sort();
+    lines('#case-sales', caseSeries(['Brooklyn', 'Bushwick'], (n) => sy.map((y) => [y, d.sales[n][y]?.median ?? null])),
+      { height: 220, yFmt: (v) => '$' + d3.format('~s')(v), valFmt: usd, marks: [[2015.5, 'file → API']] });
+
+    // crime indexed
+    CRIME_SHOWN.forEach((g) => {
+      const idx = (n) => { const s = d.crime.series[n][g]; const base = s['2006']; return d3.range(2006, 2026).map((y) => [y, base && s[y] != null ? Math.round(1000 * s[y] / base) / 10 : null]); };
+      lines('#case-cr-' + g.replace(/\W/g, ''), caseSeries(four, idx), { width: 420, height: 220, hline: 100, valFmt: (v) => v + ' (2006 = 100)' });
+    });
+    document.querySelectorAll('.case-grid .nyc-legend').forEach((l) => l.remove());
+
+    // coverage gantt
+    (() => {
+      const el = document.getElementById('case-cov');
+      const rowsC = [
+        ['ACS 1-year (PUMA)', 2005, y1, 'annual', [[2020, 'gap'], [2022, 'redraw']]],
+        ['ACS 5-year (tracts)', 2006, y1, '5-yr windows', [[2010, 'tract map'], [2020, 'tract map']]],
+        ['StreetEasy asking rent', +se.months[0].slice(0, 4), +se.months[se.months.length - 1].slice(0, 4), 'monthly', []],
+        ['Housing permits / completions', 2005, 2025, 'annual', [[2015, '421-a']]],
+        ['DOF sales', 2007, 2025, 'annual', [[2016, 'file→API']]],
+        ['NYPD complaints', 2006, 2025, 'annual', []],
+        ['Restaurant inspections', 2022, 2026, 'rolling ~3 yr', []],
+      ];
+      const W = 1000, rh = 28, lw = 220, H = rowsC.length * rh + 30;
+      const x = d3.scaleLinear().domain([2004, 2027]).range([lw, W - 10]);
+      const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`);
+      svg.append('rect').attr('x', x(2008)).attr('width', x(2019) - x(2008)).attr('y', 0).attr('height', H - 26).attr('fill', C.orange).attr('opacity', 0.08);
+      svg.append('g').attr('class', 'axis').attr('transform', `translate(0,${H - 24})`).call(d3.axisBottom(x).ticks(12).tickFormat(d3.format('d')));
+      rowsC.forEach(([label, a, b, freq, br], i) => {
+        const yy = i * rh + 6;
+        svg.append('text').attr('x', lw - 10).attr('y', yy + 12).attr('text-anchor', 'end').style('fill', 'var(--nyc-text)').text(label);
+        svg.append('rect').attr('x', x(a)).attr('width', Math.max(4, x(b + 1) - x(a))).attr('y', yy + 2).attr('height', 16).attr('rx', 3).attr('fill', a > 2019 ? C.gray : C.ink).attr('opacity', 0.8);
+        svg.append('text').attr('x', x(b + 1) + 6).attr('y', yy + 14).attr('font-size', 10).text(freq);
+        br.forEach(([yr, l]) => {
+          svg.append('line').attr('x1', x(yr)).attr('x2', x(yr)).attr('y1', yy - 1).attr('y2', yy + 21).attr('stroke', C.red).attr('stroke-width', 2.5);
+          svg.append('title').text(l);
+        });
+      });
+      el.insertAdjacentHTML('beforeend', `<div class="nyc-legend"><span><i style="background:${C.ink}"></i>years covered</span><span><i style="background:${C.red}"></i>break / shock</span><span><i style="background:${C.orange};opacity:.3"></i>Bushwick's main shift</span></div>`);
+    })();
+  }
+
+  async function showCase() {
+    current = null;
+    document.getElementById('nyc-crumb').innerHTML = `/ Case Study: Bushwick · <a href="#" onclick="openNycExplorer('overview');return false;">open the full NYC Data Explorer →</a>`;
+    const main = document.getElementById('nyc-main');
+    main.innerHTML = '<div class="nyc-loading">Loading the Bushwick case study…</div>';
+    document.getElementById('nyc-explorer').scrollTo(0, 0);
+    try {
+      await renderCase(main);
+    } catch (e) {
+      console.error('[nyc-case]', e);
+      main.innerHTML = `<div class="nyc-error">Couldn't load the case study: ${esc(e.message)}</div>`;
+    }
+    tip(null);
+  }
+  window.openNycCaseStudy = () => window.openNycExplorer('__case');
+
   // ── open / close (same overlay mechanics as the site's other rooms) ─
   window.openNycExplorer = function (tab) {
     document.getElementById('project-detail').classList.remove('open');
@@ -1471,9 +1869,11 @@
     document.getElementById('nyc-explorer').classList.add('open');
     document.getElementById('main-site').classList.add('hidden');
     window.scrollTo(0, 0);
+    const caseMode = tab === '__case';
+    document.getElementById('nyc-explorer').classList.toggle('case-mode', caseMode);
     buildTabBar();
     if (window.lucide) lucide.createIcons();
-    showTab(tab || current || 'overview');
+    if (caseMode) showCase(); else showTab(tab || current || 'overview');
   };
   window.closeNycExplorer = function () {
     document.getElementById('nyc-explorer').classList.remove('open');

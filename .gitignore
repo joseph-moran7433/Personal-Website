@@ -1,0 +1,5 @@
+# Local secrets: never commit
+nyc-data-explorer/.census_key
+.env
+.cache/
+__pycache__/

@@ -146,12 +146,12 @@
   "qgea-i56i": {
     "label": "NYPD Complaint Data Historic",
     "rows": 10071507,
-    "pulled_at": "2026-10-06T13:11:11+00:00"
+    "pulled_at": "2026-10-09T02:47:59+00:00"
   },
   "5uac-w243": {
     "label": "NYPD Complaint Data Current (YTD)",
     "rows": 279513,
-    "pulled_at": "2026-10-06T13:11:11+00:00",
+    "pulled_at": "2026-10-09T02:47:59+00:00",
     "last": "2026-06-30T00:00:00.000"
   },
   "39hk-dx4f": {
@@ -188,5 +188,12 @@
     "label": "FDNY Bureau of Fire Investigations \u2013 Fire Causes",
     "rows": 67260,
     "pulled_at": "2026-10-06T13:25:40+00:00"
+  },
+  "census-acs": {
+    "label": "Census ACS 5-yr (tracts) + 1-yr (boroughs): rent, income, tenure",
+    "rows": 35523,
+    "pulled_at": "2026-10-09T02:39:10+00:00",
+    "first": 2009,
+    "last": 2024
   }
 }

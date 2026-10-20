@@ -1861,6 +1861,14 @@
     tip(null);
   }
   window.openNycCaseStudy = () => window.openNycExplorer('__case');
+  window.openNycModels = () => window.openNycExplorer('__models');
+  function showModels() {
+    current = null;
+    document.getElementById('nyc-crumb').innerHTML = `/ Part 3: Modeling Options · <a href="#" onclick="openNycExplorer('overview');return false;">open the full NYC Data Explorer →</a>`;
+    document.getElementById('nyc-explorer').scrollTo(0, 0);
+    window.nycRenderModels(document.getElementById('nyc-main'));
+    tip(null);
+  }
 
   // ── open / close (same overlay mechanics as the site's other rooms) ─
   window.openNycExplorer = function (tab) {
@@ -1869,11 +1877,11 @@
     document.getElementById('nyc-explorer').classList.add('open');
     document.getElementById('main-site').classList.add('hidden');
     window.scrollTo(0, 0);
-    const caseMode = tab === '__case';
+    const caseMode = tab === '__case' || tab === '__models';
     document.getElementById('nyc-explorer').classList.toggle('case-mode', caseMode);
     buildTabBar();
     if (window.lucide) lucide.createIcons();
-    if (caseMode) showCase(); else showTab(tab || current || 'overview');
+    if (tab === '__models') showModels(); else if (caseMode) showCase(); else showTab(tab || current || 'overview');
   };
   window.closeNycExplorer = function () {
     document.getElementById('nyc-explorer').classList.remove('open');

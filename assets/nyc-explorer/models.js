@@ -264,34 +264,78 @@
 
   const proscons = (pros, cons) => `<div class="mdl-pc"><div class="pro"><b>Pros</b><ul>${pros.map((p) => `<li>${p}</li>`).join('')}</ul></div><div class="con"><b>Cons</b><ul>${cons.map((p) => `<li>${p}</li>`).join('')}</ul></div></div>`;
 
-  window.nycRenderModels = async function (main) {
-    main.innerHTML = '<p class="nyc-loading" style="padding:2rem">Loading model checks…</p>';
-    let D, D3;
-    try {
-      [D, D3] = await Promise.all(['models_check', 'models_check_v3'].map((n) => fetch('assets/nyc-explorer/' + n + '.json').then((r) => { if (!r.ok) throw new Error(n + ': HTTP ' + r.status); return r.json(); })));
-    } catch (e) { main.innerHTML = `<p style="padding:2rem">Could not load model checks (${e.message}).</p>`; return; }
-    const M_ = D.models, M3 = D3.models, def = D.definitions;
-    const gap = M_.auc_gap, gap3 = M3.auc_gap;
-    const coefC = M_.C.coefs, orr = (b) => Math.exp(b).toFixed(2) + '×';
+  // ── Illustrative charts for the planning page (Part 3) ─────────
+  // B1: survival curves for two groups
+  function chartSurvival() {
+    const yrs = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    const hi = [1, 0.95, 0.87, 0.77, 0.66, 0.57, 0.5, 0.44, 0.4];
+    const lo = [1, 0.99, 0.97, 0.95, 0.92, 0.9, 0.88, 0.86, 0.84];
+    const step = (arr) => {
+      let p = `M${sx(0, 0, 8)},${sy(arr[0], 0.3, 1.02)}`;
+      for (let i = 1; i < arr.length; i++) p += ` H${sx(i, 0, 8)} V${sy(arr[i], 0.3, 1.02)}`;
+      return p;
+    };
+    let s = frame(yrs.map((y) => [y, 2016 + y]), [[0.4, '40%'], [0.6, '60%'], [0.8, '80%'], [1, '100%']], 'year', 'share NOT yet gentrified', 0.3, 1.02, 0, 8);
+    s += `<path d="${step(lo)}" fill="none" stroke="${C.blue}" stroke-width="2.5"/>`;
+    s += `<path d="${step(hi)}" fill="none" stroke="${C.orange}" stroke-width="2.5"/>`;
+    s += `<text x="${sx(5.2, 0, 8)}" y="${sy(0.62, 0.3, 1.02)}" style="fill:${C.orange};font-weight:600">high restaurant turnover</text>`;
+    s += `<text x="${sx(5.2, 0, 8)}" y="${sy(0.94, 0.3, 1.02)}" style="fill:${C.blue};font-weight:600">low restaurant turnover</text>`;
+    return svg(s);
+  }
+  // B2: hazard by year
+  function chartHazard() {
+    const hz = [0.01, 0.03, 0.06, 0.1, 0.12, 0.11, 0.09, 0.07];
+    let s = frame(hz.map((_, i) => [i + 1, 2017 + i]), [[0, '0%'], [0.05, '5%'], [0.1, '10%'], [0.15, '15%']], 'year', 'P(tips this year | not yet)', 0, 0.15, 0.3, 8.7);
+    const bw = iw / 10;
+    hz.forEach((h, i) => {
+      const x = sx(i + 1, 0.3, 8.7);
+      s += `<rect x="${x - bw / 2}" y="${sy(h, 0, 0.15)}" width="${bw}" height="${sy(0, 0, 0.15) - sy(h, 0, 0.15)}" fill="${C.purple}" rx="2"/>`;
+    });
+    return svg(s);
+  }
+  // C1: hazard vs. how many neighbors already changed -- B can't see it, C can
+  function chartSpill() {
+    let s = frame([[0, '0%'], [0.25, '25%'], [0.5, '50%'], [0.75, '75%'], [1, '100%']], [[0, '0%'], [0.05, '5%'], [0.1, '10%'], [0.15, '15%']], "share of neighbors that changed last year", 'P(tips this year)', 0, 0.16, 0, 1);
+    s += `<line x1="${sx(0, 0, 1)}" x2="${sx(1, 0, 1)}" y1="${sy(0.05, 0, 0.16)}" y2="${sy(0.05, 0, 0.16)}" stroke="${B_COL}" stroke-width="2.5"/>`;
+    const pts = d3.range(0, 1.01, 0.05).map((v) => `${sx(v, 0, 1)},${sy(0.025 + 0.11 * v * v + 0.02 * v, 0, 0.16)}`);
+    s += `<polyline points="${pts.join(' ')}" fill="none" stroke="${C_COL}" stroke-width="2.5"/>`;
+    s += `<text x="${sx(0.62, 0, 1)}" y="${sy(0.04, 0, 0.16)}" style="fill:${B_COL};font-weight:600">Model B: same risk everywhere</text>`;
+    s += `<text x="${sx(0.45, 0, 1)}" y="${sy(0.12, 0, 0.16)}" style="fill:${C_COL};font-weight:600">Model C: risk rises next to change</text>`;
+    return svg(s) + legend([[B_COL, 'Model B'], [C_COL, 'Model C']]);
+  }
+  // C2: the same clustered signal, read by each model
+  function chartCI() {
+    const rows = [['Model B', 1.8, 1.35, 2.4, B_COL], ['Model C', 1.2, 0.8, 1.75, C_COL]];
+    const w = 560, h = 150, l = 90, r = 30, top = 18, rh = 44;
+    const x = (v) => l + ((w - l - r) * (v - 0.5)) / 2.2;
+    let s = '';
+    [0.5, 1, 1.5, 2, 2.5].forEach((v) => { s += `<line x1="${x(v)}" x2="${x(v)}" y1="${top}" y2="${top + rh * 2}" stroke="${v === 1 ? '#1b1d22' : 'rgba(27,29,34,0.07)'}" ${v === 1 ? 'stroke-dasharray="4 3"' : ''}/><text x="${x(v)}" y="${top + rh * 2 + 14}" text-anchor="middle">${v.toFixed(1)}×</text>`; });
+    rows.forEach(([lab, b, lo, hi, col], i) => {
+      const y = top + i * rh + rh / 2;
+      s += `<text x="0" y="${y + 4}" style="fill:#1b1d22;font-weight:700">${lab}</text>`;
+      s += `<line x1="${x(lo)}" x2="${x(hi)}" y1="${y}" y2="${y}" stroke="${col}" stroke-width="3"/><circle cx="${x(b)}" cy="${y}" r="7" fill="${col}" stroke="#fff" stroke-width="2"/>`;
+      s += `<text x="${x(hi) + 8}" y="${y + 4}" class="bar-label">${lo > 1 ? 'looks real' : 'crosses 1: no evidence'}</text>`;
+    });
+    s += `<text x="${l + (w - l - r) / 2}" y="${h - 2}" text-anchor="middle" style="fill:#5d616b">odds ratio for "a chain opened nearby last year" (1× = no effect)</text>`;
+    return `<div class="nyc-chart"><svg viewBox="0 0 ${w} ${h}">${s}</svg></div>`;
+  }
 
+  const vars = (rows) => `<div class="mdl-vars">${rows.map(([role, name, src, note]) => `<div class="mdl-var mdl-${role}"><div class="mdl-var-role">${{ y: 'outcome', x: 'signal', c: 'control', s: 'spatial' }[role]}</div><div class="mdl-var-name">${name}</div><div class="mdl-var-src">${src}</div>${note ? `<div class="mdl-var-note">${note}</div>` : ''}</div>`).join('')}</div>`;
+  const needs = (items) => `<ul class="mdl-needs">${items.map(([ok, t]) => `<li class="${ok}"><span>${ok === 'have' ? '✓' : ok === 'partial' ? '◐' : '✗'}</span>${t}</li>`).join('')}</ul>`;
+
+  // ═══ Part 3: the plan (no data) ═══════════════════════════════
+  window.nycRenderModels = function (main) {
     main.innerHTML = `
     <header class="nyc-hero">
-      <div class="nyc-eyebrow">Part 3 · Modeling Options · outcome built, model frames test-fit, no gentrification signals yet</div>
+      <div class="nyc-eyebrow">Part 3 · Modeling Options · nothing fit yet</div>
       <h1 class="nyc-title">How could we model gentrification?</h1>
-      <p class="nyc-lede">Parts 1–2 described the data. This page plans the modeling step. Model A and the original Model B were planned with hand-drawn examples. Model B was picked, so it now gets a closer look on <strong>real data</strong>: we built its outcome for every NYC census tract and changed the definition until it held up. Model C is a <strong>spatio-temporal</strong> version of B that also uses each tract's neighbors. Both were test-fit with only baseline conditions and past change. <strong>No restaurant, permit or other signal has been tested.</strong></p>
+      <p class="nyc-lede">Parts 1–2 described the data. This page plans the modeling step: three models that fit how our data is shaped (places observed year after year), what each needs, and how to read it. Model B was picked, so it gets the most detail. Model C is a <strong>spatio-temporal</strong> version of B. <strong>No model has been run on this page.</strong> Every chart is a hand-drawn example of what the output would look like. The first test run is in <a href="#" onclick="openNycModelsTest();return false;">Part 4</a>.</p>
     </header>
 
     <div class="mdl-compare three">
-      <div class="mdl-card a"><div class="mdl-tag">Model A</div><h2>Panel regression with fixed effects &amp; lags</h2><p class="mdl-q">“<b>How much</b> do early signals predict a neighborhood's rent growth a few years later?”</p><div class="mdl-chips"><span>continuous outcome</span><span>lead time</span><span>planned only</span></div></div>
-      <div class="mdl-card b"><div class="mdl-tag">Model B · chosen</div><h2>Discrete-time hazard (survival) model</h2><p class="mdl-q">“<b>When</b> does a neighborhood tip into gentrifying, and which signals speed that up?”</p><div class="mdl-chips"><span>yes/no event</span><span>timing</span><span>test-fit</span></div></div>
-      <div class="mdl-card c"><div class="mdl-tag">Model C · new</div><h2>Spatio-temporal hazard model</h2><p class="mdl-q">“Same question as B, but does it <b>spread from next door</b>?”</p><div class="mdl-chips"><span>B + neighbors</span><span>spatial random effect</span><span>test-fit</span></div></div>
-    </div>
-
-    <div class="nyc-stats">
-      <div class="nyc-stat"><div class="nyc-stat-num">${D.n_tracts.toLocaleString()}</div><div class="nyc-stat-label">NYC census tracts with full data, 2010–2019</div></div>
-      <div class="nyc-stat"><div class="nyc-stat-num">${D.n_at_risk}</div><div class="nyc-stat-label">“at risk”: bottom 40% of income in 2006–10 (≤ $${D.income_cut_2010.toLocaleString()})</div></div>
-      <div class="nyc-stat"><div class="nyc-stat-num">${def.v2.events}</div><div class="nyc-stat-label">tipped by 2017 under the confirmed definition (v2)</div></div>
-      <div class="nyc-stat"><div class="nyc-stat-num">${def.v2.morans_i.I}</div><div class="nyc-stat-label">Moran's I of tipping: events cluster on the map (p = ${def.v2.morans_i.p})</div></div>
+      <div class="mdl-card a"><div class="mdl-tag">Model A</div><h2>Panel regression with fixed effects &amp; lags</h2><p class="mdl-q">“<b>How much</b> do early signals predict a neighborhood's rent growth a few years later?”</p><div class="mdl-chips"><span>continuous outcome</span><span>place × year</span><span>lead time</span></div></div>
+      <div class="mdl-card b"><div class="mdl-tag">Model B · chosen</div><h2>Discrete-time hazard (survival) model</h2><p class="mdl-q">“<b>When</b> does a neighborhood tip into gentrifying, and which signals speed that up?”</p><div class="mdl-chips"><span>yes/no event</span><span>timing</span><span>only at-risk areas</span></div></div>
+      <div class="mdl-card c"><div class="mdl-tag">Model C · new</div><h2>Spatio-temporal hazard model</h2><p class="mdl-q">“Same question as B, but does it <b>spread from next door</b>?”</p><div class="mdl-chips"><span>B + neighbors</span><span>spatial random effect</span><span>diffusion</span></div></div>
     </div>
 
     <section class="nyc-panel">
@@ -326,7 +370,42 @@
       </section>
     </div>
 
-    <div class="nyc-note"><b>Why it fits:</b> it uses the panel shape directly, and fixed effects remove the "rich areas are just different" problem. <b>Watch for:</b> reverse timing (rising rent draws chains in) and only a few years of restaurant history. Not taken further here; see Model B.</div>
+    <section class="nyc-panel">
+      <div class="nyc-kicker">Variables</div><h2>What goes in</h2>
+      ${vars([
+        ['y', 'Rent growth vs. city', 'ACS 5-yr tract median rent → NTA', 'or property-value % change vs. city (DOF sales)'],
+        ['x', 'Restaurant turnover rate', 'DOHMH inspections / licenses', 'closures ÷ active, per year'],
+        ['x', 'Chain / fast-food entry', 'Chains & Lists tab', 'count of new chain openings'],
+        ['x', 'Renovation &amp; new-building permits', 'DOB permits', 'per 1,000 units'],
+        ['x', 'Sale price change vs. city', 'DOF rolling sales', 'median $/sale, relative'],
+        ['x', 'Capital &amp; subway investment', 'Capital Spending, Subway tabs', '$ committed nearby'],
+        ['c', 'Crime rate', 'NYPD complaints', 'felonies per 1,000'],
+        ['c', 'Baseline income / renter share', 'ACS', 'held at start year'],
+      ])}
+    </section>
+
+    <div class="nyc-row">
+      <section class="nyc-panel"><div class="nyc-kicker">Steps</div><h2>How we'd build it</h2>
+        ${steps([
+          ['Pick the unit', 'NTA 2020 × year (~195 residential NTAs). Crosswalk 2010-NTA inspection codes and tracts to it.'],
+          ['Build the outcome', 'Rent growth relative to city median each year.'],
+          ['Lag the signals', 'Shift each signal 1, 2, 3 years back so only "known before" values predict.'],
+          ['Fit with two-way FE', 'OLS with neighborhood + year dummies; cluster standard errors by neighborhood.'],
+          ['Read the lags', 'Plot β by lag; test out-of-sample on the last 2 years.'],
+        ])}
+      </section>
+      <section class="nyc-panel"><div class="nyc-kicker">What we need · do we have it?</div><h2>Fit with our data</h2>
+        ${needs([
+          ['have', 'Same neighborhoods measured over many years (sales 2016–25, ACS 2009–24)'],
+          ['have', 'A continuous outcome: rent and sale prices exist every year'],
+          ['partial', 'Restaurant signals with history: DOHMH keeps only ~3 years, so lags of 2–3 yrs leave very few usable years. The 2017 snapshot and liquor licenses can stretch this.'],
+          ['partial', 'Consistent geography: NTA 2010 vs 2020 and the 2022 PUMA redraw need crosswalks'],
+          ['partial', 'ACS 5-yr estimates overlap (2019 and 2020 share 4 of 5 years), which smooths changes. Use non-overlapping windows or sales data for annual change'],
+        ])}
+      </section>
+    </div>
+
+    <div class="nyc-note"><b>Why it fits:</b> it uses the panel shape directly, and fixed effects remove the "rich areas are just different" problem. <b>Watch for:</b> reverse timing (rising rent draws chains in) and only a few years of restaurant history.</div>
 
     <!-- ═════════ MODEL B ═════════ -->
     <h2 class="mdl-section b">Model B · Discrete-time hazard (survival) model</h2>
@@ -335,7 +414,7 @@
       <div class="nyc-kicker">The idea in one equation</div>
       <div class="mdl-eq">log( h<sub>n,t</sub> ⁄ (1 − h<sub>n,t</sub>) ) = <span class="fe">α<sub>t</sub></span> + <span class="x">β·Signals<sub>n,t−1</sub></span> + <span class="c">γ·Baseline<sub>n</sub></span></div>
       <div class="mdl-eq-key">
-        <span><i class="fe"></i><b>h<sub>n,t</sub></b> hazard: chance tract <i>n</i> tips in year <i>t</i>, given it hasn't yet</span>
+        <span><i class="fe"></i><b>h<sub>n,t</sub></b> hazard: chance place <i>n</i> tips in year <i>t</i>, given it hasn't yet</span>
         <span><i class="fe"></i><b>α<sub>t</sub></b> baseline hazard: how risky each year is citywide</span>
         <span><i class="x"></i><b>e<sup>β</sup></b> odds ratio: "high turnover multiplies the yearly odds of tipping by 1.8×"</span>
         <span><i class="c"></i><b>γ</b> starting conditions: income, rent, college share, renter share</span>
@@ -344,7 +423,203 @@
       ${personPeriod()}
     </section>
 
-    <h3 class="mdl-sub b">B in depth · building the outcome on real data</h3>
+    <div class="nyc-row">
+      <section class="nyc-panel"><div class="nyc-kicker">Output 1 · survival curve</div><h2>Who stays un-gentrified longer?</h2>
+        ${chartSurvival()}${illus}
+        <p class="mdl-cap">Start with every low-income place at 100%. Each year some tip. If the high-turnover group drops faster, turnover is an early signal.</p>
+      </section>
+      <section class="nyc-panel"><div class="nyc-kicker">Output 2 · hazard by year</div><h2>When is risk highest?</h2>
+        ${chartHazard()}${illus}
+        <p class="mdl-cap">The yearly α<sub>t</sub>: the citywide chance an at-risk place tips that year. Shows booms and pauses (e.g., a COVID dip).</p>
+      </section>
+    </div>
+
+    <section class="nyc-panel">
+      <div class="nyc-kicker">Variables</div><h2>What goes in</h2>
+      ${vars([
+        ['y', 'Tipped this year (0/1)', 'built from ACS + sales', 'first year a low-income area\'s rent growth AND college-share growth beat the city median (Furman-style)'],
+        ['x', 'Restaurant turnover (t−1)', 'DOHMH / licenses', ''],
+        ['x', 'Chain or "list" restaurant opened (t−1)', 'Chains & Lists', 'yes/no'],
+        ['x', 'Permit surge (t−1)', 'DOB permits', 'above own 3-yr average'],
+        ['c', 'Baseline income, renter %, rent level', 'ACS start year', 'defines who is "at risk"'],
+      ])}
+    </section>
+
+    <section class="nyc-panel">
+      <div class="nyc-kicker">B in depth · decisions to make before fitting</div><h2>Six choices that decide what B finds</h2>
+      <div class="mdl-iter">
+        <div><span class="mdl-iter-was">NTA (~195 areas)</span><span class="mdl-iter-now">Census tracts (~2,100)</span><span>About 10× more places and events. Restaurant inspections carry tract IDs, so the signals can follow.</span></div>
+        <div><span class="mdl-iter-was">First crossing</span><span class="mdl-iter-now">Crossing that holds</span><span>ACS estimates are noisy. A tract can cross the line one year and fall back the next. Require it to still hold a couple of releases later, and fix the rule before looking at signals.</span></div>
+        <div><span class="mdl-iter-was">Everyone low-income at start</span><span class="mdl-iter-now">Drop already-tipped places</span><span>Places that changed before the window starts (left truncation) can't tell us what came first.</span></div>
+        <div><span class="mdl-iter-was">Recent years as events</span><span class="mdl-iter-now">Treat them as censored</span><span>If confirming an event needs later data, the last years can't be confirmed yet. They stay "not yet," not "never."</span></div>
+        <div><span class="mdl-iter-was">Any lagged value</span><span class="mdl-iter-now">Only what was known at t−1</span><span>No input may use data published after the year being predicted, including neighbors' later-confirmed events.</span></div>
+        <div><span class="mdl-iter-was">Mixed tract lines</span><span class="mdl-iter-now">One set of lines</span><span>ACS 2010–2019 all use 2010 tracts. Going past 2019 needs a 2010→2020 crosswalk.</span></div>
+      </div>
+    </section>
+
+    <div class="nyc-row">
+      <section class="nyc-panel"><div class="nyc-kicker">Steps</div><h2>How we'd build it</h2>
+        ${steps([
+          ['Define "at risk"', 'Tracts in the bottom 40% of income at the start year (the Furman rule used in Part 2).'],
+          ['Define the event', 'The first year it crosses the gentrification line and stays there. Decide this rule before looking at signals.'],
+          ['Make the person-period table', 'One row per at-risk tract-year; drop rows after the event.'],
+          ['Fit a logistic regression', 'Year dummies + lagged signals; report odds ratios.'],
+          ['Draw survival curves', 'Compare groups (high vs low signal); check with held-out years.'],
+        ])}
+      </section>
+      <section class="nyc-panel"><div class="nyc-kicker">What we need · do we have it?</div><h2>Fit with our data</h2>
+        ${needs([
+          ['have', 'A low-income starting group (ACS income by tract)'],
+          ['have', 'Annual data to date an event (sales, ACS)'],
+          ['partial', 'Enough events for 2–4 signals at NTA level; tracts give many more'],
+          ['partial', 'Same restaurant-history limit as Model A'],
+          ['need', 'An agreed event definition. The result depends heavily on where the line is drawn, so it must be fixed up front'],
+        ])}
+      </section>
+    </div>
+
+    <div class="nyc-note"><b>Why it fits:</b> gentrification is usually described as something a place <em>goes through</em>, and this model matches that. It answers "when" and keeps places that haven't tipped yet (censoring) instead of throwing them out. <b>Watch for:</b> a fuzzy event definition, and places next to each other that aren't really independent (Model C).</div>
+
+    <!-- ═════════ MODEL C ═════════ -->
+    <h2 class="mdl-section c">Model C · Spatio-temporal hazard model</h2>
+
+    <section class="nyc-panel">
+      <div class="nyc-kicker">Is there a better model for space + time?</div>
+      <h2>Yes: keep B, add the map</h2>
+      <p>Gentrification diffuses. Williamsburg changed, then Bushwick did. Model B can't see that, for two reasons: (1) it has no term for what is happening <em>next door</em>, and (2) it treats every place as an independent draw, so if neighbors share unmeasured causes its standard errors come out <strong>too small</strong>. The standard fix in epidemiology and criminology, where things also spread place to place, is a <strong>Bayesian spatio-temporal hazard model</strong> with a conditional-autoregressive (CAR/BYM) random effect.</p>
+      <div class="mdl-eq">logit h<sub>n,t</sub> = <span class="fe">α<sub>t</sub></span> + <span class="x">β·X<sub>n,t−1</sub></span> + <span class="sp">ρ·(W X)<sub>n,t−1</sub></span> + <span class="c">γ·Baseline<sub>n</sub></span> + <span class="sp">u<sub>n</sub></span>,&nbsp;&nbsp; u ~ ICAR(τ)</div>
+      <div class="mdl-eq-key">
+        <span><i class="fe"></i><b>α<sub>t</sub>, β, γ</b>: same as Model B</span>
+        <span><i class="sp"></i><b>(W X)<sub>n,t−1</sub></b> spillover: the average of the neighbors' values last year (W = which tracts touch)</span>
+        <span><i class="sp"></i><b>u<sub>n</sub></b> place effect: unmeasured risk, pulled toward the neighbors' average</span>
+        <span><i class="sp"></i><b>τ</b> how strongly neighbors' u are tied together (chosen by cross-validation)</span>
+      </div>
+      ${diagramBC()}
+    </section>
+
+    <div class="nyc-row">
+      <section class="nyc-panel"><div class="nyc-kicker">What C adds</div><h2>Two spatial pieces</h2>
+        ${steps([
+          ['Spillover term (W X)', "Neighbors' signals and change last year. Lets risk rise when the tract next door is changing."],
+          ['Affluent edge', 'Share of neighbors that were never low-income. Change often spreads out from wealthier areas.'],
+          ['Place effect u (ICAR)', "Soaks up clustered risk the variables miss. Each tract's u is pulled toward its neighbors', so tracts with few events borrow strength from next door."],
+          ['How to fit it', 'R-INLA or Stan for the full Bayesian model. A penalized-likelihood version in Python is a fast first pass.'],
+        ])}
+      </section>
+      <section class="nyc-panel"><div class="nyc-kicker">What the output looks like</div><h2>Risk that rises next to change</h2>
+        ${chartSpill()}${illus}
+        <p class="mdl-cap">B gives a tract the same risk whether or not the tracts around it are changing. C lets risk climb with the share of neighbors that already changed. The steepness of that climb is ρ.</p>
+      </section>
+    </div>
+
+    <section class="nyc-panel">
+      <div class="nyc-kicker">Variables</div><h2>What C adds to B's list</h2>
+      ${vars([
+        ['s', "Neighbors' rent &amp; education change (t−1)", 'ACS, averaged over touching tracts', 'the spillover term'],
+        ['s', "Neighbors' signals (t−1)", 'same sources as B', 'e.g. chain openings next door'],
+        ['s', 'Affluent edge', 'ACS start year', 'share of neighbors never low-income'],
+        ['s', 'Neighbor map W', 'tract boundaries (bmjq-373p)', 'which tracts touch (queen contiguity)'],
+      ])}
+    </section>
+
+    <!-- ═════════ B vs C ═════════ -->
+    <h2 class="mdl-section bc">Model B vs Model C</h2>
+
+    <div class="nyc-row">
+      <section class="nyc-panel"><div class="nyc-kicker">Why it matters</div><h2>The same signal, read by each model</h2>
+        ${chartCI()}${illus}
+        <p class="mdl-cap">Chain openings cluster in the same parts of the city that gentrify. B can mistake "located in a changing area" for "predicts change" and report a confident effect. C has already accounted for the area, so only the part that really leads gentrification remains. A signal that shrinks from B to C was riding on location.</p>
+      </section>
+      <section class="nyc-panel"><div class="nyc-kicker">How we'll judge them</div><h2>The test plan</h2>
+        ${steps([
+          ['Hold out the last years', 'Train on early years, score on later years neither model has seen.'],
+          ['Ranking (AUC)', 'Do the tracts each model calls riskiest actually tip more often?'],
+          ['Calibration', 'When a model says 10%, do about 10% tip?'],
+          ['Leftover clustering', "Moran's I on each model's errors. If B's errors cluster, its p-values are too small."],
+          ['A watch list', 'Of the top 50 flagged tracts, how many tipped?'],
+          ['A second definition', 'Repeat under a stricter event rule to see what holds.'],
+        ])}
+        <p class="mdl-cap">Part 4 runs this test on the outcome alone, before any signal goes in.</p>
+      </section>
+    </div>
+
+    <section class="nyc-panel">
+      <div class="nyc-kicker">Pros and cons</div><h2>B or C?</h2>
+      <div class="nyc-row tight">
+        <div><div class="mdl-maphead" style="--c:${B_COL}">Model B · discrete-time hazard</div>${proscons([
+          'Simple: a logistic regression anyone can check, with odds ratios that are easy to explain',
+          'Fits with standard tools (statsmodels, R glm)',
+          'A clean baseline for C to beat',
+        ], [
+          "Ignores the map: it can't see spread from next door",
+          'If errors cluster, its standard errors and p-values are too small',
+          'A signal that only <em>looks</em> predictive because it is spatially clustered could pass falsely',
+        ])}</div>
+        <div><div class="mdl-maphead" style="--c:${C_COL}">Model C · spatio-temporal hazard</div>${proscons([
+          'Matches how gentrification moves: outward from neighbors',
+          'Accounts for clustering, so tests of each signal are honest',
+          'Neighbors share strength, which helps tracts with few events',
+          'Same equation as B plus terms, so results compare directly',
+        ], [
+          'Harder to explain (“ICAR random effect”) and to fit (R-INLA or Stan)',
+          'Needs a neighbor map, so the tract lines must be fixed (2010 vs 2020 crosswalk)',
+          "The spillover term can mean “spread” or just “shared cause nearby.” It doesn't prove contagion",
+        ])}</div>
+      </div>
+      <div class="nyc-note" style="margin-top:1rem"><b>Plan:</b> fit both. Use C as the main model and B as the readable baseline. Compare each signal's effect across the two.</div>
+    </section>
+
+    <!-- ═════════ COMPARE ═════════ -->
+    <section class="nyc-panel">
+      <div class="nyc-kicker">Side by side</div><h2>All three</h2>
+      <div class="nyc-table-wrap"><table class="nyc-table"><thead><tr><th></th><th>Model A · FE panel</th><th>Model B · hazard</th><th>Model C · spatio-temporal</th></tr></thead><tbody>
+        <tr><td class="muted">Outcome</td><td>rent growth (a number)</td><td>tipped yes/no (an event)</td><td>tipped yes/no (an event)</td></tr>
+        <tr><td class="muted">Answers</td><td>how much, how far ahead</td><td>when, how much more likely</td><td>when, how likely, and does it spread</td></tr>
+        <tr><td class="muted">Places linked?</td><td>no (fixed effects only)</td><td>no</td><td>yes: neighbor terms + ICAR effect</td></tr>
+        <tr><td class="muted">Key output</td><td>β by lag</td><td>odds ratios, survival curves</td><td>odds ratios, spillover, risk map</td></tr>
+        <tr><td class="muted">Biggest risk</td><td>reverse timing</td><td>event definition, clustered errors</td><td>harder to fit and explain</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section class="nyc-panel">
+      <div class="nyc-kicker">Also considered for space + time</div><h2>Why not these?</h2>
+      <div class="mdl-alt">
+        <div><b>Spatial Durbin panel</b><span>The spatial version of Model A (continuous rent growth plus neighbor lags). The right choice if we switch back to a numeric outcome.</span></div>
+        <div><b>Knorr-Held space × time interaction</b><span>Lets each place's risk trend over time differently. Many more parameters; add it later if INLA is used.</span></div>
+        <div><b>Self-exciting (Hawkes) contagion</b><span>Models each event directly triggering nearby ones. Good fit for the idea, but it needs exact event dates, and ACS only gives fuzzy “first visible” years.</span></div>
+        <div><b>Graph neural net / ConvLSTM</b><span>Could predict well, but it can't tell us <em>which</em> signal matters, and that is the research question. It also needs far more events.</span></div>
+        <div><b>Event study / synthetic control</b><span>Still useful for single shocks (a new station, a rezoning) and for the Bushwick case study.</span></div>
+      </div>
+    </section>`;
+  };
+
+  // ═══ Part 4: first test run on real data (models_check*.json) ═══
+  window.nycRenderModelsTest = async function (main) {
+    main.innerHTML = '<p class="nyc-loading" style="padding:2rem">Loading model checks…</p>';
+    let D, D3;
+    try {
+      [D, D3] = await Promise.all(['models_check', 'models_check_v3'].map((n) => fetch('assets/nyc-explorer/' + n + '.json').then((r) => { if (!r.ok) throw new Error(n + ': HTTP ' + r.status); return r.json(); })));
+    } catch (e) { main.innerHTML = `<p style="padding:2rem">Could not load model checks (${e.message}).</p>`; return; }
+    const M_ = D.models, M3 = D3.models, def = D.definitions;
+    const gap = M_.auc_gap, gap3 = M3.auc_gap;
+    const coefC = M_.C.coefs, orr = (b) => Math.exp(b).toFixed(2) + '×';
+
+    main.innerHTML = `
+    <header class="nyc-hero">
+      <div class="nyc-eyebrow">Part 4 · First Test Run · real data, no gentrification signals yet</div>
+      <h1 class="nyc-title">Do Models B and C hold up on real data?</h1>
+      <p class="nyc-lede"><a href="#" onclick="openNycModels();return false;">Part 3</a> planned the models. This page is the first test run of B and C. It builds B's outcome for every NYC census tract (2010–2019), tests three event definitions, then fits both models using only starting conditions and past change and scores them on years they never saw. <strong>No restaurant, permit or other signal is in either model</strong>, so this tests the setup, not the research question.</p>
+    </header>
+
+    <div class="nyc-stats">
+      <div class="nyc-stat"><div class="nyc-stat-num">${D.n_tracts.toLocaleString()}</div><div class="nyc-stat-label">NYC census tracts with full data, 2010–2019</div></div>
+      <div class="nyc-stat"><div class="nyc-stat-num">${D.n_at_risk}</div><div class="nyc-stat-label">“at risk”: bottom 40% of income in 2006–10 (≤ $${D.income_cut_2010.toLocaleString()})</div></div>
+      <div class="nyc-stat"><div class="nyc-stat-num">${def.v2.events}</div><div class="nyc-stat-label">tipped by 2017 under the confirmed definition (v2)</div></div>
+      <div class="nyc-stat"><div class="nyc-stat-num">${def.v2.morans_i.I}</div><div class="nyc-stat-label">Moran's I of tipping: events cluster on the map (p = ${def.v2.morans_i.p})</div></div>
+    </div>
+
+
+    <h2 class="mdl-section b">Model B · building the outcome on real data</h2>
     <section class="nyc-panel">
       <div class="nyc-kicker">Step 1 · the event definition is the model</div>
       <h2>Three versions of “tipped,” tested on all ${D.n_at_risk} at-risk tracts</h2>
@@ -368,7 +643,7 @@
     </div>
 
     <section class="nyc-panel">
-      <div class="nyc-kicker">Step 4 · design decisions, iterated</div><h2>What changed from the first plan</h2>
+      <div class="nyc-kicker">Step 4 · design decisions, iterated</div><h2>What changed after seeing the data</h2>
       <div class="mdl-iter">
         <div><span class="mdl-iter-was">NTA (~195 areas)</span><span class="mdl-iter-now">Census tract (${D.n_tracts.toLocaleString()})</span><span>~10× more places and events. Restaurant data has tract IDs, so the signals can follow.</span></div>
         <div><span class="mdl-iter-was">First crossing</span><span class="mdl-iter-now">Crossing confirmed 2 vintages later</span><span>Cuts out the ${def.v1.flip_back} noise events. The cost is that 2018–19 can't be confirmed yet (right-censored).</span></div>
@@ -379,25 +654,10 @@
       </div>
     </section>
 
-    <!-- ═════════ MODEL C ═════════ -->
-    <h2 class="mdl-section c">Model C · Spatio-temporal hazard model</h2>
-
-    <section class="nyc-panel">
-      <div class="nyc-kicker">Is there a better model for space + time?</div>
-      <h2>Yes: keep B, add the map</h2>
-      <p>Gentrification diffuses. Williamsburg changed, then Bushwick did. Model B can't see that, for two reasons: (1) it has no term for what is happening <em>next door</em>, and (2) it treats every tract as an independent draw, so if neighbors share unmeasured causes its standard errors come out <strong>too small</strong>. The standard fix in epidemiology and criminology, where things also spread place to place, is a <strong>Bayesian spatio-temporal hazard model</strong> with a conditional-autoregressive (CAR/BYM) random effect.</p>
-      <div class="mdl-eq">logit h<sub>n,t</sub> = <span class="fe">α<sub>t</sub></span> + <span class="x">β·X<sub>n,t−1</sub></span> + <span class="sp">ρ·(W X)<sub>n,t−1</sub></span> + <span class="c">γ·Baseline<sub>n</sub></span> + <span class="sp">u<sub>n</sub></span>,&nbsp;&nbsp; u ~ ICAR(τ)</div>
-      <div class="mdl-eq-key">
-        <span><i class="fe"></i><b>α<sub>t</sub>, β, γ</b>: same as Model B</span>
-        <span><i class="sp"></i><b>(W X)<sub>n,t−1</sub></b> spillover: the average of the neighbors' values last year (W = which tracts touch)</span>
-        <span><i class="sp"></i><b>u<sub>n</sub></b> place effect: unmeasured risk, pulled toward the neighbors' average</span>
-        <span><i class="sp"></i><b>τ</b> how strongly neighbors' u are tied together (chosen by cross-validation)</span>
-      </div>
-      ${diagramBC()}
-    </section>
+    <h2 class="mdl-section c">Model C · what the test fit learned</h2>
 
     <div class="nyc-row">
-      <section class="nyc-panel"><div class="nyc-kicker">What C adds</div><h2>Two spatial pieces</h2>
+      <section class="nyc-panel"><div class="nyc-kicker">What the fit found</div><h2>The two spatial pieces, estimated</h2>
         ${steps([
           ['Spillover term (W X)', `Neighbors' rent and college-share change last year. In the test fit both push risk up: ${orr(coefC.nb_rent_rk)} and ${orr(coefC.nb_ba_rk)} odds per standard deviation, on top of the tract's own change.`],
           ['Affluent edge', `Share of neighbors that were never low-income: ${orr(coefC.nb_affluent)} odds per SD. Change spreads out from wealthier areas.`],
@@ -487,29 +747,9 @@
       <div class="nyc-note" style="margin-top:1rem"><b>Recommendation:</b> use <b>C as the main model</b> and report <b>B next to it</b>. When the restaurant and permit signals go in, compare each one's effect in B vs C. A signal that is “significant” in B but shrinks in C was riding on location, not leading gentrification.</div>
     </section>
 
-    <!-- ═════════ COMPARE ═════════ -->
     <section class="nyc-panel">
-      <div class="nyc-kicker">Side by side</div><h2>All three</h2>
-      <div class="nyc-table-wrap"><table class="nyc-table"><thead><tr><th></th><th>Model A · FE panel</th><th>Model B · hazard</th><th>Model C · spatio-temporal</th></tr></thead><tbody>
-        <tr><td class="muted">Outcome</td><td>rent growth (a number)</td><td>tipped yes/no (an event)</td><td>tipped yes/no (an event)</td></tr>
-        <tr><td class="muted">Answers</td><td>how much, how far ahead</td><td>when, how much more likely</td><td>when, how likely, and does it spread</td></tr>
-        <tr><td class="muted">Places linked?</td><td>no (fixed effects only)</td><td>no</td><td>yes: neighbor terms + ICAR effect</td></tr>
-        <tr><td class="muted">Key output</td><td>β by lag</td><td>odds ratios, survival curves</td><td>odds ratios, spillover, risk map</td></tr>
-        <tr><td class="muted">Status</td><td>planned</td><td>outcome built, frame tested</td><td>frame tested vs B</td></tr>
-        <tr><td class="muted">Biggest risk</td><td>reverse timing</td><td>event definition, clustered errors</td><td>harder to fit and explain</td></tr>
-      </tbody></table></div>
-    </section>
-
-    <section class="nyc-panel">
-      <div class="nyc-kicker">Also considered for space + time</div><h2>Why not these?</h2>
-      <div class="mdl-alt">
-        <div><b>Spatial Durbin panel</b><span>The spatial version of Model A (continuous rent growth plus neighbor lags). The right choice if we switch back to a numeric outcome.</span></div>
-        <div><b>Knorr-Held space × time interaction</b><span>Lets each tract's risk trend over time differently. Too many parameters for ~200 events. Add it later if INLA is used.</span></div>
-        <div><b>Self-exciting (Hawkes) contagion</b><span>Models each event directly triggering nearby ones. Good fit for the idea, but it needs exact event dates, and ACS only gives fuzzy “first visible” years.</span></div>
-        <div><b>Graph neural net / ConvLSTM</b><span>Could predict well, but it can't tell us <em>which</em> signal matters, and that is the research question. It also needs far more events.</span></div>
-        <div><b>Event study / synthetic control</b><span>Still useful for single shocks (a new station, a rezoning) and for the Bushwick case study.</span></div>
-      </div>
-      <p class="mdl-cap" style="margin-top:.75rem">Reproduce: <code>python nyc-data-explorer/build_models.py</code> (v2) and <code>MODEL_RULE=v3 python nyc-data-explorer/build_models.py</code> (sensitivity). Data: Census ACS 5-year API (B19013, B25064, B15002, B25003, B01003), NYC 2010 census tracts (bmjq-373p).</p>
+      <div class="nyc-kicker">Reproduce</div>
+      <p class="mdl-cap" style="margin-top:0"><code>python nyc-data-explorer/build_models.py</code> (v2) and <code>MODEL_RULE=v3 python nyc-data-explorer/build_models.py</code> (strict definition). Data: Census ACS 5-year API (B19013, B25064, B15002, B25003, B01003), NYC 2010 census tracts (bmjq-373p). Model C here is the penalized-likelihood (posterior mode) version; a full write-up would refit it in R-INLA or Stan for posterior intervals.</p>
     </section>`;
 
     // shared hover for every [data-tip] mark on this page

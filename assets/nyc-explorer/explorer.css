@@ -270,7 +270,7 @@
 .mdl-cap { color: var(--nyc-muted); font-size: 0.86rem; line-height: 1.6; margin-top: 0.4rem; }
 .mdl-vars { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.75rem; }
 .mdl-var { border: 1px solid var(--nyc-border); border-left: 4px solid var(--c); border-radius: 6px; padding: 0.6rem 0.75rem; background: var(--nyc-surface); }
-.mdl-var.mdl-y { --c: var(--nyc-l-orange); } .mdl-var.mdl-x { --c: var(--nyc-l-blue); } .mdl-var.mdl-c { --c: var(--nyc-l-green); }
+.mdl-var.mdl-y { --c: var(--nyc-l-orange); } .mdl-var.mdl-s { --c: var(--nyc-l-teal); } .mdl-var.mdl-x { --c: var(--nyc-l-blue); } .mdl-var.mdl-c { --c: var(--nyc-l-green); }
 .mdl-var-role { font-family: var(--nyc-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--c); font-weight: 700; }
 .mdl-var-name { font-weight: 700; font-size: 0.9rem; margin: 0.15rem 0; }
 .mdl-var-src { font-size: 0.76rem; color: var(--nyc-faint); font-family: var(--nyc-mono); }

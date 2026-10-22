@@ -1862,12 +1862,13 @@
   }
   window.openNycCaseStudy = () => window.openNycExplorer('__case');
   window.openNycModels = () => window.openNycExplorer('__models');
+  window.openNycModelsTest = () => window.openNycExplorer('__models_test');
   window.nycTip = tip;  // models.js draws its own marks and shares this tooltip
-  function showModels() {
+  function showModels(test) {
     current = null;
-    document.getElementById('nyc-crumb').innerHTML = `/ Part 3: Modeling Options · <a href="#" onclick="openNycExplorer('overview');return false;">open the full NYC Data Explorer →</a>`;
+    document.getElementById('nyc-crumb').innerHTML = `/ ${test ? 'Part 4: First Test Run' : 'Part 3: Modeling Options'} · <a href="#" onclick="openNycExplorer('overview');return false;">open the full NYC Data Explorer →</a>`;
     document.getElementById('nyc-explorer').scrollTo(0, 0);
-    window.nycRenderModels(document.getElementById('nyc-main'));
+    (test ? window.nycRenderModelsTest : window.nycRenderModels)(document.getElementById('nyc-main'));
     tip(null);
   }
 
@@ -1878,11 +1879,11 @@
     document.getElementById('nyc-explorer').classList.add('open');
     document.getElementById('main-site').classList.add('hidden');
     window.scrollTo(0, 0);
-    const caseMode = tab === '__case' || tab === '__models';
+    const caseMode = tab === '__case' || tab === '__models' || tab === '__models_test';
     document.getElementById('nyc-explorer').classList.toggle('case-mode', caseMode);
     buildTabBar();
     if (window.lucide) lucide.createIcons();
-    if (tab === '__models') showModels(); else if (caseMode) showCase(); else showTab(tab || current || 'overview');
+    if (tab === '__models' || tab === '__models_test') showModels(tab === '__models_test'); else if (caseMode) showCase(); else showTab(tab || current || 'overview');
   };
   window.closeNycExplorer = function () {
     document.getElementById('nyc-explorer').classList.remove('open');

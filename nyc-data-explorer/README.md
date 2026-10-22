@@ -40,10 +40,10 @@ ACS 5-year tracts (2006–10 / 2011–15 / 2020–24), StreetEasy, Housing DB (C
 yearly .xls files, cached in `.cache/dof/`, 2016+ from `w2pb-icbu`), and NYPD precinct 83. Comparisons: Williamsburg
 (CD 1 / pct 90), East New York (CD 5 / pct 75), Brooklyn, NYC. Still descriptive; the page ends with time-series notes.
 
-## Part 3 model checks (`build_models.py`)
+## Part 4 first test run (`build_models.py`)
 
 `python build_models.py` (needs `numpy`, `scipy`, `shapely` and the Census key) writes `models_check.json` for the
-**Part 3: Modeling Options** page. It builds Model B's outcome on real data: ACS 5-year vintages 2010–2019 for every NYC
+**Part 4: First Test Run** page (Part 3: Modeling Options is the plan and uses no data). It builds Model B's outcome on real data: ACS 5-year vintages 2010–2019 for every NYC
 tract (all on 2010 tract lines, shapes from `bmjq-373p`), "at risk" = bottom 40% of 2006–10 income, "tipped" = rent
 growth and college-share growth since 2010 both above the all-tract median (v1 naive / v2 confirmed two vintages later /
 v3 strict). It then test-fits Model B (discrete-time hazard) and Model C (B + neighbor lags + ICAR spatial random effect,

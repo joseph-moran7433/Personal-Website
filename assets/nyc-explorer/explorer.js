@@ -1862,6 +1862,7 @@
   }
   window.openNycCaseStudy = () => window.openNycExplorer('__case');
   window.openNycModels = () => window.openNycExplorer('__models');
+  window.nycTip = tip;  // models.js draws its own marks and shares this tooltip
   function showModels() {
     current = null;
     document.getElementById('nyc-crumb').innerHTML = `/ Part 3: Modeling Options · <a href="#" onclick="openNycExplorer('overview');return false;">open the full NYC Data Explorer →</a>`;

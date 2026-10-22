@@ -248,7 +248,10 @@
 .mdl-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
 .mdl-card { background: var(--nyc-surface); border: 1px solid var(--nyc-border); border-top: 4px solid var(--c); border-radius: var(--radius); padding: 1.1rem 1.2rem; }
 .mdl-card.a, .mdl-section.a { --c: var(--nyc-l-blue); }
-.mdl-card.b, .mdl-section.b { --c: var(--nyc-l-purple); }
+.mdl-card.b, .mdl-section.b, .mdl-sub.b { --c: var(--nyc-l-purple); }
+.mdl-card.c, .mdl-section.c { --c: var(--nyc-l-teal); }
+.mdl-section.bc { --c: var(--nyc-text); }
+.mdl-compare.three { grid-template-columns: repeat(3, 1fr); }
 .mdl-tag { font-family: var(--nyc-mono); font-size: 0.72rem; font-weight: 700; color: var(--c); text-transform: uppercase; letter-spacing: 0.08em; }
 .mdl-card h2 { font-size: 1.1rem; margin: 0.3rem 0 0.5rem; }
 .mdl-q { color: var(--nyc-muted); font-size: 0.92rem; line-height: 1.55; }
@@ -259,9 +262,10 @@
 .mdl-eq .x { color: var(--nyc-l-blue); font-weight: 700; }
 .mdl-eq .fe { color: var(--nyc-l-purple); }
 .mdl-eq .c { color: var(--nyc-l-green); }
+.mdl-eq .sp { color: var(--nyc-l-teal); font-weight: 700; }
 .mdl-eq-key { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1.2rem; font-size: 0.84rem; color: var(--nyc-muted); line-height: 1.5; }
 .mdl-eq-key i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 0.4rem; }
-.mdl-eq-key i.x { background: var(--nyc-l-blue); } .mdl-eq-key i.fe { background: var(--nyc-l-purple); } .mdl-eq-key i.c { background: var(--nyc-l-green); }
+.mdl-eq-key i.sp { background: var(--nyc-l-teal); } .mdl-eq-key i.x { background: var(--nyc-l-blue); } .mdl-eq-key i.fe { background: var(--nyc-l-purple); } .mdl-eq-key i.c { background: var(--nyc-l-green); }
 .mdl-illus { font-family: var(--nyc-mono); font-size: 0.68rem; color: var(--nyc-warn); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.3rem; }
 .mdl-cap { color: var(--nyc-muted); font-size: 0.86rem; line-height: 1.6; margin-top: 0.4rem; }
 .mdl-vars { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.75rem; }
@@ -284,4 +288,21 @@
 .mdl-alt b { display: block; font-size: 0.9rem; margin-bottom: 0.25rem; }
 .mdl-alt span { font-size: 0.82rem; color: var(--nyc-muted); line-height: 1.5; }
 #nyc-explorer .nyc-note + .mdl-section { margin-top: 2.5rem; }
-@media (max-width: 760px) { .mdl-compare, .mdl-eq-key { grid-template-columns: 1fr; } }
+.mdl-sub { font-size: 1.05rem; font-weight: 700; margin: 1.6rem 0 0.8rem; color: var(--c); font-family: var(--nyc-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+.mdl-real { font-family: var(--nyc-mono); font-size: 0.68rem; color: var(--nyc-l-green); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.3rem; }
+.nyc-row.tight { gap: 1rem; align-items: start; }
+.mdl-map svg path:hover { stroke: var(--nyc-text); stroke-width: 1; }
+.mdl-narrow { max-width: 680px; }
+.nyc-row > *, .mdl-compare > *, .mdl-pc > * { min-width: 0; }  /* let wide tables scroll instead of widening the grid */
+.mdl-maphead { font-weight: 700; font-size: 0.86rem; padding-left: 0.5rem; border-left: 4px solid var(--c); margin-top: 0.4rem; }
+.mdl-iter { display: grid; gap: 0.5rem; margin-top: 0.75rem; }
+.mdl-iter > div { display: grid; grid-template-columns: 11rem 13rem 1fr; gap: 0.75rem; align-items: center; font-size: 0.84rem; line-height: 1.45; color: var(--nyc-muted); border: 1px solid var(--nyc-border); border-radius: 8px; padding: 0.55rem 0.75rem; }
+.mdl-iter-was { text-decoration: line-through; color: var(--nyc-faint); }
+.mdl-iter-now { font-weight: 700; color: var(--nyc-l-purple); }
+.mdl-iter-now::before { content: '→ '; color: var(--nyc-faint); font-weight: 400; }
+.mdl-pc { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.5rem; }
+.mdl-pc > div { border: 1px solid var(--nyc-border); border-radius: 8px; padding: 0.6rem 0.75rem; font-size: 0.83rem; line-height: 1.5; color: var(--nyc-muted); }
+.mdl-pc .pro { border-top: 3px solid var(--nyc-l-green); } .mdl-pc .con { border-top: 3px solid var(--nyc-l-red); }
+.mdl-pc ul { margin: 0.3rem 0 0 1rem; padding: 0; display: grid; gap: 0.3rem; }
+.mdl-pc b { color: var(--nyc-text); }
+@media (max-width: 760px) { .mdl-compare, .mdl-compare.three, .mdl-eq-key, .mdl-pc, .mdl-iter > div { grid-template-columns: 1fr; } }

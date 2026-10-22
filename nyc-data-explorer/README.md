@@ -39,3 +39,14 @@ and the Comptroller call gentrifying, lined up across ACS 1-year PUMA (2005–20
 ACS 5-year tracts (2006–10 / 2011–15 / 2020–24), StreetEasy, Housing DB (CD 304), DOF sales (2007–2015 from DOF's
 yearly .xls files, cached in `.cache/dof/`, 2016+ from `w2pb-icbu`), and NYPD precinct 83. Comparisons: Williamsburg
 (CD 1 / pct 90), East New York (CD 5 / pct 75), Brooklyn, NYC. Still descriptive; the page ends with time-series notes.
+
+## Part 3 model checks (`build_models.py`)
+
+`python build_models.py` (needs `numpy`, `scipy`, `shapely` and the Census key) writes `models_check.json` for the
+**Part 3: Modeling Options** page. It builds Model B's outcome on real data: ACS 5-year vintages 2010–2019 for every NYC
+tract (all on 2010 tract lines, shapes from `bmjq-373p`), "at risk" = bottom 40% of 2006–10 income, "tipped" = rent
+growth and college-share growth since 2010 both above the all-tract median (v1 naive / v2 confirmed two vintages later /
+v3 strict). It then test-fits Model B (discrete-time hazard) and Model C (B + neighbor lags + ICAR spatial random effect,
+penalized likelihood) on 2012–15 and scores both on 2016–17. No gentrification signals go in: it tests the model frames,
+not the research question. `MODEL_RULE=v3 python build_models.py` reruns the comparison on the strict definition
+(`models_check_v3.json`). Raw pulls are cached in `.cache/models/`.

@@ -50,3 +50,14 @@ v3 strict). It then test-fits Model B (discrete-time hazard) and Model C (B + ne
 penalized likelihood) on 2012–15 and scores both on 2016–17. No gentrification signals go in: it tests the model frames,
 not the research question. `MODEL_RULE=v3 python build_models.py` reruns the comparison on the strict definition
 (`models_check_v3.json`). Raw pulls are cached in `.cache/models/`.
+
+## Part 5 first spatio-temporal model (`build_signals.py`)
+
+`python build_signals.py` (same needs as Part 4; reuses its cached ACS pulls) writes `models_signals.json` for the
+**Part 5: First Spatio-Temporal Model** page. It adds the first real signals: DOB permit jobs per tract-year from BIS
+`ipu4-2q9a` (A1 major alterations, NB new buildings, DM demolitions; per 1,000 households, lagged one year; BIS writes
+tract 702.01 as `70201`), and compares exactly two models, B and C (C adds neighbors' change and permits plus the ICAR
+place effect). Then: a one-change-at-a-time sensitivity analysis (event rule, at-risk cutoff, neighbor definition,
+signal lag/window/scale, test years, spatial prior), a 30-draw ACS margin-of-error Monte Carlo (MOEs cached in
+`.cache/models/acs5_moe_2010_2019.json`), and "if I had done it differently" counterfactuals (hindsight leak, in-sample
+grading, v1 events, B alone). Restaurant signals are not in: DOHMH keeps ~3 years and SLA resets issue dates on renewal.

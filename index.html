@@ -1771,7 +1771,7 @@
       .recipe-grid { grid-template-columns: 1fr; }
     }
   </style>
-  <link rel="stylesheet" href="assets/nyc-explorer/explorer.css?v=20261022b">
+  <link rel="stylesheet" href="assets/nyc-explorer/explorer.css?v=20261027">
 </head>
 <body>
 
@@ -4949,6 +4949,12 @@ const projects = [
               <div class="portal-tile-title">Part 4: First Test Run</div>
               <div class="portal-tile-desc">Models B and C on real tract data &middot; event definition tested &middot; head to head on held-out years &middot; no signals yet</div>
               <div class="portal-tile-cta">Open the test run &rarr;</div>
+            </button>
+            <button type="button" class="portal-tile nyc" onclick="openNycModelsSignals()">
+              <div class="portal-tile-icon">🗺️</div>
+              <div class="portal-tile-title">Part 5: First Spatio-Temporal Model</div>
+              <div class="portal-tile-desc">First real signals (building permits) &middot; Model B vs C only &middot; sensitivity analysis &middot; data noise &middot; if I'd done it differently</div>
+              <div class="portal-tile-cta">Open the model &rarr;</div>
             </button>
           </div>`
         },
@@ -8967,7 +8973,8 @@ function handleForm(e) {
 
 lucide.createIcons();
 </script>
-<script src="assets/nyc-explorer/models.js?v=20261022b"></script>
-<script src="assets/nyc-explorer/explorer.js?v=20261022b"></script>
+<script src="assets/nyc-explorer/models.js?v=20261027"></script>
+<script src="assets/nyc-explorer/models5.js?v=20261027"></script>
+<script src="assets/nyc-explorer/explorer.js?v=20261027"></script>
 </body>
 </html>

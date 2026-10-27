@@ -744,7 +744,7 @@
           'Prediction gain is borderline (CI touches 0) and disappears under v3',
         ])}</div>
       </div>
-      <div class="nyc-note" style="margin-top:1rem"><b>Recommendation:</b> use <b>C as the main model</b> and report <b>B next to it</b>. When the restaurant and permit signals go in, compare each one's effect in B vs C. A signal that is “significant” in B but shrinks in C was riding on location, not leading gentrification.</div>
+      <div class="nyc-note" style="margin-top:1rem"><b>Recommendation:</b> use <b>C as the main model</b> and report <b>B next to it</b>. When the restaurant and permit signals go in, compare each one's effect in B vs C. A signal that is “significant” in B but shrinks in C was riding on location, not leading gentrification. <b>Next:</b> <a href="#" onclick="openNycModelsSignals();return false;">Part 5</a> puts the first real signals in.</div>
     </section>
 
     <section class="nyc-panel">
@@ -756,4 +756,7 @@
     main.onmousemove = (e) => { const t = e.target.closest('[data-tip]'); if (window.nycTip) window.nycTip(t ? t.getAttribute('data-tip') : null, e); };
     main.onmouseleave = () => window.nycTip && window.nycTip(null);
   };
+
+  // Part 5 (models5.js) draws with the same helpers
+  window.nycMdl = { C, W, H, M, iw, ih, sx, sy, frame, svg, legend, steps, proscons, tractMap, tipAttr, B_COL, C_COL, NULL_COL, f2, f3, pc };
 })();

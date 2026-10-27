@@ -1863,12 +1863,19 @@
   window.openNycCaseStudy = () => window.openNycExplorer('__case');
   window.openNycModels = () => window.openNycExplorer('__models');
   window.openNycModelsTest = () => window.openNycExplorer('__models_test');
+  window.openNycModelsSignals = () => window.openNycExplorer('__models_signals');
   window.nycTip = tip;  // models.js draws its own marks and shares this tooltip
-  function showModels(test) {
+  const MODEL_PAGES = {
+    __models: ['Part 3: Modeling Options', () => window.nycRenderModels],
+    __models_test: ['Part 4: First Test Run', () => window.nycRenderModelsTest],
+    __models_signals: ['Part 5: First Spatio-Temporal Model', () => window.nycRenderModelsSignals],
+  };
+  function showModels(page) {
     current = null;
-    document.getElementById('nyc-crumb').innerHTML = `/ ${test ? 'Part 4: First Test Run' : 'Part 3: Modeling Options'} · <a href="#" onclick="openNycExplorer('overview');return false;">open the full NYC Data Explorer →</a>`;
+    const [title, render] = MODEL_PAGES[page];
+    document.getElementById('nyc-crumb').innerHTML = `/ ${title} · <a href="#" onclick="openNycExplorer('overview');return false;">open the full NYC Data Explorer →</a>`;
     document.getElementById('nyc-explorer').scrollTo(0, 0);
-    (test ? window.nycRenderModelsTest : window.nycRenderModels)(document.getElementById('nyc-main'));
+    render()(document.getElementById('nyc-main'));
     tip(null);
   }
 
@@ -1879,11 +1886,11 @@
     document.getElementById('nyc-explorer').classList.add('open');
     document.getElementById('main-site').classList.add('hidden');
     window.scrollTo(0, 0);
-    const caseMode = tab === '__case' || tab === '__models' || tab === '__models_test';
+    const caseMode = tab === '__case' || tab in MODEL_PAGES;
     document.getElementById('nyc-explorer').classList.toggle('case-mode', caseMode);
     buildTabBar();
     if (window.lucide) lucide.createIcons();
-    if (tab === '__models' || tab === '__models_test') showModels(tab === '__models_test'); else if (caseMode) showCase(); else showTab(tab || current || 'overview');
+    if (tab in MODEL_PAGES) showModels(tab); else if (caseMode) showCase(); else showTab(tab || current || 'overview');
   };
   window.closeNycExplorer = function () {
     document.getElementById('nyc-explorer').classList.remove('open');

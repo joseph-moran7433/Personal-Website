@@ -306,3 +306,30 @@
 .mdl-pc ul { margin: 0.3rem 0 0 1rem; padding: 0; display: grid; gap: 0.3rem; }
 .mdl-pc b { color: var(--nyc-text); }
 @media (max-width: 760px) { .mdl-compare, .mdl-compare.three, .mdl-eq-key, .mdl-pc, .mdl-iter > div { grid-template-columns: 1fr; } }
+
+/* Part 5: first spatio-temporal model */
+.p5-road { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6rem; margin-bottom: 1.25rem; }
+.p5-road button { text-align: left; font: inherit; cursor: pointer; background: var(--nyc-surface); border: 1px solid var(--nyc-border); border-radius: 8px; padding: 0.6rem 0.7rem; display: grid; grid-template-columns: 1.7rem 1fr; gap: 0.1rem 0.45rem; color: var(--nyc-text); }
+.p5-road button:hover { border-color: var(--nyc-l-teal); }
+.p5-road i { font-style: normal; grid-row: span 2; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--nyc-l-teal); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 0.78rem; }
+.p5-road b { font-size: 0.86rem; }
+.p5-road span { font-size: 0.74rem; color: var(--nyc-muted); line-height: 1.35; }
+.nyc-warn { background: var(--nyc-warn-soft); border-left: 3px solid var(--nyc-l-orange); border-radius: 0 6px 6px 0; padding: 0.65rem 0.9rem; font-size: 0.86rem; line-height: 1.6; margin-top: 1.25rem; }
+.mdl-toggle { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.7rem; }
+.mdl-toggle button { font: inherit; font-size: 0.78rem; cursor: pointer; padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid var(--c); color: var(--c); background: transparent; }
+.mdl-toggle button.on { background: var(--c); color: #fff; }
+.p5-takeaways { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin-top: 1.25rem; }
+.p5-takeaways > div { border: 1px solid var(--nyc-border); border-top: 3px solid var(--nyc-l-purple); border-radius: 8px; padding: 0.6rem 0.75rem; background: var(--nyc-surface); }
+.p5-takeaways b { display: block; font-size: 0.86rem; margin-bottom: 0.2rem; }
+.p5-takeaways span { font-size: 0.8rem; color: var(--nyc-muted); line-height: 1.45; }
+.p5-cf { display: grid; gap: 0.5rem; margin-top: 0.7rem; }
+.p5-cf > div { display: grid; grid-template-columns: 4.2rem 1fr; gap: 0.1rem 0.6rem; border: 1px solid var(--nyc-border); border-radius: 8px; padding: 0.5rem 0.7rem; }
+.p5-cf i { font-style: normal; grid-row: span 2; font-family: var(--nyc-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--nyc-l-teal); font-weight: 700; padding-top: 0.15rem; }
+.p5-cf b { font-size: 0.86rem; }
+.p5-cf span { font-size: 0.8rem; color: var(--nyc-muted); line-height: 1.45; }
+.p5-score td:last-child { font-weight: 700; }
+@media (max-width: 900px) { .p5-road { grid-template-columns: repeat(2, 1fr); } .p5-takeaways { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .p5-road, .p5-takeaways { grid-template-columns: 1fr; } }
+.nyc-row.p5-stack { grid-template-columns: 1.4fr 1fr; }
+.nyc-row.p5-wide { grid-template-columns: 1.25fr 1fr; }
+@media (max-width: 900px) { .nyc-row.p5-stack, .nyc-row.p5-wide { grid-template-columns: 1fr; } }

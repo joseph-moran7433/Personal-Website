@@ -308,7 +308,7 @@
 @media (max-width: 760px) { .mdl-compare, .mdl-compare.three, .mdl-eq-key, .mdl-pc, .mdl-iter > div { grid-template-columns: 1fr; } }
 
 /* Part 5: first spatio-temporal model */
-.p5-road { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6rem; margin-bottom: 1.25rem; }
+.p5-road { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.6rem; margin-bottom: 1.25rem; }
 .p5-road button { text-align: left; font: inherit; cursor: pointer; background: var(--nyc-surface); border: 1px solid var(--nyc-border); border-radius: 8px; padding: 0.6rem 0.7rem; display: grid; grid-template-columns: 1.7rem 1fr; gap: 0.1rem 0.45rem; color: var(--nyc-text); }
 .p5-road button:hover { border-color: var(--nyc-l-teal); }
 .p5-road i { font-style: normal; grid-row: span 2; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--nyc-l-teal); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 0.78rem; }
@@ -333,3 +333,34 @@
 .nyc-row.p5-stack { grid-template-columns: 1.4fr 1fr; }
 .nyc-row.p5-wide { grid-template-columns: 1.25fr 1fr; }
 @media (max-width: 900px) { .nyc-row.p5-stack, .nyc-row.p5-wide { grid-template-columns: 1fr; } }
+/* Part 5: where every input comes from */
+.p5-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 0.7rem; margin-top: 0.9rem; }
+.p5-card { border: 1px solid var(--nyc-border); border-top: 3px solid var(--c); border-radius: 8px; padding: 0.65rem 0.75rem; background: var(--nyc-surface); display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.8rem; line-height: 1.45; }
+.p5-card-h { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+.p5-card-h b { font-size: 0.9rem; }
+.p5-card-h code { font-size: 0.68rem; color: var(--nyc-faint); }
+.p5-src { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; font-family: var(--nyc-mono); font-size: 0.7rem; }
+.p5-src span { color: #fff; border-radius: 4px; padding: 0.1rem 0.45rem; font-family: inherit; }
+.p5-src a { color: var(--nyc-muted); }
+.p5-field, .p5-when, .p5-histwrap { color: var(--nyc-muted); }
+.p5-field i, .p5-when i, .p5-histwrap i { display: block; font-style: normal; font-family: var(--nyc-mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--nyc-faint); }
+.p5-card ol { margin: 0 0 0 1.1rem; padding: 0; display: grid; gap: 0.2rem; color: var(--nyc-text); }
+.p5-hist { width: 100%; height: auto; display: block; margin-top: 0.15rem; }
+.p5-hist text { fill: var(--nyc-muted); }
+.p5-pills { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: auto; }
+.p5-pill { border: 1px solid var(--c); color: var(--c); border-radius: 999px; padding: 0.05rem 0.55rem; font-size: 0.74rem; font-family: var(--nyc-mono); }
+.p5-pill.off { --c: var(--nyc-faint); opacity: 0.7; }
+.p5-ex-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; margin-top: 0.6rem; font-size: 0.84rem; }
+.p5-ex-ctl select { font: inherit; padding: 0.25rem 0.4rem; border: 1px solid var(--nyc-border); border-radius: 6px; background: var(--nyc-surface); color: var(--nyc-text); max-width: 100%; }
+.p5-ex-head { display: grid; gap: 0.15rem; margin-top: 0.8rem; font-size: 0.86rem; padding: 0.6rem 0.8rem; border-radius: 8px; background: var(--nyc-bg); border: 1px solid var(--nyc-border); }
+.p5-ex table { font-size: 0.78rem; }
+.p5-ex td.num { text-align: right; font-family: var(--nyc-mono); white-space: nowrap; }
+.p5-ex td.p5-raw { color: var(--nyc-muted); min-width: 16rem; }
+.p5-ex tr.p5-fam td { font-family: var(--nyc-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--nyc-faint); padding-top: 0.8rem; }
+.p5-match { display: grid; gap: 0.7rem; margin-top: 0.8rem; }
+.p5-match > div { display: grid; grid-template-columns: 8rem 1fr 3.5rem; gap: 0.15rem 0.6rem; align-items: center; font-size: 0.84rem; }
+.p5-match em { font-style: normal; font-weight: 700; font-family: var(--nyc-mono); font-size: 0.8rem; }
+.p5-match > div > span { grid-column: 2 / -1; font-size: 0.76rem; color: var(--nyc-muted); }
+.p5-bar { height: 10px; background: var(--nyc-grid); border-radius: 5px; overflow: hidden; }
+.p5-bar span { display: block; height: 100%; border-radius: 5px; }
+@media (min-width: 901px) and (max-width: 1100px) { .p5-road { grid-template-columns: repeat(3, 1fr); } }

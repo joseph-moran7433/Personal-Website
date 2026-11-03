@@ -61,3 +61,28 @@ place effect). Then: a one-change-at-a-time sensitivity analysis (event rule, at
 signal lag/window/scale, test years, spatial prior), a 30-draw ACS margin-of-error Monte Carlo (MOEs cached in
 `.cache/models/acs5_moe_2010_2019.json`), and "if I had done it differently" counterfactuals (hindsight leak, in-sample
 grading, v1 events, B alone). Restaurant signals are not in: DOHMH keeps ~3 years and SLA resets issue dates on renewal.
+
+## Part 6 Rising Neighborhood Score (`rns_pulls.py` + `build_rising.py`)
+
+Implements `MA491/rising-neighborhood-score-change-log.md`. `python rns_pulls.py` (slow; everything cached in
+`.cache/models/rns_*.json`) then `python build_rising.py` writes `rising_score.json` for the
+**Part 6: Rising Neighborhood Score** page (`assets/nyc-explorer/models6.js`).
+
+- **Question:** for an officer on PCS orders, which neighborhoods are good places to live and likely to see home
+  values beat the city's over a 3-year tour?
+- **Outcome (continuous):** `y = log(P[t+3]/P[t]) - same for the city`, log points. `P` = median price per unit of
+  1-3 family homes, sales >= $10k, pooled over two calendar years (s-1, s), 20+ sales required. DOF annualized
+  sales 2007-2025 (`.xls` to 2017, `.xlsx` after; Staten Island is `staten_island` from 2020).
+- **Unit:** 2010 NTAs (parks/cemeteries/airports dropped). 2020+ ACS releases are moved to 2010 tracts with the
+  Census `tab20_tract20_tract10_st36` relationship file (largest land overlap).
+- **Timing:** inputs close by t-2 (signals t-3..t-2, ACS release ending t-2, momentum `P[t-5] -> P[t-2]`); the outcome
+  starts from sales in t-1, t. No sale or survey year is shared.
+- **Models:** B = linear regression with start-year intercepts + levels + momentum + signals (ridge picked on
+  validation); C = B + neighbors' momentum + Gap (hottest neighbor - own) + ICAR place effect (penalized least
+  squares). Intervals clustered by NTA.
+- **Test:** rolling origin, start year t scored by a model trained on t' <= t-3. Choices (ridge, tau, permits
+  combined vs separate, noise split vs total, noise shape) on 2017-18; reported on 2019-22.
+- **Score:** percentile rank (0-100) of Model C's prediction for start year 2025, 80% range from held-out errors.
+  Livability filters (commute, felony trend, park access, price cap, noise caps) are applied on the page, not in the model.
+- Extra pulls: DOB BIS `ipu4-2q9a` 2019-23 + DOB NOW `w9ak-ipjd` (NB / Full Demolition / Alteration CO), 311 noise by
+  kind from `76ig-c548` + `erm2-nwe9`, NYPD felonies 2007-2025, NYC Parks `enfh-gkve` (1+ acre).

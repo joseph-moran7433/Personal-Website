@@ -1771,7 +1771,7 @@
       .recipe-grid { grid-template-columns: 1fr; }
     }
   </style>
-  <link rel="stylesheet" href="assets/nyc-explorer/explorer.css?v=20261029">
+  <link rel="stylesheet" href="assets/nyc-explorer/explorer.css?v=20261030">
 </head>
 <body>
 
@@ -4955,6 +4955,12 @@ const projects = [
               <div class="portal-tile-title">Part 5: First Spatio-Temporal Model</div>
               <div class="portal-tile-desc">Eight signals from five city sources (permits, sales, prices, felonies, 311 noise, subway) &middot; where every variable comes from &middot; Model B vs C only &middot; sensitivity &middot; data noise &middot; if I'd done it differently</div>
               <div class="portal-tile-cta">Open the model &rarr;</div>
+            </button>
+            <button type="button" class="portal-tile nyc" onclick="openNycRisingScore()">
+              <div class="portal-tile-icon">🏠</div>
+              <div class="portal-tile-title">Part 6: Rising Neighborhood Score</div>
+              <div class="portal-tile-desc">For officers on PCS orders: which neighborhoods should beat the city on home values over a 3-year tour &middot; continuous outcome &middot; NTAs &middot; linear B vs C &middot; 0&ndash;100 score &middot; commute, crime, park, price and noise filters</div>
+              <div class="portal-tile-cta">Open the score &rarr;</div>
             </button>
           </div>`
         },
@@ -8975,6 +8981,7 @@ lucide.createIcons();
 </script>
 <script src="assets/nyc-explorer/models.js?v=20261027"></script>
 <script src="assets/nyc-explorer/models5.js?v=20261029"></script>
-<script src="assets/nyc-explorer/explorer.js?v=20261027"></script>
+<script src="assets/nyc-explorer/models6.js?v=20261030"></script>
+<script src="assets/nyc-explorer/explorer.js?v=20261030"></script>
 </body>
 </html>

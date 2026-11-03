@@ -1864,11 +1864,13 @@
   window.openNycModels = () => window.openNycExplorer('__models');
   window.openNycModelsTest = () => window.openNycExplorer('__models_test');
   window.openNycModelsSignals = () => window.openNycExplorer('__models_signals');
+  window.openNycRisingScore = () => window.openNycExplorer('__rising');
   window.nycTip = tip;  // models.js draws its own marks and shares this tooltip
   const MODEL_PAGES = {
     __models: ['Part 3: Modeling Options', () => window.nycRenderModels],
     __models_test: ['Part 4: First Test Run', () => window.nycRenderModelsTest],
     __models_signals: ['Part 5: First Spatio-Temporal Model', () => window.nycRenderModelsSignals],
+    __rising: ['Part 6: Rising Neighborhood Score', () => window.nycRenderRisingScore],
   };
   function showModels(page) {
     current = null;

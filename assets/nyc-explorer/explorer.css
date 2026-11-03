@@ -364,3 +364,40 @@
 .p5-bar { height: 10px; background: var(--nyc-grid); border-radius: 5px; overflow: hidden; }
 .p5-bar span { display: block; height: 100%; border-radius: 5px; }
 @media (min-width: 901px) and (max-width: 1100px) { .p5-road { grid-template-columns: repeat(3, 1fr); } }
+/* Part 6: Rising Neighborhood Score */
+.p6-changes { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.6rem; margin-top: 0.6rem; }
+.p6-changes > div { display: grid; grid-template-columns: 1.7rem 1fr; gap: 0.15rem 0.55rem; border: 1px solid var(--nyc-border); border-radius: 8px; padding: 0.6rem 0.7rem; background: var(--nyc-surface); }
+.p6-changes i { font-style: normal; grid-row: span 3; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--nyc-l-teal); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 0.74rem; }
+.p6-changes b { font-size: 0.86rem; }
+.p6-changes span { font-size: 0.79rem; color: var(--nyc-muted); line-height: 1.45; }
+.p6-changes a { font-size: 0.74rem; color: var(--nyc-l-teal); text-decoration: none; }
+.p6-list { margin: 0.5rem 0 0 1.1rem; padding: 0; display: grid; gap: 0.45rem; font-size: 0.85rem; line-height: 1.5; color: var(--nyc-muted); }
+.p6-list b { color: var(--nyc-text); }
+.p6-unused { opacity: 0.55; }
+.p6-unused-tag { font-family: var(--nyc-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--nyc-faint); margin-top: auto; }
+.p6-vif { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
+.p6-vif span { font-size: 0.74rem; border: 1px solid var(--nyc-border); border-radius: 999px; padding: 0.1rem 0.55rem; }
+.p6-vif span.mid { background: rgba(255, 99, 25, 0.12); }
+.p6-vif span.hi { background: var(--nyc-l-orange); color: #fff; border-color: var(--nyc-l-orange); }
+.p6-ctls { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.6rem 1rem; margin-top: 0.9rem; padding: 0.8rem; border: 1px solid var(--nyc-border); border-radius: 8px; background: var(--nyc-bg); }
+.p6-ctl { display: grid; gap: 0.25rem; font-size: 0.8rem; color: var(--nyc-muted); }
+.p6-ctl.inline { display: flex; align-items: center; gap: 0.5rem; margin: 0.4rem 0; }
+.p6-ctl b { color: var(--nyc-text); font-family: var(--nyc-mono); }
+.p6-ctl select { font: inherit; padding: 0.25rem 0.4rem; border: 1px solid var(--nyc-border); border-radius: 6px; background: var(--nyc-surface); color: var(--nyc-text); max-width: 100%; }
+.p6-ctl input[type=range] { width: 100%; accent-color: var(--nyc-l-teal); }
+.p6-funnel { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 0.9rem; }
+.p6-funnel > div { border: 1px solid var(--nyc-border); border-left: 4px solid var(--nyc-l-teal); border-radius: 6px; padding: 0.35rem 0.7rem; background: var(--nyc-surface); display: grid; }
+.p6-funnel b { font-size: 1.15rem; font-family: var(--nyc-mono); }
+.p6-funnel span { font-size: 0.72rem; color: var(--nyc-muted); }
+.p6-funnel i { font-style: normal; color: var(--nyc-faint); }
+.nyc-row.p6-scorerow { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr); }
+.p6-rank { font-size: 0.78rem; }
+.p6-rank th, .p6-rank td { padding-left: 0.45rem; padding-right: 0.45rem; }
+.p6-rank td.num { text-align: right; font-family: var(--nyc-mono); white-space: nowrap; }
+.p6-sub { font-size: 0.7rem; color: var(--nyc-faint); font-weight: 400; }
+.p6-score { display: inline-block; min-width: 2.2rem; text-align: center; border-radius: 6px; padding: 0.1rem 0.35rem; font-weight: 700; }
+.p6-hl td { background: rgba(0, 173, 208, 0.08); }
+#p6-scoremap { cursor: crosshair; }
+@media (max-width: 900px) { .nyc-row.p6-scorerow { grid-template-columns: 1fr; } }
+.p6-trunc { max-width: 8.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.p6-rank td:nth-child(2) { min-width: 9rem; }

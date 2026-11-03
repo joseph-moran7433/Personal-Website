@@ -1865,16 +1865,28 @@
   window.openNycModelsTest = () => window.openNycExplorer('__models_test');
   window.openNycModelsSignals = () => window.openNycExplorer('__models_signals');
   window.openNycRisingScore = () => window.openNycExplorer('__rising');
+  window.openNycRisingAnalysis = () => window.openNycExplorer('__rising_analysis');
   window.nycTip = tip;  // models.js draws its own marks and shares this tooltip
   const MODEL_PAGES = {
     __models: ['Part 3: Modeling Options', () => window.nycRenderModels],
     __models_test: ['Part 4: First Test Run', () => window.nycRenderModelsTest],
     __models_signals: ['Part 5: First Spatio-Temporal Model', () => window.nycRenderModelsSignals],
-    __rising: ['Part 6: Rising Neighborhood Score', () => window.nycRenderRisingScore],
+    __rising: ['Part 6: Rising Neighborhood Finder', () => window.nycRenderRisingTool,
+      ['openNycRisingAnalysis', 'Full code &amp; analysis', 'file-code-2']],
+    __rising_analysis: ['Part 6: Rising Neighborhood Score · full analysis', () => window.nycRenderRisingScore,
+      ['openNycRisingScore', 'Back to the tool', 'map-pinned']],
   };
+  // top-right button in the overlay's nav bar; only some model pages use it
+  function navAction(spec) {
+    const box = document.getElementById('nyc-nav-action');
+    if (!box) return;
+    box.innerHTML = spec ? `<button type="button" class="nyc-nav-btn" onclick="${spec[0]}()"><i data-lucide="${spec[2]}" style="width:15px;height:15px;"></i><span>${spec[1]}</span></button>` : '';
+    if (spec && window.lucide) lucide.createIcons();
+  }
   function showModels(page) {
     current = null;
-    const [title, render] = MODEL_PAGES[page];
+    const [title, render, action] = MODEL_PAGES[page];
+    navAction(action);
     document.getElementById('nyc-crumb').innerHTML = `/ ${title} · <a href="#" onclick="openNycExplorer('overview');return false;">open the full NYC Data Explorer →</a>`;
     document.getElementById('nyc-explorer').scrollTo(0, 0);
     render()(document.getElementById('nyc-main'));
@@ -1892,6 +1904,7 @@
     document.getElementById('nyc-explorer').classList.toggle('case-mode', caseMode);
     buildTabBar();
     if (window.lucide) lucide.createIcons();
+    if (!(tab in MODEL_PAGES)) navAction(null);
     if (tab in MODEL_PAGES) showModels(tab); else if (caseMode) showCase(); else showTab(tab || current || 'overview');
   };
   window.closeNycExplorer = function () {

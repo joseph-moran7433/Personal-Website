@@ -14,11 +14,11 @@
   window.nycRenderRisingScore = async function (main) {
     const { C, svg, legend, tipAttr, proscons, B_COL, C_COL, NULL_COL, f2, f3 } = window.nycMdl;
     main.innerHTML = '<p class="nyc-loading" style="padding:2rem">Loading the Rising Neighborhood Score…</p>';
-    let S;
+    let S, K;
     try {
-      const r = await fetch('assets/nyc-explorer/rising_score.json?v=20261030');
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      S = await r.json();
+      const [a, b] = await Promise.all(['rising_score.json?v=20261030', 'rising_checks.json?v=20261103'].map((f) => fetch('assets/nyc-explorer/' + f)));
+      if (!a.ok || !b.ok) throw new Error('HTTP ' + (a.ok ? b.status : a.status));
+      [S, K] = await Promise.all([a.json(), b.json()]);
     } catch (e) { main.innerHTML = `<p style="padding:2rem">Could not load the model results (${e.message}).</p>`; return; }
 
     const M = S.meta, L = S.ladder, CH = S.choices, CO = S.coefs;
@@ -362,57 +362,6 @@
       return svg(s, w, h) + legend(T.map((yr) => [ycol(yr), `start ${yr}`]));
     }
 
-    // ═════════ §5 score tool ═════════
-    const kmTo = (d, lat, lon) => { const R = 6371, dl = ((lat - d.lat) * Math.PI) / 180, dn = ((lon - d.lon) * Math.PI) / 180; const a = Math.sin(dl / 2) ** 2 + Math.cos((d.lat * Math.PI) / 180) * Math.cos((lat * Math.PI) / 180) * Math.sin(dn / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(a)); };
-    const F = { wp: 0, lat: S.workplaces[0].lat, lon: S.workplaces[0].lon, km: 20, crime: 'off', park: 0, price: 0, noise: { RES: 0, COM: 0, STR: 0, CON: 0 }, topN: 20 };
-    const priceMax = Math.max(...scored.map((d) => d.price_now || 0));
-    function reasons(d) {
-      const out = [];
-      const km = kmTo(d, F.lat, F.lon);
-      if (F.km && km > F.km) out.push(`${f1(km)} km away`);
-      if (F.crime === 'city' && d.felony_chg > M.felony_city_chg) out.push(`felonies ${sgn(d.felony_chg)}% (city ${sgn(M.felony_city_chg)}%)`);
-      if (F.crime === 'flat' && d.felony_chg > 0) out.push(`felonies ${sgn(d.felony_chg)}%`);
-      if (F.park && d.park_400 * 100 < F.park) out.push(`${Math.round(d.park_400 * 100)}% near a park`);
-      if (F.price && d.price_now > F.price) out.push(`${money(d.price_now)}/unit`);
-      Object.entries(F.noise).forEach(([k, cap]) => { if (cap && d.noise[k] > cap) out.push(`${sl('NOISE_' + k).replace('Noise: ', '')} noise ${f1(d.noise[k])}×`); });
-      return out;
-    }
-    function scoreView() {
-      const ranked = [...scored].sort((a, b) => b.score - a.score);
-      const pass = ranked.filter((d) => !reasons(d).length);
-      const failSet = new Set(ranked.filter((d) => reasons(d).length).map((d) => d.code));
-      const show = pass.slice(0, F.topN);
-      const [px, py] = proj([F.lon, F.lat]);
-      const ring = F.km ? (() => { const p2 = proj([F.lon + F.km / (111.32 * Math.cos((F.lat * Math.PI) / 180)), F.lat]); return `<circle cx="${px}" cy="${py}" r="${Math.abs(p2[0] - px)}" fill="none" stroke="#1b1d22" stroke-dasharray="5 4" stroke-width="1.2"/>`; })() : '';
-      const showSet = new Set(show.map((d) => d.code));
-      const map = ntaMap((d) => (!d.scored ? '#fbfbf8' : failSet.has(d.code) ? '#e3e3de' : scoreCol(d.score)),
-        (d) => (d.scored ? `<b>${d.name}</b><br>Score ${d.score} · predicted ${sgn(d.pctC)}% vs city (80%: ${sgn(d.lo)} to ${sgn(d.hi)})${reasons(d).length ? '<br><span style="color:#ee352e">filtered out: ' + reasons(d).join(', ') + '</span>' : ''}` : `<b>${d.name}</b><br>not scored (too few 1–3 family sales)`),
-        ring + `<path d="M${px},${py - 9}l2.6,6 6.4,.4-5,4.1 1.7,6.3L${px},${py + 3.6}l-5.7,3.2 1.7-6.3-5-4.1 6.4-.4z" fill="${C.red}" stroke="#fff" stroke-width="1"/>` +
-        show.map((d, i) => { const [x, y] = proj([d.lon, d.lat]); return `<circle cx="${x}" cy="${y}" r="7.5" fill="#1b1d22" stroke="#fff" stroke-width="1"/><text x="${x}" y="${y + 3.2}" text-anchor="middle" style="fill:#fff;font-size:8.5px;font-weight:700;pointer-events:none">${i + 1}</text>`; }).join(''), 'p6-scoremap');
-      const list = show.map((d, i) => {
-        const km = kmTo(d, F.lat, F.lon);
-        return `<tr><td class="num"><b>${i + 1}</b></td><td><b>${d.name}</b><div class="p6-sub">${d.boro} · #${ranked.indexOf(d) + 1} overall · ${f1(km)} km</div></td>
-          <td class="num"><span class="p6-score" style="background:${scoreCol(d.score)};color:${d.score > 55 ? '#fff' : '#1b1d22'}">${d.score}</span></td>
-          <td class="num">${sgn(d.pctC)}%<div class="p6-sub">${sgn(d.lo)} to ${sgn(d.hi)}</div></td>
-          <td>${d.hot_name && d.gap > 0 ? `<b>+${f1(d.gap)}</b><div class="p6-sub p6-trunc" title="${d.hot_name}">${d.hot_name.split('-')[0]}</div>` : '<span class="p6-sub">leads its neighbors</span>'}</td>
-          <td class="num">${money(d.price_now)}</td></tr>`;
-      }).join('');
-      const funnel = `<div class="p6-funnel"><div><b>${S.ntas.length}</b><span>residential NTAs</span></div><i>→</i><div><b>${scored.length}</b><span>scored (enough sales)</span></div><i>→</i><div><b>${pass.length}</b><span>pass your filters</span></div><i>→</i><div><b>${show.length}</b><span>shown, best score first</span></div></div>`;
-      return { map, funnel, table: `<div class="nyc-table-wrap"><table class="nyc-table p6-rank"><thead><tr><th>#</th><th>Neighborhood</th><th>Score</th><th>3 yrs vs city<br><span class="p6-sub">80% range</span></th><th>Gap<br><span class="p6-sub">hottest neighbor</span></th><th>$ / unit</th></tr></thead><tbody>${list || '<tr><td colspan="6">No neighborhood passes every filter. Loosen one.</td></tr>'}</tbody></table></div>` };
-    }
-    function controls() {
-      const nz = (k) => `<label class="p6-ctl"><span>${sl('NOISE_' + k).replace('Noise: ', '')} noise cap <b id="p6-nv-${k}">${F.noise[k] ? F.noise[k] + '×' : 'off'}</b></span><input type="range" min="0" max="5" step="0.25" value="${F.noise[k]}" data-noise="${k}"></label>`;
-      return `<div class="p6-ctls">
-        <label class="p6-ctl"><span>Duty station</span><select id="p6-wp">${S.workplaces.map((w, i) => `<option value="${i}">${w.name}</option>`).join('')}<option value="-1">Custom (click the map)</option></select></label>
-        <label class="p6-ctl"><span>Max straight-line distance <b id="p6-kmv">${F.km ? F.km + ' km' : 'off'}</b></span><input type="range" id="p6-km" min="0" max="40" step="1" value="${F.km}"></label>
-        <label class="p6-ctl"><span>Felony trend (${M.crime_base_years.join('–')} → ${M.filter_years.join('–')})</span><select id="p6-crime"><option value="off">off</option><option value="city">not rising faster than the city (${sgn(M.felony_city_chg)}%)</option><option value="flat">not rising at all</option></select></label>
-        <label class="p6-ctl"><span>Residents within a 5-min walk of a park <b id="p6-parkv">${F.park ? '≥ ' + F.park + '%' : 'off'}</b></span><input type="range" id="p6-park" min="0" max="100" step="5" value="0"></label>
-        <label class="p6-ctl"><span>Price cap per unit (1–3 family) <b id="p6-pricev">off</b></span><input type="range" id="p6-price" min="0" max="${Math.ceil(priceMax / 50000) * 50000}" step="25000" value="0"></label>
-        <label class="p6-ctl"><span>Show top <b id="p6-topv">${F.topN}</b></span><input type="range" id="p6-top" min="5" max="50" step="5" value="${F.topN}"></label>
-        ${['COM', 'RES', 'STR', 'CON'].map(nz).join('')}
-      </div>`;
-    }
-
     // ═════════ §5 worked example ═════════
     function waterfall() {
       const E = S.example, top = [...E.contrib].sort((a, b) => Math.abs(b.c) - Math.abs(a.c));
@@ -512,6 +461,75 @@
       return svg(s, w, h);
     }
 
+    // ═════════ §9 the two checks (rising_checks.json, build_checks.py) ═════════
+    const K1 = K.check1, K2 = K.check2, kc = K1.models.C;
+    function chartNull() {
+      const pmf = kc.null_pmf, n = kc.of, ks = [['persist', NULL_COL], ['B1', C.green], ['B', B_COL], ['C', C_COL]];
+      const hmax = Math.max(...ks.map(([k]) => K1.models[k].hits)), x0 = 10, x1 = Math.min(n, hmax + 14);
+      const w = 560, h = 240, l = 30, r = 12, t = 64, b = 32, bw = (w - l - r) / (x1 - x0 + 1);
+      const mx = Math.max(...pmf), X = (k) => l + (k - x0 + 0.5) * bw, Y = (v) => t + (h - t - b) * (1 - v / mx);
+      let s = `<text x="0" y="14" style="font-weight:700">Top-20 hits out of ${n} if the 20 were picked at random each year</text>`;
+      for (let k = x0; k <= x1; k++) s += `<rect x="${X(k) - bw * 0.42}" y="${Y(pmf[k] || 0)}" width="${bw * 0.84}" height="${Y(0) - Y(pmf[k] || 0)}" fill="${k >= kc.null_lo && k <= kc.null_hi ? '#c9cbc4' : '#e6e7e1'}"${tipAttr(`${k} hits: probability ${((pmf[k] || 0) * 100).toFixed(2)}% under random picks`)}/>`;
+      for (let k = x0; k <= x1; k += 5) s += `<text x="${X(k)}" y="${h - b + 14}" text-anchor="middle">${k}</text>`;
+      s += `<line x1="${l}" x2="${w - r}" y1="${Y(0)}" y2="${Y(0)}" stroke="#1b1d22"/>`;
+      ks.forEach(([k, col], i) => {
+        const c = K1.models[k], x = X(c.hits);
+        s += `<line x1="${x}" x2="${x}" y1="${24 + i * 10}" y2="${Y(0)}" stroke="${col}" stroke-width="2.5"${tipAttr(`<b>${MODEL_LAB[k]}</b>: ${c.hits}/${n} hits<br>p = ${c.p} vs random`)}/>`;
+        s += k === 'persist' ? `<text x="${x + 4}" y="${32}" style="font-size:9.5px;fill:${col};font-weight:700">${MODEL_LAB[k]} ${c.hits}</text>`
+          : `<text x="${X(hmax) + 8}" y="${32 + i * 12}" style="font-size:9.5px;fill:${col};font-weight:700">${MODEL_LAB[k]} ${c.hits}</text>`;
+      });
+      s += `<text x="${l + (w - l - r) / 2}" y="${h - 4}" text-anchor="middle" style="fill:#5d616b">darker gray = the middle 95% of random draws (${kc.null_lo}–${kc.null_hi})</text>`;
+      return svg(s, w, h);
+    }
+    function chartTopN() {
+      const cv = K1.curve.C, w = 460, h = 220, l = 40, r = 12, t = 14, b = 34;
+      const X = (i) => l + ((w - l - r) * (i + 0.5)) / cv.length, Y = (v) => t + (h - t - b) * (1 - v);
+      let s = '';
+      [0, 0.25, 0.5, 0.75, 1].forEach((v) => { s += grid(l, w - r, Y(v)) + `<text x="${l - 6}" y="${Y(v) + 4}" text-anchor="end">${v * 100}%</text>`; });
+      const bw = ((w - l - r) / cv.length) * 0.32;
+      cv.forEach((c, i) => {
+        const hr = c.hits / c.of, er = c.expected / c.of;
+        s += `<rect x="${X(i) - bw - 1}" y="${Y(er)}" width="${bw}" height="${Y(0) - Y(er)}" fill="#c9cbc4"${tipAttr(`random: ${f1(c.expected)} of ${c.of}`)}/>`;
+        s += `<rect x="${X(i) + 1}" y="${Y(hr)}" width="${bw}" height="${Y(0) - Y(hr)}" fill="${C_COL}"${tipAttr(`<b>Model C top ${c.n_top}</b>: ${c.hits}/${c.of} beat the city<br>random ≈ ${f1(c.expected)} · p = ${c.p}<br>extra gain vs average NTA ${sgn(c.excess_ret)} pts`)}/>`;
+        s += `<text x="${X(i)}" y="${h - b + 14}" text-anchor="middle">${c.n_top}</text>`;
+      });
+      s += `<text x="${l + (w - l - r) / 2}" y="${h - 4}" text-anchor="middle" style="fill:#5d616b">size of the list (top N each year)</text>`;
+      return svg(s, w, h) + legend([[C_COL, 'Model C: share of its top N that beat the city'], ['#c9cbc4', 'random pick']]);
+    }
+    function chartYearHits() {
+      const pyr = K1.all6.per_year, w = 900, h = 220, l = 30, r = 10, t = 14, b = 40, mx = 20;
+      const bw = (w - l - r) / pyr.length, Y = (v) => t + (h - t - b) * (1 - v / mx);
+      let s = '';
+      [0, 5, 10, 15, 20].forEach((v) => { s += grid(l, w - r, Y(v)) + `<text x="${l - 6}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`; });
+      pyr.forEach((d, i) => {
+        const x0 = l + bw * i, val = M.val_years.includes(d.t);
+        s += `<rect x="${x0 + bw * 0.18}" y="${Y(d.expected)}" width="${bw * 0.3}" height="${Y(0) - Y(d.expected)}" fill="#c9cbc4"/>`;
+        s += `<rect x="${x0 + bw * 0.52}" y="${Y(d.hits)}" width="${bw * 0.3}" height="${Y(0) - Y(d.hits)}" fill="${C_COL}" opacity="${val ? 0.45 : 1}"${tipAttr(`<b>Start ${d.t}</b> (sell ${d.t + M.hold})${val ? ' · validation year' : ''}<br>top 20: ${d.hits} beat the city, random ≈ ${d.expected}<br>p = ${d.p} · top 20 ${sgn(d.top_ret)} vs all ${sgn(d.all_ret)} pts`)}/>`;
+        s += `<text x="${x0 + bw / 2}" y="${h - b + 15}" text-anchor="middle">${d.t}</text><text x="${x0 + bw / 2}" y="${h - b + 28}" text-anchor="middle" style="font-size:9px;fill:${d.p < 0.05 ? '#00933c' : '#ee352e'}">p ${d.p < 0.001 ? '<.001' : d.p.toFixed(3)}</text>`;
+      });
+      return svg(s, w, h) + legend([[C_COL, 'Model C top 20 that beat the city (faded = validation year)'], ['#c9cbc4', 'expected from a random 20']]);
+    }
+    function chartCeiling() {
+      const ys = K2.years, nz = Object.fromEntries(K2.noise.map((d) => [d.t, d]));
+      const w = 900, h = 250, l = 40, r = 12, t = 14, b = 36;
+      const bw = (w - l - r) / ys.length, X = (i) => l + bw * (i + 0.5), Y = (v) => t + (h - t - b) * (1 - v);
+      let s = '';
+      [0, 0.25, 0.5, 0.75, 1].forEach((v) => { s += grid(l, w - r, Y(v)) + `<text x="${l - 6}" y="${Y(v) + 4}" text-anchor="end">${v.toFixed(2)}</text>`; });
+      ys.forEach((d, i) => {
+        const rel = nz[d.t].reliability;
+        s += `<rect x="${X(i) - bw * 0.32}" y="${Y(rel)}" width="${bw * 0.64}" height="${Y(0) - Y(rel)}" fill="#e3e3de"${tipAttr(`<b>Start ${d.t}</b><br>spread across NTAs: SD ${f1(nz[d.t].total_sd)} pts, of which sales noise ${f1(nz[d.t].noise_sd)}<br>share that is real signal: ${Math.round(rel * 100)}%`)}/>`;
+        s += `<text x="${X(i)}" y="${h - b + 15}" text-anchor="middle">${d.t}</text>`;
+      });
+      const ln = (k, col, dash) => { const pts = ys.map((d, i) => (d[k] == null ? null : [X(i), Y(Math.max(0, d[k]))])); let p = '', pen = false; pts.forEach((q) => { if (!q) { pen = false; return; } p += `${pen ? 'L' : 'M'}${q[0]},${q[1]}`; pen = true; }); return `<path d="${p}" fill="none" stroke="${col}" stroke-width="2.4"${dash ? ' stroke-dasharray="5 3"' : ''}/>` + pts.map((q, i) => (q ? `<circle cx="${q[0]}" cy="${q[1]}" r="3.5" fill="${col}"${tipAttr(`start ${ys[i].t}: ${k === 'hind_rho' ? 'hindsight' : 'real-time'} Spearman ${f3(ys[i][k])}`)}/>` : '')).join(''); };
+      s += ln('hind_rho', C.ink, true) + ln('roll_rho', C_COL, false);
+      s += `<text x="${l + (w - l - r) / 2}" y="${h - 4}" text-anchor="middle" style="fill:#5d616b">start year (real time needs 3 finished years to train, so it starts at ${ys.find((d) => d.roll_rho != null).t})</text>`;
+      return svg(s, w, h) + legend([['#e3e3de', 'share of the spread that is real (not sales noise)'], [C.ink, 'hindsight: fit on that year itself'], [C_COL, 'real time: trained on finished years only']]);
+    }
+    function heat() {
+      const Lk = K2.links, ys = Lk.years, col = d3.scaleDiverging([-0.7, 0, 0.7], (x) => d3.interpolateRdBu(1 - x));
+      return `<div class="nyc-table-wrap"><table class="nyc-table p6-heat"><thead><tr><th>Input</th>${ys.map((y) => `<th class="num">${y}</th>`).join('')}</tr></thead><tbody>${Lk.cols.map((c) => `<tr><td>${sl(c)}</td>${Lk.rho[c].map((v, i) => `<td class="num" style="background:${v == null ? '#fff' : col(v)};color:${v != null && Math.abs(v) > 0.45 ? '#fff' : '#1b1d22'}"${tipAttr(`${sl(c)}, start ${ys[i]}: Spearman with the outcome ${v == null ? '–' : f2(v)}`)}>${v == null ? '–' : (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2).slice(1)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    }
+
     // ═════════ text that depends on results ═════════
     const cb = CO.C, bb = CO.B;
     const clearList = (m) => Object.entries(CO[m]).filter(([k, c]) => !/[\^\[~]/.test(k) && clears(c)).map(([k, c]) => `${sl(k).toLowerCase()} ${sgn(c.b)}`);
@@ -527,9 +545,17 @@
     const formLabel = { linear: 'straight line', sq: 'squared term', bins: 'four levels (<1×, 1–2×, 2–3×, 3×+)', spline: 'spline (4 knots)' };
     const peakTxt = Object.entries(S.curves).filter(([, c]) => c.peak).map(([k, c]) => `${sl(k).replace('Noise: ', '').toLowerCase()} noise helps up to ~${c.peak}× the city rate, then hurts (${Math.round(100 * c.share_above_peak)}% of NTA-years are past it)`);
 
+    const GH = 'https://github.com/joseph-moran7433/Personal-Website/blob/main/';
+    const CODE = [
+      ['nyc-data-explorer/rns_pulls.py', 'Every raw pull (DOF sales, ACS, DOB permits, 311, NYPD, parks), cached and resumable.'],
+      ['nyc-data-explorer/build_rising.py', 'Outcome, inputs, Models B and C, rolling back-test, sensitivity runs, sales bootstrap, the score.'],
+      ['nyc-data-explorer/build_checks.py', '§9: top-20 vs random picks, hindsight ceiling, sales-noise share, input links by year.'],
+      ['assets/nyc-explorer/models6.js', 'This page.'],
+      ['assets/nyc-explorer/rising_tool.js', 'The Rising Neighborhood Finder.'],
+    ];
     main.innerHTML = `
     <header class="nyc-hero">
-      <div class="nyc-eyebrow">Part 6 · Rising Neighborhood Score · built from the change log</div>
+      <div class="nyc-eyebrow">Part 6 · Rising Neighborhood Score · full code &amp; analysis · built from the change log</div>
       <h1 class="nyc-title">For an officer on PCS orders: where will a home bought now beat the city by the time you sell?</h1>
       <p class="nyc-lede">The question is now <strong>which neighborhoods are good places to live and likely to see home values beat the city's over a 3-year tour</strong>. The outcome is a <strong>number</strong> (3-year price change minus the city's), not a 0/1 "tipped" label. The unit is the neighborhood (NTA). Models B and C are now <strong>linear regressions</strong>, and the prediction becomes a <strong>0–100 score</strong>. Livability <strong>filters</strong> (commute, crime, parks, price, noise) are applied after scoring. <a href="#" onclick="openNycModelsSignals();return false;">Part 5</a> is the tipping model this replaces.</p>
       <div class="nyc-stats">
@@ -541,7 +567,7 @@
     </header>
 
     <div class="p5-road">
-      ${[['p6-change', 'What changed', 'the 15 items'], ['p6-out', 'Outcome', 'timing, price, coverage'], ['p6-in', 'Inputs', 'where each comes from'], ['p6-choice', 'Choices tested', 'permits, noise, Gap'], ['p6-fit', 'B vs C', 'held-out years'], ['p6-score', 'The score', 'rank, then filter'], ['p6-sens', 'Sensitivity', 'one change at a time'], ['p6-noise', 'Data noise', 'redraw the sales'], ['p6-cf', 'If done differently', 'shortcuts'], ['p6-verdict', 'Verdict', 'scorecard + limits']]
+      ${[['p6-change', 'What changed', 'the 15 items'], ['p6-out', 'Outcome', 'timing, price, coverage'], ['p6-in', 'Inputs', 'where each comes from'], ['p6-choice', 'Choices tested', 'permits, noise, Gap'], ['p6-fit', 'B vs C', 'held-out years'], ['p6-score', 'The score', 'rank, then filter'], ['p6-sens', 'Sensitivity', 'one change at a time'], ['p6-noise', 'Data noise', 'redraw the sales'], ['p6-cf', 'If done differently', 'shortcuts'], ['p6-checks', 'The two checks', 'luck? the fade'], ['p6-verdict', 'Verdict', 'scorecard + limits']]
         .map(([id, a, b], i) => `<button type="button" onclick="document.getElementById('${id}').scrollIntoView({behavior:'smooth'})"><i>${i}</i><b>${a}</b><span>${b}</span></button>`).join('')}
     </div>
 
@@ -691,16 +717,9 @@
     <h2 class="mdl-section c" id="p6-score">5 · The Rising Neighborhood Score: score, rank, then filter</h2>
     <section class="nyc-panel">
       <div class="nyc-kicker">Items 6 and 11 · for an officer buying now</div>
-      <p class="mdl-cap" style="margin-top:0"><b>Score</b> = the percentile rank (0–100) of Model C's predicted 3-year appreciation vs the city, among the ${M.n_now} NTAs scored for start year ${M.now_t} (base price = ${M.now_t - 1}–${M.now_t} sales; inputs through ${M.now_t - 2}; the prediction is for ${M.now_t} → ${M.now_t + M.hold}). The weights were learned from ${tr0}–${M.last_t}, not set by hand. The % is the prediction itself; the range is where 80% of Model C's held-out misses fell (${sgn(pct(S.band.q10))}% to ${sgn(pct(S.band.q90))}% around the prediction). <b>The filters are not in the model.</b> They measure current conditions (${M.filter_years.join('–')}) and only hide neighborhoods. Pick a duty station or click the map to set your own.</p>
-      ${controls()}
-      <div id="p6-funnel"></div>
+      <p class="mdl-cap" style="margin-top:0"><b>The interactive version</b> (duty station, distance, budget, subway, parks, crime, noise, boroughs) is the <a href="#" onclick="openNycRisingScore();return false;">Rising Neighborhood Finder</a>, the page Part 6 opens to. <b>Score</b> = the percentile rank (0–100) of Model C's predicted 3-year appreciation vs the city, among the ${M.n_now} NTAs scored for start year ${M.now_t} (base price = ${M.now_t - 1}–${M.now_t} sales; inputs through ${M.now_t - 2}; the prediction is for ${M.now_t} → ${M.now_t + M.hold}). The weights were learned from ${tr0}–${M.last_t}, not set by hand. The % is the prediction itself; the range is where 80% of Model C's held-out misses fell (${sgn(pct(S.band.q10))}% to ${sgn(pct(S.band.q90))}% around the prediction). <b>The filters are not in the model.</b> They measure current conditions (${M.filter_years.join('–')}) and only hide neighborhoods. </p>
+      <button type="button" class="nyc-nav-btn" style="margin-top:0.6rem" onclick="openNycRisingScore()">Open the finder →</button>
     </section>
-    <div class="nyc-row p6-scorerow">
-      <section class="nyc-panel"><div class="nyc-kicker">Map · darker = higher score · gray = filtered out · numbers = your list</div><div id="p6-map"></div>${real}</section>
-      <section class="nyc-panel"><div class="nyc-kicker">Your ranked list</div><div id="p6-list"></div>
-        <p class="mdl-cap"><b>Hottest neighbor</b> is the Gap in words: the qualifying neighbor with the highest 3-year momentum and how many log points ahead of this one it is. Price is the ${M.now_t - 1}–${M.now_t} median per unit for 1–3 family homes. Distance is straight-line from the neighborhood's population center, not a commute time.</p>
-      </section>
-    </div>
     <div class="nyc-row">
       <section class="nyc-panel"><div class="nyc-kicker">Worked example · ${ex.name}</div><h2>From inputs to a score of ${ex.score}</h2>
         ${waterfall()}${real}
@@ -752,6 +771,43 @@
       </section>
     </div>
 
+    <!-- ═════════ 9. THE TWO CHECKS ═════════ -->
+    <h2 class="mdl-section bc" id="p6-checks">9 · The two checks before calling it finished</h2>
+    <section class="nyc-panel">
+      <div class="nyc-kicker">Check 1 · is "the top 20 beat the city ${kc.hits} of ${kc.of} times" more than luck?</div>
+      <div class="nyc-stats" style="margin:0.4rem 0 0">
+        <div class="nyc-stat"><div class="nyc-stat-num">p ≈ ${kc.p < 0.001 ? '0.00001' : kc.p}</div><div class="nyc-stat-label">chance a random 20 each year would do as well (exact: one hypergeometric draw per year, combined)</div></div>
+        <div class="nyc-stat"><div class="nyc-stat-num">${sgn(kc.excess_hits[0])}</div><div class="nyc-stat-label">extra hits over random, 95% CI ${sgn(kc.excess_hits[1])} to ${sgn(kc.excess_hits[2])} (resampling whole NTAs ${K.meta.nboot.toLocaleString()} times)</div></div>
+        <div class="nyc-stat"><div class="nyc-stat-num">${sgn(kc.excess_ret_ci[0])} pts</div><div class="nyc-stat-label">extra 3-year gain of the top 20 over the average NTA, 95% CI ${sgn(kc.excess_ret_ci[1])} to ${sgn(kc.excess_ret_ci[2])}</div></div>
+        <div class="nyc-stat"><div class="nyc-stat-num">${K1.models.persist.hits}/${K1.models.persist.of}</div><div class="nyc-stat-label">"last 3 years continue" for comparison: no better than random (p ${f2(K1.models.persist.p)})</div></div>
+      </div>
+    </section>
+    <div class="nyc-row p5-wide">
+      <section class="nyc-panel"><div class="nyc-kicker">Where ${kc.hits} falls among random picks</div><h2>Far outside what luck gives</h2>${chartNull()}${real}
+        <p class="mdl-cap">Each test year, picking 20 of the ~${Math.round(kc.per_year.reduce((a, d) => a + d.n, 0) / kc.per_year.length)} scored NTAs at random gives a known number of winners on average (more in years when more NTAs beat the city). Adding the four years gives the gray distribution. The simple model (levels + momentum) and Model B land in the same place as C; carrying the last 3 years forward does not.</p></section>
+      <section class="nyc-panel"><div class="nyc-kicker">Not a lucky cutoff</div><h2>Top 5 through top 50</h2>${chartTopN()}${real}
+        <p class="mdl-cap">The edge holds for every list size. It is strongest at the very top (top 5: ${K1.curve.C[0].hits}/${K1.curve.C[0].of}) and thins as the list grows, which is what a real but modest ranking signal looks like.</p></section>
+    </div>
+    <section class="nyc-panel"><div class="nyc-kicker">Year by year (incl. the two validation years, faded)</div><h2>The edge comes mostly from the earlier years</h2>${chartYearHits()}${real}
+      <p class="mdl-cap"><b>Caveat on the p-value:</b> the four test windows overlap (a ${T[0]} start sells in ${T[0] + M.hold}, a ${T[1]} start in ${T[1] + M.hold}), so they are not four independent tries; one citywide shock hits several at once. The NTA bootstrap handles neighborhoods moving together but not years moving together. Even so, ${kc.per_year.slice(0, 2).map((d) => `${d.t} (${d.hits} vs ${d.expected}, p ${d.p < 0.001 ? '< 0.001' : d.p.toFixed(3)})`).join(' and ')} each clear chance on their own. <b>But</b> ${kc.per_year.slice(-1).map((d) => `${d.t} (${d.hits} vs ${d.expected}, p ${d.p.toFixed(2)})`)} was no better than random. That is check 2.</p></section>
+
+    <section class="nyc-panel">
+      <div class="nyc-kicker">Check 2 · why does the ranking fade for ${T.slice(-2).join('–')} starts?</div>
+      <h2>Two causes: less real signal to find, and the old patterns flipped</h2>
+      <p class="mdl-cap" style="margin-top:0"><b>Test A, the hindsight ceiling:</b> refit Model B's inputs on each start year's <em>own</em> outcomes (leave-one-out, so it still can't grade itself). If even hindsight can't rank a year, the inputs lost their information. If hindsight can but real time can't, the relationships changed. <b>Test B, sales noise:</b> redraw each NTA's sales ${K.meta.nnoise} times, rebuild the outcome, and see how much of each year's spread across NTAs is just which homes happened to sell.</p>
+    </section>
+    <section class="nyc-panel"><div class="nyc-kicker">Tests A and B together</div><h2>The ceiling fell, and real time fell further</h2>${chartCeiling()}${real}
+        ${(() => { const y = Object.fromEntries(K2.years.map((d) => [d.t, d])), n = Object.fromEntries(K2.noise.map((d) => [d.t, d])); return `<p class="mdl-cap"><b>Less to find:</b> sales noise is steady at ~${f1(K2.noise.reduce((a, d) => a + d.noise_sd, 0) / K2.noise.length)} pts every year, but the real spread between neighborhoods shrank (SD ${f1(n[2019].total_sd)} for 2019 starts → ${f1(n[2021].total_sd)} for 2021). Only ~${Math.round(100 * n[2021].reliability)}% of the 2021 spread and ~${Math.round(100 * n[2022].reliability)}% of the 2022 spread is real, vs ${Math.round(100 * n[2019].reliability)}% for 2019. With that much noise, even a perfect model can't rank well: hindsight itself fell from ${f2(y[2018].hind_rho)} (2018) to ${f2(y[2022].hind_rho)} (2022). <b>The patterns changed:</b> hindsight still ranked 2021 at ${f2(y[2021].hind_rho)}, but the real-time model got ${f2(y[2021].roll_rho)}. Weights learned from earlier years pointed the wrong way.</p>`; })()}</section>
+    <section class="nyc-panel"><div class="nyc-kicker">What flipped · each input's rank correlation with the outcome, by start year</div><h2>Catch-up weakened, momentum reversed</h2>${heat()}${real}
+        <p class="mdl-cap">Red = more of this input went with beating the city; blue = with lagging. <b>2015–19 starts:</b> cheap, lower-income, lower-education areas caught up (strong blue for starting price, income and college share) and recent winners cooled off (momentum blue). <b>2020–22 starts</b>, with sales running through COVID and the 2022–23 rate spike: the catch-up pattern faded toward 0, and momentum and neighbors' momentum turned red (winners kept winning). The final model is fit on all of 2013–22, so it still leans on the older pattern.</p></section>
+    <section class="nyc-panel"><div class="nyc-kicker">What the two checks mean for the tool</div>
+      <ul class="p6-list">
+        <li><b>The score is better than chance at picking winners:</b> ${kc.hits}/${kc.of} vs ~${Math.round(kc.expected)}. That holds for every list size, and for the simple model and Model B too.</li>
+        <li><b>The edge has faded:</b> since COVID the real differences between neighborhoods are smaller relative to sales noise, and the old "cheap areas catch up, hot areas cool off" pattern weakened or reversed. The ${M.now_t} score can't be tested until ${M.now_t + M.hold} sales exist.</li>
+        <li><b>So the Finder says it plainly:</b> choose for livability first, use the score as a tiebreaker. A recency-weighted fit (for the regime change) and a repeat-sales index (to cut the sales noise) are the two upgrades that target exactly these two causes.</li>
+      </ul>
+    </section>
+
     <!-- ═════════ VERDICT ═════════ -->
     <h2 class="mdl-section bc" id="p6-verdict">Verdict: two models, final scorecard</h2>
     <section class="nyc-panel">
@@ -771,7 +827,7 @@
       <div class="nyc-kicker">Limits to say out loud</div>
       <ul class="p6-list">
         <li><b>Median, not a price index.</b> A shift in which homes sell moves the median. Repeat-sales is the next upgrade (item 4).</li>
-        <li><b>The test years were unusual.</b> ${T[0] + M.hold}–${T[T.length - 1] + M.hold} outcomes include COVID moves out of dense areas and the 2022–23 rate spike. A model that ranks well through that is encouraging; one that ranks poorly may just be facing a regime change.</li>
+        <li><b>The test years were unusual, and the edge faded.</b> ${T[0] + M.hold}–${T[T.length - 1] + M.hold} outcomes include COVID moves and the 2022–23 rate spike. §9 shows the late fade is part sales noise swamping a smaller real spread, part a real regime change.</li>
         <li><b>Manhattan is mostly unscored</b> (few 1–3 family homes). The condo sensitivity row shows what adding condos does.</li>
         <li><b>Filters are rough.</b> Distance is straight-line, park access uses tract centers, and noise is complaints, not decibels.</li>
         <li><b>Model C is a posterior mode.</b> Intervals come from a clustered sandwich, not a full Bayesian fit; R-INLA or Stan would give proper posterior intervals for u.</li>
@@ -780,7 +836,8 @@
     </section>
     <section class="nyc-panel">
       <div class="nyc-kicker">Reproduce</div>
-      <p class="mdl-cap" style="margin-top:0"><code>python nyc-data-explorer/rns_pulls.py</code> (slow, cached) then <code>python nyc-data-explorer/build_rising.py</code>. Data: DOF annualized sales ${M.sale_years[0]}–${M.sale_years[1]} (nyc.gov) + PLUTO <code>64uk-42ks</code>; ACS 5-year 2010–2023 (B19013, B25064, B15002, B25003, B01003) with the Census 2020→2010 tract relationship file; DOB BIS <code>ipu4-2q9a</code> + DOB NOW <code>w9ak-ipjd</code>; NYPD <code>qgea-i56i</code>; 311 <code>76ig-c548</code> + <code>erm2-nwe9</code>; MTA <code>39hk-dx4f</code>; NYC Parks <code>enfh-gkve</code>; 2010 tracts/NTAs <code>bmjq-373p</code>. Change log: <code>MA491/rising-neighborhood-score-change-log.md</code>.</p>
+      <p class="mdl-cap" style="margin-top:0"><code>python nyc-data-explorer/rns_pulls.py</code> (slow, cached), then <code>python nyc-data-explorer/build_rising.py</code>, then <code>python nyc-data-explorer/build_checks.py</code> (§9). Data: DOF annualized sales ${M.sale_years[0]}–${M.sale_years[1]} (nyc.gov) + PLUTO <code>64uk-42ks</code>; ACS 5-year 2010–2023 (B19013, B25064, B15002, B25003, B01003) with the Census 2020→2010 tract relationship file; DOB BIS <code>ipu4-2q9a</code> + DOB NOW <code>w9ak-ipjd</code>; NYPD <code>qgea-i56i</code>; 311 <code>76ig-c548</code> + <code>erm2-nwe9</code>; MTA <code>39hk-dx4f</code>; NYC Parks <code>enfh-gkve</code>; 2010 tracts/NTAs <code>bmjq-373p</code>. Change log: <code>MA491/rising-neighborhood-score-change-log.md</code>.</p>
+      <div class="p6-changes">${CODE.map(([f, d]) => `<div><i>&lt;/&gt;</i><b>${f.split('/').pop()}</b><span>${d}</span><a href="${GH}${f}" target="_blank" rel="noopener">view code on GitHub →</a></div>`).join('')}</div>
     </section>`;
 
     document.getElementById('p6-verdict-note').innerHTML = `<b>Verdict:</b> the honest test says <b>the ranking is weak overall but useful at the top</b>. Across ${T[0]}–${T[T.length - 1]} starts, Model C's ranking correlates only ${f2(L.C.rho)} with what happened (B ${f2(L.B.rho)}; the simplest B, levels + momentum only, ${f2(L.B1.rho)}; last 3 years continue ${f2(L.persist.rho)}), and it fades from ${f2(L.C.per_year[0].rho)} for ${T[0]} starts to ${f2(L.C.per_year[L.C.per_year.length - 1].rho)} for ${T[T.length - 1]}. But its top 20 beat the city <b>${L.C.top_beat} of ${L.C.top_n}</b> times vs ~${Math.round(L.C.random_beat)} for a random pick, and landed ${sgn(L.C.top_mean - L.C.all_mean)} pts above the average neighborhood. <b>What drives it:</b> cheaper, lower-income neighborhoods catch up (starting price ${sgn(cb.PRICE0.b, f2)} per SD, income ${sgn(cb.INC.b, f2)}), recent winners cool off (momentum ${sgn(cb.MOM.b, f2)}), more construction slows prices (${sgn(cb.CONSTR ? cb.CONSTR.b : cb.NB.b, f2)}), and <b>a hot neighbor next door helps</b> (Gap ${sgn(cb.GAP.b, f2)}, 95% CI ${f2(cb.GAP.lo)} to ${f2(cb.GAP.hi)}). The extra signals did not improve the ranking over the simple model, the same lesson as Part 5. <b>B vs C:</b> a tie (Spearman difference ${sgn(S.gap_ci.rho[0], f3)}, CI ${f3(S.gap_ci.rho[1])} to ${f3(S.gap_ci.rho[2])}), with B ahead by a hair in ${sens.length - cBeats} of ${sens.length} sensitivity setups; the place effect shrank to ~0, and both leave clustered errors (Moran's I ≈ ${S.moran.C[0]}), meaning whole areas move together in ways no input sees. I keep <b>C for the score</b> because it carries the Gap, the one neighbor effect that held up, and B beside it. <b>Use the score to shortlist, not to forecast a number:</b> the 80% range is wide and the citywide level is unpredictable. <b>Next:</b> a repeat-sales index (removes mix shifts in the median), condos for Manhattan, transit commute times, and a longer test once 2026–27 sales exist.`;
@@ -795,31 +852,6 @@
     wire('p6-curve-t', 'p6-curve', chartCurve, 'k');
     wire('p6-sc-t', 'p6-sc', chartScatter, 'm');
     document.getElementById('p6-price-sel').addEventListener('change', (e) => { document.getElementById('p6-price').innerHTML = chartPrice(e.target.value); });
-
-    function redraw() {
-      const v = scoreView();
-      document.getElementById('p6-map').innerHTML = v.map;
-      document.getElementById('p6-list').innerHTML = v.table;
-      document.getElementById('p6-funnel').innerHTML = v.funnel;
-      document.getElementById('p6-scoremap').addEventListener('click', (e) => {
-        const pt = e.currentTarget.createSVGPoint();
-        pt.x = e.clientX; pt.y = e.clientY;
-        const p = pt.matrixTransform(e.currentTarget.getScreenCTM().inverse());
-        [F.lon, F.lat] = proj.invert([p.x, p.y]);
-        F.wp = -1;
-        document.getElementById('p6-wp').value = '-1';
-        redraw();
-      });
-    }
-    const on = (id, ev, fn) => document.getElementById(id).addEventListener(ev, fn);
-    on('p6-wp', 'change', (e) => { const i = +e.target.value; F.wp = i; if (i >= 0) { F.lat = S.workplaces[i].lat; F.lon = S.workplaces[i].lon; } redraw(); });
-    on('p6-km', 'input', (e) => { F.km = +e.target.value; document.getElementById('p6-kmv').textContent = F.km ? F.km + ' km' : 'off'; redraw(); });
-    on('p6-crime', 'change', (e) => { F.crime = e.target.value; redraw(); });
-    on('p6-park', 'input', (e) => { F.park = +e.target.value; document.getElementById('p6-parkv').textContent = F.park ? '≥ ' + F.park + '%' : 'off'; redraw(); });
-    on('p6-price', 'input', (e) => { F.price = +e.target.value; document.getElementById('p6-pricev').textContent = F.price ? money(F.price) : 'off'; redraw(); });
-    on('p6-top', 'input', (e) => { F.topN = +e.target.value; document.getElementById('p6-topv').textContent = F.topN; redraw(); });
-    document.querySelectorAll('[data-noise]').forEach((el) => el.addEventListener('input', (e) => { const k = e.target.dataset.noise; F.noise[k] = +e.target.value; document.getElementById('p6-nv-' + k).textContent = F.noise[k] ? F.noise[k] + '×' : 'off'; redraw(); }));
-    redraw();
 
     main.onmousemove = (e) => { const t = e.target.closest('[data-tip]'); if (window.nycTip) window.nycTip(t ? t.getAttribute('data-tip') : null, e); };
     main.onmouseleave = () => window.nycTip && window.nycTip(null);

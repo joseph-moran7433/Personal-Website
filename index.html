@@ -1771,7 +1771,7 @@
       .recipe-grid { grid-template-columns: 1fr; }
     }
   </style>
-  <link rel="stylesheet" href="assets/nyc-explorer/explorer.css?v=20261030">
+  <link rel="stylesheet" href="assets/nyc-explorer/explorer.css?v=20261103">
 </head>
 <body>
 
@@ -2435,6 +2435,7 @@
         <span>Back to Site</span>
       </button>
       <div class="nyc-crumb" id="nyc-crumb">/ NYC Data Explorer</div>
+      <div class="nyc-nav-action" id="nyc-nav-action"></div>
     </div>
     <nav class="nyc-tabs" id="nyc-tabs" aria-label="Datasets"></nav>
   </div>
@@ -4959,8 +4960,8 @@ const projects = [
             <button type="button" class="portal-tile nyc" onclick="openNycRisingScore()">
               <div class="portal-tile-icon">🏠</div>
               <div class="portal-tile-title">Part 6: Rising Neighborhood Score</div>
-              <div class="portal-tile-desc">For officers on PCS orders: which neighborhoods should beat the city on home values over a 3-year tour &middot; continuous outcome &middot; NTAs &middot; linear B vs C &middot; 0&ndash;100 score &middot; commute, crime, park, price and noise filters</div>
-              <div class="portal-tile-cta">Open the score &rarr;</div>
+              <div class="portal-tile-desc">A finder for officers on PCS orders: set your duty station, distance, budget and must-haves, get NYC neighborhoods ranked by how likely home values beat the city over a 3-year tour &middot; full code &amp; analysis one click away</div>
+              <div class="portal-tile-cta">Open the finder &rarr;</div>
             </button>
           </div>`
         },
@@ -8981,7 +8982,8 @@ lucide.createIcons();
 </script>
 <script src="assets/nyc-explorer/models.js?v=20261027"></script>
 <script src="assets/nyc-explorer/models5.js?v=20261029"></script>
-<script src="assets/nyc-explorer/models6.js?v=20261030"></script>
-<script src="assets/nyc-explorer/explorer.js?v=20261030"></script>
+<script src="assets/nyc-explorer/models6.js?v=20261103"></script>
+<script src="assets/nyc-explorer/rising_tool.js?v=20261103"></script>
+<script src="assets/nyc-explorer/explorer.js?v=20261103"></script>
 </body>
 </html>

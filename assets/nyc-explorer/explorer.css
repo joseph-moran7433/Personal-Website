@@ -401,3 +401,39 @@
 @media (max-width: 900px) { .nyc-row.p6-scorerow { grid-template-columns: 1fr; } }
 .p6-trunc { max-width: 8.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .p6-rank td:nth-child(2) { min-width: 9rem; }
+/* top-right page button in the overlay nav (Part 6: tool <-> full analysis) */
+.nyc-nav-action { margin-left: auto; }
+.nyc-nav-btn { display: inline-flex; align-items: center; gap: 0.4rem; font: inherit; font-size: 0.8rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 999px; border: 1px solid var(--nyc-text); background: var(--nyc-text); color: #fff; cursor: pointer; white-space: nowrap; }
+.nyc-nav-btn:hover { background: var(--nyc-accent); border-color: var(--nyc-accent); }
+/* Part 6 tool: Rising Neighborhood Finder */
+.rt-trust { border-top: 3px solid var(--nyc-l-teal); }
+.rt-ctls { margin-top: 0.5rem; }
+.rt-noise { margin-top: 0.5rem; }
+.rt-noise[hidden] { display: none; }
+.rt-ctls .p6-ctl { min-width: 0; }
+.rt-ctls select { width: 100%; }
+.rt-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.rt-chips button { font: inherit; font-size: 0.74rem; padding: 0.15rem 0.55rem; border-radius: 999px; border: 1px solid var(--nyc-border); background: var(--nyc-surface); color: var(--nyc-faint); cursor: pointer; }
+.rt-chips button.on { background: var(--nyc-l-teal); border-color: var(--nyc-l-teal); color: #fff; }
+.rt-sort { font-size: 0.72rem; text-transform: none; letter-spacing: 0; display: inline-flex; gap: 0.3rem; align-items: center; }
+.rt-sort select { font: inherit; padding: 0.1rem 0.25rem; border: 1px solid var(--nyc-border); border-radius: 5px; background: var(--nyc-surface); }
+.rt-rank tbody tr { cursor: pointer; }
+.rt-rank tbody tr:hover td { background: rgba(0, 173, 208, 0.05); }
+.rt-empty { color: var(--nyc-faint); font-size: 0.86rem; padding: 0.6rem 0; }
+.rt-dhead { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.rt-dhead h3 { margin: 0; font-size: 1.15rem; }
+.rt-big { font-size: 1.4rem; min-width: 3.2rem; padding: 0.3rem 0.5rem; }
+.rt-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.6rem; margin: 0.8rem 0; }
+.rt-facts > div { border: 1px solid var(--nyc-border); border-radius: 8px; padding: 0.5rem 0.7rem; display: grid; gap: 0.15rem; }
+.rt-facts b { font-family: var(--nyc-mono); font-size: 1.1rem; }
+.rt-facts span { font-size: 0.75rem; color: var(--nyc-muted); line-height: 1.4; }
+.rt-checks { list-style: none; margin: 0.3rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.25rem 1rem; }
+.rt-checks li { display: grid; grid-template-columns: 1.2rem 9.5rem 1fr; gap: 0.4rem; font-size: 0.8rem; align-items: baseline; }
+.rt-checks i { font-style: normal; font-weight: 700; text-align: center; }
+.rt-checks li.yes i { color: var(--nyc-l-green); } .rt-checks li.no i { color: var(--nyc-l-red); } .rt-checks li.na i { color: var(--nyc-faint); }
+.rt-checks li.no b { color: var(--nyc-l-red); }
+.rt-checks span { color: var(--nyc-muted); } .rt-checks em { color: var(--nyc-faint); font-style: normal; }
+#rt-detail .nyc-chart { max-width: 460px; }
+/* Part 6 analysis: the two checks */
+.p6-heat td.num { text-align: center; font-family: var(--nyc-mono); font-size: 0.74rem; padding: 0.3rem 0.2rem; }
+@media (max-width: 900px) { .nyc-nav-btn { font-size: 0.74rem; padding: 0.35rem 0.65rem; } }

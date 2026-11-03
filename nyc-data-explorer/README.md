@@ -86,3 +86,9 @@ Implements `MA491/rising-neighborhood-score-change-log.md`. `python rns_pulls.py
   Livability filters (commute, felony trend, park access, price cap, noise caps) are applied on the page, not in the model.
 - Extra pulls: DOB BIS `ipu4-2q9a` 2019-23 + DOB NOW `w9ak-ipjd` (NB / Full Demolition / Alteration CO), 311 noise by
   kind from `76ig-c548` + `erm2-nwe9`, NYPD felonies 2007-2025, NYC Parks `enfh-gkve` (1+ acre).
+- **Two checks (`build_checks.py` -> `rising_checks.json`, ~1 min, reuses the cache):** (1) Model C's top-20 hits vs
+  random picks (exact hypergeometric null per test year, convolved; NTA-cluster bootstrap of excess hits and return;
+  top 5..50). (2) Why 2021-22 fades: leave-one-out "hindsight" fit per start year vs the rolling model, sales-bootstrap
+  share of each year's spread that is real, and each input's Spearman with the outcome by start year.
+- **Pages:** Part 6 opens to the **Rising Neighborhood Finder** (`rising_tool.js`, route `__rising`); the top-right
+  button goes to the full analysis (`models6.js`, route `__rising_analysis`, section 9 = the two checks).

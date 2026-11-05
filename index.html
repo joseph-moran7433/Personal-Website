@@ -530,6 +530,9 @@
     .sens-b5 { background: rgba(79,152,163,0.55); }
     .sens-b6 { background: rgba(201,168,76,0.35); }
 
+    .dl-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+    .dl-table th, .dl-table td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid rgba(128,128,128,0.25); vertical-align: top; }
+    .dl-table th { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
     .reflection {
       padding: 2rem 2.25rem;
       background: var(--surface);
@@ -4982,6 +4985,93 @@ const projects = [
         }
       ],
       reflection: `This stays open-ended on purpose. New datasets get their own tab as they come up (the 2017 restaurant-inspection archive and 311 food complaints are next), and a research question only gets picked once the data underneath it is clearly understood.`
+    }
+  },
+  {
+    id: 10,
+    date: "Currently working on it",
+    sortKey: 202611,
+    title: "Do Defense Stocks Move Before the Deal?",
+    desc: "MA491 project three: an event study testing whether LMT, RTX, NOC and GD stock prices or trading volume move abnormally in the days before large DoD contract awards and arms sale notifications are made public. Progress log: question set, sources checked, first sample pulled. Nothing modeled yet.",
+    tags: ["Event Study", "Python", "war.gov", "USAspending", "yfinance"],
+    detail: {
+      summary: "Progress log, not a finished write-up. Step 1 (the question) is roughly set, Step 2 (the data) is in progress, and no model or statistical test has been run. Every number below comes from a source I can point to. Anything not yet checked is labeled.",
+      sections: [
+        {
+          label: "Where This Stands",
+          heading: "Step 2 of 7: getting to know the data",
+          body: `<table class="dl-table">
+            <tr><th>Step</th><th>Status</th></tr>
+            <tr><td>1. Research question</td><td>Rough version approved</td></tr>
+            <tr><td>2. Data: sources</td><td>Checked (table below)</td></tr>
+            <tr><td>2. Data: sample pull</td><td>In progress: 12 contract events + 3 arms sales (rough sample done)</td></tr>
+            <tr><td>2. Data: first-look charts</td><td>Not started</td></tr>
+            <tr><td>3&ndash;7. Research, models, scoring, sensitivity, presentation</td><td>Not started</td></tr>
+          </table>`,
+          stats: [
+            { num: "6", label: "tickers pulled (4 firms + SPY, ITA)" },
+            { num: "15", label: "sample events checked against the source" },
+            { num: "0", label: "models run so far" }
+          ]
+        },
+        {
+          label: "The Question",
+          heading: "Two parts, in order",
+          body: `<p><strong>1.</strong> Does a major DoD contract or arms sale announcement move the stock on the first trading day after it goes public (day 0)? <strong>2.</strong> If it does, does part of that move show up in days &minus;10 to &minus;1? Part 2 only means something if Part 1 comes back yes. A flat pre-announcement window says nothing if the news itself doesn't move the price.</p>
+          <p><strong>Who decides:</strong> the people who own DoD's contract-announcement rules (DFARS 205.303; Army supplement AFARS 5105.303 bars releasing the winner's identity, even to a Member of Congress, before the public announcement), plus the DoD IG and the armed services committees. Public data can't prove insider trading. Findings will be worded as "consistent with information leakage" or "no evidence of leakage."</p>
+          <table class="dl-table">
+            <tr><th>#</th><th>Assumption (each gets tested in Step 6)</th></tr>
+            <tr><td>A1</td><td>The war.gov / DSCA posting is the first time the deal is public. <em>Weakest; many awards are previewed in trade press.</em></td></tr>
+            <tr><td>A2</td><td>Contracts post after the 4 PM close, so day 0 is the next trading day.</td></tr>
+            <tr><td>A3</td><td>A deal is "large" based on its share of the firm's prior-year revenue, not a flat dollar cutoff.</td></tr>
+            <tr><td>A4</td><td>Normal returns can be estimated from the stock's relationship to the market over about the prior year.</td></tr>
+            <tr><td>A5</td><td>Leakage would show as positive abnormal returns or high volume in days &minus;10 to &minus;1.</td></tr>
+            <tr><td>A6</td><td>Confounding news (earnings, etc.) near an event can be identified and the event excluded.</td></tr>
+            <tr><td>A7</td><td>Events are independent. <em>Each firm had 100+ actions of $500M or more since 2018, so windows overlap.</em></td></tr>
+            <tr><td>A8</td><td>The announced value reflects real economic value. <em>It's often a multiyear ceiling.</em></td></tr>
+            <tr><td>A9</td><td>The market reacts on day 0 at all.</td></tr>
+          </table>`
+        },
+        {
+          label: "Data Sources",
+          heading: "What each source gives, and its limits",
+          body: `<table class="dl-table">
+            <tr><th>Source</th><th>Gives</th><th>Limit found</th></tr>
+            <tr><td>yfinance</td><td>Daily price and volume, 2018&ndash;Oct 2026</td><td>RTX before Apr 2020 is United Technologies' history, so RTX starts Apr 2020</td></tr>
+            <tr><td>war.gov contracts</td><td>Daily award list: firm, value, contract number</td><td>Blocks scripts, so it's read through a browser. Posts at 5:00&ndash;5:12 PM ET (verified for 10 recent days)</td></tr>
+            <tr><td>DSCA / State</td><td>Arms sale notices: country, value, contractor</td><td>Contractor only in the PDF. Since Feb 2026, State posts these</td></tr>
+            <tr><td>Federal Register API</td><td>Full text of every arms sale notice</td><td>Published weeks late, so it's used to find candidates, not dates</td></tr>
+            <tr><td>USAspending API</td><td>Dollars obligated per contract action</td><td>Obligated &ne; announced. Half of the biggest actions were never announced</td></tr>
+            <tr><td>SEC EDGAR</td><td>Annual revenue, used for the size cutoff</td><td>Revenue field name changes over the years</td></tr>
+          </table>`
+        },
+        {
+          label: "First Sample",
+          heading: "Largest events, each checked against the announcement",
+          body: `<p>Contract candidates came from USAspending (largest obligations per firm). Each one was then matched by contract number to the war.gov page where it was announced. Day 0 is the first trading day after the announcement.</p>
+          <table class="dl-table">
+            <tr><th>Firm</th><th>Type</th><th>Announced</th><th>Day 0</th><th>Announced value</th><th>Obligated</th><th>Deal (source)</th></tr>
+            <tr><td>LMT</td><td>Contract</td><td style="white-space:nowrap">2019-11-26</td><td style="white-space:nowrap">2019-11-27</td><td>$0.83B</td><td>$16.60B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/2027618/contracts-for-nov-26-2019/" target="_blank" rel="noopener">F-35 Lot 14: 15 F-35A for Australia</a> &#9888;</td></tr>
+            <tr><td>LMT</td><td>Contract</td><td style="white-space:nowrap">2025-09-29</td><td style="white-space:nowrap">2025-09-30</td><td>$12.53B</td><td>$14.15B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/4317777/contracts-for-sep-29-2025/" target="_blank" rel="noopener">F-35 Lot 18 definitization (148 aircraft) + Lot 19</a></td></tr>
+            <tr><td>LMT</td><td>Contract</td><td style="white-space:nowrap">2022-12-30</td><td style="white-space:nowrap">2023-01-03</td><td>$7.84B</td><td>$10.32B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/3256832/contracts-for-dec-30-2022/" target="_blank" rel="noopener">F-35 Lot 16 (127 aircraft) + definitize Lot 15</a></td></tr>
+            <tr><td>GD</td><td>Contract</td><td style="white-space:nowrap">2019-12-02</td><td style="white-space:nowrap">2019-12-03</td><td>$22.21B</td><td>$3.16B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/2030017/contracts-for-dec-2-2019/" target="_blank" rel="noopener">Virginia-class Block V, 9 submarines FY19-23</a> &#9888;</td></tr>
+            <tr><td>GD</td><td>Contract</td><td style="white-space:nowrap">2021-03-19</td><td style="white-space:nowrap">2021-03-22</td><td>$2.42B</td><td>$2.72B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/2544067/contracts-for-mar-19-2021/" target="_blank" rel="noopener">Virginia Block V option, 1 boat</a></td></tr>
+            <tr><td>GD</td><td>Contract</td><td style="white-space:nowrap">2019-03-18</td><td style="white-space:nowrap">2019-03-19</td><td>$2.04B</td><td>$2.04B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/1788196/contracts-for-mar-18-2019/" target="_blank" rel="noopener">Virginia-class long-lead material</a></td></tr>
+            <tr><td>NOC</td><td>Contract</td><td style="white-space:nowrap">2019-04-10</td><td style="white-space:nowrap">2019-04-11</td><td>$3.17B</td><td>$0.94B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/1811209/contracts-for-apr-10-2019/" target="_blank" rel="noopener">E-2D Hawkeye Lot 7 definitization (multiyear)</a></td></tr>
+            <tr><td>NOC</td><td>Contract</td><td style="white-space:nowrap">2024-07-19</td><td style="white-space:nowrap">2024-07-22</td><td>$1.46B</td><td>$1.46B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/3844604/contracts-for-jul-19-2024/" target="_blank" rel="noopener">E-2D: add 9 aircraft</a></td></tr>
+            <tr><td>NOC</td><td>Contract</td><td style="white-space:nowrap">2019-09-26</td><td style="white-space:nowrap">2019-09-27</td><td>$1.36B</td><td>$1.36B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/1972824/contracts-for-sep-26-2019/" target="_blank" rel="noopener">E-2D: 9 aircraft for Japan (FMS)</a></td></tr>
+            <tr><td>RTX</td><td>Contract</td><td style="white-space:nowrap">2020-06-26</td><td style="white-space:nowrap">2020-06-29</td><td>$2.27B</td><td>$2.25B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/2234393/contracts-for-jun-26-2020/" target="_blank" rel="noopener">AN/TPY-2 radar, FMS to Saudi Arabia</a></td></tr>
+            <tr><td>RTX</td><td>Contract</td><td style="white-space:nowrap">2024-07-25</td><td style="white-space:nowrap">2024-07-26</td><td>$1.94B</td><td>$0.97B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/3850293/contracts-for-jul-25-2024/" target="_blank" rel="noopener">SM-3 Block IIA production FY23-25</a></td></tr>
+            <tr><td>RTX</td><td>Contract</td><td style="white-space:nowrap">2026-07-20</td><td style="white-space:nowrap">2026-07-21</td><td>$1.81B</td><td>$1.81B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/4550330/contracts-for-july-20-2026/" target="_blank" rel="noopener">AN/SPY-6 hardware production</a> &#9888;</td></tr>
+            <tr><td>LMT</td><td>Arms sale</td><td style="white-space:nowrap">2024-01-26</td><td style="white-space:nowrap">2024-01-29</td><td>$23.00B</td><td>&mdash;</td><td><a href="https://www.federalregister.gov/documents/2025/01/06/2024-31697/arms-sales-notification" target="_blank" rel="noopener">Turkiye, 40 new F-16 Block 70 + 79 upgrades</a> &#9888;</td></tr>
+            <tr><td>RTX</td><td>Arms sale</td><td style="white-space:nowrap">2022-08-02</td><td style="white-space:nowrap">2022-08-03</td><td>$3.05B</td><td>&mdash;</td><td><a href="https://www.federalregister.gov/documents/2024/06/13/2024-12941/arms-sales-notification" target="_blank" rel="noopener">Saudi Arabia (item text not parsed; see link)</a> &#9888;</td></tr>
+            <tr><td>NOC</td><td>Arms sale</td><td style="white-space:nowrap">2018-09-07</td><td style="white-space:nowrap">2018-09-10</td><td>$3.13B</td><td>&mdash;</td><td><a href="https://www.federalregister.gov/documents/2018/09/21/2018-20573/arms-sales-notification" target="_blank" rel="noopener">Japan, 9 E-2D Advanced Hawkeye</a> &#9888;</td></tr>
+          </table>
+          <p style="font-size:0.85rem">&#9888; = needs a closer look (values disagree, late posting, or date from the Federal Register only). Arms sale dates are when the notice was delivered to Congress; the time of the public post isn't verified yet.</p>
+          <p><strong>What the sample already showed:</strong> (1) Half of the 12 largest obligations had no announcement at all, so war.gov, not USAspending, now defines the events. (2) Announced and obligated values can differ a lot: the $22.2B submarine deal had $3.2B obligated that day. The announced value will define "large." (3) One SPY-6 award was posted 5 days after its USAspending action date, a direct challenge to A1.</p>`
+        }
+      ],
+      reflection: `Progress snapshot as of Nov. 5, 2026. Next: first-look charts of returns and volume around a few of these events, all labeled preliminary. No statistical test runs until Steps 1&ndash;3 are settled.`
     }
   },
   {

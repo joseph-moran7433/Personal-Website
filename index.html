@@ -5016,8 +5016,17 @@ const projects = [
         },
         {
           label: "The Question",
-          heading: "Two parts, in order",
+          heading: "The question, with instructor feedback folded in",
           body: `<p>Do abnormal returns or abnormal trading volume show up in days &minus;10 to &minus;1 before a major DoD contract or arms sale goes public? Day 0 (the first trading day after the post) and days +1 to +5 are reported beside it to show the shape: a run-up followed by a flat day 0 would look like full leakage. The windows are reported side by side, with no day-0 gate.</p>
+          <p><strong>Added after instructor review</strong> (proposed; settled at the next Step 1 pass):</p>
+          <table class="dl-table">
+            <tr><th>Instructor question</th><th>How it enters the question</th></tr>
+            <tr><td>What research exists on pre-announcement trading?</td><td>Stocks drift before scheduled Fed announcements (Lucca &amp; Moench 2015), merger targets run up before deals, and illegal insider trades move prices (Step 3). Contract awards are the same setup: a scheduled government announcement a few people know early.</td></tr>
+            <tr><td>Compared with other public announcements?</td><td>Every result is reported beside the same window before each firm's own earnings releases, and beside random ordinary days.</td></tr>
+            <tr><td>Which companies can be traded?</td><td>Publicly traded firms only (new A10). Step 2 reports what share of award dollars they win.</td></tr>
+            <tr><td>Expand beyond arms sales?</td><td>Add losing public bidders on competitive awards: winner up and loser down before day 0 is much harder to explain away.</td></tr>
+            <tr><td>What is the model doing, and what is anomalous?</td><td>The model predicts the stock's day from the market's day; the rest is the abnormal return. A day is anomalous if it is beyond 2 standard deviations of ordinary days (about 1 day in 20). Leakage = more anomalous days before deals than in ordinary windows.</td></tr>
+          </table>
           <p><strong>Who decides:</strong> the people who own DoD's contract-announcement rules (DFARS 205.303; Army supplement AFARS 5105.303 bars releasing the winner's identity, even to a Member of Congress, before the public announcement), plus the DoD IG and the armed services committees. Public data can't prove insider trading. Findings will be worded as "consistent with information leakage" or "no evidence of leakage."</p>
           <table class="dl-table">
             <tr><th>#</th><th>Assumption (each gets tested in Step 6)</th></tr>
@@ -5030,6 +5039,7 @@ const projects = [
             <tr><td>A7</td><td>Events are independent. <em>Each firm had 100+ actions of $500M or more since 2018, so windows overlap.</em></td></tr>
             <tr><td>A8</td><td>The announced value reflects real economic value. <em>It's often a multiyear ceiling.</em></td></tr>
             <tr><td>A9</td><td>The deal is value-relevant: judged by size vs. revenue, surprise (competitive vs. sole-source or follow-on), and a trade-press check for events that show a run-up.</td></tr>
+            <tr><td>A10</td><td>Only publicly traded firms can show leakage in a stock price. The study covers public firms whose revenue is mostly defense.</td></tr>
           </table>`
         },
         {
@@ -5042,7 +5052,8 @@ const projects = [
             <tr><td>DSCA / State</td><td>Arms sale notices: country, value, contractor</td><td>Contractor only in the PDF. Since Feb 2026, State posts these</td></tr>
             <tr><td>Federal Register API</td><td>Full text of every arms sale notice</td><td>Published weeks late, so it's used to find candidates, not dates</td></tr>
             <tr><td>USAspending API</td><td>Dollars obligated per contract action</td><td>Obligated &ne; announced. Half of the biggest actions were never announced</td></tr>
-            <tr><td>SEC EDGAR</td><td>Annual revenue, used for the size cutoff</td><td>Revenue field name changes over the years</td></tr>
+            <tr><td>SEC EDGAR</td><td>Annual revenue (size cutoff) and earnings-release dates (8-K Item 2.02, about 40 per firm since 2017)</td><td>Revenue field name changes over the years; RTX's pre-2020 revenue is restated after its spin-offs</td></tr>
+            <tr><td>war.gov "offers received" <em>(planned)</em></td><td>Which awards were competitive, to find the losing bidders</td><td>Losers are often not named; needs matching by hand</td></tr>
           </table>`
         },
         {
@@ -5103,7 +5114,8 @@ const projects = [
             <tr><td>V2 volume vs. SPY volume</td><td>+0.99 (0.28)</td><td>+0.26 (0.054)</td><td>+0.46 (0.42)</td></tr>
           </table>
           <p style="font-size:0.85rem">Mean cumulative abnormal return (placebo p-value from 2,000 random non-event draws). Volume in log units; +0.26 &asymp; 30% above normal.</p>
-          <p><strong>What the rough run shows:</strong> (1) No pre-announcement signal under any model. (2) Day-0 price barely moves, but day-0 volume does, so traders notice the news even if the price doesn't. (3) A plain t-test on volume said "significant" (t = &minus;2.5) where the placebo test said no (p = 0.25), so placebo dates are the main test. (4) Model choice changes the pre-window estimate by half (+1.5% raw vs. +0.75% sector-adjusted). <strong>Picked for Step 5:</strong> market model (M2) and market-adjusted volume (V2), placebo test first, M1 as the baseline to beat. Script: <code>defense-leakage/scripts/step4_candidate_models.py</code>.</p>`
+          <p><strong>What the rough run shows:</strong> (1) No pre-announcement signal under any model. (2) Day-0 price barely moves, but day-0 volume does, so traders notice the news even if the price doesn't. (3) A plain t-test on volume said "significant" (t = &minus;2.5) where the placebo test said no (p = 0.25), so placebo dates are the main test. (4) Model choice changes the pre-window estimate by half (+1.5% raw vs. +0.75% sector-adjusted). <strong>Picked for Step 5:</strong> market model (M2) and market-adjusted volume (V2), placebo test first, M1 as the baseline to beat. Script: <code>defense-leakage/scripts/step4_candidate_models.py</code>.</p>
+          <p><strong>Earnings check (can the method see a real reaction?):</strong> the same model on 123 earnings releases finds an average day-0 move of 3.42%, against 0.96% on ordinary days, and half of earnings days count as anomalous. The sample deals' day 0 averages 0.97%, the same as an ordinary day. So the method works; the deals just don't move the price on day 0. Script: <code>defense-leakage/scripts/explore_earnings_control.py</code>.</p>`
         }
       ],
       reflection: `Progress snapshot as of Nov. 12, 2026. Next: grow the event set (every war.gov award above the size cutoff plus every arms sale naming these firms), add mid-caps, screen earnings dates, then revisit the question with the Step 3 and 4 findings before scoring.`

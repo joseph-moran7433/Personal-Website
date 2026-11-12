@@ -4992,32 +4992,32 @@ const projects = [
     date: "Currently working on it",
     sortKey: 202611,
     title: "Do Defense Stocks Move Before the Deal?",
-    desc: "MA491 project three: an event study testing whether LMT, RTX, NOC and GD stock prices or trading volume move abnormally in the days before large DoD contract awards and arms sale notifications are made public. Progress log: question set, sources checked, first sample pulled. Nothing modeled yet.",
+    desc: "MA491 project three: an event study testing whether LMT, RTX, NOC and GD stock prices or trading volume move abnormally in the days before large DoD contract awards and arms sale notifications are made public. Progress log: question set, sources checked, sample pulled, background research done, and a first rough run of every candidate model on 14 sample events.",
     tags: ["Event Study", "Python", "war.gov", "USAspending", "yfinance"],
     detail: {
-      summary: "Progress log, not a finished write-up. Step 1 (the question) is roughly set, Step 2 (the data) is in progress, and no model or statistical test has been run. Every number below comes from a source I can point to. Anything not yet checked is labeled.",
+      summary: "Progress log, not a finished write-up. Steps 1&ndash;3 have rough versions; Step 4 (candidate models) has been run once on a 14-event sample to check the machinery. No result here is a conclusion. Every number below comes from a source I can point to. Anything not yet checked is labeled.",
       sections: [
         {
           label: "Where This Stands",
-          heading: "Step 2 of 7: getting to know the data",
+          heading: "Step 4 of 7: candidate models (rough run)",
           body: `<table class="dl-table">
             <tr><th>Step</th><th>Status</th></tr>
-            <tr><td>1. Research question</td><td>Rough version approved</td></tr>
-            <tr><td>2. Data: sources</td><td>Checked (table below)</td></tr>
-            <tr><td>2. Data: sample pull</td><td>In progress: 12 contract events + 3 arms sales (rough sample done)</td></tr>
-            <tr><td>2. Data: first-look charts</td><td>Not started</td></tr>
-            <tr><td>3&ndash;7. Research, models, scoring, sensitivity, presentation</td><td>Not started</td></tr>
+            <tr><td>1. Research question</td><td>Rough version settled; refinements flagged below</td></tr>
+            <tr><td>2. Data</td><td>Sources checked; 15-event sample pulled and charted</td></tr>
+            <tr><td>3. Research</td><td>Rough version done (process + literature)</td></tr>
+            <tr><td>4. Candidate models</td><td>6 models run on the sample, labeled preliminary</td></tr>
+            <tr><td>5&ndash;7. Scoring, sensitivity, presentation</td><td>Not started</td></tr>
           </table>`,
           stats: [
-            { num: "6", label: "tickers pulled (4 firms + SPY, ITA)" },
-            { num: "15", label: "sample events checked against the source" },
-            { num: "0", label: "models run so far" }
+            { num: "6", label: "candidate models (4 return, 2 volume)" },
+            { num: "14", label: "sample events usable (RTX 2020 too early)" },
+            { num: "0", label: "pre-announcement signals so far" }
           ]
         },
         {
           label: "The Question",
           heading: "Two parts, in order",
-          body: `<p><strong>1.</strong> Does a major DoD contract or arms sale announcement move the stock on the first trading day after it goes public (day 0)? <strong>2.</strong> If it does, does part of that move show up in days &minus;10 to &minus;1? Part 2 only means something if Part 1 comes back yes. A flat pre-announcement window says nothing if the news itself doesn't move the price.</p>
+          body: `<p>Do abnormal returns or abnormal trading volume show up in days &minus;10 to &minus;1 before a major DoD contract or arms sale goes public? Day 0 (the first trading day after the post) and days +1 to +5 are reported beside it to show the shape: a run-up followed by a flat day 0 would look like full leakage. The windows are reported side by side, with no day-0 gate.</p>
           <p><strong>Who decides:</strong> the people who own DoD's contract-announcement rules (DFARS 205.303; Army supplement AFARS 5105.303 bars releasing the winner's identity, even to a Member of Congress, before the public announcement), plus the DoD IG and the armed services committees. Public data can't prove insider trading. Findings will be worded as "consistent with information leakage" or "no evidence of leakage."</p>
           <table class="dl-table">
             <tr><th>#</th><th>Assumption (each gets tested in Step 6)</th></tr>
@@ -5029,7 +5029,7 @@ const projects = [
             <tr><td>A6</td><td>Confounding news (earnings, etc.) near an event can be identified and the event excluded.</td></tr>
             <tr><td>A7</td><td>Events are independent. <em>Each firm had 100+ actions of $500M or more since 2018, so windows overlap.</em></td></tr>
             <tr><td>A8</td><td>The announced value reflects real economic value. <em>It's often a multiyear ceiling.</em></td></tr>
-            <tr><td>A9</td><td>The market reacts on day 0 at all.</td></tr>
+            <tr><td>A9</td><td>The deal is value-relevant: judged by size vs. revenue, surprise (competitive vs. sole-source or follow-on), and a trade-press check for events that show a run-up.</td></tr>
           </table>`
         },
         {
@@ -5069,9 +5069,44 @@ const projects = [
           </table>
           <p style="font-size:0.85rem">&#9888; = needs a closer look (values disagree, late posting, or date from the Federal Register only). Arms sale dates are when the notice was delivered to Congress; the time of the public post isn't verified yet.</p>
           <p><strong>What the sample already showed:</strong> (1) Half of the 12 largest obligations had no announcement at all, so war.gov, not USAspending, now defines the events. (2) Announced and obligated values can differ a lot: the $22.2B submarine deal had $3.2B obligated that day. The announced value will define "large." (3) One SPY-6 award was posted 5 days after its USAspending action date, a direct challenge to A1.</p>`
+        },
+        {
+          label: "Step 3: Research",
+          heading: "How the news travels, and what's been found before",
+          body: `<table class="dl-table">
+            <tr><th>Channel</th><th>Who knows early</th><th>How early</th></tr>
+            <tr><td>DoD contracts (DFARS 205.303)</td><td>Contracting office and the winning firm; Congress only at release</td><td>Award to 5 PM post: days</td></tr>
+            <tr><td>Arms sales: informal "tiered review"</td><td>Senate Foreign Relations and House Foreign Affairs committees</td><td><strong>20&ndash;40 days</strong> before formal notice (<a href="https://www.everycrsreport.com/files/2021-10-20_RL31675_e48d3038aaf7d07e4596357ccd8182277a68cbcc.html" target="_blank" rel="noopener">CRS RL31675</a>)</td></tr>
+            <tr><td>Arms sales: formal 36(b) notice</td><td>Public (DSCA / State post)</td><td>Our day 0</td></tr>
+          </table>
+          <table class="dl-table">
+            <tr><th>Prior work</th><th>Found</th><th>Means for us</th></tr>
+            <tr><td><a href="https://calhoun.nps.edu/entities/publication/eeff0a45-9571-4d23-ba3c-ae826ec4ca94" target="_blank" rel="noopener">Alexander (1993), NPS thesis</a>: 4 defense firms, 30 days before awards</td><td>No abnormal returns at 2 of 4; the other 2 traced to an earnings surprise and a sector rally</td><td>Same question 30 years ago. Screen earnings (A6), control for sector</td></tr>
+            <tr><td><a href="https://ideas.repec.org/a/taf/apfiec/v22y2012i2p147-164.html" target="_blank" rel="noopener">Palkar, Larson &amp; Larson (2012)</a>; Larson &amp; Picou</td><td>Contract awards get a positive day-0 reaction; smaller firms react more</td><td>The big 4 are the hardest case; add mid-caps</td></tr>
+            <tr><td><a href="https://ideas.repec.org/a/bla/jfinan/v47y1992i5p1661-99.html" target="_blank" rel="noopener">Meulbroek (1992)</a>, illegal insider cases</td><td>Prices and volume move on days insiders trade</td><td>Test return <em>and</em> volume</td></tr>
+            <tr><td><a href="https://ideas.repec.org/a/oup/rfinst/v23y2010i11p3996-4025.html" target="_blank" rel="noopener">Kolari &amp; Pynn&ouml;nen (2010)</a></td><td>Clustered event dates make standard tests over-reject</td><td>Our windows overlap (A7): use placebo dates</td></tr>
+            <tr><td><a href="https://ideas.repec.org/a/kap/rqfnac/v6y1996i3p309-26.html" target="_blank" rel="noopener">Campbell &amp; Wasley (1996)</a></td><td>Log volume; nonparametric tests more powerful</td><td>Volume models V1/V2</td></tr>
+          </table>
+          <p><strong>Flagged for the next Step 1 pass:</strong> the arms-sale review gives a small group 20&ndash;40 days' notice, so the arms-sale leg likely needs a &minus;40 to &minus;1 window beside &minus;10 to &minus;1. Full notes: <code>defense-leakage/STEP3_RESEARCH.md</code>.</p>`
+        },
+        {
+          label: "Step 4: Models",
+          heading: "Six candidate models, one rough run (PRELIMINARY)",
+          body: `<img src="assets/defense-leakage/step4_paths.png" alt="Average cumulative abnormal return and volume from day -10 to +5 for 14 sample events, inside a 90% band from random non-event dates" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
+          <p style="font-size:0.85rem">Gold line = average of the 14 sample events. Grey band = where 90% of averages fall on random non-event days for the same firms. Inside the band = not distinguishable from an ordinary day.</p>
+          <table class="dl-table">
+            <tr><th>Model</th><th>&minus;10 to &minus;1</th><th>Day 0</th><th>+1 to +5</th></tr>
+            <tr><td>M0 raw return (baseline)</td><td>+1.54% (p 0.51)</td><td>&minus;0.03% (0.83)</td><td>+1.80% (0.12)</td></tr>
+            <tr><td>M1 return minus SPY (baseline)</td><td>+0.97% (0.49)</td><td>&minus;0.42% (0.34)</td><td>+1.72% (0.07)</td></tr>
+            <tr><td>M2 market model</td><td>+0.94% (0.47)</td><td>&minus;0.20% (0.63)</td><td>+1.64% (0.07)</td></tr>
+            <tr><td>M3 SPY + ITA</td><td>+0.75% (0.52)</td><td>&minus;0.16% (0.57)</td><td>+1.01% (0.21)</td></tr>
+            <tr><td>V2 volume vs. SPY volume</td><td>+0.99 (0.28)</td><td>+0.26 (0.054)</td><td>+0.46 (0.42)</td></tr>
+          </table>
+          <p style="font-size:0.85rem">Mean cumulative abnormal return (placebo p-value from 2,000 random non-event draws). Volume in log units; +0.26 &asymp; 30% above normal.</p>
+          <p><strong>What the rough run shows:</strong> (1) No pre-announcement signal under any model. (2) Day-0 price barely moves, but day-0 volume does, so traders notice the news even if the price doesn't. (3) A plain t-test on volume said "significant" (t = &minus;2.5) where the placebo test said no (p = 0.25), so placebo dates are the main test. (4) Model choice changes the pre-window estimate by half (+1.5% raw vs. +0.75% sector-adjusted). <strong>Picked for Step 5:</strong> market model (M2) and market-adjusted volume (V2), placebo test first, M1 as the baseline to beat. Script: <code>defense-leakage/scripts/step4_candidate_models.py</code>.</p>`
         }
       ],
-      reflection: `Progress snapshot as of Nov. 5, 2026. Next: first-look charts of returns and volume around a few of these events, all labeled preliminary. No statistical test runs until Steps 1&ndash;3 are settled.`
+      reflection: `Progress snapshot as of Nov. 12, 2026. Next: grow the event set (every war.gov award above the size cutoff plus every arms sale naming these firms), add mid-caps, screen earnings dates, then revisit the question with the Step 3 and 4 findings before scoring.`
     }
   },
   {

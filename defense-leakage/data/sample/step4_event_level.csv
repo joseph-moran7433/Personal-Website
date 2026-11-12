@@ -1,0 +1,85 @@
+model,ticker,day0,event_type,description,"pre [-10,-1]",day 0,"post [+1,+5]"
+M0 raw,NOC,2018-09-10,DSCA notification,"DSCA: Japan, 9 E-2D Advanced Hawkeye",0.01414,0.01138,0.02319
+M1 market-adj,NOC,2018-09-10,DSCA notification,"DSCA: Japan, 9 E-2D Advanced Hawkeye",0.00774,0.00964,0.01886
+M2 market model,NOC,2018-09-10,DSCA notification,"DSCA: Japan, 9 E-2D Advanced Hawkeye",0.01344,0.01047,0.02198
+M3 SPY+ITA,NOC,2018-09-10,DSCA notification,"DSCA: Japan, 9 E-2D Advanced Hawkeye",-0.00440,0.01218,-0.00940
+V1 log volume,NOC,2018-09-10,DSCA notification,"DSCA: Japan, 9 E-2D Advanced Hawkeye",-1.15493,0.55125,0.11254
+V2 log volume mkt-adj,NOC,2018-09-10,DSCA notification,"DSCA: Japan, 9 E-2D Advanced Hawkeye",2.23433,1.09318,2.22520
+M0 raw,GD,2019-03-19,DoD contract,Virginia-class long-lead material,0.02965,-0.00553,-0.02222
+M1 market-adj,GD,2019-03-19,DoD contract,Virginia-class long-lead material,0.01462,-0.00578,-0.01796
+M2 market model,GD,2019-03-19,DoD contract,Virginia-class long-lead material,0.02891,-0.00456,-0.01275
+M3 SPY+ITA,GD,2019-03-19,DoD contract,Virginia-class long-lead material,0.07239,-0.00257,-0.00600
+V1 log volume,GD,2019-03-19,DoD contract,Virginia-class long-lead material,0.66496,-0.08747,-2.75619
+V2 log volume mkt-adj,GD,2019-03-19,DoD contract,Virginia-class long-lead material,1.86994,-0.16107,-2.90485
+M0 raw,NOC,2019-04-11,DoD contract,E-2D Hawkeye Lot 7 definitization (multiyear),0.02574,0.02536,0.01386
+M1 market-adj,NOC,2019-04-11,DoD contract,E-2D Hawkeye Lot 7 definitization (multiyear),-0.00482,0.02563,0.00757
+M2 market model,NOC,2019-04-11,DoD contract,E-2D Hawkeye Lot 7 definitization (multiyear),0.01177,0.02655,0.01385
+M3 SPY+ITA,NOC,2019-04-11,DoD contract,E-2D Hawkeye Lot 7 definitization (multiyear),0.03004,0.00689,-0.00510
+V1 log volume,NOC,2019-04-11,DoD contract,E-2D Hawkeye Lot 7 definitization (multiyear),-3.59548,-0.54577,-2.81705
+V2 log volume mkt-adj,NOC,2019-04-11,DoD contract,E-2D Hawkeye Lot 7 definitization (multiyear),-0.48368,-0.16337,-1.25757
+M0 raw,NOC,2019-09-27,DoD contract,E-2D: 9 aircraft for Japan (FMS),0.04611,-0.02871,-0.00552
+M1 market-adj,NOC,2019-09-27,DoD contract,E-2D: 9 aircraft for Japan (FMS),0.05578,-0.02332,-0.00233
+M2 market model,NOC,2019-09-27,DoD contract,E-2D: 9 aircraft for Japan (FMS),0.04621,-0.02505,-0.00682
+M3 SPY+ITA,NOC,2019-09-27,DoD contract,E-2D: 9 aircraft for Japan (FMS),0.02335,-0.01698,0.01559
+V1 log volume,NOC,2019-09-27,DoD contract,E-2D: 9 aircraft for Japan (FMS),1.96755,0.12123,0.11047
+V2 log volume mkt-adj,NOC,2019-09-27,DoD contract,E-2D: 9 aircraft for Japan (FMS),4.43588,0.09582,0.32678
+M0 raw,LMT,2019-11-27,DoD contract,F-35 Lot 14: 15 F-35A for Australia,0.01606,0.00443,-0.01494
+M1 market-adj,LMT,2019-11-27,DoD contract,F-35 Lot 14: 15 F-35A for Australia,-0.00032,-0.00002,-0.00400
+M2 market model,LMT,2019-11-27,DoD contract,F-35 Lot 14: 15 F-35A for Australia,-0.00548,0.00014,-0.01121
+M3 SPY+ITA,LMT,2019-11-27,DoD contract,F-35 Lot 14: 15 F-35A for Australia,-0.00082,0.00606,0.00659
+V1 log volume,LMT,2019-11-27,DoD contract,F-35 Lot 14: 15 F-35A for Australia,-1.74169,-0.41759,-0.85752
+V2 log volume mkt-adj,LMT,2019-11-27,DoD contract,F-35 Lot 14: 15 F-35A for Australia,1.62999,0.11075,0.92466
+M0 raw,GD,2019-12-03,DoD contract,"Virginia-class Block V, 9 submarines FY19-23",-0.04950,-0.00534,0.01968
+M1 market-adj,GD,2019-12-03,DoD contract,"Virginia-class Block V, 9 submarines FY19-23",-0.04912,0.00137,0.00684
+M2 market model,GD,2019-12-03,DoD contract,"Virginia-class Block V, 9 submarines FY19-23",-0.04519,0.00138,0.00954
+M3 SPY+ITA,GD,2019-12-03,DoD contract,"Virginia-class Block V, 9 submarines FY19-23",-0.01927,-0.00100,0.01723
+V1 log volume,GD,2019-12-03,DoD contract,"Virginia-class Block V, 9 submarines FY19-23",-2.00242,0.89449,1.03547
+V2 log volume mkt-adj,GD,2019-12-03,DoD contract,"Virginia-class Block V, 9 submarines FY19-23",1.61871,0.90580,3.60380
+M0 raw,GD,2021-03-22,DoD contract,"Virginia Block V option, 1 boat",0.04179,-0.00597,0.03784
+M1 market-adj,GD,2021-03-22,DoD contract,"Virginia Block V option, 1 boat",0.02307,-0.01395,0.02956
+M2 market model,GD,2021-03-22,DoD contract,"Virginia Block V option, 1 boat",0.02794,-0.01316,0.03194
+M3 SPY+ITA,GD,2021-03-22,DoD contract,"Virginia Block V option, 1 boat",-0.00196,-0.00120,0.03352
+V1 log volume,GD,2021-03-22,DoD contract,"Virginia Block V option, 1 boat",-0.85263,-0.31243,-1.37637
+V2 log volume mkt-adj,GD,2021-03-22,DoD contract,"Virginia Block V option, 1 boat",-2.78686,-0.25350,-2.84216
+M0 raw,RTX,2022-08-03,DSCA notification,DSCA: Saudi Arabia (item text not parsed; see link),0.00075,0.00832,-0.01128
+M1 market-adj,RTX,2022-08-03,DSCA notification,DSCA: Saudi Arabia (item text not parsed; see link),-0.03944,-0.00734,-0.02478
+M2 market model,RTX,2022-08-03,DSCA notification,DSCA: Saudi Arabia (item text not parsed; see link),-0.03403,-0.00285,-0.02431
+M3 SPY+ITA,RTX,2022-08-03,DSCA notification,DSCA: Saudi Arabia (item text not parsed; see link),-0.05710,0.00578,-0.02021
+V1 log volume,RTX,2022-08-03,DSCA notification,DSCA: Saudi Arabia (item text not parsed; see link),-1.03375,-0.12785,-1.57778
+V2 log volume mkt-adj,RTX,2022-08-03,DSCA notification,DSCA: Saudi Arabia (item text not parsed; see link),1.20198,0.10457,0.78645
+M0 raw,LMT,2023-01-03,DoD contract,F-35 Lot 16 (127 aircraft) + definitize Lot 15,0.01626,-0.01842,-0.03191
+M1 market-adj,LMT,2023-01-03,DoD contract,F-35 Lot 16 (127 aircraft) + definitize Lot 15,0.02974,-0.01421,-0.05760
+M2 market model,LMT,2023-01-03,DoD contract,F-35 Lot 16 (127 aircraft) + definitize Lot 15,0.00332,-0.01887,-0.04790
+M3 SPY+ITA,LMT,2023-01-03,DoD contract,F-35 Lot 16 (127 aircraft) + definitize Lot 15,-0.02721,-0.01740,-0.02464
+V1 log volume,LMT,2023-01-03,DoD contract,F-35 Lot 16 (127 aircraft) + definitize Lot 15,-3.95177,0.10231,0.05371
+V2 log volume mkt-adj,LMT,2023-01-03,DoD contract,F-35 Lot 16 (127 aircraft) + definitize Lot 15,-2.07840,0.31164,0.75096
+M0 raw,LMT,2024-01-29,DSCA notification,"DSCA: Turkiye, 40 new F-16 Block 70 + 79 upgrades",-0.05119,-0.00442,-0.01471
+M1 market-adj,LMT,2024-01-29,DSCA notification,"DSCA: Turkiye, 40 new F-16 Block 70 + 79 upgrades",-0.07431,-0.01234,-0.01760
+M2 market model,LMT,2024-01-29,DSCA notification,"DSCA: Turkiye, 40 new F-16 Block 70 + 79 upgrades",-0.05755,-0.00689,-0.01505
+M3 SPY+ITA,LMT,2024-01-29,DSCA notification,"DSCA: Turkiye, 40 new F-16 Block 70 + 79 upgrades",-0.04739,-0.00337,-0.02038
+V1 log volume,LMT,2024-01-29,DSCA notification,"DSCA: Turkiye, 40 new F-16 Block 70 + 79 upgrades",1.21468,0.54849,0.11078
+V2 log volume mkt-adj,LMT,2024-01-29,DSCA notification,"DSCA: Turkiye, 40 new F-16 Block 70 + 79 upgrades",1.70816,0.80472,-0.38028
+M0 raw,NOC,2024-07-22,DoD contract,E-2D: add 9 aircraft,0.00774,0.00037,0.08794
+M1 market-adj,NOC,2024-07-22,DoD contract,E-2D: add 9 aircraft,0.01770,-0.00994,0.10559
+M2 market model,NOC,2024-07-22,DoD contract,E-2D: add 9 aircraft,0.00959,-0.00093,0.09052
+M3 SPY+ITA,NOC,2024-07-22,DoD contract,E-2D: add 9 aircraft,-0.00414,-0.00740,0.04630
+V1 log volume,NOC,2024-07-22,DoD contract,E-2D: add 9 aircraft,-0.34036,-0.00768,1.75473
+V2 log volume mkt-adj,NOC,2024-07-22,DoD contract,E-2D: add 9 aircraft,4.31773,0.49387,3.48364
+M0 raw,RTX,2024-07-26,DoD contract,SM-3 Block IIA production FY23-25,0.11305,0.00423,0.02189
+M1 market-adj,RTX,2024-07-26,DoD contract,SM-3 Block IIA production FY23-25,0.14554,-0.00697,0.04289
+M2 market model,RTX,2024-07-26,DoD contract,SM-3 Block IIA production FY23-25,0.11408,-0.00038,0.02396
+M3 SPY+ITA,RTX,2024-07-26,DoD contract,SM-3 Block IIA production FY23-25,0.05340,-0.00328,0.03849
+V1 log volume,RTX,2024-07-26,DoD contract,SM-3 Block IIA production FY23-25,-1.78424,0.01136,-1.73920
+V2 log volume mkt-adj,RTX,2024-07-26,DoD contract,SM-3 Block IIA production FY23-25,1.55102,0.28652,-0.90135
+M0 raw,LMT,2025-09-30,DoD contract,F-35 Lot 18 definitization (148 aircraft) + Lot 19,0.03910,0.01470,0.02374
+M1 market-adj,LMT,2025-09-30,DoD contract,F-35 Lot 18 definitization (148 aircraft) + Lot 19,0.03206,0.01093,0.01931
+M2 market model,LMT,2025-09-30,DoD contract,F-35 Lot 18 definitization (148 aircraft) + Lot 19,0.04947,0.01506,0.02872
+M3 SPY+ITA,LMT,2025-09-30,DoD contract,F-35 Lot 18 definitization (148 aircraft) + Lot 19,0.04229,0.00160,0.01965
+V1 log volume,LMT,2025-09-30,DoD contract,F-35 Lot 18 definitization (148 aircraft) + Lot 19,-0.59137,-0.04296,-1.23732
+V2 log volume mkt-adj,LMT,2025-09-30,DoD contract,F-35 Lot 18 definitization (148 aircraft) + Lot 19,-3.79409,-0.44877,-1.83628
+M0 raw,RTX,2026-07-21,DoD contract,AN/SPY-6 hardware production,-0.03431,-0.00396,0.12407
+M1 market-adj,RTX,2026-07-21,DoD contract,AN/SPY-6 hardware production,-0.02217,-0.01230,0.13395
+M2 market model,RTX,2026-07-21,DoD contract,AN/SPY-6 hardware production,-0.03129,-0.00932,0.12784
+M3 SPY+ITA,RTX,2026-07-21,DoD contract,AN/SPY-6 hardware production,0.04595,-0.00216,0.04916
+V1 log volume,RTX,2026-07-21,DoD contract,AN/SPY-6 hardware production,-2.13027,-0.31129,2.00766
+V2 log volume mkt-adj,RTX,2026-07-21,DoD contract,AN/SPY-6 hardware production,2.48539,0.41875,4.44683

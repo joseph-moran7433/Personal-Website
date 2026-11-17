@@ -64,12 +64,12 @@ Monte Carlo error ≈ ±1.8 pts at 95%), so borderline T4/T5 p-values get a Step
 | T5 | π̂ = 0.02, 0.35 | 0.26 |
 
 - No pattern on average, by firm, or in a few deals. Ruled out at ≥80% power: +0.5% on every deal; +5% on ≥8% of deals; +3% on every deal of one firm.
-- Tail deals: none survives BH (min q 0.46). Top two (LMT 2020-04-01, BA 2020-03-31) are in the March 2020 crash. One deal extreme in both price and volume: LMT 2018-09-26 F-35 LRIP 11 definitization (0.66 expected) → press check.
+- Tail deals: none survives BH (min q 0.46). Largest run-up BA 2020-03-31 (+16.2%) and LMT 2020-04-01 (tied lowest p with LMT 2023-02-08 Poland) are in the March 2020 crash. One deal extreme in both price and volume: LMT 2018-09-26 F-35 LRIP 11 definitization (0.66 expected) → press check.
 - Textron day 0: firm p 0.006 (M2), 0.008 (M3), 0.011 (M4); max-firm T2 p 0.051 (M4). Pre-window below normal (p_down 0.004). Step 6.
 - M2 days −40..−1: 24 tail deals vs 13.1 (T3 p < 0.001, HC p 0.002) but T1 p 0.46; 12 of 24 in 2022–23; M4 → 9 tail deals. Sector rally.
 - Arms sales days −40..−1: M4 4 of 89 tail (4.45 expected), V2 3.
 - Earnings method check (full run): 59% of earnings day 0s anomalous vs 4.2% of ordinary days.
 
 ## Step 6 list
-A1/A2 date (USAspending action vs war.gov post), size cutoff, estimation window, drop Mar–Apr 2020,
+A1/A2: were USAspending actions publicly announced, and action date vs war.gov post, size cutoff, estimation window, drop Mar–Apr 2020,
 Textron, press check on flagged deals, more sims for T4/T5 size, losing bidders.

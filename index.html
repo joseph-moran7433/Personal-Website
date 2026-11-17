@@ -5120,9 +5120,11 @@ const projects = [
           <p style="font-size:0.85rem">Each deal's own p-value compares its run-up to 190&ndash;360 ordinary days of the same firm with the same quarter-end timing. Every test's 5% cut-off comes from 2,000 studies resampled from real ordinary days with the real firm mix, so no normal distribution is assumed. Script: <code>defense-leakage/scripts/step45_models.py</code>.</p>`
         },
         {
-          label: "Step 5: Scoring",
-          heading: "Plant a leak in clean data, see which model catches it",
-          body: `<p>To score a model you need to know which deals leaked, and for the real deals nobody knows. So I built 600 test studies from real trading days with no deal (same firms, same mix), added a known run-up in three patterns: a little on every deal, a lot on a few deals, and a lot on one company's deals, and checked which models catch it. A good model catches the added run-ups often and flags plain real days about 5% of the time. This is the standard way to test event-study methods (Brown &amp; Warner 1985). The winning models are then run on the 262 real deals (Step 5: Results).</p>
+          label: "Step 5: Scoring (method check)",
+          heading: "Add a known run-up to real no-deal days, see which model catches it",
+          body: `<img src="assets/defense-leakage/step5_flow.png" alt="Three stages: models fit on real prices, method check on test studies, picked models run on the 262 real deals" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
+          <p style="border-left:4px solid #8a8984;background:rgba(138,137,132,0.12);padding:0.55rem 0.8rem;border-radius:4px;margin-bottom:0.8rem"><strong>METHOD CHECK, not the findings.</strong> Test studies built from real trading days with no deal. They decide which model to trust and how big a leak it could catch. The findings are in the next section.</p>
+          <p>To score a model you need to know which deals leaked, and for the real deals nobody knows. So I built 600 test studies from real trading days with no deal (same firms, same mix), added a known run-up in three patterns: a little on every deal, a lot on a few deals, and a lot on one company's deals, and checked which models catch it. A good model catches the added run-ups often and flags plain real days about 5% of the time. This is the standard way to test event-study methods (Brown &amp; Warner 1985). The winning models are then run on the 262 real deals (Step 5: Results).</p>
           <p><strong>Real-data check:</strong> on 362 real earnings releases, a known market-moving announcement, 59% of day 0s are anomalous vs. 4% of ordinary days. The setup does see a real reaction when there is one.</p>
           <img src="assets/defense-leakage/step5_power.png" alt="Detection rate of five tests as the share of leaking deals grows (left) and as one firm's run-up grows (right)" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
           <p style="font-size:0.85rem">Model M4, days &minus;10 to &minus;1. Left: the mixture and higher-criticism tests reach 80% with about 8% of deals leaking; the average needs about 10%. Right: when one company leaks, the firm-by-firm test is far ahead (87% vs. 48% for the average at a 3% run-up).</p>
@@ -5144,9 +5146,14 @@ const projects = [
           <p><strong>Picks:</strong> M4 is the main price model. It is as quiet as M3 without holding the firm's own stock. M1 stays as the baseline and V2 as the volume model. No single test wins every pattern, so the verdict reports three side by side: <strong>T1</strong> (every deal), <strong>T2</strong> (one company), <strong>T5</strong> (a few deals), with the T3 count as the plain-language check. Using the average alone would have been the weakest choice whenever the leak is concentrated.</p>`
         },
         {
-          label: "Step 5: Results",
-          heading: "On average, by company, by deal (PRELIMINARY)",
-          body: `<img src="assets/defense-leakage/step5_firms.png" alt="Each firm's z-score against its ordinary-day range, for price before the deal, volume before the deal, and price on day 0" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
+          label: "Step 5: Results (real deals)",
+          heading: "The 262 real deals: on average, by company, by deal (PRELIMINARY)",
+          body: `<p style="border-left:4px solid #2a78d6;background:rgba(42,120,214,0.10);padding:0.55rem 0.8rem;border-radius:4px;margin-bottom:0.8rem"><strong>REAL DATA: the findings.</strong> Everything in this section is the 262 actual deals, run through the models picked in the method check.</p>
+          <img src="assets/defense-leakage/step5_real_paths.png" alt="Average abnormal price and volume path for the 262 real deals vs real earnings releases, days -10 to +10" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
+          <p style="font-size:0.85rem">Blue = the 262 real deals; orange = real earnings releases, for comparison. Earnings volume jumps at day 0, so the setup can see a reaction. The deals stay flat on volume, and price drifts slightly down before the news (&minus;0.3%, not significant), the opposite of a run-up.</p>
+          <img src="assets/defense-leakage/step5_real_pvals.png" alt="Histogram of 262 real deals p-values against the flat chance line" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
+          <p style="font-size:0.85rem">One p-value per real deal. With no leaks, the bars sit near the dashed chance line. Leaked deals would make the left bar tall: it holds 17 deals against 13 by chance (p 0.09), and none survives a false-discovery correction.</p>
+          <img src="assets/defense-leakage/step5_firms.png" alt="Each firm's z-score against its ordinary-day range, for price before the deal, volume before the deal, and price on day 0" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
           <p style="font-size:0.85rem">Before the deal (left, middle), every firm sits inside its own ordinary-day range or below it. On day 0 (right), Textron reacts and RTX dips.</p>
           <img src="assets/defense-leakage/step5_events.png" alt="Abnormal return in days -10 to -1 for each of 262 deals, grouped by firm, with deals above the firm's 95th percentile highlighted" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
           <table class="dl-table">
@@ -5157,7 +5164,7 @@ const projects = [
             <tr><td>T4 higher criticism</td><td>p 0.16</td><td>p 0.53</td></tr>
             <tr><td>T5 mixture</td><td>Best fit: 2% of deals, p 0.35</td><td>p 0.26</td></tr>
           </table>
-          <p><strong>What the scoring run shows:</strong></p>
+          <p><strong>What the 262 real deals show:</strong></p>
           <p>(1) <strong>No leakage pattern on average, at any one company, or in a small group of deals.</strong> These tests would have caught, at least 80% of the time, a 0.5% run-up on every deal, a 5% run-up on 8% or more of deals (about 21 deals), or a 3% run-up on every deal of one company. Rarer leaks, one or two deals, can't be ruled out with public price data. One caveat: if some USAspending actions were never publicly announced, those deals can't show leakage and pull every test toward zero. That is the first Step 6 check.</p>
           <p>(2) <strong>The 17 tail deals look like chance.</strong> None survives a false-discovery correction (lowest q = 0.46). Two of them, including the largest run-up (Boeing, +16%), fall in the March 2020 crash, when the estimated betas broke down. Only one deal is extreme in both price and volume (LMT, F-35 Lot 11 definitization, Sep 2018), against 0.7 expected by chance. It goes to the trade-press check in Step 6.</p>
           <p>(3) <strong>One company effect the average hid: Textron on day 0.</strong> Textron's deals add about +0.7% on day 0 (firm p = 0.006 to 0.011 under M2, M3 and M4), while the average over all firms is about zero. Across 9 firms the max-firm test gives p = 0.05, so it is borderline. This fits Palkar et al.: smaller firms react more. Textron's pre-window runs <em>below</em> normal (p = 0.004): down before, up on the news, which is the opposite of leakage. It is a Step 6 item.</p>

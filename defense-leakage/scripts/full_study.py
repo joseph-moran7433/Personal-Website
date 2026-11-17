@@ -116,7 +116,8 @@ def stats(items, model):
     return res
 
 
-def main():
+def main(return_state=False):
+    """return_state=True stops after the placebo pools and returns them (used by step45_models.py)."""
     ret, logv, peers = load_panel()
     dates = ret.index
     tday = lambda d: dates.searchsorted(pd.Timestamp(d), side="right")  # first trading day after d
@@ -227,6 +228,8 @@ def main():
                 pick = rng.choice(cy, size=min(40, len(cy)), replace=False)
                 pool[(t, int(y), q)] = [s for s in (series(ret, logv, peers, t, int(j)) for j in pick) if s is not None]
     print("placebo pools:", len(pool), "firm-years,", sum(len(v) for v in pool.values()), "ordinary days")
+    if return_state:
+        return dict(kept=kept, pool=pool, dates=dates, earn_ev=earn_ev, E=E)
 
     def placebo(tics, years, model, w, qends):
         keys = list(zip(tics, years, qends))

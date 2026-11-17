@@ -52,3 +52,8 @@ from any sample event). The placebo p-value assumes no normality and handles vol
 - Primary test: **placebo dates**; BMP and KP-adjusted BMP reported beside it.
 - Before scoring: grow the event set (all war.gov awards above the size cutoff + all DSCA notices
   naming the 4 firms), add mid-caps, and screen earnings dates (A6).
+
+## Final version (2026-11-17)
+Superseded by the full-sample run: the candidate set is now two layers, normal-return models (M1-M4, V2)
+and detection tests (T1 pooled mean, T2 firm by firm, T3 tail count, T4 higher criticism, T5 two-group
+mixture), scored by planted run-ups. See `STEP5_SCORING.md`.

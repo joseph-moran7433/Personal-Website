@@ -4,7 +4,8 @@ Progress files for an event study of LMT, RTX, NOC and GD around DoD contract aw
 notifications. Steps 1-3 have rough versions; Step 4 candidate models have one PRELIMINARY run on the 14 usable sample events.
 
 - `STEP3_RESEARCH.md`: announcement process, prior studies, and what they change.
-- `STEP4_MODELS.md`: the six candidate models, rough results, and the picks for Step 5.
+- `STEP4_MODELS.md`: the rough Step 4 run on 14 sample events.
+- `STEP5_SCORING.md`: final Step 4 models (two layers, broken out) and Step 5 scoring on the 262-deal full sample.
 
 ## data/sample/
 - `prices_daily.csv`: Yahoo Finance via yfinance, daily OHLC, Adj Close, Volume; LMT, NOC, GD, SPY, ITA from 2018-01-02, RTX from 2020-04-03 (earlier RTX history is United Technologies). Through 2026-10-30.
@@ -23,3 +24,5 @@ notifications. Steps 1-3 have rough versions; Step 4 candidate models have one P
 - `full_share.py`: share of DoD contract dollars won by the study firms per fiscal year (`dod_share_by_year.csv`).
 - `full_study.py`: builds events (>=1% of prior-year revenue, earnings within days -10..+5 flagged, same-firm events <=10 trading days apart merged), runs models M1, M2, M3, M4 (SPY + peer index of the other big-four primes) and V2 over days -40..+10, with placebo tests matched on firm, year and quarter-end month. Outputs: `events_full.csv`, `results_full.csv`, `paths_full.csv`, `funnel.json`.
 - `step4_wide_window.py`: the 14-event sample rerun over days -40..+10.
+
+- `step45_models.py` (Steps 4-5): per-event p-values against each firm's ordinary days, five detection tests (pooled mean, firm by firm, tail count, higher criticism, two-group mixture), and scoring by planted run-ups. Writes `data/full/step45_*.csv`. `step45_figures.py` draws `../assets/defense-leakage/step5_*.png`. Takes about 7 minutes.

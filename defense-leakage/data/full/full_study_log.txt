@@ -1,0 +1,144 @@
+placebo pools: 344 firm-years, 13098 ordinary days
+{
+ "candidates_100m": 2990,
+ "size_ge_1pct": 979,
+ "after_merging_clusters": 598,
+ "earnings_flagged": 163,
+ "usable_with_price_history": 588,
+ "contract_events": 434,
+ "arms_events": 154,
+ "competitive_contracts": 91,
+ "competitive_with_offers": 393,
+ "offers_median": 1.0,
+ "earnings_comparison_events": 706
+}
+                                  group model window   n   mean   cs_t  bmp_t  share_pos  placebo_p  placebo_lo  placebo_hi
+Main: clean events (no earnings nearby)    M2  pre10 426 -0.276 -1.403 -1.560      0.509      0.024      -0.182       0.415
+Main: clean events (no earnings nearby)    M2  pre40 426 -0.393 -0.823 -1.017      0.479      0.175      -0.492       0.871
+Main: clean events (no earnings nearby)    M2   day0 426  0.045  0.723  0.616      0.516      0.576      -0.095       0.114
+Main: clean events (no earnings nearby)    M2  post5 426 -0.012 -0.078  0.211      0.502      0.863      -0.245       0.170
+Main: clean events (no earnings nearby)    M4  pre10 426 -0.252 -1.473 -1.353      0.484      0.001      -0.058       0.470
+Main: clean events (no earnings nearby)    M4  pre40 426 -0.491 -1.215 -1.530      0.491      0.002       0.022       1.186
+Main: clean events (no earnings nearby)    M4   day0 426  0.045  0.826  1.055      0.498      0.726      -0.061       0.105
+Main: clean events (no earnings nearby)    M4  post5 426 -0.143 -1.093 -1.080      0.462      0.170      -0.174       0.172
+Main: clean events (no earnings nearby)    V2  pre10 426  0.001  0.008  0.200      0.488      0.065       0.026       0.457
+Main: clean events (no earnings nearby)    V2  pre40 426  1.062  2.025  2.434      0.523      0.002       1.609       3.046
+Main: clean events (no earnings nearby)    V2   day0 426 -0.015 -0.658 -0.366      0.444      0.408      -0.032       0.035
+Main: clean events (no earnings nearby)    V2  post5 426 -0.214 -2.359 -1.974      0.420      0.026      -0.175       0.074
+                       Contracts, clean    M2  pre10 316 -0.363 -1.580 -1.908      0.491      0.025      -0.261       0.373
+                       Contracts, clean    M2  pre40 316 -1.186 -2.176 -2.652      0.456      0.002      -0.550       1.019
+                       Contracts, clean    M2   day0 316  0.087  1.182  0.780      0.525      0.215      -0.113       0.114
+                       Contracts, clean    M2  post5 316  0.090  0.615  0.616      0.509      0.286      -0.296       0.171
+                       Contracts, clean    M4  pre10 316 -0.313 -1.565 -1.452      0.494      0.008      -0.156       0.413
+                       Contracts, clean    M4  pre40 316 -0.888 -1.875 -2.340      0.475      0.001      -0.244       1.053
+                       Contracts, clean    M4   day0 316  0.090  1.374  1.126      0.509      0.183      -0.084       0.109
+                       Contracts, clean    M4  post5 316 -0.040 -0.314 -0.436      0.456      0.960      -0.227       0.172
+                       Contracts, clean    V2  pre10 316  0.170  0.842  1.142      0.519      0.738      -0.035       0.484
+                       Contracts, clean    V2  pre40 316  1.381  2.227  2.647      0.541      0.047       1.560       3.227
+                       Contracts, clean    V2   day0 316 -0.011 -0.385 -0.158      0.453      0.662      -0.040       0.038
+                       Contracts, clean    V2  post5 316 -0.174 -1.634 -1.360      0.443      0.116      -0.182       0.112
+                      Arms sales, clean    M2  pre10 110 -0.026 -0.067  0.370      0.564      0.474      -0.392       0.951
+                      Arms sales, clean    M2  pre40 110  1.884  1.966  2.436      0.545      0.038      -1.482       1.481
+                      Arms sales, clean    M2   day0 110 -0.076 -0.683 -0.206      0.491      0.384      -0.179       0.264
+                      Arms sales, clean    M2  post5 110 -0.305 -0.753 -0.412      0.482      0.191      -0.394       0.476
+                      Arms sales, clean    M4  pre10 110 -0.077 -0.232 -0.137      0.455      0.138      -0.128       1.084
+                      Arms sales, clean    M4  pre40 110  0.649  0.846  0.950      0.536      0.522      -0.155       2.545
+                      Arms sales, clean    M4   day0 110 -0.085 -0.888  0.110      0.464      0.172      -0.120       0.265
+                      Arms sales, clean    M4  post5 110 -0.440 -1.244 -1.188      0.482      0.023      -0.280       0.442
+                      Arms sales, clean    V2  pre10 110 -0.485 -1.683 -1.740      0.400      0.003      -0.128       0.691
+                      Arms sales, clean    V2  pre40 110  0.146  0.150  0.296      0.473      0.017       0.828       3.388
+                      Arms sales, clean    V2   day0 110 -0.029 -0.694 -0.478      0.418      0.315      -0.052       0.070
+                      Arms sales, clean    V2  post5 110 -0.329 -1.899 -1.551      0.355      0.101      -0.329       0.131
+          Large (5%+ of revenue), clean    M2  pre10 118 -0.605 -1.702 -1.364      0.508      0.132      -0.652       0.442
+          Large (5%+ of revenue), clean    M2  pre40 118 -0.546 -0.573 -0.303      0.475      0.717      -1.637       1.186
+          Large (5%+ of revenue), clean    M2   day0 118  0.008  0.068  0.483      0.492      0.978      -0.195       0.208
+          Large (5%+ of revenue), clean    M2  post5 118  0.026  0.096  0.328      0.500      0.869      -0.392       0.368
+          Large (5%+ of revenue), clean    M4  pre10 118 -0.550 -1.813 -1.161      0.407      0.027      -0.410       0.508
+          Large (5%+ of revenue), clean    M4  pre40 118 -0.675 -0.834 -0.774      0.483      0.101      -0.677       1.631
+          Large (5%+ of revenue), clean    M4   day0 118 -0.019 -0.204  0.388      0.432      0.630      -0.123       0.181
+          Large (5%+ of revenue), clean    M4  post5 118 -0.057 -0.295 -0.319      0.500      0.631      -0.281       0.360
+          Large (5%+ of revenue), clean    V2  pre10 118 -0.264 -0.882 -0.644      0.475      0.039      -0.167       0.694
+          Large (5%+ of revenue), clean    V2  pre40 118  0.701  0.709  0.928      0.458      0.037       1.099       3.828
+          Large (5%+ of revenue), clean    V2   day0 118 -0.008 -0.194  0.034      0.432      0.745      -0.058       0.070
+          Large (5%+ of revenue), clean    V2  post5 118 -0.166 -0.927 -0.601      0.466      0.514      -0.305       0.172
+           Competitive contracts, clean    M2  pre10  69 -0.117 -0.252 -0.355      0.493      0.733      -0.637       0.649
+           Competitive contracts, clean    M2  pre40  69 -0.764 -0.666 -0.847      0.493      0.252      -1.260       1.876
+           Competitive contracts, clean    M2   day0  69  0.232  1.399  1.581      0.594      0.067      -0.233       0.205
+           Competitive contracts, clean    M2  post5  69 -0.119 -0.385 -0.761      0.551      0.980      -0.584       0.373
+           Competitive contracts, clean    M4  pre10  69 -0.184 -0.459 -0.626      0.478      0.401      -0.465       0.627
+           Competitive contracts, clean    M4  pre40  69 -1.138 -1.167 -1.207      0.478      0.039      -0.839       1.866
+           Competitive contracts, clean    M4   day0  69  0.194  1.229  1.531      0.522      0.062      -0.199       0.168
+           Competitive contracts, clean    M4  post5  69  0.003  0.014 -0.616      0.493      0.676      -0.540       0.312
+           Competitive contracts, clean    V2  pre10  69  0.481  1.157  1.304      0.594      0.199      -0.509       0.610
+           Competitive contracts, clean    V2  pre40  69  2.886  2.456  2.620      0.638      0.284      -0.012       3.508
+           Competitive contracts, clean    V2   day0  69  0.008  0.127  0.312      0.464      0.575      -0.106       0.061
+           Competitive contracts, clean    V2  post5  69 -0.333 -1.371 -1.051      0.435      0.313      -0.458       0.177
+                        Big four, clean    M2  pre10 216 -0.038 -0.169 -0.412      0.551      0.754      -0.284       0.325
+                        Big four, clean    M2  pre40 216  0.501  0.901  0.884      0.500      0.153      -0.847       0.592
+                        Big four, clean    M2   day0 216 -0.022 -0.333 -0.555      0.486      0.703      -0.111       0.127
+                        Big four, clean    M2  post5 216  0.043  0.241  0.390      0.481      0.836      -0.210       0.250
+                        Big four, clean    M4  pre10 216  0.031  0.169  0.129      0.523      0.926      -0.220       0.253
+                        Big four, clean    M4  pre40 216  0.193  0.478  0.279      0.523      0.816      -0.282       0.816
+                        Big four, clean    M4   day0 216 -0.001 -0.022  0.151      0.463      0.843      -0.075       0.092
+                        Big four, clean    M4  post5 216 -0.170 -1.397 -1.401      0.426      0.147      -0.192       0.171
+                        Big four, clean    V2  pre10 216 -0.150 -0.732 -0.556      0.463      0.659      -0.352       0.217
+                        Big four, clean    V2  pre40 216  0.891  1.378  1.681      0.500      0.636       0.268       2.096
+                        Big four, clean    V2   day0 216 -0.009 -0.278 -0.147      0.426      0.344      -0.076       0.008
+                        Big four, clean    V2  post5 216 -0.144 -1.295 -0.975      0.426      0.195      -0.413      -0.113
+                        Mid-caps, clean    M2  pre10 210 -0.520 -1.610 -1.750      0.467      0.028      -0.324       0.734
+                        Mid-caps, clean    M2  pre40 210 -1.313 -1.684 -2.226      0.457      0.010      -0.625       1.657
+                        Mid-caps, clean    M2   day0 210  0.113  1.083  1.304      0.548      0.310      -0.145       0.176
+                        Mid-caps, clean    M2  post5 210 -0.069 -0.281 -0.098      0.524      0.933      -0.444       0.265
+                        Mid-caps, clean    M4  pre10 210 -0.544 -1.869 -2.074      0.443      0.000      -0.067       0.905
+                        Mid-caps, clean    M4  pre40 210 -1.195 -1.696 -2.293      0.457      0.003      -0.149       2.092
+                        Mid-caps, clean    M4   day0 210  0.093  0.944  1.263      0.533      0.597      -0.105       0.196
+                        Mid-caps, clean    M4  post5 210 -0.116 -0.492 -0.194      0.500      0.473      -0.299       0.309
+                        Mid-caps, clean    V2  pre10 210  0.157  0.583  0.757      0.514      0.050       0.240       0.893
+                        Mid-caps, clean    V2  pre40 210  1.238  1.488  1.758      0.548      0.000       2.430       4.588
+                        Mid-caps, clean    V2   day0 210 -0.022 -0.653 -0.383      0.462      0.056      -0.013       0.085
+                        Mid-caps, clean    V2  post5 210 -0.286 -1.982 -1.776      0.414      0.000      -0.026       0.364
+               Flagged: earnings nearby    M2  pre10 162  0.176  0.364  0.634      0.481      0.160      -0.700       0.231
+               Flagged: earnings nearby    M2  pre40 162  0.522  0.613  0.313      0.512      0.033      -2.014       0.203
+               Flagged: earnings nearby    M2   day0 162 -0.025 -0.178 -0.093      0.469      0.644      -0.134       0.185
+               Flagged: earnings nearby    M2  post5 162  0.006  0.017  0.139      0.525      0.864      -0.294       0.376
+               Flagged: earnings nearby    M4  pre10 162  0.501  1.186  1.225      0.506      0.001      -0.625       0.149
+               Flagged: earnings nearby    M4  pre40 162  0.999  1.425  0.701      0.531      0.010      -1.254       0.538
+               Flagged: earnings nearby    M4   day0 162 -0.115 -0.868 -0.665      0.512      0.141      -0.129       0.132
+               Flagged: earnings nearby    M4  post5 162 -0.323 -1.060 -0.912      0.500      0.078      -0.309       0.206
+               Flagged: earnings nearby    V2  pre10 162  1.692  6.615  6.988      0.698      0.000      -0.350       0.490
+               Flagged: earnings nearby    V2  pre40 162  1.032  1.266  1.413      0.506      0.456      -0.780       1.686
+               Flagged: earnings nearby    V2   day0 162  0.167  3.808  4.095      0.580      0.000      -0.047       0.065
+               Flagged: earnings nearby    V2  post5 162  0.877  5.018  5.183      0.685      0.000      -0.164       0.246
+          Comparison: earnings releases    M2  pre10 706  0.054  0.321  0.205      0.520      0.254      -0.394       0.144
+          Comparison: earnings releases    M2  pre40 706 -0.531 -1.289 -2.458      0.460      0.436      -0.824       0.343
+          Comparison: earnings releases    M2   day0 706  0.100  0.474  0.963      0.520      0.063      -0.083       0.091
+          Comparison: earnings releases    M2  post5 706 -0.097 -0.660 -0.933      0.493      0.373      -0.178       0.207
+          Comparison: earnings releases    M4  pre10 706  0.082  0.568  0.337      0.521      0.093      -0.426       0.072
+          Comparison: earnings releases    M4  pre40 706 -0.383 -1.019 -2.194      0.459      0.552      -0.711       0.369
+          Comparison: earnings releases    M4   day0 706  0.083  0.402  0.637      0.517      0.062      -0.084       0.071
+          Comparison: earnings releases    M4  post5 706 -0.075 -0.542 -0.625      0.486      0.601      -0.181       0.154
+          Comparison: earnings releases    V2  pre10 706  0.249  1.724  1.519      0.499      0.311       0.180       0.563
+          Comparison: earnings releases    V2  pre40 706  0.088  0.188 -0.577      0.450      0.000       1.186       2.439
+          Comparison: earnings releases    V2   day0 706  0.875 39.333 39.181      0.942      0.000       0.003       0.059
+          Comparison: earnings releases    V2  post5 706  1.425 17.100 17.530      0.758      0.000       0.033       0.245
+                                  group model              window     n  mean  cs_t  bmp_t  share_pos  placebo_p  placebo_lo  placebo_hi
+Main: clean events (no earnings nearby)    M4 anomalous_pre10_pct   426  4.44   NaN    NaN        NaN        NaN         NaN         NaN
+Main: clean events (no earnings nearby)    M4  anomalous_day0_pct   426  4.69   NaN    NaN        NaN        NaN         NaN         NaN
+                       Contracts, clean    M4 anomalous_pre10_pct   316  4.97   NaN    NaN        NaN        NaN         NaN         NaN
+                       Contracts, clean    M4  anomalous_day0_pct   316  5.06   NaN    NaN        NaN        NaN         NaN         NaN
+                      Arms sales, clean    M4 anomalous_pre10_pct   110  2.91   NaN    NaN        NaN        NaN         NaN         NaN
+                      Arms sales, clean    M4  anomalous_day0_pct   110  3.64   NaN    NaN        NaN        NaN         NaN         NaN
+          Large (5%+ of revenue), clean    M4 anomalous_pre10_pct   118  3.14   NaN    NaN        NaN        NaN         NaN         NaN
+          Large (5%+ of revenue), clean    M4  anomalous_day0_pct   118  5.08   NaN    NaN        NaN        NaN         NaN         NaN
+           Competitive contracts, clean    M4 anomalous_pre10_pct    69  5.51   NaN    NaN        NaN        NaN         NaN         NaN
+           Competitive contracts, clean    M4  anomalous_day0_pct    69  5.80   NaN    NaN        NaN        NaN         NaN         NaN
+                        Big four, clean    M4 anomalous_pre10_pct   216  3.61   NaN    NaN        NaN        NaN         NaN         NaN
+                        Big four, clean    M4  anomalous_day0_pct   216  4.17   NaN    NaN        NaN        NaN         NaN         NaN
+                        Mid-caps, clean    M4 anomalous_pre10_pct   210  5.29   NaN    NaN        NaN        NaN         NaN         NaN
+                        Mid-caps, clean    M4  anomalous_day0_pct   210  5.24   NaN    NaN        NaN        NaN         NaN         NaN
+               Flagged: earnings nearby    M4 anomalous_pre10_pct   162  8.89   NaN    NaN        NaN        NaN         NaN         NaN
+               Flagged: earnings nearby    M4  anomalous_day0_pct   162 11.11   NaN    NaN        NaN        NaN         NaN         NaN
+          Comparison: earnings releases    M4 anomalous_pre10_pct   706  3.22   NaN    NaN        NaN        NaN         NaN         NaN
+          Comparison: earnings releases    M4  anomalous_day0_pct   706 57.65   NaN    NaN        NaN        NaN         NaN         NaN
+                Baseline: ordinary days    M4 anomalous_pre10_pct 13098  3.86   NaN    NaN        NaN        NaN         NaN         NaN
+                Baseline: ordinary days    M4  anomalous_day0_pct 13098  3.76   NaN    NaN        NaN        NaN         NaN         NaN

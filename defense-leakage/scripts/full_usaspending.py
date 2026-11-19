@@ -5,7 +5,7 @@ events now come from USAspending. Limits, carried into the write-up:
   - date = USAspending action date, not the war.gov post date (6 of 12 sample awards matched
     exactly; one was posted 5 days after the action date)
   - value = dollars obligated in that action, not the announced ceiling (A8)
-For every DoD contract transaction of $100M+ to a study firm, Jan 2018 - Oct 2026, it keeps the
+For every DoD contract transaction of $100M+ to a study firm, Jan 2010 - Oct 2026, it keeps the
 transaction, then looks up each award's competition fields (extent competed, offers received).
 
 Writes data/full/usaspending_transactions.csv and data/full/usaspending_awards.csv
@@ -28,7 +28,7 @@ FIRMS = {
     "GD": ["General Dynamics", "Electric Boat", "Bath Iron Works", "National Steel and Shipbuilding", "Gulfstream Aerospace"],
     "HII": ["Huntington Ingalls"],
     "LHX": ["L3Harris", "L3 Technologies", "Harris Corporation"],
-    "LDOS": ["Leidos"],
+    "LDOS": ["Leidos", "Science Applications International"],  # SAIC name only before the Sep 2013 split (filtered in full_study)
     "BA": ["Boeing"],
     "TXT": ["Textron", "Bell Textron", "Bell Helicopter"],
     "BAH": ["Booz Allen"],
@@ -66,7 +66,7 @@ for tic, names in FIRMS.items():
         while True:
             body = {"filters": {"recipient_search_text": [name], "award_type_codes": ["A", "B", "C", "D"],
                                 "agencies": [{"type": "awarding", "tier": "toptier", "name": "Department of Defense"}],
-                                "time_period": [{"start_date": "2018-01-01", "end_date": "2026-10-31"}]},
+                                "time_period": [{"start_date": "2010-01-01", "end_date": "2026-10-31"}]},
                     "fields": FIELDS, "limit": 100, "page": page, "sort": "Transaction Amount", "order": "desc"}
             res = post(body)
             got = res.get("results", [])

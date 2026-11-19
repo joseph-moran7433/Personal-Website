@@ -1,5 +1,5 @@
 {
- "n_events": 262,
+ "n_events": 426,
  "firms": [
   "LMT",
   "RTX",
@@ -12,17 +12,17 @@
   "TXT"
  ],
  "n_by_firm": {
-  "LMT": 49,
-  "RTX": 24,
-  "NOC": 24,
-  "GD": 36,
-  "HII": 38,
-  "LHX": 18,
-  "LDOS": 9,
-  "BA": 41,
-  "TXT": 23
+  "LMT": 95,
+  "RTX": 25,
+  "NOC": 40,
+  "GD": 56,
+  "HII": 64,
+  "LHX": 27,
+  "LDOS": 12,
+  "BA": 71,
+  "TXT": 36
  },
- "n_arms": 89,
+ "n_arms": 110,
  "n_null_sims": 2000,
  "n_power_sims": 600
 }

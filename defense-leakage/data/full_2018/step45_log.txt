@@ -1,0 +1,137 @@
+placebo pools: 189 firm-years, 7085 ordinary days
+clean events: 262 firms: ['LMT', 'RTX', 'NOC', 'GD', 'HII', 'LHX', 'LDOS', 'BA', 'TXT']
+null calibration done
+model window   n     T1  T1_p    T2  T2_p   T3  T3_p    T4  T4_p    T5  T5_p  T1_lower_p  n_tail_up  n_tail_down  expected_tail  binom_up_p  binom_down_p  pi_hat  mu_hat  storey_leaky_share  bh_discoveries_q10
+   M1  pre10 262 -0.946 0.836 0.759 0.898  8.0 0.915 0.763 0.659 0.000 1.000       0.164          8           14           13.1       0.953         0.438    0.00    0.00               0.046                   0
+   M1  pre40 262  0.913 0.173 1.852 0.254 18.0 0.045 2.712 0.027 2.719 0.076       0.827         18           15           13.1       0.109         0.333    0.20    0.50               0.061                   0
+   M1   day0 262  0.589 0.270 2.867 0.025 14.0 0.309 1.046 0.514 0.000 1.000       0.730         14           15           13.1       0.438         0.333    0.00    0.00               0.046                   0
+   M2  pre10 262 -0.957 0.830 0.735 0.903 12.0 0.534 1.413 0.347 0.479 0.418       0.171         12           17           13.1       0.662         0.166    0.04    0.75               0.000                   0
+   M2  pre40 262  0.105 0.456 1.607 0.401 24.0 0.000 3.678 0.002 2.347 0.068       0.545         24           16           13.1       0.003         0.241    0.06    1.50               0.000                   0
+   M2   day0 262  0.524 0.306 2.775 0.032 12.0 0.539 1.459 0.337 0.000 1.000       0.695         12           12           13.1       0.662         0.662    0.00    0.00               0.038                   0
+   M3  pre10 262 -1.969 0.977 1.131 0.683 10.0 0.750 1.524 0.291 0.127 0.480       0.023         10           16           13.1       0.847         0.241    0.02    1.25               0.000                   0
+   M3  pre40 262 -0.779 0.772 1.013 0.765 14.0 0.294 1.627 0.239 1.002 0.158       0.228         14           20           13.1       0.438         0.041    0.02    1.50               0.000                   0
+   M3   day0 262  1.540 0.060 2.602 0.059 16.0 0.145 2.716 0.033 7.944 0.007       0.940         16           15           13.1       0.241         0.333    0.02    4.75               0.061                   0
+   M4  pre10 262 -1.318 0.895 0.970 0.802 17.0 0.089 1.893 0.161 0.450 0.345       0.105         17           17           13.1       0.166         0.166    0.02    1.50               0.000                   0
+   M4  pre40 262 -1.290 0.903 1.762 0.334  9.0 0.844 0.938 0.573 0.000 1.000       0.098          9           20           13.1       0.910         0.041    0.00    0.00               0.015                   0
+   M4   day0 262  0.305 0.373 2.557 0.051 10.0 0.757 0.856 0.604 0.360 0.378       0.627         10           13           13.1       0.847         0.551    0.02    5.25               0.008                   0
+   V2  pre10 262 -0.551 0.702 1.223 0.678 16.0 0.153 1.046 0.532 0.416 0.261       0.298         16           16           13.1       0.241         0.241    0.02    1.75               0.000                   0
+   V2  pre40 262 -0.145 0.558 1.471 0.483 11.0 0.638 2.977 0.015 0.000 1.000       0.443         11           15           13.1       0.763         0.333    0.00    0.00               0.000                   0
+   V2   day0 262 -0.406 0.652 1.367 0.554  7.0 0.946 1.384 0.365 4.619 0.027       0.349          7           11           13.1       0.978         0.763    0.02    5.00               0.000                   0
+model window firm  n  mean_car      z  p_up  p_down  null_lo  null_hi  n_tail_up  n_tail_down  z_shrunk  tau2
+   M4  pre10  LMT 49     0.002  0.813 0.200   0.801   -1.654    1.580          4            3     0.241 0.421
+   M4  pre10  RTX 24     0.004  0.970 0.167   0.834   -1.640    1.690          2            1     0.287 0.421
+   M4  pre10  NOC 24    -0.004 -0.923 0.791   0.209   -1.742    1.559          0            2    -0.273 0.421
+   M4  pre10   GD 36    -0.001  0.151 0.449   0.552   -1.604    1.659          4            3     0.045 0.421
+   M4  pre10  HII 38     0.001 -0.338 0.625   0.375   -1.663    1.606          0            1    -0.100 0.421
+   M4  pre10  LHX 18    -0.002 -0.293 0.615   0.385   -1.728    1.573          4            1    -0.087 0.421
+   M4  pre10 LDOS  9    -0.022 -1.267 0.903   0.097   -1.633    1.548          0            1    -0.375 0.421
+   M4  pre10   BA 41    -0.008 -1.347 0.911   0.090   -1.632    1.582          2            1    -0.399 0.421
+   M4  pre10  TXT 23    -0.018 -2.586 0.997   0.004   -1.587    1.681          1            4    -0.766 0.421
+   V2  pre10  LMT 49     0.105  0.116 0.464   0.536   -1.666    1.658          5            1     0.000 0.000
+   V2  pre10  RTX 24    -0.411 -0.179 0.553   0.447   -1.607    1.668          2            1    -0.000 0.000
+   V2  pre10  NOC 24    -0.510 -0.714 0.758   0.243   -1.621    1.695          1            3    -0.000 0.000
+   V2  pre10   GD 36     0.225  0.726 0.237   0.763   -1.629    1.669          0            0     0.000 0.000
+   V2  pre10  HII 38    -0.333 -1.575 0.950   0.050   -1.574    1.673          0            4    -0.000 0.000
+   V2  pre10  LHX 18     0.972  1.223 0.121   0.880   -1.570    1.703          2            0     0.000 0.000
+   V2  pre10 LDOS  9    -1.701 -1.351 0.909   0.092   -1.660    1.716          0            2    -0.000 0.000
+   V2  pre10   BA 41     0.022 -0.851 0.788   0.213   -1.644    1.607          2            4    -0.000 0.000
+   V2  pre10  TXT 23     0.364  0.900 0.200   0.800   -1.652    1.721          4            1     0.000 0.000
+model            scenario  delta  frac    T1    T2    T3    T4    T5  pi_hat_mean
+   M1                 all    0.5   NaN 0.562 0.238 0.162 0.495 0.383        0.138
+   M1                 all    1.0   NaN 0.977 0.612 0.443 0.958 0.938        0.380
+   M1               share    5.0  0.05 0.190 0.165 0.138 0.232 0.237        0.051
+   M1               share    5.0  0.10 0.558 0.282 0.342 0.567 0.573        0.098
+   M1               share    5.0  0.20 0.955 0.677 0.773 0.970 0.965        0.188
+   M1                firm    2.0   NaN 0.212 0.448 0.088 0.167 0.153        0.059
+   M1                firm    4.0   NaN 0.477 0.923 0.230 0.478 0.443        0.099
+   M1          firm_share    6.0  0.30 0.155 0.397 0.113 0.193 0.172        0.046
+   M1 none (false alarms)    0.0   NaN 0.055 0.062 0.038 0.053 0.053        0.024
+   M2                 all    0.5   NaN 0.625 0.185 0.240 0.535 0.478        0.163
+   M2                 all    1.0   NaN 0.985 0.537 0.592 0.962 0.962        0.405
+   M2               share    5.0  0.05 0.262 0.090 0.223 0.283 0.285        0.065
+   M2               share    5.0  0.10 0.588 0.242 0.533 0.638 0.673        0.101
+   M2               share    5.0  0.20 0.973 0.638 0.927 0.978 0.987        0.184
+   M2                firm    2.0   NaN 0.212 0.463 0.083 0.185 0.177        0.065
+   M2                firm    4.0   NaN 0.480 0.912 0.292 0.487 0.478        0.101
+   M2          firm_share    6.0  0.30 0.195 0.382 0.190 0.232 0.265        0.048
+   M2 none (false alarms)    0.0   NaN 0.053 0.043 0.035 0.055 0.058        0.026
+   M3                 all    0.5   NaN 0.807 0.328 0.422 0.762 0.663        0.192
+   M3                 all    1.0   NaN 1.000 0.863 0.782 0.997 0.997        0.490
+   M3               share    5.0  0.05 0.302 0.165 0.353 0.360 0.400        0.052
+   M3               share    5.0  0.10 0.777 0.438 0.820 0.852 0.868        0.090
+   M3               share    5.0  0.20 0.998 0.900 0.997 1.000 1.000        0.163
+   M3                firm    2.0   NaN 0.340 0.585 0.207 0.285 0.282        0.073
+   M3                firm    4.0   NaN 0.613 0.938 0.563 0.662 0.620        0.096
+   M3          firm_share    6.0  0.30 0.257 0.537 0.327 0.365 0.395        0.045
+   M3 none (false alarms)    0.0   NaN 0.055 0.045 0.040 0.035 0.043        0.024
+   M4                 all    0.5   NaN 0.832 0.373 0.472 0.823 0.758        0.236
+   M4                 all    1.0   NaN 1.000 0.918 0.917 0.998 1.000        0.511
+   M4               share    5.0  0.05 0.373 0.200 0.468 0.510 0.547        0.062
+   M4               share    5.0  0.10 0.757 0.432 0.885 0.917 0.913        0.092
+   M4               share    5.0  0.20 0.995 0.950 1.000 1.000 1.000        0.167
+   M4                firm    2.0   NaN 0.325 0.657 0.243 0.390 0.350        0.080
+   M4                firm    4.0   NaN 0.620 0.968 0.640 0.728 0.713        0.104
+   M4          firm_share    6.0  0.30 0.312 0.583 0.375 0.430 0.445        0.050
+   M4 none (false alarms)    0.0   NaN 0.062 0.043 0.072 0.077 0.080        0.030
+   V2                 all    0.5   NaN 0.750 0.298 0.255 0.715 0.735        0.261
+   V2                 all    1.0   NaN 0.998 0.832 0.647 0.990 1.000        0.536
+   V2               share    4.0  0.05 0.250 0.117 0.188 0.257 0.313        0.079
+   V2               share    4.0  0.10 0.598 0.268 0.445 0.628 0.695        0.130
+   V2               share    4.0  0.20 0.972 0.683 0.897 0.965 0.982        0.219
+   V2                firm    2.0   NaN 0.280 0.635 0.150 0.297 0.307        0.103
+   V2                firm    4.0   NaN 0.600 0.948 0.453 0.682 0.692        0.140
+   V2          firm_share    6.0  0.30 0.258 0.600 0.243 0.400 0.392        0.067
+   V2 none (false alarms)    0.0   NaN 0.035 0.048 0.032 0.032 0.023        0.033
+ frac    T1    T2    T3    T4    T5  pi_hat_mean
+ 0.00 0.058 0.050 0.068 0.070 0.068        0.027
+ 0.02 0.163 0.083 0.178 0.222 0.220        0.046
+ 0.04 0.295 0.167 0.373 0.407 0.438        0.060
+ 0.06 0.440 0.230 0.527 0.562 0.627        0.070
+ 0.08 0.655 0.352 0.777 0.827 0.842        0.081
+ 0.10 0.790 0.503 0.868 0.917 0.925        0.092
+ 0.15 0.978 0.777 0.992 0.997 0.998        0.132
+ 0.20 0.998 0.932 1.000 0.998 1.000        0.169
+ 0.30 1.000 0.998 1.000 1.000 1.000        0.246
+ delta    T1    T2    T3    T4    T5  pi_hat_mean
+   0.0 0.065 0.060 0.057 0.065 0.052        0.028
+   1.0 0.147 0.258 0.113 0.167 0.130        0.052
+   2.0 0.322 0.695 0.243 0.353 0.322        0.083
+   3.0 0.482 0.870 0.430 0.567 0.558        0.102
+   4.0 0.642 0.955 0.650 0.713 0.703        0.109
+   6.0 0.817 1.000 0.878 0.915 0.910        0.114
+model  sd_car_pre10  mean_car_pre10    n
+   M1        0.0542         -0.0009 7085
+   M2        0.0531         -0.0018 7085
+   M3        0.0462          0.0006 7085
+   M4        0.0465         -0.0004 7085
+   V2        4.0873          0.3008 7085
+  model   n  n_tail_up  expected   binom_p
+0    M4  89          4      4.45  0.655585
+1    V2  89          3      4.45  0.827923
+model window tic       day0 event_type  pct_rev                                                                                                                     text                                                                                     url    car      z   p_up  p_down   q_up
+   M4  pre10 LMT 2020-04-01   contract   9.8686                                                                                                    FULLY FUNDING LRIP 14             https://www.usaspending.gov/award/CONT_AWD_N0001917C0001_9700_-NONE-_-NONE- 0.0762 4.4535 0.0035  1.0000 0.4596
+   M4  pre10 LMT 2023-02-08  arms sale  15.1552                                                                                            Arms sale: Republic of Poland https://www.federalregister.gov/documents/2024/08/26/2024-19129/arms-sales-notification 0.0689 2.7599 0.0035  1.0000 0.4596
+   M4  pre10 RTX 2026-06-26   contract   1.2503                                                                                       EXERCISE OF OPTION CLINS 2001-2072             https://www.usaspending.gov/award/CONT_AWD_N0001924C0032_9700_-NONE-_-NONE- 0.0685 2.4467 0.0105  0.9947 0.6339
+   M4  pre10  GD 2025-03-12   contract   3.6635                                                                                                                  FUNDING             https://www.usaspending.gov/award/CONT_AWD_N0002417C2117_9700_-NONE-_-NONE- 0.0707 2.7567 0.0161  0.9871 0.6339
+   M4  pre10  BA 2020-03-31   contract   2.1793 PROCUREMENT OF LOT 11 AIRCRAFT (A/C) FOR THE UNITED STATES NAVY (USN) (8 A/C), NEW ZEALAND (4 A/C), REPUBLIC OF KOREA (R             https://www.usaspending.gov/award/CONT_AWD_N0001914C0067_9700_-NONE-_-NONE- 0.1619 2.2064 0.0175  0.9860 0.6339
+   M4  pre10 LHX 2023-12-26   contract   2.3159                                                                                                               BIG SAFARI        https://www.usaspending.gov/award/CONT_AWD_FA862023F4781_9700_FA862020G4050_9700 0.0599 1.9138 0.0207  0.9828 0.6339
+   M4  pre10 LHX 2025-06-03   contract   1.2693 DELIVERY ORDER 07 DELIVERY OF 12 OA-1K AIRCRAFTREQUIREMENTS IN ACCORDANCE WITH ATTACHMENT 01 - ARMED OVERWATCH STATEMENT        https://www.usaspending.gov/award/CONT_AWD_FA863725FB003_9700_FA863722DB001_9700 0.0485 1.8444 0.0207  0.9828 0.6339
+   M4  pre10 LHX 2023-12-05  arms sale   3.4111                                                                                       Arms sale: Kingdom of Saudi Arabia https://www.federalregister.gov/documents/2024/11/27/2024-27774/arms-sales-notification 0.0534 1.7752 0.0241  0.9793 0.6339
+   M4  pre10 LMT 2018-09-26   contract   7.2877                                                                              DEFINITIZING MOST OF LRIP 11 PRODUCTION UCA             https://www.usaspending.gov/award/CONT_AWD_N0001916C0033_9700_-NONE-_-NONE- 0.0322 1.8365 0.0255  0.9782 0.6339
+   M4  pre10  BA 2022-02-11  arms sale  22.3164                                                                                       Arms sale: Government of Indonesia https://www.federalregister.gov/documents/2023/09/27/2023-21066/arms-sales-notification 0.1029 1.7115 0.0267  0.9763 0.6339
+   M4  pre10 LMT 2022-11-03  arms sale  10.2694                                                                Arms sale: Government of Australia; Government of Finland https://www.federalregister.gov/documents/2024/08/08/2024-17596/arms-sales-notification 0.0497 2.0140 0.0281  0.9754 0.6339
+   M4  pre10 RTX 2022-06-15   contract   5.4909 PROVIDE FOR THE LOT 15-16 PROPULSION SYSTEMS AND FY22 GLOBAL SPARES & HARDWARE UCA UNDER THE F-35 LIGHTING II JOINT STRI             https://www.usaspending.gov/award/CONT_AWD_HQ085122C0001_9700_-NONE-_-NONE- 0.0410 1.9222 0.0316  0.9737 0.6339
+   M4  pre10 TXT 2025-11-13   contract   2.1895 THE FUTURE LONG RANGE ASSAULT AIRCRAFT (FLRAA) PROGRAM THAT WILL DEVELOP AND FIELD THE NEXT GENERATION OF AFFORDABLE VER             https://www.usaspending.gov/award/CONT_AWD_W58RGZ23C0001_9700_-NONE-_-NONE- 0.0533 1.8655 0.0360  0.9668 0.6339
+   M4  pre10 LHX 2023-06-14  arms sale  10.5498                                                                                          Arms sale: Government of Kuwait https://www.federalregister.gov/documents/2024/10/07/2024-23120/arms-sales-notification 0.0472 1.5600 0.0379  0.9655 0.6339
+   M4  pre10  GD 2025-06-27   contract   3.5199                                                                                          SSN 814 LONG LEAD TIME MATERIAL             https://www.usaspending.gov/award/CONT_AWD_N0002424C2110_9700_-NONE-_-NONE- 0.0494 1.6835 0.0387  0.9645 0.6339
+model window tic       day0 event_type  pct_rev                                                                                                                     text                                                                                     url     car      z   p_up  p_down   q_up
+   V2  pre10  BA 2019-03-21   contract   1.5400                                                                                                             MYPIV F/A-18             https://www.usaspending.gov/award/CONT_AWD_N0001918C1046_9700_-NONE-_-NONE- 14.1477 3.5557 0.0035  1.0000 0.6352
+   V2  pre10 RTX 2023-09-14  arms sale   7.5439                                                                           Arms sale: Government of the Republic of Korea https://www.federalregister.gov/documents/2024/11/06/2024-25767/arms-sales-notification  7.7904 4.0046 0.0053  1.0000 0.6352
+   V2  pre10 LMT 2020-12-17   contract   8.9953                                              UPDATE DELIVERY INFORMATION ON CERTAIN LINE ITEMS AND REVISE AN ATTACHMENT.             https://www.usaspending.gov/award/CONT_AWD_N0001917C0001_9700_-NONE-_-NONE-  5.4787 2.7481 0.0073  0.9964 0.6352
+   V2  pre10 RTX 2023-11-10  arms sale   3.7720                                                                                         Arms sale: Government of Romania https://www.federalregister.gov/documents/2024/11/20/2024-26984/arms-sales-notification 10.3501 2.4733 0.0097  0.9951 0.6359
+   V2  pre10 TXT 2026-09-01  arms sale   5.8386                                                                                            Arms sale: Government of Iraq https://www.federalregister.gov/documents/2026/10/19/2026-21335/arms-sales-notification  6.4912 2.3518 0.0166  0.9861 0.7228
+   V2  pre10 LMT 2024-12-23   contract  12.4008 THE PURPOSE OF THIS CONTRACT IS TO PROCURE LOT 18 AIRCRAFT, RED GEAR, AND TOOLING FOR U.S. SERVICE, INTERNATIONAL PARTNE             https://www.usaspending.gov/award/CONT_AWD_N0001923C0003_9700_-NONE-_-NONE-  5.4024 2.4638 0.0182  0.9855 0.7228
+   V2  pre10 NOC 2025-02-21   contract   1.6788 GROUND-BASED STRATEGIC DETERRENT (GBSD) ENGINEERING AND MANUFACTURING DEVELOPMENT (EMD) AND EARLY PRODUCTION AND DEPLOYM             https://www.usaspending.gov/award/CONT_AWD_FA821920C0006_9700_-NONE-_-NONE-  7.1436 2.1031 0.0222  0.9806 0.7228
+   V2  pre10 TXT 2024-11-11   contract   3.9097                                                                           DEFINITIZATION OF ITEMS 0001, 0002, 0003, 0004             https://www.usaspending.gov/award/CONT_AWD_N0002423C2452_9700_-NONE-_-NONE-  4.9032 2.1371 0.0249  0.9778 0.7228
+   V2  pre10  BA 2020-05-14   contract   3.4336                                                   SLAM ER OBSOLESCENCE REDESIGN - NRE AND PRODUCTION OF SLAM ER MISSILES             https://www.usaspending.gov/award/CONT_AWD_N0001920C0003_9700_-NONE-_-NONE- 14.4557 2.2916 0.0267  0.9763 0.7228
+   V2  pre10 LHX 2024-12-20   contract   1.3540                                            ENHANCED NIGHT VISION GOGGLE - BINOCULAR PRODUCTION SYSTEMS DELIVERY ORDER 02        https://www.usaspending.gov/award/CONT_AWD_W91CRB25F0072_9700_W91CRB24D0002_9700  6.1724 2.2932 0.0276  0.9759 0.7228

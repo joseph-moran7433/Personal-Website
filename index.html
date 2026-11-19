@@ -533,6 +533,44 @@
     .dl-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
     .dl-table th, .dl-table td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid rgba(128,128,128,0.25); vertical-align: top; }
     .dl-table th { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    /* Defense-leakage: chart with color-keyed notes to its right */
+    .dl-fig { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(240px, 1fr); gap: 1.4rem; align-items: start;
+      margin: 1.1rem 0 1.8rem; width: min(1160px, calc(100vw - 6rem)); }
+    .dl-fig img { width: 100%; border-radius: 6px; border: 1px solid var(--border); }
+    .dl-notes { font-size: 0.84rem; color: var(--muted); line-height: 1.55; border-left: 2px solid var(--border); padding-left: 1rem; }
+    .dl-notes h4 { font-family: var(--font-body); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.6rem; font-weight: 600; }
+    .dl-key { display: grid; grid-template-columns: 1.1rem 1fr; gap: 0.5rem; margin-bottom: 0.55rem; }
+    .dl-key i { display: block; width: 0.95rem; height: 0.95rem; border-radius: 3px; margin-top: 0.2rem; }
+    .dl-key i.line { height: 3px; margin-top: 0.55rem; border-radius: 2px; }
+    .dl-key i.dash { height: 0; border-top: 2.5px dashed #0b0b0b; background: none !important; margin-top: 0.55rem; border-radius: 0; }
+    .dl-key i.dot { border-radius: 50%; }
+    .dl-notes b { color: var(--text); font-weight: 600; }
+    .dl-take { margin-top: 0.8rem; padding: 0.6rem 0.75rem; background: var(--surface2); border-radius: 6px; color: var(--text); }
+    /* Assumptions: compact standard list + cards for the ones that drive results */
+    .dl-asm-std { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.5rem; margin: 0.6rem 0 1.4rem; }
+    .dl-asm-std div { font-size: 0.82rem; padding: 0.55rem 0.75rem; background: var(--surface2); border-radius: 6px; color: var(--muted); line-height: 1.5; }
+    .dl-asm-std b { color: var(--text); font-weight: 600; }
+    .dl-asm-card { border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 6px; padding: 0.85rem 1rem; margin: 0.75rem 0; background: var(--surface); }
+    .dl-asm-card h4 { font-family: var(--font-body); font-size: 0.98rem; color: var(--text); margin: 0 0 0.55rem; font-weight: 600; }
+    .dl-asm-card h4 span { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-left: 0.5rem; }
+    .dl-3col { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.9rem; font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    .dl-3col small { display: block; font-size: 0.66rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--faint); margin-bottom: 0.2rem; }
+    /* Method check: three-step strip and test cards */
+    .dl-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; margin: 0.8rem 0 1.2rem; }
+    .dl-step { border: 1px solid var(--border); border-radius: 6px; padding: 0.85rem 0.95rem; background: var(--surface); font-size: 0.84rem; color: var(--muted); line-height: 1.5; }
+    .dl-step .n { display: inline-block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: #8a8984; border-radius: 4px; padding: 0.1rem 0.45rem; margin-bottom: 0.45rem; }
+    .dl-step b { color: var(--text); font-weight: 600; display: block; margin-bottom: 0.25rem; }
+    .dl-tests { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.7rem; margin: 0.8rem 0 1.2rem; }
+    .dl-test { border: 1px solid var(--border); border-top: 4px solid var(--c); border-radius: 6px; padding: 0.75rem 0.85rem; background: var(--surface); font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    .dl-test b { display: block; color: var(--text); font-size: 0.92rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .dl-test em { display: block; margin-top: 0.4rem; color: var(--text) !important; font-style: normal; }
+    .dl-callout { border-left: 4px solid var(--c, #8a8984); background: var(--surface2); padding: 0.6rem 0.85rem; border-radius: 4px; margin: 0.4rem 0 1rem; font-size: 0.88rem; color: var(--text); }
+    .dl-win { background: rgba(42,120,214,0.10); font-weight: 600; }
+    @media (max-width: 900px) {
+      .dl-fig { grid-template-columns: 1fr; width: 100%; }
+      .dl-notes { border-left: none; padding-left: 0; }
+      .dl-3col, .dl-steps { grid-template-columns: 1fr; }
+    }
     .reflection {
       padding: 2rem 2.25rem;
       background: var(--surface);
@@ -4992,10 +5030,10 @@ const projects = [
     date: "Currently working on it",
     sortKey: 202611,
     title: "Do Defense Stocks Move Before the Deal?",
-    desc: "MA491 project three: an event study testing whether defense stock prices or trading volume move abnormally in the days before large DoD contract awards and arms sale notifications are made public. Tested three ways: on average, company by company, and deal by deal. Steps 1&ndash;5 done on 262 deals across 9 firms; sensitivity checks next.",
+    desc: "MA491 project three: an event study testing whether defense stock prices or trading volume move abnormally in the days before large DoD contract awards and arms sale notifications are made public. Tested three ways: on average, company by company, and deal by deal. Steps 1&ndash;5 done on 426 deals across 9 firms (2010&ndash;2026); sensitivity checks next.",
     tags: ["Event Study", "Python", "war.gov", "USAspending", "yfinance"],
     detail: {
-      summary: "Steps 1&ndash;5 are done: the question, a sample of 262 deals at 9 public defense firms (2018&ndash;2026), background research, the candidate models broken out one by one, and a scoring run that picks between them. Results stay labeled preliminary until Step 6 (sensitivity) is done. Every number below comes from a script and a source I can point to.",
+      summary: "Steps 1&ndash;5 are done: the question, a sample of 426 deals at 9 public defense firms (2010&ndash;2026), background research, the candidate models broken out one by one, and a scoring run that picks between them. Results stay labeled preliminary until Step 6 (sensitivity) is done. Every number below comes from a script and a source I can point to.",
       sections: [
         {
           label: "Where This Stands",
@@ -5003,52 +5041,82 @@ const projects = [
           body: `<table class="dl-table">
             <tr><th>Step</th><th>Status</th></tr>
             <tr><td>1. Research question</td><td>Settled: asked on average, by company, and by deal</td></tr>
-            <tr><td>2. Data</td><td>262 clean deals, 9 firms, 2018&ndash;2026</td></tr>
+            <tr><td>2. Data</td><td>426 clean deals (588 before the earnings screen), 9 firms, 2010&ndash;2026</td></tr>
             <tr><td>3. Research</td><td>Done (announcement process + prior studies)</td></tr>
             <tr><td>4. Candidate models</td><td>Done: 5 normal-return models &times; 5 detection tests, each broken out below</td></tr>
             <tr><td>5. Scoring</td><td>Done: planted run-ups decide the models (PRELIMINARY results)</td></tr>
             <tr><td>6&ndash;7. Sensitivity, presentation</td><td>Not started</td></tr>
           </table>`,
           stats: [
-            { num: "262", label: "clean deals, 9 firms" },
+            { num: "426", label: "clean deals, 9 firms, 2010&ndash;2026" },
             { num: "0 of 9", label: "firms with a pre-announcement run-up" },
-            { num: "1", label: "firm with a day-0 reaction the average hid (Textron)" }
+            { num: "4 vs. 1", label: "deals extreme in both price and volume vs. chance (2 are Textron, checked in Step 6)" }
           ]
         },
         {
           label: "The Question",
           heading: "The question, and the three ways it is asked",
           body: `<p>Do abnormal returns or abnormal trading volume show up in days &minus;10 to &minus;1 before a major DoD contract or arms sale goes public? Day 0 (the first trading day after the post) and days +1 to +5 are reported beside it to show the shape: a run-up followed by a flat day 0 would look like full leakage. The windows are reported side by side, with no day-0 gate.</p>
-          <p>Leakage doesn't have to show up everywhere, so the question is asked three ways. <strong>On average:</strong> do deals in general run up? <strong>By company:</strong> does one firm's stock run up before its deals even if the others don't? <strong>By deal:</strong> are there more extreme run-ups than chance would give? If only a few of 262 deals leaked, they would disappear into the average, so the last two get their own tests.</p>
+          <p>Leakage doesn't have to show up everywhere, so the question is asked three ways. <strong>On average:</strong> do deals in general run up? <strong>By company:</strong> does one firm's stock run up before its deals even if the others don't? <strong>By deal:</strong> are there more extreme run-ups than chance would give? If only a few of 426 deals leaked, they would disappear into the average, so the last two get their own tests.</p>
           <p>Every result is set beside two comparisons: the same window before each firm's own earnings releases (a public announcement the market clearly reacts to), and random ordinary days for the same firm. Only publicly traded firms can show leakage in a stock price (A10), so the study covers public firms whose revenue is mostly defense; together they win 34&ndash;44% of DoD contract dollars. The setup matches known cases of trading ahead of news: stocks drift up before scheduled Fed announcements (Lucca &amp; Moench 2015), merger targets run up before deals, and illegal insider trades move prices (Meulbroek 1992). A contract award is also a scheduled government announcement that a few people know early. A later extension adds the losing public bidders on competitive awards: the winner rising and the loser falling before day 0 would be much harder to explain away.</p>
           <p><strong>Who decides:</strong> the people who own DoD's contract-announcement rules (DFARS 205.303; Army supplement AFARS 5105.303 bars releasing the winner's identity, even to a Member of Congress, before the public announcement), plus the DoD IG and the armed services committees. Public data can't prove insider trading. Findings will be worded as "consistent with information leakage" or "no evidence of leakage."</p>
-          <table class="dl-table">
-            <tr><th>#</th><th>Assumption (each gets tested in Step 6)</th></tr>
-            <tr><td>A1</td><td>The announcement date is the first time the deal is public. <em>Weakest. Many awards are previewed in trade press, and the study uses the USAspending action date, which can be days off the war.gov post.</em></td></tr>
-            <tr><td>A2</td><td>Contracts post after the 4 PM close, so day 0 is the next trading day.</td></tr>
-            <tr><td>A3</td><td>A deal counts if it is at least 1% of the firm's prior-year revenue; "large" is 5% or more.</td></tr>
-            <tr><td>A4</td><td>Normal returns can be estimated from the stock's relationship to the market and its peers over about the prior year.</td></tr>
-            <tr><td>A5</td><td>Leakage would show as positive abnormal returns or high volume in days &minus;10 to &minus;1: on every deal, on one firm's deals, or on a few deals.</td></tr>
-            <tr><td>A6</td><td>Confounding news (earnings, etc.) near an event can be identified and the event excluded.</td></tr>
-            <tr><td>A7</td><td>Events are independent. <em>Same-firm deals within 10 trading days are merged into one event.</em></td></tr>
-            <tr><td>A8</td><td>The deal value reflects real economic value. <em>Announced values are often multiyear ceilings; obligated dollars are smaller.</em></td></tr>
-            <tr><td>A9</td><td>The deal is value-relevant: judged by size vs. revenue, surprise (competitive vs. sole-source or follow-on), and a trade-press check for events that show a run-up.</td></tr>
-            <tr><td>A10</td><td>Only publicly traded firms can show leakage in a stock price. The study covers public firms whose revenue is mostly defense.</td></tr>
-          </table>`
+          <p><strong>Assumptions.</strong> Ten assumptions sit under the study. Five are standard event-study setup and are handled by design. The other five can change the answer, so each gets its own check in Step 6.</p>
+          <p style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--faint);margin-bottom:0.2rem">Standard setup, handled by design</p>
+          <div class="dl-asm-std">
+            <div><b>A2 Timing.</b> Contracts post after the 4 PM close (verified 5:00&ndash;5:12 PM ET), so day 0 is the next trading day.</div>
+            <div><b>A4 Normal days.</b> A stock's normal move can be predicted from the market and its peers over the prior year (days &minus;250 to &minus;41).</div>
+            <div><b>A6 Other news.</b> Earnings releases near a deal can be found (SEC 8-K filings) and those deals set aside.</div>
+            <div><b>A7 Independence.</b> Same-firm deals within 10 trading days are merged into one event, so no deal is counted twice.</div>
+            <div><b>A10 Public firms only.</b> Only a traded stock can show leakage. The study firms win 34&ndash;44% of DoD contract dollars.</div>
+          </div>
+          <p style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--faint);margin-bottom:0.2rem">The five that can change the answer</p>
+          <div class="dl-asm-card"><h4>A1 &middot; The announcement date is the first time the deal is public <span>weakest</span></h4>
+            <div class="dl-3col"><div><small>Why it matters</small>If news gets out earlier (trade press, a company release), a "run-up" is really the public reaction to that earlier news, and day 0 is in the wrong place.</div>
+            <div><small>Where it's shaky</small>Contract dates are USAspending action dates, not the war.gov post. In the announcement check, 6 of 12 matched exactly and one posted 5 days late.</div>
+            <div><small>Step 6 check</small>Match a sample of deals to their war.gov post and re-run; trade-press search on every flagged deal.</div></div></div>
+          <div class="dl-asm-card"><h4>A3 &middot; A deal matters if it is at least 1% of the firm's revenue</h4>
+            <div class="dl-3col"><div><small>Why it matters</small>Too low and the sample fills with deals nobody would trade on; too high and too few deals are left to detect anything.</div>
+            <div><small>Where it's shaky</small>1% is a judgment call. For the big four that is a $0.25&ndash;0.8B deal (2010&ndash;2026); for Textron about $0.1&ndash;0.14B.</div>
+            <div><small>Step 6 check</small>Re-run at 0.5%, 2% and 5%. A real leak should get stronger as deals get bigger.</div></div></div>
+          <div class="dl-asm-card"><h4>A5 &middot; Leakage shows up as an up move or extra volume in days &minus;10 to &minus;1</h4>
+            <div class="dl-3col"><div><small>Why it matters</small>The tests only look where they are told. A leak 30 days out, or one that only shows in options, would be missed.</div>
+            <div><small>Where it's shaky</small>Arms sales get 20&ndash;40 days of committee review before the formal notice, so their leak window may be longer.</div>
+            <div><small>Built in</small>Three shapes are tested (every deal, one firm, a few deals), and arms sales are also tested over &minus;40 to &minus;1.</div></div></div>
+          <div class="dl-asm-card"><h4>A8 &middot; The dollar value reflects the deal's real worth</h4>
+            <div class="dl-3col"><div><small>Why it matters</small>Deal size sets which deals count (A3) and which are "large."</div>
+            <div><small>Where it's shaky</small>USAspending gives dollars obligated that day; war.gov gives the ceiling. The $22.2B submarine deal had $3.2B obligated.</div>
+            <div><small>Step 6 check</small>Re-rank the matched sample by announced value and compare.</div></div></div>
+          <div class="dl-asm-card"><h4>A9 &middot; The deal is news the market didn't already expect</h4>
+            <div class="dl-3col"><div><small>Why it matters</small>A follow-on lot of a program everyone knows about may move nothing, leak or no leak, which pulls every test toward zero.</div>
+            <div><small>Where it's shaky</small>Most big deals are sole-source follow-ons; only a small share were competed.</div>
+            <div><small>Step 6 check</small>Re-run on competitive awards only, and on first-time awards vs. modifications.</div></div></div>`
         },
         {
           label: "Data Sources",
           heading: "What each source gives, and its limits",
           body: `<table class="dl-table">
             <tr><th>Source</th><th>Gives</th><th>Limit found</th></tr>
-            <tr><td>yfinance</td><td>Daily price and volume, 2018&ndash;Oct 2026</td><td>RTX before Apr 2020 is United Technologies' history, so RTX starts Apr 2020</td></tr>
+            <tr><td>yfinance</td><td>Daily price and volume, 2008&ndash;Oct 2026 (2008&ndash;09 only to fit the models for 2010 deals)</td><td>RTX before Apr 2020 is United Technologies' history, so RTX starts Apr 2020. LHX before the 2019 merger is Harris Corp., so only Harris-named deals count before then</td></tr>
             <tr><td>war.gov contracts</td><td>Daily award list: firm, value, contract number</td><td>Posts at 5:00&ndash;5:12 PM ET (verified for 10 recent days). Blocked scripted reads after about 130 pages, so it was used for the announcement check only</td></tr>
             <tr><td>DSCA / State</td><td>Arms sale notices: country, value, contractor</td><td>Contractor only in the PDF. Since Feb 2026, State posts these</td></tr>
-            <tr><td>Federal Register API</td><td>Full text of every arms sale notice</td><td>Published weeks late, so day 0 comes from the "date report delivered to Congress" printed in each notice. Arms-sale events for the study</td></tr>
-            <tr><td>USAspending API</td><td>Dollars obligated per contract action</td><td>Contract events for the study (action date, obligated dollars, competition fields). Obligated &ne; announced, and in the announcement check half of the biggest actions had no war.gov announcement</td></tr>
-            <tr><td>SEC EDGAR</td><td>Annual revenue (size cutoff) and earnings-release dates (8-K Item 2.02, about 40 per firm since 2017)</td><td>Revenue field name changes over the years; RTX's pre-2020 revenue is restated after its spin-offs</td></tr>
-            <tr><td>Losing bidders <em>(planned)</em></td><td>USAspending marks which awards were competed (58 competitive contracts in the study)</td><td>Losers are not named; needs matching by hand</td></tr>
+            <tr><td>Federal Register API</td><td>Full text of every arms sale notice</td><td>Published weeks to months late, so day 0 comes from the "date report delivered to Congress" printed in each notice (found in 99.8% of them). Arms-sale events for the study</td></tr>
+            <tr><td>USAspending API</td><td>Dollars obligated per contract action, 2010&ndash;2026</td><td>Contract events for the study (action date, obligated dollars, competition fields). Obligated &ne; announced, and in the announcement check half of the biggest actions had no war.gov announcement. Leidos was named SAIC before its 2013 split; that name counts only before the split</td></tr>
+            <tr><td>SEC EDGAR</td><td>Annual revenue (size cutoff) and earnings-release dates (8-K Item 2.02) from mid-2016</td><td>Revenue field names change over the years; RTX's pre-2020 revenue is restated after its spin-offs. No Booz Allen revenue before 2017</td></tr>
+            <tr><td>Yahoo earnings calendar</td><td>Earnings-release dates and times before mid-2016</td><td>Checked against EDGAR from 2016 on: same trading day for 460 of 462 releases</td></tr>
+            <tr><td>Losing bidders <em>(planned)</em></td><td>USAspending marks which awards were competed (69 competitive contracts in the clean sample)</td><td>Losers are not named; needs matching by hand</td></tr>
           </table>`
+        },
+        {
+          label: "Data: The Deals",
+          heading: "What the 426 deals look like before any model runs",
+          body: `<p>Six pictures of the sample: how deals are filtered, when and where they fall, how big they are, and what one deal looks like in the price data. Blue is always a contract, orange an arms sale, grey a deal set aside.</p>
+          <div class="dl-fig"><img src="assets/defense-leakage/step2_funnel.png" alt="Funnel from 2,990 candidate events to 426 clean deals"><div class="dl-notes"><h4>How to read it</h4><div class="dl-key"><i class="" style="background:#c9c8c2"></i><span><b>Grey bars:</b> events left after each filter, top to bottom.</span></div><div class="dl-key"><i class="" style="background:#2a78d6"></i><span><b>Blue bar:</b> the 426 clean deals the main tests use.</span></div><div class="dl-take"><b>What it tells us:</b> Most of the drop is the size rule (2,990 to 979): a $100M award barely registers for a $60B company. The 162 deals with an earnings release in days &minus;10 to +5 aren't thrown out; they are reported on their own because earnings news would drown out any leak.</div></div></div>
+          <div class="dl-fig"><img src="assets/defense-leakage/step2_by_year.png" alt="Deals per year 2010-2026, stacked by contract, arms sale, and earnings-flagged"><div class="dl-notes"><h4>How to read it</h4><div class="dl-key"><i class="" style="background:#2a78d6"></i><span><b>Blue:</b> clean contract deals (USAspending).</span></div><div class="dl-key"><i class="" style="background:#eb6834"></i><span><b>Orange:</b> clean arms-sale notices (Federal Register).</span></div><div class="dl-key"><i class="" style="background:#c9c8c2"></i><span><b>Grey:</b> deals with earnings nearby, set aside. Number on top = all deals that year.</span></div><div class="dl-take"><b>What it tells us:</b> Going back to 2010 adds 160 clean deals to the 266 from 2018 on. Contracts are steady at 12&ndash;26 a year; arms sales are rare before 2012 in the parsed notices and jump from 2022 on, so the recent years lean more on arms sales.</div></div></div>
+          <div class="dl-fig"><img src="assets/defense-leakage/step2_by_firm.png" alt="Deals per firm, stacked by type"><div class="dl-notes"><h4>How to read it</h4><div class="dl-key"><i class="" style="background:#2a78d6"></i><span><b>Blue:</b> clean contracts.</span></div><div class="dl-key"><i class="" style="background:#eb6834"></i><span><b>Orange:</b> clean arms sales.</span></div><div class="dl-key"><i class="" style="background:#c9c8c2"></i><span><b>Grey:</b> earnings nearby. Dotted line splits the big four (above) from mid-caps.</span></div><div class="dl-take"><b>What it tells us:</b> Lockheed has the most deals (127), HII and Boeing next. RTX is short because it only counts from April 2020. Booz Allen (1, flagged) and Kratos (0) have almost no qualifying deals, so the tests run on 9 firms. Big four and mid-caps are close to even: 216 vs. 210 clean deals.</div></div></div>
+          <div class="dl-fig"><img src="assets/defense-leakage/step2_size.png" alt="Histogram of deal size as a share of prior-year revenue, log scale"><div class="dl-notes"><h4>How to read it</h4><div class="dl-key"><i class="" style="background:#2a78d6"></i><span><b>Blue:</b> clean contracts by size.</span></div><div class="dl-key"><i class="" style="background:#eb6834"></i><span><b>Orange:</b> clean arms sales by size.</span></div><div class="dl-key"><i class="dash" style="background:#0b0b0b"></i><span><b>Dashed line:</b> 5% of revenue, the cut-off for a &ldquo;large&rdquo; deal.</span></div><div class="dl-take"><b>What it tells us:</b> The typical deal is 2.8% of a year's revenue; 118 are large (5%+). Arms sales sit further right because a notice gives the whole program's estimated value. Size is the reason to trade on a leak, so Step 6 re-runs at other cut-offs.</div></div></div>
+          <div class="dl-fig"><img src="assets/defense-leakage/step2_months.png" alt="Share of deals by calendar month, quarter-end months darker"><div class="dl-notes"><h4>How to read it</h4><div class="dl-key"><i class="" style="background:#1c5cab"></i><span><b>Dark blue:</b> last month of a quarter (Mar, Jun, Sep, Dec).</span></div><div class="dl-key"><i class="" style="background:#86b6ef"></i><span><b>Light blue:</b> other months.</span></div><div class="dl-key"><i class="dash" style="background:#0b0b0b"></i><span><b>Dashed line:</b> 8.3%, what an even spread would give.</span></div><div class="dl-take"><b>What it tells us:</b> 53% of deals land in quarter-end months, against 33% if they were spread evenly. Quarter-ends are also different days for stocks, so every comparison uses ordinary days from the same firm, the same year, and the same quarter-end status.</div></div></div>
+          <div class="dl-fig"><img src="assets/defense-leakage/step2_anatomy.png" alt="One deal: GD actual vs predicted cumulative return, and daily abnormal returns, days -40 to +10"><div class="dl-notes"><h4>One deal, up close</h4><div class="dl-key"><i class="line" style="background:#0b0b0b"></i><span><b>Black line:</b> General Dynamics' actual cumulative return around a Jan 2017 Virginia-class submarine deal (9% of revenue).</span></div><div class="dl-key"><i class="line" style="background:#1baf7a"></i><span><b>Green line:</b> what model M4 predicts from the market and the other primes that day.</span></div><div class="dl-key"><i class="" style="background:#2a78d6"></i><span><b>Blue bars:</b> abnormal return = actual minus predicted, each day (light = negative).</span></div><div class="dl-key"><i class="" style="background:rgba(42,120,214,0.25)"></i><span><b>Shaded:</b> days &minus;10 to &minus;1, the leakage window. Dashed line = day 0.</span></div><div class="dl-take"><b>What it tells us:</b> Each deal becomes one number per window: the sum of its bars. Here days &minus;10 to &minus;1 add +0.5% (ordinary) and day 0 adds +0.7%. The big jump at day +6 is GD's earnings release, outside the &minus;10 to +5 screen. 426 of these numbers feed the tests.</div></div></div>
+          <p style="font-size:0.85rem">Script: <code>defense-leakage/scripts/step2_data_figures.py</code>.</p>`
         },
         {
           label: "Announcement Check",
@@ -5073,7 +5141,7 @@ const projects = [
             <tr><td>RTX</td><td>Contract</td><td style="white-space:nowrap">2026-07-20</td><td style="white-space:nowrap">2026-07-21</td><td>$1.81B</td><td>$1.81B</td><td><a href="https://www.war.gov/News/Contracts/Contract/Article/4550330/contracts-for-july-20-2026/" target="_blank" rel="noopener">AN/SPY-6 hardware production</a> &#9888;</td></tr>
           </table>
           <p style="font-size:0.85rem">&#9888; = needs a closer look (values disagree, late posting, or date from the Federal Register only). Arms sale dates are when the notice was delivered to Congress; the time of the public post isn't verified yet.</p>
-          <p><strong>What this check showed:</strong> (1) Half of the 12 largest obligations had no war.gov announcement at all. war.gov blocks scripted reads, so the 262-deal study uses USAspending action dates; Step 6 tests how much that matters (A1). (2) Announced and obligated values can differ a lot: the $22.2B submarine deal had $3.2B obligated that day. The announced value will define "large." (3) One SPY-6 award was posted 5 days after its USAspending action date, a direct challenge to A1.</p>`
+          <p><strong>What this check showed:</strong> (1) Half of the 12 largest obligations had no war.gov announcement at all. war.gov blocks scripted reads, so the 426-deal study uses USAspending action dates; Step 6 tests how much that matters (A1). (2) Announced and obligated values can differ a lot: the $22.2B submarine deal had $3.2B obligated that day. The announced value will define "large." (3) One SPY-6 award was posted 5 days after its USAspending action date, a direct challenge to A1.</p>`
         },
         {
           label: "Step 3: Research",
@@ -5098,7 +5166,7 @@ const projects = [
         {
           label: "Step 4: Models",
           heading: "The models, broken out: two layers",
-          body: `<p>An event study makes two separate model choices. <strong>Layer 1, the normal-return model,</strong> says what the stock should have done on a given day; what's left over is the abnormal return. <strong>Layer 2, the detection model,</strong> says how 262 abnormal returns get added up into a verdict. An average alone can hide a few leaked deals or one leaky company, so Layer 2 has five tests, each built for a different shape of leakage.</p>
+          body: `<p>An event study makes two separate model choices. <strong>Layer 1, the normal-return model,</strong> says what the stock should have done on a given day; what's left over is the abnormal return. <strong>Layer 2, the detection model,</strong> says how 426 abnormal returns get added up into a verdict. An average alone can hide a few leaked deals or one leaky company, so Layer 2 has five tests, each built for a different shape of leakage.</p>
           <p><strong>Layer 1: what a normal day looks like</strong> (fit on days &minus;250 to &minus;41, kept clear of the event window)</p>
           <table class="dl-table">
             <tr><th>Model</th><th>Type</th><th>Assumes</th><th>Abnormal return</th><th>Catches / misses</th></tr>
@@ -5108,72 +5176,74 @@ const projects = [
             <tr><td>M4 + peer index</td><td>Multiple linear regression (OLS, 2 predictors)</td><td>Adds the average return of the other big-four primes (own firm left out)</td><td>r &minus; (&alpha; + &beta;r<sub>SPY</sub> + &gamma;r<sub>peers</sub>)</td><td>Removes sector rallies without holding the firm. Misses a leak that hits every prime at once</td></tr>
             <tr><td>V2 volume</td><td>No regression: mean-adjusted model on log volume</td><td>Log volume vs. its own normal, minus SPY's</td><td>(ln v &minus; normal) &minus; (ln v<sub>SPY</sub> &minus; normal)</td><td>Sees trading interest even when the price doesn't move</td></tr>
           </table>
-          <p><strong>Layer 2: how the abnormal moves become a verdict</strong> (all one-sided: a leaked win pushes the price up)</p>
-          <table class="dl-table">
-            <tr><th>Test</th><th>Type</th><th>Question it answers</th><th>How it works</th><th>Built for</th></tr>
-            <tr><td>T1 pooled mean</td><td>Pooled z-test (Stouffer)</td><td>Do deals run up on average?</td><td>Average standardized run-up over all 262 deals</td><td>A small leak on every deal</td></tr>
-            <tr><td>T2 firm by firm</td><td>Max-statistic test across firms</td><td>Does any one company run up?</td><td>Each firm's own average. The verdict uses the largest of the 9, judged against the largest of 9 on ordinary days, so testing 9 firms is paid for</td><td>A leak at one company</td></tr>
-            <tr><td>T3 tail count</td><td>Count test (binomial)</td><td>More extreme run-ups than chance?</td><td>Counts deals above their own firm's 95th percentile on ordinary days. Chance gives 5%</td><td>A few leaked deals (plain-language version)</td></tr>
-            <tr><td>T4 higher criticism</td><td>p-value combination test</td><td>Too many small p-values?</td><td>Donoho &amp; Jin (2004): compares each deal's sorted p-values to what pure chance gives</td><td>A few leaked deals</td></tr>
-            <tr><td>T5 two-group mixture</td><td>Finite mixture model, maximum likelihood + likelihood-ratio test</td><td>What share of deals leak, and how much?</td><td>Each deal is either ordinary or shifted up by &mu;. Fits the share &pi; and &mu; by maximum likelihood and tests &pi; = 0</td><td>A few leaked deals, with a size estimate</td></tr>
-          </table>
-          <p style="font-size:0.85rem">Each deal's own p-value compares its run-up to 190&ndash;360 ordinary days of the same firm with the same quarter-end timing. Every test's 5% cut-off comes from 2,000 studies resampled from real ordinary days with the real firm mix, so no normal distribution is assumed. Script: <code>defense-leakage/scripts/step45_models.py</code>.</p>`
+          <p><strong>Layer 2: how the abnormal moves become a verdict.</strong> Five tests, each built for a different shape of leakage. All are one-sided: a leaked win pushes the price up. Colors match the method-check chart below.</p>
+          <div class="dl-tests">
+            <div class="dl-test" style="--c:#2a78d6"><b>Average test</b>Do deals run up on average? Averages the standardized run-up over all 426 deals (pooled Stouffer z-test).<em>Catches: a small leak on every deal.</em></div>
+            <div class="dl-test" style="--c:#eb6834"><b>Firm-by-firm test</b>Does any one company run up? Scores each firm on its own deals, then judges the highest of the 9 against the highest of 9 on ordinary days, so testing 9 firms is paid for (max-statistic test).<em>Catches: a leak at one company.</em></div>
+            <div class="dl-test" style="--c:#1baf7a"><b>Outlier count</b>More extreme run-ups than chance? Counts deals above their own firm's 95th percentile on ordinary days; chance gives 5%, about 21 of 426 (binomial test).<em>Catches: a few leaked deals, in plain numbers.</em></div>
+            <div class="dl-test" style="--c:#eda100"><b>Extreme p-value test</b>Too many small p-values? Compares every deal's sorted p-value to what pure chance gives (higher criticism, Donoho &amp; Jin 2004).<em>Catches: a few strong leaks hidden among many normal deals.</em></div>
+            <div class="dl-test" style="--c:#6250d6"><b>Leak-share test</b>What share of deals leak, and by how much? Treats each deal as either ordinary or shifted up, fits the share and the shift by maximum likelihood, and tests share = 0 (two-group mixture).<em>Catches: a few leaked deals, with a size estimate.</em></div>
+          </div>
+          <p style="font-size:0.85rem">Each deal's own p-value compares its run-up to the same firm's ordinary days with the same year and quarter-end timing. Every test's 5% cut-off comes from 2,000 studies resampled from real ordinary days with the real firm mix, so no normal distribution is assumed. Script: <code>defense-leakage/scripts/step45_models.py</code>.</p>`
         },
         {
           label: "Step 5: Scoring (method check)",
-          heading: "Add a known run-up to real no-deal days, see which model catches it",
-          body: `<img src="assets/defense-leakage/step5_flow.png" alt="Three stages: models fit on real prices, method check on test studies, picked models run on the 262 real deals" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
-          <p style="border-left:4px solid #8a8984;background:rgba(138,137,132,0.12);padding:0.55rem 0.8rem;border-radius:4px;margin-bottom:0.8rem"><strong>METHOD CHECK, not the findings.</strong> Test studies built from real trading days with no deal. They decide which model to trust and how big a leak it could catch. The findings are in the next section.</p>
-          <p>To score a model you need to know which deals leaked, and for the real deals nobody knows. So I built 600 test studies from real trading days with no deal (same firms, same mix), added a known run-up in three patterns: a little on every deal, a lot on a few deals, and a lot on one company's deals, and checked which models catch it. A good model catches the added run-ups often and flags plain real days about 5% of the time. This is the standard way to test event-study methods (Brown &amp; Warner 1985). The winning models are then run on the 262 real deals (Step 5: Results).</p>
-          <p><strong>Real-data check:</strong> on 362 real earnings releases, a known market-moving announcement, 59% of day 0s are anomalous vs. 4% of ordinary days. The setup does see a real reaction when there is one.</p>
-          <img src="assets/defense-leakage/step5_power.png" alt="Detection rate of five tests as the share of leaking deals grows (left) and as one firm's run-up grows (right)" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
-          <p style="font-size:0.85rem">Model M4, days &minus;10 to &minus;1. Left: the mixture and higher-criticism tests reach 80% with about 8% of deals leaking; the average needs about 10%. Right: when one company leaks, the firm-by-firm test is far ahead (87% vs. 48% for the average at a 3% run-up).</p>
+          heading: "Method check: plant a known run-up, see which test finds it",
+          body: `<div class="dl-callout" style="--c:#8a8984"><strong>METHOD CHECK, not the findings.</strong> Test studies built from real trading days with no deal. They decide which model to trust and how big a leak it could catch. The findings are in the next section.</div>
+          <p>To score a model you need to know which deals leaked, and for real deals nobody knows. So the answer is planted: start from days where nothing happened, add a run-up of known size, and see which tests find it. This is the standard way to test event-study methods (Brown &amp; Warner 1985).</p>
+          <div class="dl-steps">
+            <div class="dl-step"><span class="n">Step 1</span><b>Start with real no-deal days</b>600 test studies, each 426 ordinary trading days drawn with the real firm, year and quarter-end mix.</div>
+            <div class="dl-step"><span class="n">Step 2</span><b>Plant a known run-up</b>Three shapes: a little on every deal (+0.5%), a lot on a few deals (+5% on 2&ndash;30% of them), or one company's deals only (+1% to +6%).</div>
+            <div class="dl-step"><span class="n">Step 3</span><b>Count the catches</b>A good test flags planted studies often and plain studies about 5% of the time (the false-alarm rate).</div>
+          </div>
+          <p><strong>Real-data sanity check:</strong> on 706 real earnings releases, an announcement the market clearly reacts to, 58% of day 0s are anomalous vs. 4% of ordinary days. The setup does see a real reaction when there is one.</p>
+          <div class="dl-fig"><img src="assets/defense-leakage/step5_power.png" alt="Detection rate of five tests as the share of leaking deals grows (top) and as one firm's run-up grows (bottom)"><div class="dl-notes"><h4>Each line is one test</h4><div class="dl-key"><i class="line" style="background:#2a78d6"></i><span><b>Average test</b></span></div><div class="dl-key"><i class="line" style="background:#eb6834"></i><span><b>Firm-by-firm test</b></span></div><div class="dl-key"><i class="line" style="background:#1baf7a"></i><span><b>Outlier count</b></span></div><div class="dl-key"><i class="line" style="background:#eda100"></i><span><b>Extreme p-value test</b></span></div><div class="dl-key"><i class="line" style="background:#6250d6"></i><span><b>Leak-share test</b></span></div><div class="dl-key"><i class="dash" style="background:#52514e"></i><span><b>Dashed 80%:</b> the usual target for a test that can find an effect. Dotted 5% = false-alarm rate.</span></div><div class="dl-take"><b>What it tells us:</b> Top: x = share of deals given a 5% run-up. The leak-share, extreme p-value and outlier tests pass 80% once about 6% of deals (about 25) leak; the average needs about 8%. Bottom: x = run-up on every deal of one company. The firm-by-firm test passes 80% at +2%; the others need about +4%. Model M4, days &minus;10 to &minus;1.</div></div></div>
           <table class="dl-table">
-            <tr><th>Planted leak (M4)</th><th>T1 mean</th><th>T2 firm</th><th>T5 mixture</th><th>Best</th></tr>
-            <tr><td>Every deal +0.5%</td><td>83%</td><td>37%</td><td>76%</td><td>T1</td></tr>
-            <tr><td>10% of deals +5%</td><td>79%</td><td>50%</td><td>93%</td><td>T5</td></tr>
-            <tr><td>One firm, every deal +3%</td><td>48%</td><td>87%</td><td>56%</td><td>T2</td></tr>
-            <tr><td>One firm, 30% of its deals +6%</td><td>31%</td><td>58%</td><td>45%</td><td>T2</td></tr>
-            <tr><td>No leak (false alarms)</td><td>6%</td><td>4%</td><td>8%</td><td>&mdash;</td></tr>
+            <tr><th>Planted leak (model M4)</th><th>Average</th><th>Firm-by-firm</th><th>Leak-share</th></tr>
+            <tr><td>Every deal +0.5%</td><td class="dl-win">99%</td><td>67%</td><td>97%</td></tr>
+            <tr><td>10% of deals +5%</td><td>97%</td><td>73%</td><td class="dl-win">100%</td></tr>
+            <tr><td>One firm, every deal +2%</td><td>47%</td><td class="dl-win">86%</td><td>48%</td></tr>
+            <tr><td>One firm, 30% of its deals +6%</td><td>39%</td><td class="dl-win">77%</td><td>56%</td></tr>
+            <tr><td>No leak (false alarms; 5% is right)</td><td>6%</td><td>5%</td><td>5%</td></tr>
           </table>
+          <p style="font-size:0.85rem">Share of 600 test studies flagged. Highlighted = best test for that shape. No single test wins every shape.</p>
           <table class="dl-table">
-            <tr><th>Normal-return model</th><th>Noise: sd of a 10-day abnormal return on ordinary days</th><th>Catches 10% of deals +5% (T5)</th><th>Catches one firm +4% (T2)</th></tr>
-            <tr><td>M1 market-adjusted</td><td>5.4%</td><td>57%</td><td>92%</td></tr>
-            <tr><td>M2 market model</td><td>5.3%</td><td>67%</td><td>91%</td></tr>
-            <tr><td>M3 + ITA</td><td>4.6%</td><td>87%</td><td>94%</td></tr>
-            <tr><td><strong>M4 + peer index</strong></td><td>4.7%</td><td>91%</td><td>97%</td></tr>
+            <tr><th>Normal-return model</th><th>Noise: sd of a 10-day abnormal return on ordinary days</th><th>Catches 10% of deals +5% (leak-share)</th><th>Catches one firm +4% (firm-by-firm)</th></tr>
+            <tr><td>M1 market-adjusted</td><td>4.8%</td><td>93%</td><td>97%</td></tr>
+            <tr><td>M2 market model</td><td>4.7%</td><td>98%</td><td>96%</td></tr>
+            <tr><td>M3 + ITA</td><td>4.3%</td><td>99%</td><td>97%</td></tr>
+            <tr class="dl-win"><td>M4 + peer index</td><td>4.3%</td><td>100%</td><td>99%</td></tr>
           </table>
-          <p><strong>Picks:</strong> M4 is the main price model. It is as quiet as M3 without holding the firm's own stock. M1 stays as the baseline and V2 as the volume model. No single test wins every pattern, so the verdict reports three side by side: <strong>T1</strong> (every deal), <strong>T2</strong> (one company), <strong>T5</strong> (a few deals), with the T3 count as the plain-language check. Using the average alone would have been the weakest choice whenever the leak is concentrated.</p>`
+          <div class="dl-callout" style="--c:#2c7986"><strong>Decision.</strong> M4 is the main price model: as quiet as M3 without holding the firm's own stock. M1 stays as the baseline and V2 as the volume model. The verdict reports three tests side by side: the <strong>average test</strong> (every deal), the <strong>firm-by-firm test</strong> (one company) and the <strong>leak-share test</strong> (a few deals), with the <strong>outlier count</strong> as the plain-language check. The average alone is the weakest choice whenever a leak is concentrated.</div>`
         },
         {
           label: "Step 5: Results (real deals)",
-          heading: "The 262 real deals: on average, by company, by deal (PRELIMINARY)",
-          body: `<p style="border-left:4px solid #2a78d6;background:rgba(42,120,214,0.10);padding:0.55rem 0.8rem;border-radius:4px;margin-bottom:0.8rem"><strong>REAL DATA: the findings.</strong> Everything in this section is the 262 actual deals, run through the models picked in the method check.</p>
-          <img src="assets/defense-leakage/step5_real_paths.png" alt="Average abnormal price and volume path for the 262 real deals vs real earnings releases, days -10 to +10" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
-          <p style="font-size:0.85rem">Blue = the 262 real deals; orange = real earnings releases, for comparison. Earnings volume jumps at day 0, so the setup can see a reaction. The deals stay flat on volume, and price drifts slightly down before the news (&minus;0.3%, not significant), the opposite of a run-up.</p>
-          <img src="assets/defense-leakage/step5_real_pvals.png" alt="Histogram of 262 real deals p-values against the flat chance line" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
-          <p style="font-size:0.85rem">One p-value per real deal. With no leaks, the bars sit near the dashed chance line. Leaked deals would make the left bar tall: it holds 17 deals against 13 by chance (p 0.09), and none survives a false-discovery correction.</p>
-          <img src="assets/defense-leakage/step5_firms.png" alt="Each firm's z-score against its ordinary-day range, for price before the deal, volume before the deal, and price on day 0" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
-          <p style="font-size:0.85rem">Before the deal (left, middle), every firm sits inside its own ordinary-day range or below it. On day 0 (right), Textron reacts and RTX dips.</p>
-          <img src="assets/defense-leakage/step5_events.png" alt="Abnormal return in days -10 to -1 for each of 262 deals, grouped by firm, with deals above the firm's 95th percentile highlighted" style="width:100%;border-radius:6px;margin-bottom:0.6rem">
+          heading: "The 426 real deals: on average, by company, by deal (PRELIMINARY)",
+          body: `<div class="dl-callout" style="--c:#2a78d6"><strong>REAL DATA: the findings.</strong> Everything in this section is the 426 actual deals, run through the models picked in the method check.</div>
+          <div class="dl-fig"><img src="assets/defense-leakage/step5_real_paths.png" alt="Average abnormal price and volume path for the real deals vs real earnings releases, days -10 to +10"><div class="dl-notes"><h4>How to read it</h4><div class="dl-key"><i class="line" style="background:#2a78d6"></i><span><b>Blue:</b> average of the 426 real deals. Top = cumulative abnormal return (M4); bottom = abnormal log volume (V2).</span></div><div class="dl-key"><i class="line" style="background:#eb6834"></i><span><b>Orange:</b> average of 706 real earnings releases, a known market-moving event, for comparison.</span></div><div class="dl-key"><i class="" style="background:rgba(42,120,214,0.25)"></i><span><b>Shaded:</b> days &minus;10 to &minus;1. Dashed line = day 0.</span></div><div class="dl-take"><b>What it tells us:</b> Earnings volume jumps to about 2.4&times; normal on day 0, so the setup can see a reaction. The deals stay flat on volume and drift slightly <em>down</em> before the news (about &minus;0.25%), the opposite of a run-up.</div></div></div>
+          <div class="dl-fig"><img src="assets/defense-leakage/step5_real_pvals.png" alt="Histogram of real deals' p-values against the flat chance line"><div class="dl-notes"><h4>How to read it</h4><div class="dl-key"><i class="" style="background:#2a78d6"></i><span><b>Bars:</b> number of deals in each p-value bin. A deal with a big run-up for its firm gets a small p-value (left).</span></div><div class="dl-key"><i class="dash" style="background:#0b0b0b"></i><span><b>Dashed line:</b> 21 deals per bar, what pure chance gives.</span></div><div class="dl-take"><b>What it tells us:</b> Leaked deals would make the left bar tall: it holds 25 vs. 21 by chance (p = 0.15), and none survives a false-discovery correction (lowest q = 0.25). The right side is a little heavy instead: more deals drift down before the news than chance gives.</div></div></div>
+          <div class="dl-fig"><img src="assets/defense-leakage/step5_firms.png" alt="Each firm's z-score against its ordinary-day range, for price before the deal, volume before the deal, and price on day 0"><div class="dl-notes"><h4>How to read it</h4><div class="dl-key"><i class="" style="background:#d9d8d3"></i><span><b>Grey bar:</b> middle 90% of that firm's score on ordinary days.</span></div><div class="dl-key"><i class="dot" style="background:#2a78d6"></i><span><b>Blue dot:</b> the firm's score on its own deals, inside the normal range.</span></div><div class="dl-key"><i class="dot" style="background:#eb6834"></i><span><b>Orange dot:</b> outside it (p &lt; 0.05 one way). n = the firm's clean deals.</span></div><div class="dl-take"><b>What it tells us:</b> No firm runs up before its deals (left). Boeing and Textron run <em>below</em> normal. Textron stands out twice: high volume before its deals (middle, p = 0.015) and a +0.4% day-0 move (right, p = 0.03). Paying for testing 9 firms, neither clears 5% (p = 0.10 and 0.22).</div></div></div>
+          <div class="dl-fig"><img src="assets/defense-leakage/step5_events.png" alt="Abnormal return in days -10 to -1 for each real deal, grouped by firm, with deals above the firm's 95th percentile highlighted"><div class="dl-notes"><h4>How to read it</h4><div class="dl-key"><i class="dot" style="background:#86b6ef"></i><span><b>Light blue:</b> one deal's abnormal return in days &minus;10 to &minus;1 (M4).</span></div><div class="dl-key"><i class="dot" style="background:#eb6834"></i><span><b>Orange:</b> above its own firm's 95th percentile on ordinary days.</span></div><div class="dl-key"><i class="" style="background:#52514e"></i><span><b>Labels:</b> the three largest run-ups.</span></div><div class="dl-take"><b>What it tells us:</b> 25 orange deals vs. 21 by chance. The largest have plain explanations: Boeing in the March 2020 crash, HII in the two weeks after the Nov 2016 election, a sector-wide shipbuilder rally, and a 2011 Textron data-link order that goes to the Step 6 trade-press check.</div></div></div>
           <table class="dl-table">
             <tr><th>Test (days &minus;10 to &minus;1)</th><th>Price (M4)</th><th>Volume (V2)</th></tr>
-            <tr><td>T1 pooled mean</td><td>Slightly below normal, p 0.90</td><td>p 0.70</td></tr>
-            <tr><td>T2 firm by firm</td><td>Top firm RTX, z 0.97, p 0.80</td><td>Top firm LHX, p 0.68</td></tr>
-            <tr><td>T3 tail count</td><td>17 deals vs. 13 by chance, p 0.09</td><td>16 vs. 13, p 0.15</td></tr>
-            <tr><td>T4 higher criticism</td><td>p 0.16</td><td>p 0.53</td></tr>
-            <tr><td>T5 mixture</td><td>Best fit: 2% of deals, p 0.35</td><td>p 0.26</td></tr>
+            <tr><td>Average test</td><td>Slightly below normal, p 0.91</td><td>p 0.51</td></tr>
+            <tr><td>Firm-by-firm test</td><td>Top firm RTX, z 0.67, p 0.91</td><td>Top firm Textron, z 2.31, p 0.10</td></tr>
+            <tr><td>Outlier count</td><td>25 deals vs. 21 by chance, p 0.15</td><td>20 vs. 21, p 0.55</td></tr>
+            <tr><td>Extreme p-value test</td><td>p 0.052, borderline</td><td>p 0.15</td></tr>
+            <tr><td>Leak-share test</td><td>Best fit: 2% of deals, p 0.47</td><td>Best fit: 0%, p 1.00</td></tr>
           </table>
-          <p><strong>What the 262 real deals show:</strong></p>
-          <p>(1) <strong>No leakage pattern on average, at any one company, or in a small group of deals.</strong> These tests would have caught, at least 80% of the time, a 0.5% run-up on every deal, a 5% run-up on 8% or more of deals (about 21 deals), or a 3% run-up on every deal of one company. Rarer leaks, one or two deals, can't be ruled out with public price data. One caveat: if some USAspending actions were never publicly announced, those deals can't show leakage and pull every test toward zero. That is the first Step 6 check.</p>
-          <p>(2) <strong>The 17 tail deals look like chance.</strong> None survives a false-discovery correction (lowest q = 0.46). Two of them, including the largest run-up (Boeing, +16%), fall in the March 2020 crash, when the estimated betas broke down. Only one deal is extreme in both price and volume (LMT, F-35 Lot 11 definitization, Sep 2018), against 0.7 expected by chance. It goes to the trade-press check in Step 6.</p>
-          <p>(3) <strong>One company effect the average hid: Textron on day 0.</strong> Textron's deals add about +0.7% on day 0 (firm p = 0.006 to 0.011 under M2, M3 and M4), while the average over all firms is about zero. Across 9 firms the max-firm test gives p = 0.05, so it is borderline. This fits Palkar et al.: smaller firms react more. Textron's pre-window runs <em>below</em> normal (p = 0.004): down before, up on the news, which is the opposite of leakage. It is a Step 6 item.</p>
-          <p>(4) <strong>Tail tests see what the mean misses, and the peer index matters.</strong> Under M2 over days &minus;40 to &minus;1, 24 deals sit in the tail against 13 by chance (p &lt; 0.001), while the average says nothing (p = 0.46). Half of those deals fall in 2022&ndash;23, when defense stocks rallied together; under M4 they drop to 9. That's a sector rally, not leakage, the same trap Alexander (1993) found.</p>
-          <p>(5) <strong>Arms sales over the committee-review window</strong> (&minus;40 to &minus;1, from Step 3): 4 of 89 deals in the tail vs. 4.5 by chance.</p>
-          <p style="font-size:0.85rem">Outputs: <code>defense-leakage/data/full/step45_*.csv</code>; figures: <code>scripts/step45_figures.py</code>.</p>`
+          <p><strong>What the 426 real deals show:</strong></p>
+          <p>(1) <strong>No leakage pattern on average, at any one company, or in a small group of deals.</strong> These tests would have caught, at least 80% of the time, a 0.5% run-up on every deal, a 5% run-up on about 6% of deals (about 25), or a 2% run-up on every deal of one company. Rarer leaks, one or two deals, can't be ruled out with public price data. If some USAspending actions were never publicly announced, those deals can't show leakage and pull every test toward zero; that is the first Step 6 check.</p>
+          <p>(2) <strong>The tail deals look like chance.</strong> None survives a false-discovery correction. Four deals are extreme in both price and volume against 1.1 expected: Textron (Sep 2011, Mar 2016), HII (Nov 2016, the post-election rally) and Boeing (Mar 2020, the crash). The two Textron deals go to the trade-press check.</p>
+          <p>(3) <strong>Textron is the one company worth a second look, and it got weaker with more data.</strong> On 2018&ndash;2026 alone its day-0 reaction was +0.7% (firm p = 0.01, after paying for 9 firms p = 0.05). With 2010&ndash;2017 added it is +0.4% (p = 0.03; across firms p = 0.22). Its volume before deals is high (p = 0.015; across firms p = 0.10), but its price runs below normal. Borderline, not a finding. This fits Palkar et al.: smaller firms react more.</p>
+          <p>(4) <strong>More deals drift down than up before the news.</strong> 31 deals sit in the bottom 5% of their firm's ordinary days vs. 21 by chance (p = 0.025). That is the opposite of leakage. Step 6 checks whether it is a timing artifact of USAspending action dates.</p>
+          <p>(5) <strong>The peer index matters.</strong> Under M2 over days &minus;40 to &minus;1, 29 deals are in the tail vs. 21 by chance (p = 0.03), while the average says nothing. Under M4, which removes moves shared by the other primes, they drop to 19 (p = 0.63): a sector-wide move, not leakage, the same trap Alexander (1993) found.</p>
+          <p>(6) <strong>Arms sales over the committee-review window</strong> (&minus;40 to &minus;1, from Step 3): 7 of 110 deals in the tail vs. 5.5 by chance (p = 0.31).</p>
+          <p>(7) <strong>The extra years didn't change the verdict.</strong> The 2018&ndash;2026 sample (262 deals) and the 2010&ndash;2026 sample (426) reach the same verdict: no test finds a run-up at the 5% level. The larger sample makes the detection limits tighter (a planted leak on 6% of deals is now caught, vs. about 8% before).</p>
+          <p style="font-size:0.85rem">Outputs: <code>defense-leakage/data/full/step45_*.csv</code> (2018-only run kept in <code>data/full_2018/</code>); figures: <code>scripts/step45_figures.py</code>, <code>scripts/step5_story_figures.py</code>.</p>`
         }
       ],
-      reflection: `Progress snapshot as of Nov. 17, 2026. Next, Step 6 (sensitivity): whether each USAspending action was publicly announced, and its action date vs. the war.gov post date (A1, A2), the 1% size cutoff, the estimation window, dropping the March 2020 crash, the Textron pattern, a trade-press check on the flagged deals, and losing bidders on competitive awards.`
+      reflection: `Progress snapshot as of Nov. 18, 2026. Next, Step 6 (sensitivity): whether each USAspending action was publicly announced, and its action date vs. the war.gov post date (A1, A2), the size cut-off (A3), why more deals drift down than up before the news, the estimation window, dropping the March 2020 crash, the Textron pattern, a trade-press check on the flagged deals, competitive vs. follow-on awards (A9), and losing bidders on competitive awards.`
     }
   },
   {

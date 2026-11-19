@@ -15,7 +15,10 @@ Event rules (the refinements R1-R5 from the exploration page):
   - earnings screen: an earnings day in [-10, +5] flags the event; flagged events are left
     out of the main test and reported separately (R1)
   - same-firm events whose day 0s are <= 10 trading days apart are merged; the largest stays (R4)
-  - RTX events start Apr 2020 (price history); LHX events start Jul 2019 (L3 + Harris merger)
+  - study period Jan 2010 - Oct 2026 (STUDY_START); RTX events start Apr 2020 (price history before is
+    United Technologies). LHX before the Jun 2019 merger is Harris Corp (same stock and SEC filer), so only
+    Harris-named awards count before then (L3 was a different stock). LDOS before the Sep 2013 split was
+    named SAIC; the SAIC name counts only before the split (after it, SAIC is a different stock).
 
 Models: M1 market-adjusted, M2 market model (SPY), M3 SPY + ITA, M4 SPY + peer index
 (equal-weight daily return of the big-four primes, own firm left out) (R2). Volume V2.
@@ -43,7 +46,8 @@ MODELS = ["M1", "M2", "M3", "M4", "V2"]
 N_PLACEBO = 2000
 rng = np.random.default_rng(491)
 MON = {m: i + 1 for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"])}
-START = {"RTX": "2020-04-03", "LHX": "2019-07-01"}
+STUDY_START = "2010-01-01"
+START = {"RTX": "2020-04-03"}
 
 
 def slug_date(s):
@@ -141,6 +145,10 @@ def main(return_state=False):
     tx = tx.rename(columns={"ticker": "tic", "Transaction Amount": "amt"})
     for t, s in START.items():
         tx = tx[~((tx.tic == t) & (tx.announce < s))]
+    tx = tx[tx.announce >= STUDY_START]
+    nm = tx["Recipient Name"].astype(str)
+    tx = tx[~((tx.tic == "LHX") & (tx.announce < "2019-06-29") & ~nm.str.contains("Harris", case=False))]
+    tx = tx[~((tx.tic == "LDOS") & (tx.announce >= "2013-09-27") & nm.str.contains("Science Applications", case=False))]
     COMP = {"A", "D", "F", "CDO"}  # full and open, after exclusion, simplified competition, competitive delivery order
     tx["comp"] = tx.extent_competed.isin(COMP)
     tx["sole"] = tx.extent_competed.isin({"B", "C", "G", "NDO", "E"})
@@ -160,7 +168,10 @@ def main(return_state=False):
     ds["announce"] = pd.to_datetime(ds.delivered_to_congress)
     for t, s in START.items():
         ds = ds[~((ds.ticker == t) & (ds.announce < s))]
-    ds = ds[ds.announce >= "2018-01-01"]
+    ds = ds[ds.announce >= STUDY_START]
+    pc = ds.principal_contractor_text.astype(str)
+    ds = ds[~((ds.ticker == "LHX") & (ds.announce < "2019-06-29") & ~pc.str.contains("Harris", case=False))]
+    ds = ds[~((ds.ticker == "LDOS") & (ds.announce >= "2013-09-27") & pc.str.contains("Science Applications", case=False))]
     arms = ds.groupby(["ticker", "announce"]).agg(amount=("est_total_usd", "sum"), n_awards=("transmittal", "size"),
                                                   text=("country", lambda c: "Arms sale: " + "; ".join(sorted(set(map(str, c))))),
                                                   url=("fr_url", "first"), n_firms=("n_firms_named", "max")).reset_index()
@@ -212,7 +223,7 @@ def main(return_state=False):
     qe_of = np.array([d.month % 3 == 0 for d in dates])  # last month of a quarter (Mar/Jun/Sep/Dec)
     for t in FIRMS:
         first = dates.get_loc(ret[t].first_valid_index())
-        lo = max(first + 260, dates.searchsorted(pd.Timestamp(START.get(t, "2018-01-01"))))
+        lo = max(first + 260, dates.searchsorted(pd.Timestamp(START.get(t, STUDY_START))))
         cand = np.arange(lo, len(dates) - 11)
         if len(E[t]):
             dd = E[t][None, :] - cand[:, None]

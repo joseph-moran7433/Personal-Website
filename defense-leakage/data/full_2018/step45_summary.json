@@ -1,0 +1,28 @@
+{
+ "n_events": 262,
+ "firms": [
+  "LMT",
+  "RTX",
+  "NOC",
+  "GD",
+  "HII",
+  "LHX",
+  "LDOS",
+  "BA",
+  "TXT"
+ ],
+ "n_by_firm": {
+  "LMT": 49,
+  "RTX": 24,
+  "NOC": 24,
+  "GD": 36,
+  "HII": 38,
+  "LHX": 18,
+  "LDOS": 9,
+  "BA": 41,
+  "TXT": 23
+ },
+ "n_arms": 89,
+ "n_null_sims": 2000,
+ "n_power_sims": 600
+}

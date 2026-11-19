@@ -17,7 +17,7 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 12, "axes.edgeco
                      "figure.facecolor": "#fcfcfb", "axes.facecolor": "#fcfcfb"})
 
 
-def flow():
+def flow():  # replaced on the site by an HTML three-step strip; kept for the record
     fig, ax = plt.subplots(figsize=(12, 3.3))
     ax.set_xlim(0, 12); ax.set_ylim(0, 3.3); ax.axis("off")
     boxes = [
@@ -40,9 +40,9 @@ def flow():
 
 def paths():
     d = pd.read_csv(DATA / "paths_full.csv")
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.2))
+    fig, axes = plt.subplots(2, 1, figsize=(10, 7.4))
     for ax, model, lab in [(axes[0], "M4", "Cumulative abnormal return (%)"), (axes[1], "V2", "Abnormal log volume")]:
-        for g, c, name in [("Main: clean events (no earnings nearby)", REAL, "262 real deals"),
+        for g, c, name in [("Main: clean events (no earnings nearby)", REAL, "Real deals"),
                            ("Comparison: earnings releases", EARN, "Real earnings releases")]:
             s = d[(d.group == g) & (d.model == model)].sort_values("day")
             y = s.mean_cum * 100 if model == "M4" else s.mean_cum.diff().fillna(s.mean_cum.iloc[0])  # V2: daily value
@@ -61,17 +61,15 @@ def pvals():
     e = pd.read_csv(DATA / "step45_event_pvalues.csv")
     e = e[(e.model == "M4") & (e.window == "pre10")]
     n = len(e)
-    fig, ax = plt.subplots(figsize=(12, 3.8))
+    fig, ax = plt.subplots(figsize=(10, 4.4))
     bins = np.linspace(0, 1, 21)
     ax.hist(e.p_up, bins=bins, color=REAL, alpha=0.85, edgecolor="#fcfcfb", label=f"{n} real deals")
     ax.axhline(n / 20, color=INK, lw=1.6, ls="--", label=f"Chance: {n/20:.1f} per bar")
-    ax.annotate("Leaked deals would pile up here", xy=(0.025, (e.p_up < 0.05).sum() + 0.3), xytext=(0.2, n / 20 * 2.1),
-                arrowprops=dict(arrowstyle="->", color=INK2), color=INK2, fontsize=11)
     ax.set_xlabel("Each real deal's p-value: run-up in days -10 to -1 vs. that firm's ordinary days (M4)")
     ax.set_ylabel("Deals"); ax.set_xlim(0, 1)
-    ax.grid(axis="y", color=GRID); ax.set_axisbelow(True); ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.62, 1.12), ncol=2)
+    ax.grid(axis="y", color=GRID); ax.set_axisbelow(True); ax.set_ylim(0, max(n / 20 * 1.9, ax.get_ylim()[1]))
     fig.tight_layout(); fig.savefig(OUT / "step5_real_pvals.png", dpi=150); plt.close(fig)
 
 
 if __name__ == "__main__":
-    flow(); paths(); pvals()
+    paths(); pvals()

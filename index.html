@@ -1373,8 +1373,8 @@
     .sk-card.has-recipe { cursor: pointer; }
     .sk-card:not(.has-recipe):hover { border-color: var(--rf-border); transform: none; box-shadow: 0 2px 0 var(--rf-border); }
     .sk-why { font-size: 0.86rem; color: var(--rf-muted); font-weight: 600; line-height: 1.55; margin-bottom: 0.9rem; flex: 1; }
-    .sk-tag-season { background: rgba(75,107,63,0.14); }
-    .sk-tag-family { background: rgba(217,96,63,0.12); border-color: rgba(217,96,63,0.35); color: var(--rf-tomato-hover); }
+    .rf-tag.sk-tag-season { background: rgba(75,107,63,0.14); }
+    .rf-tag.sk-tag-family { background: rgba(217,96,63,0.12); border-color: rgba(217,96,63,0.35); color: var(--rf-tomato-hover); }
     @media (max-width: 900px) {
       .food-hub-item.item-pin { margin-top: 0; }
       .food-hub-item.item-riddle { margin-top: 0; }
@@ -2324,7 +2324,7 @@
             </g>
             <g class="plate-part plate-pro">
               <path d="M90 90 L142 120 A60 60 0 0 1 38 120 Z" fill="#d9603f" opacity="0.9"/>
-              <path d="M70 128 Q90 116 110 128" stroke="#f08a6c" stroke-width="5" stroke-linecap="round" fill="none"/>
+              <ellipse cx="80" cy="124" rx="13" ry="8" fill="#f08a6c" transform="rotate(-15 80 124)"/><ellipse cx="104" cy="128" rx="11" ry="7" fill="#f08a6c" transform="rotate(12 104 128)"/>
             </g>
           </svg>
         </div>
@@ -7921,7 +7921,8 @@ function handleSideKick(e) {
   skLastDish = skReadDish(raw);
   Object.keys(skOffsets).forEach(k => { skOffsets[k] = 0; });
   skRender();
-  out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const ov = document.getElementById('side-kick');
+  ov.scrollTo({ top: out.getBoundingClientRect().top + ov.scrollTop - 90, behavior: 'smooth' });
 }
 
 function openSideKick() {

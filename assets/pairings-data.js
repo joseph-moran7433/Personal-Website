@@ -20,7 +20,7 @@
 
 const PAIR_TYPES = [
   { value: "veggie",  label: "🥦 Veggie",  noun: "veggie" },
-  { value: "carb",    label: "🍞 Carb",    noun: "carb" },
+  { value: "carb",    label: "🥖 Carb",    noun: "carb" },
   { value: "protein", label: "🍗 Protein", noun: "protein" }
 ];
 

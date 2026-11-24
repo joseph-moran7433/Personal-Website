@@ -7812,20 +7812,117 @@ function skQuickPick(dish) {
   handleSideKick();
 }
 
-function skReadDish(raw) {
-  const text = raw.toLowerCase().trim();
-  const recipe = recipes.find(r => r.title.toLowerCase() === text) || null;
-  let style = null;
-  for (const [s, words] of PAIR_STYLE_KEYWORDS) {
-    if (words.some(w => skHasWord(text, w))) { style = s; break; }
+// ── Reading a dish name ──────────────────────────────────────────
+// 1. Fix typos word by word against everything the tool knows
+//    ("gnocci" -> "gnocchi", "spagetti" -> "spaghetti", "stirfry" -> "stir fry").
+// 2. Match the fixed name against every style's keywords and keep the
+//    best: a specific dish word beats a generic ingredient, a longer
+//    match beats a shorter one, and ties go to the style listed first.
+let skVocab = null, skCompact = null;
+
+function skBuildVocab() {
+  skVocab = new Set();
+  skCompact = new Map();
+  const addPhrase = p => {
+    const words = p.toLowerCase().match(/[a-z0-9&'-]+/g) || [];
+    words.forEach(w => skVocab.add(w));
+    if (words.length > 1) skCompact.set(words.join(''), words.join(' '));
+  };
+  PAIR_STYLE_KEYWORDS.forEach(([, ws]) => ws.forEach(addPhrase));
+  Object.values(PAIR_CONTAINS).forEach(ws => ws.forEach(addPhrase));
+  PAIR_SHARED_WORDS.forEach(addPhrase);
+  PAIR_EXTRA_VOCAB.forEach(addPhrase);
+  PAIR_COMMON_DISHES.forEach(addPhrase);
+  recipes.forEach(r => addPhrase(r.title));
+}
+
+// Optimal string alignment distance (Levenshtein plus swapped letters).
+function skEditDistance(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev2 = null, prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    let rowMin = i;
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      let v = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+      if (prev2 && i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) v = Math.min(v, prev2[j - 2] + 1);
+      cur.push(v);
+      rowMin = Math.min(rowMin, v);
+    }
+    if (rowMin > max) return max + 1;
+    prev2 = prev; prev = cur;
   }
-  if (!style && recipe) style = CUISINE_TO_STYLE[recipe.cuisine[0]] || null;
+  return prev[b.length];
+}
+
+// Longest common subsequence length, used to break typo-fix ties.
+function skCommon(a, b) {
+  let prev = new Array(b.length + 1).fill(0);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [0];
+    for (let j = 1; j <= b.length; j++) cur.push(a[i - 1] === b[j - 1] ? prev[j - 1] + 1 : Math.max(prev[j], cur[j - 1]));
+    prev = cur;
+  }
+  return prev[b.length];
+}
+
+function skKnown(w) {
+  return skVocab.has(w) || (w.endsWith('s') && skVocab.has(w.slice(0, -1))) ||
+         (w.endsWith('es') && skVocab.has(w.slice(0, -2))) || (w.endsWith('ies') && skVocab.has(w.slice(0, -3) + 'y'));
+}
+
+function skFixWord(w) {
+  if (w.length < 4 || /\d/.test(w) || skKnown(w)) return w;
+  const max = w.length <= 4 ? 1 : w.length <= 7 ? 1 : 2;
+  let best = null, bestKey = null;
+  const consider = (cand, out) => {
+    if (w.length <= 4 && cand[0] !== w[0]) return;
+    const d = skEditDistance(w, cand, max);
+    // Ties: same first letter, then more letters in common ("cesar" -> "caesar", not "cedar").
+    const key = [-d, cand[0] === w[0] ? 1 : 0, skCommon(w, cand)];
+    if (d <= max && (!bestKey || key[0] > bestKey[0] || (key[0] === bestKey[0] && (key[1] > bestKey[1] || (key[1] === bestKey[1] && key[2] > bestKey[2]))))) { bestKey = key; best = out; }
+  };
+  skVocab.forEach(c => { if (c.length >= 3) consider(c, c); });
+  skCompact.forEach((spaced, compact) => consider(compact, spaced));
+  return best || w;
+}
+
+function skFixTypos(raw) {
+  if (!skVocab) skBuildVocab();
+  // "mac n cheese", "shrimp & grits" -> "and"
+  const words = (raw.toLowerCase().replace(/[’`]/g, "'").match(/[a-z0-9&'-]+/g) || [])
+    .map(w => (w === 'n' || w === "'n'" || w === "n'" || w === '&') ? 'and' : w);
+  const fixes = [];
+  const out = words.map(w => {
+    const f = skFixWord(w);
+    if (f !== w) fixes.push([w, f]);
+    return f;
+  });
+  return { text: out.join(' '), fixes };
+}
+
+function skReadDish(raw) {
+  const { text, fixes } = skFixTypos(raw);
+  const plain = raw.toLowerCase().trim();
+  const recipe = recipes.find(r => r.title.toLowerCase() === plain || r.title.toLowerCase() === text) || null;
+  const generic = new Set(PAIR_GENERIC_WORDS), method = new Set(PAIR_METHOD_WORDS);
+  let best = null;
+  PAIR_STYLE_KEYWORDS.forEach(([s, words], idx) => {
+    words.forEach(w => {
+      if (!skHasWord(text, w)) return;
+      const c = { style: s, generic: method.has(w) ? 2 : generic.has(w) ? 1 : 0, len: w.length, idx };
+      if (!best || c.generic < best.generic || (c.generic === best.generic && (c.len > best.len || (c.len === best.len && c.idx < best.idx)))) best = c;
+    });
+  });
+  let style = best ? best.style : null;
+  if (recipe && (!best || best.generic)) style = CUISINE_TO_STYLE[recipe.cuisine[0]] || style;
   const has = {};
   PAIR_TYPES.forEach(t => {
     const hit = PAIR_CONTAINS[t.value].find(w => skHasWord(text, w));
     if (hit) has[t.value] = hit;
   });
-  return { raw: raw.trim(), text, recipe, style: style || 'classic', recognized: !!style, has };
+  return { raw: raw.trim(), text, fixes, recipe, style: style || 'classic', recognized: !!style, has };
 }
 
 function skRanked(dish, type) {
@@ -7889,14 +7986,17 @@ function skRender() {
     if (!types.length) types = ['veggie'];
   }
   const plate = PAIR_TYPES.map(t => `<span class="sk-has${dish.has[t.value] ? ' on' : ''}">${dish.has[t.value] ? '✓' : '○'} ${t.label.replace(/^\S+\s/, '')}</span>`).join('');
-  const styleLine = dish.recognized
+  const fixLine = dish.fixes.length
+    ? `Read ${dish.fixes.map(([a, b]) => `&ldquo;${skEsc(a)}&rdquo; as &ldquo;${skEsc(b)}&rdquo;`).join(', ')}. `
+    : '';
+  const styleLine = fixLine + (dish.recognized
     ? `Read as <strong>${PAIR_STYLE_LABELS[dish.style]}</strong>.`
-    : `I didn't recognize that one, so these are all-around sides for a classic dinner. Words like <em>tacos, pasta, curry, stir fry, salmon</em> or <em>chili</em> help.`;
+    : `I didn't recognize that one, so these are all-around sides for a classic dinner. Words like <em>tacos, pasta, curry, stir fry, salmon</em> or <em>chili</em> help.`);
   out.innerHTML = `
     <div class="recipe-feature">
       <div class="rf-pin"></div>
       <div class="recipe-feature-eyebrow">✎ Pairing for</div>
-      <div class="recipe-feature-title" style="cursor:default">${skEsc(dish.raw)}</div>
+      <div class="recipe-feature-title" style="cursor:default">${skEsc(dish.fixes.length ? dish.text.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : dish.raw)}</div>
       <div class="recipe-feature-desc">${styleLine} ${autoNote}</div>
       <div class="sk-plate-line">${plate}</div>
     </div>

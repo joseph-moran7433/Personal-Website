@@ -1,0 +1,282 @@
+placebo pools: 344 firm-years, 13098 ordinary days
+clean deals 426
+    52s Main run               Main: M4, days -10 to -1           n=426 avg p=0.919 firm p=0.937 up 25/21.3 p=0.233 dn 31 p=0.025 hc p=0.039 mix p=0.504 robust 1.000
+    65s Normal-return model    M1 market-adjusted                 n=426 avg p=0.937 firm p=0.964 up 14/21.3 p=0.965 dn 28 p=0.088 hc p=0.758 mix p=1.000 robust 1.000
+    77s Normal-return model    M2 market model                    n=426 avg p=0.932 firm p=0.815 up 15/21.3 p=0.941 dn 29 p=0.060 hc p=0.378 mix p=0.424 robust 0.400
+    89s Normal-return model    M3 + ITA                           n=426 avg p=0.997 firm p=0.804 up 15/21.3 p=0.941 dn 31 p=0.025 hc p=0.672 mix p=1.000 robust 1.000
+   100s Normal-return model    V2 volume                          n=426 avg p=0.537 firm p=0.110 up 20/21.3 p=0.645 dn 18 p=0.798 hc p=0.159 mix p=1.000 robust 1.000
+   113s Window (A5)            Days -3 to -1                      n=426 avg p=0.970 firm p=0.954 up 13/21.3 p=0.981 dn 28 p=0.088 hc p=0.655 mix p=1.000 robust 1.000
+   124s Window (A5)            Days -5 to -1                      n=426 avg p=0.764 firm p=0.604 up 14/21.3 p=0.965 dn 27 p=0.126 hc p=0.383 mix p=0.001 robust 0.045
+   136s Window (A5)            Days -20 to -1                     n=426 avg p=0.984 firm p=0.279 up 22/21.3 p=0.469 dn 24 p=0.304 hc p=0.066 mix p=1.000 robust 1.000
+   149s Window (A5)            Days -40 to -1                     n=426 avg p=0.969 firm p=0.588 up 19/21.3 p=0.726 dn 32 p=0.016 hc p=0.797 mix p=1.000 robust 1.000
+   161s Window (A5)            Days -40 to -11                    n=426 avg p=0.908 firm p=0.483 up 20/21.3 p=0.645 dn 27 p=0.126 hc p=0.055 mix p=1.000 robust 1.000
+   173s Date (A1/A2)           Contract day 0 shifted -2 trading days n=416 avg p=0.909 firm p=0.888 up 26/20.8 p=0.146 dn 34 p=0.004 hc p=0.001 mix p=0.019 robust 0.044
+   186s Date (A1/A2)           Contract day 0 shifted -1 trading days n=422 avg p=0.815 firm p=0.849 up 25/21.1 p=0.219 dn 33 p=0.008 hc p=0.001 mix p=0.002 robust 0.218
+   197s Date (A1/A2)           Contract day 0 shifted +1 trading days n=423 avg p=0.932 firm p=0.851 up 21/21.2 p=0.545 dn 27 p=0.118 hc p=0.371 mix p=1.000 robust 1.000
+   209s Date (A1/A2)           Contract day 0 shifted +2 trading days n=420 avg p=0.908 firm p=0.980 up 20/21.0 p=0.620 dn 30 p=0.034 hc p=0.030 mix p=1.000 robust 1.000
+   220s Date (A1/A2)           Contract day 0 shifted +3 trading days n=413 avg p=0.801 firm p=0.954 up 20/20.7 p=0.590 dn 25 p=0.190 hc p=0.053 mix p=1.000 robust 1.000
+   231s Date (A1/A2)           Contract day 0 shifted +5 trading days n=404 avg p=0.429 firm p=0.414 up 19/20.2 p=0.640 dn 21 p=0.459 hc p=0.006 mix p=0.219 robust 0.328
+   233s Announced? (A1)        Contracts: new awards only         n= 85 avg p=0.718 firm p=0.480 up 4/4.2 p=0.620 dn 3 p=0.804 hc p=0.175 mix p=0.205 robust 0.218
+   239s Announced? (A1)        Contracts: modifications only      n=231 avg p=0.921 firm p=0.535 up 16/11.6 p=0.119 dn 23 p=0.001 hc p=0.240 mix p=0.220 robust 0.265
+   248s Announced? (A1)        Contracts only                     n=316 avg p=0.934 firm p=0.852 up 20/15.8 p=0.168 dn 26 p=0.010 hc p=0.209 mix p=0.206 robust 0.352
+   251s Announced? (A1)        Arms sales only                    n=110 avg p=0.588 firm p=0.717 up 5/5.5 p=0.648 dn 5 p=0.648 hc p=0.258 mix p=0.561 robust 1.000
+   258s Size cut-off (A3)      Deals >= 2% of revenue             n=273 avg p=0.769 firm p=0.188 up 18/13.7 p=0.143 dn 16 p=0.293 hc p=0.123 mix p=0.495 robust 1.000
+   260s Size cut-off (A3)      Deals >= 5% of revenue             n=118 avg p=0.901 firm p=0.821 up 9/5.9 p=0.137 dn 7 p=0.377 hc p=0.007 mix p=0.332 robust 0.367
+   264s Size cut-off (A3)      Deals 1-2% of revenue              n=153 avg p=0.918 firm p=0.707 up 7/7.7 p=0.648 dn 15 p=0.010 hc p=0.408 mix p=0.118 robust 0.170
+   266s Surprise (A9)          Competitive contracts              n= 69 avg p=0.627 firm p=0.713 up 5/3.5 p=0.262 dn 5 p=0.262 hc p=0.097 mix p=0.021 robust 0.026
+   272s Surprise (A9)          Sole-source / follow-on contracts  n=247 avg p=0.943 firm p=0.829 up 15/12.4 p=0.256 dn 21 p=0.013 hc p=0.565 mix p=1.000 robust 1.000
+   276s Period                 2010-2017                          n=160 avg p=0.629 firm p=0.521 up 8/8.0 p=0.551 dn 11 p=0.179 hc p=0.449 mix p=0.166 robust 0.234
+   283s Period                 2018-2026                          n=266 avg p=0.939 firm p=0.933 up 17/13.3 p=0.181 dn 20 p=0.047 hc p=0.132 mix p=0.350 robust 0.362
+   294s Period                 Drop Feb-Apr 2020 (COVID crash)    n=418 avg p=0.876 firm p=0.919 up 23/20.9 p=0.349 dn 28 p=0.074 hc p=0.360 mix p=1.000 robust 1.000
+   304s Period                 Drop crash + Nov-Dec 2016 rally    n=412 avg p=0.923 firm p=0.930 up 22/20.6 p=0.407 dn 27 p=0.095 hc p=0.683 mix p=1.000 robust 1.000
+   306s Independence (A7)      Isolated deals only (no other deal +-40 days) n= 71 avg p=0.881 firm p=0.491 up 2/3.6 p=0.876 dn 7 p=0.064 hc p=0.478 mix p=1.000 robust 1.000
+   315s Earnings screen (A6)   Wider screen: no earnings in -20..+5 n=342 avg p=0.984 firm p=0.957 up 19/17.1 p=0.352 dn 26 p=0.024 hc p=0.570 mix p=1.000 robust 1.000
+   329s Earnings screen (A6)   No screen (earnings deals put back) n=588 avg p=0.386 firm p=0.116 up 56/29.4 p=0.000 dn 45 p=0.004 hc p=0.001 mix p=0.001 robust 0.001
+   347s Calibration            Ordinary days matched on firm only n=426 avg p=0.906 firm p=0.925 up 28/21.3 p=0.088 dn 32 p=0.016 hc p=0.082 mix p=1.000 robust 1.000
+   404s Calibration            5,000 simulated studies (vs 1,000) n=426 avg p=0.913 firm p=0.925 up 25/21.3 p=0.233 dn 31 p=0.025 hc p=0.054 mix p=0.487 robust 1.000
+   414s Drop one firm          Without BA                         n=355 avg p=0.772 firm p=0.887 up 22/17.8 p=0.179 dn 26 p=0.035 hc p=0.018 mix p=0.402 robust 0.460
+   423s Drop one firm          Without GD                         n=370 avg p=0.934 firm p=0.887 up 20/18.5 p=0.393 dn 24 p=0.119 hc p=0.025 mix p=1.000 robust 1.000
+   432s Drop one firm          Without HII                        n=362 avg p=0.881 firm p=0.903 up 24/18.1 p=0.100 dn 28 p=0.016 hc p=0.207 mix p=0.289 robust 0.298
+   441s Drop one firm          Without LDOS                       n=414 avg p=0.885 firm p=0.889 up 25/20.7 p=0.193 dn 30 p=0.029 hc p=0.050 mix p=0.411 robust 0.479
+   451s Drop one firm          Without LHX                        n=399 avg p=0.953 firm p=0.921 up 21/20.0 p=0.436 dn 30 p=0.018 hc p=0.034 mix p=1.000 robust 1.000
+   459s Drop one firm          Without LMT                        n=331 avg p=0.974 firm p=0.883 up 20/16.6 p=0.223 dn 26 p=0.016 hc p=0.471 mix p=0.559 robust 1.000
+   468s Drop one firm          Without NOC                        n=386 avg p=0.903 firm p=0.899 up 23/19.3 p=0.223 dn 28 p=0.033 hc p=0.032 mix p=0.480 robust 1.000
+   477s Drop one firm          Without RTX                        n=401 avg p=0.945 firm p=0.923 up 23/20.1 p=0.279 dn 30 p=0.020 hc p=0.050 mix p=1.000 robust 1.000
+   486s Drop one firm          Without TXT                        n=390 avg p=0.833 firm p=0.915 up 22/19.5 p=0.311 dn 26 p=0.086 hc p=0.041 mix p=0.501 robust 1.000
+placebo pools: 344 firm-years, 12704 ordinary days
+   529s Size cut-off (A3)      Deals >= 0.5% of revenue (rebuilt) n=522 avg p=0.930 firm p=0.828 up 29/26.1 p=0.307 dn 31 p=0.186 hc p=0.101 mix p=1.000 robust 1.000
+placebo pools: 344 firm-years, 13098 ordinary days
+   566s Estimation window      Estimation days -160 to -41        n=426 avg p=0.977 firm p=0.908 up 22/21.3 p=0.469 dn 31 p=0.025 hc p=0.377 mix p=1.000 robust 1.000
+placebo pools: 344 firm-years, 13098 ordinary days
+   610s Estimation window      Estimation days -500 to -41        n=426 avg p=0.910 firm p=0.903 up 23/21.3 p=0.383 dn 33 p=0.009 hc p=0.355 mix p=1.000 robust 1.000
+               group                                     variation   n  mean_car_pct  avg_p  avg_p_down firm_top  firm_p  out_up  expected  out_up_p  out_dn  out_dn_p  hc_p  mix_pi  mix_p
+            Main run                      Main: M4, days -10 to -1 426        -0.252  0.919       0.082      RTX   0.937      25     21.30     0.233      31     0.025 0.039    0.02  0.504
+ Normal-return model                            M1 market-adjusted 426        -0.162  0.937       0.064      LHX   0.964      14     21.30     0.965      28     0.088 0.758    0.00  1.000
+ Normal-return model                               M2 market model 426        -0.276  0.932       0.069      LHX   0.815      15     21.30     0.941      29     0.060 0.378    0.02  0.424
+ Normal-return model                                      M3 + ITA 426        -0.364  0.997       0.004      RTX   0.804      15     21.30     0.941      31     0.025 0.672    0.00  1.000
+ Normal-return model                                     V2 volume 426         0.001  0.537       0.464      TXT   0.110      20     21.30     0.645      18     0.798 0.159    0.00  1.000
+         Window (A5)                                 Days -3 to -1 426        -0.182  0.970       0.031      NOC   0.954      13     21.30     0.981      28     0.088 0.655    0.00  1.000
+         Window (A5)                                 Days -5 to -1 426        -0.078  0.764       0.237      LMT   0.604      14     21.30     0.965      27     0.126 0.383    0.02  0.001
+         Window (A5)                                Days -20 to -1 426        -0.598  0.984       0.017      RTX   0.279      22     21.30     0.469      24     0.304 0.066    0.00  1.000
+         Window (A5)                                Days -40 to -1 426        -0.491  0.969       0.032       GD   0.588      19     21.30     0.726      32     0.016 0.797    0.00  1.000
+         Window (A5)                               Days -40 to -11 426        -0.239  0.908       0.093       GD   0.483      20     21.30     0.645      27     0.126 0.055    0.00  1.000
+        Date (A1/A2)        Contract day 0 shifted -2 trading days 416        -0.241  0.909       0.092      RTX   0.888      26     20.80     0.146      34     0.004 0.001    0.02  0.019
+        Date (A1/A2)        Contract day 0 shifted -1 trading days 422        -0.197  0.815       0.186      LMT   0.849      25     21.10     0.219      33     0.008 0.001    0.02  0.002
+        Date (A1/A2)        Contract day 0 shifted +1 trading days 423        -0.245  0.932       0.069      RTX   0.851      21     21.15     0.545      27     0.118 0.371    0.00  1.000
+        Date (A1/A2)        Contract day 0 shifted +2 trading days 420        -0.196  0.908       0.093      RTX   0.980      20     21.00     0.620      30     0.034 0.030    0.00  1.000
+        Date (A1/A2)        Contract day 0 shifted +3 trading days 413        -0.089  0.801       0.200      RTX   0.954      20     20.65     0.590      25     0.190 0.053    0.00  1.000
+        Date (A1/A2)        Contract day 0 shifted +5 trading days 404         0.081  0.429       0.572       BA   0.414      19     20.20     0.640      21     0.459 0.006    0.02  0.219
+     Announced? (A1)                    Contracts: new awards only  85        -0.425  0.718       0.283      LMT   0.480       4      4.25     0.620       3     0.804 0.175    0.02  0.205
+     Announced? (A1)                 Contracts: modifications only 231        -0.272  0.921       0.080      RTX   0.535      16     11.55     0.119      23     0.001 0.240    0.02  0.220
+     Announced? (A1)                                Contracts only 316        -0.313  0.934       0.067      RTX   0.852      20     15.80     0.168      26     0.010 0.209    0.02  0.206
+     Announced? (A1)                               Arms sales only 110        -0.077  0.588       0.413      LHX   0.717       5      5.50     0.648       5     0.648 0.258    0.02  0.561
+   Size cut-off (A3)                        Deals >= 2% of revenue 273        -0.202  0.769       0.232      LHX   0.188      18     13.65     0.143      16     0.293 0.123    0.02  0.495
+   Size cut-off (A3)                        Deals >= 5% of revenue 118        -0.550  0.901       0.100      LMT   0.821       9      5.90     0.137       7     0.377 0.007    0.02  0.332
+   Size cut-off (A3)                         Deals 1-2% of revenue 153        -0.343  0.918       0.083      HII   0.707       7      7.65     0.648      15     0.010 0.408    0.02  0.118
+       Surprise (A9)                         Competitive contracts  69        -0.184  0.627       0.374      NOC   0.713       5      3.45     0.262       5     0.262 0.097    0.02  0.021
+       Surprise (A9)             Sole-source / follow-on contracts 247        -0.350  0.943       0.058      LMT   0.829      15     12.35     0.256      21     0.013 0.565    0.00  1.000
+              Period                                     2010-2017 160        -0.080  0.629       0.372      LHX   0.521       8      8.00     0.551      11     0.179 0.449    0.02  0.166
+              Period                                     2018-2026 266        -0.356  0.939       0.062      RTX   0.933      17     13.30     0.181      20     0.047 0.132    0.02  0.350
+              Period               Drop Feb-Apr 2020 (COVID crash) 418        -0.215  0.876       0.125      RTX   0.919      23     20.90     0.349      28     0.074 0.360    0.00  1.000
+              Period               Drop crash + Nov-Dec 2016 rally 412        -0.247  0.923       0.078      RTX   0.930      22     20.60     0.407      27     0.095 0.683    0.00  1.000
+   Independence (A7) Isolated deals only (no other deal +-40 days)  71        -0.408  0.881       0.120       GD   0.491       2      3.55     0.876       7     0.064 0.478    0.00  1.000
+Earnings screen (A6)          Wider screen: no earnings in -20..+5 342        -0.361  0.984       0.017      LHX   0.957      19     17.10     0.352      26     0.024 0.570    0.00  1.000
+Earnings screen (A6)           No screen (earnings deals put back) 588        -0.045  0.386       0.615      RTX   0.116      56     29.40     0.000      45     0.004 0.001    0.02  0.001
+         Calibration            Ordinary days matched on firm only 426        -0.252  0.906       0.095      LMT   0.925      28     21.30     0.088      32     0.016 0.082    0.00  1.000
+         Calibration            5,000 simulated studies (vs 1,000) 426        -0.252  0.913       0.087      RTX   0.925      25     21.30     0.233      31     0.025 0.054    0.02  0.487
+       Drop one firm                                    Without BA 355        -0.191  0.772       0.229      RTX   0.887      22     17.75     0.179      26     0.035 0.018    0.02  0.402
+       Drop one firm                                    Without GD 370        -0.254  0.934       0.067      RTX   0.887      20     18.50     0.393      24     0.119 0.025    0.00  1.000
+       Drop one firm                                   Without HII 362        -0.266  0.881       0.120      RTX   0.903      24     18.10     0.100      28     0.016 0.207    0.02  0.289
+       Drop one firm                                  Without LDOS 414        -0.206  0.885       0.116      RTX   0.889      25     20.70     0.193      30     0.029 0.050    0.02  0.411
+       Drop one firm                                   Without LHX 399        -0.265  0.953       0.048      RTX   0.921      21     19.95     0.436      30     0.018 0.034    0.00  1.000
+       Drop one firm                                   Without LMT 331        -0.372  0.974       0.027      RTX   0.883      20     16.55     0.223      26     0.016 0.471    0.02  0.559
+       Drop one firm                                   Without NOC 386        -0.264  0.903       0.098      RTX   0.899      23     19.30     0.223      28     0.033 0.032    0.02  0.480
+       Drop one firm                                   Without RTX 401        -0.294  0.945       0.056      LMT   0.923      23     20.05     0.279      30     0.020 0.050    0.00  1.000
+       Drop one firm                                   Without TXT 390        -0.174  0.833       0.168      RTX   0.915      22     19.50     0.311      26     0.086 0.041    0.02  0.501
+   Size cut-off (A3)            Deals >= 0.5% of revenue (rebuilt) 522        -0.231  0.930       0.071      LHX   0.828      29     26.10     0.307      31     0.186 0.101    0.00  1.000
+   Estimation window                   Estimation days -160 to -41 426        -0.247  0.977       0.024      LMT   0.908      22     21.30     0.469      31     0.025 0.377    0.00  1.000
+   Estimation window                   Estimation days -500 to -41 426        -0.186  0.910       0.091      LMT   0.903      23     21.30     0.383      33     0.009 0.355    0.00  1.000
+     split     value   n  low  high  expected  low_p  mean_car_pct
+event_type arms sale 110    5     5      5.50  0.648        -0.077
+event_type  contract 316   26    20     15.80  0.010        -0.313
+       mod     False 195    8     9      9.75  0.763        -0.229
+       mod      True 231   23    16     11.55  0.001        -0.272
+    fy_end     False 373   28    21     18.65  0.023        -0.253
+    fy_end      True  53    3     4      2.65  0.498        -0.245
+        qe     False 199   18     8      9.95  0.012        -0.349
+        qe      True 227   13    17     11.35  0.348        -0.167
+group_firm  big four 216   16    14     10.80  0.077         0.031
+group_firm   mid-cap 210   15    11     10.50  0.106        -0.544
+       tic        BA  71    5     3      3.55  0.282        -0.558
+       tic        GD  56    7     5      2.80  0.021        -0.242
+       tic       HII  64    3     1      3.20  0.627        -0.173
+       tic      LDOS  12    1     0      0.60  0.460        -1.843
+       tic       LHX  27    1     4      1.35  0.750        -0.066
+       tic       LMT  95    5     5      4.75  0.518         0.166
+       tic       NOC  40    3     2      2.00  0.323        -0.143
+       tic       RTX  25    1     2      1.25  0.723         0.410
+       tic       TXT  36    5     3      1.80  0.032        -1.102
+     years 2010-2013  68    3     2      3.40  0.667         0.006
+     years 2014-2017  92    8     6      4.60  0.090        -0.144
+     years 2018-2021  99    9     5      4.95  0.060        -0.528
+     years 2022-2026 167   11    12      8.35  0.216        -0.254
+model window  sample  txt_z  txt_p_up  txt_p_down  max_firm_p top
+   M2   day0     all  2.045     0.025       0.976       0.190 TXT
+   M2   day0 no 2011  1.954     0.031       0.970       0.223 TXT
+   M2   day0   2018+  3.034     0.009       0.992       0.029 TXT
+   M2  pre10     all -1.993     0.982       0.019       0.806 LHX
+   M2  pre10 no 2011 -2.215     0.992       0.009       0.830 LHX
+   M2  pre10   2018+ -2.638     0.994       0.007       0.854 HII
+   M3   day0     all  2.400     0.016       0.985       0.088 TXT
+   M3   day0 no 2011  2.271     0.012       0.989       0.113 TXT
+   M3   day0   2018+  2.803     0.017       0.984       0.063 TXT
+   M3  pre10     all -2.307     0.988       0.013       0.769 RTX
+   M3  pre10 no 2011 -2.559     0.993       0.008       0.790 RTX
+   M3  pre10   2018+ -2.849     0.999       0.002       0.804 RTX
+   M4   day0     all  1.875     0.043       0.958       0.228 TXT
+   M4   day0 no 2011  1.752     0.042       0.959       0.283 TXT
+   M4   day0   2018+  2.725     0.011       0.990       0.049 TXT
+   M4  pre10     all -1.894     0.972       0.029       0.916 RTX
+   M4  pre10 no 2011 -2.147     0.987       0.014       0.850 LMT
+   M4  pre10   2018+ -2.657     0.996       0.005       0.919 RTX
+   V2  pre10     all  2.312     0.010       0.991       0.113 TXT
+   V2  pre10 no 2011  1.704     0.055       0.946       0.345 TXT
+   V2   day0     all  0.375     0.357       0.644       0.453  GD
+   V2   day0 no 2011  0.045     0.461       0.540       0.701 LHX
+{
+ "n_variations": 46,
+ "any_up_flag_005": 5,
+ "up_flags": [
+  {
+   "variation": "Main: M4, days -10 to -1",
+   "avg_p": 0.919080919080919,
+   "firm_p": 0.9370629370629371,
+   "out_up_p": 0.23326990584746518,
+   "hc_p": 0.03896103896103896,
+   "mix_p": 0.5044955044955045
+  },
+  {
+   "variation": "Days -5 to -1",
+   "avg_p": 0.7642357642357642,
+   "firm_p": 0.6043956043956044,
+   "out_up_p": 0.965428227658327,
+   "hc_p": 0.3826173826173826,
+   "mix_p": 0.000999000999000999
+  },
+  {
+   "variation": "Contract day 0 shifted -2 trading days",
+   "avg_p": 0.9090909090909091,
+   "firm_p": 0.8881118881118881,
+   "out_up_p": 0.14562088337655127,
+   "hc_p": 0.000999000999000999,
+   "mix_p": 0.01898101898101898
+  },
+  {
+   "variation": "Contract day 0 shifted -1 trading days",
+   "avg_p": 0.8151848151848152,
+   "firm_p": 0.8491508491508492,
+   "out_up_p": 0.21945903068236447,
+   "hc_p": 0.000999000999000999,
+   "mix_p": 0.001998001998001998
+  },
+  {
+   "variation": "Contract day 0 shifted +2 trading days",
+   "avg_p": 0.9080919080919081,
+   "firm_p": 0.98001998001998,
+   "out_up_p": 0.6199991973942772,
+   "hc_p": 0.029970029970029972,
+   "mix_p": 1.0
+  },
+  {
+   "variation": "Contract day 0 shifted +5 trading days",
+   "avg_p": 0.42857142857142855,
+   "firm_p": 0.41358641358641357,
+   "out_up_p": 0.6399746416661578,
+   "hc_p": 0.005994005994005994,
+   "mix_p": 0.21878121878121878
+  },
+  {
+   "variation": "Deals >= 5% of revenue",
+   "avg_p": 0.9010989010989011,
+   "firm_p": 0.8211788211788211,
+   "out_up_p": 0.13718355557316156,
+   "hc_p": 0.006993006993006993,
+   "mix_p": 0.33166833166833165
+  },
+  {
+   "variation": "Competitive contracts",
+   "avg_p": 0.6273726273726273,
+   "firm_p": 0.7132867132867133,
+   "out_up_p": 0.2624253437718989,
+   "hc_p": 0.0969030969030969,
+   "mix_p": 0.02097902097902098
+  },
+  {
+   "variation": "No screen (earnings deals put back)",
+   "avg_p": 0.3856143856143856,
+   "firm_p": 0.11588411588411589,
+   "out_up_p": 4.325204698711843e-06,
+   "hc_p": 0.000999000999000999,
+   "mix_p": 0.000999000999000999
+  },
+  {
+   "variation": "Without BA",
+   "avg_p": 0.7722277722277723,
+   "firm_p": 0.8871128871128872,
+   "out_up_p": 0.17863158458498032,
+   "hc_p": 0.017982017982017984,
+   "mix_p": 0.4015984015984016
+  },
+  {
+   "variation": "Without GD",
+   "avg_p": 0.9340659340659341,
+   "firm_p": 0.8871128871128872,
+   "out_up_p": 0.3927360554303723,
+   "hc_p": 0.024975024975024976,
+   "mix_p": 1.0
+  },
+  {
+   "variation": "Without LDOS",
+   "avg_p": 0.8851148851148851,
+   "firm_p": 0.8891108891108891,
+   "out_up_p": 0.19304184992982404,
+   "hc_p": 0.04995004995004995,
+   "mix_p": 0.41058941058941056
+  },
+  {
+   "variation": "Without LHX",
+   "avg_p": 0.9530469530469531,
+   "firm_p": 0.9210789210789211,
+   "out_up_p": 0.4363308318752758,
+   "hc_p": 0.03396603396603397,
+   "mix_p": 1.0
+  },
+  {
+   "variation": "Without NOC",
+   "avg_p": 0.903096903096903,
+   "firm_p": 0.8991008991008991,
+   "out_up_p": 0.22266553647091844,
+   "hc_p": 0.03196803196803197,
+   "mix_p": 0.47952047952047955
+  },
+  {
+   "variation": "Without RTX",
+   "avg_p": 0.945054945054945,
+   "firm_p": 0.9230769230769231,
+   "out_up_p": 0.2793178278150589,
+   "hc_p": 0.04995004995004995,
+   "mix_p": 1.0
+  },
+  {
+   "variation": "Without TXT",
+   "avg_p": 0.8331668331668332,
+   "firm_p": 0.9150849150849151,
+   "out_up_p": 0.3114063481463364,
+   "hc_p": 0.04095904095904096,
+   "mix_p": 0.5014985014985015
+  }
+ ],
+ "down_flags": 23,
+ "n_price_variations": 44,
+ "minutes": 13.804501203695933
+}

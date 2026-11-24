@@ -36,3 +36,10 @@ Study period pushed back from 2018 to **Jan 2010 - Oct 2026** (same firms, same 
 - `full_earnings_yf.py`: SEC EDGAR refuses scripted requests without a contact address, so earnings dates **before June 2016** come from Yahoo Finance's earnings calendar (release time included; 4 PM or later counts for the next trading day). Agreement with EDGAR 8-Ks from 2016 on: 460 of 462 releases on the same trading day. `full_edgar.py` now reads its User-Agent from the `SEC_UA` environment variable. 10-K revenue was not re-pulled: the saved file already covers 2007-2009 onward for every firm except Booz Allen (2017 on).
 - `step2_data_figures.py`: data-section figures (`step2_funnel/by_year/by_firm/size/months/anatomy.png`).
 - Test names on the site are plain words: T1 = average test, T2 = firm-by-firm test, T3 = outlier count, T4 = extreme p-value test (higher criticism), T5 = leak-share test (two-group mixture). The CSVs keep the T1-T5 column names.
+
+## Step 6: sensitivity (2026-11-23)
+- `step6_sensitivity.py`: 44 one-change re-runs of the five tests plus the drift-down count (model, window, contract day-0 shift with the earnings screen re-applied, new awards vs modifications, size cut-off incl. a rebuilt 0.5% sample, competitive vs sole-source, period, isolated deals, earnings screen, calibration, drop one firm, estimation window). Also writes the data for the redone Step 5 charts. About 14 minutes. `full_study.PCT_MIN` sets the size cut-off.
+- `step6_crash_check.py`: re-runs each flagged run with Feb-Apr 2020 removed and lists the deals with the smallest p (`python step6_crash_check.py competitive` for the competitive-contract follow-up).
+- `step6_figures.py`: `step5_decomp/deal_paths/volume/real_pvals/events.png` and `step6_grid/shift/drift.png`.
+- `site_step6_edits.py`: the index.html edits for this step (applied to the working copy and to the committed copy).
+- Notes and results: `STEP6_SENSITIVITY.md`.

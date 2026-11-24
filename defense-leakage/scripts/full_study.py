@@ -47,6 +47,7 @@ N_PLACEBO = 2000
 rng = np.random.default_rng(491)
 MON = {m: i + 1 for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"])}
 STUDY_START = "2010-01-01"
+PCT_MIN = 1  # size cut-off, % of prior-year revenue (Step 6 varies it)
 START = {"RTX": "2020-04-03"}
 
 
@@ -187,7 +188,7 @@ def main(return_state=False):
     offers_n = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10}
     ev["offers_n"] = ev.offers.map(lambda o: np.nan if pd.isna(o) else offers_n.get(str(o).lower(), pd.to_numeric(o, errors="coerce")))
     stage = {"candidates_100m": len(ev)}
-    ev = ev[ev.pct_rev >= 1].copy()
+    ev = ev[ev.pct_rev >= PCT_MIN].copy()
     stage["size_ge_1pct"] = len(ev)
     ev["earnings_near"] = [bool(((E[t] - d >= -10) & (E[t] - d <= 5)).any()) for t, d in zip(ev.tic, ev.d0)]
     # merge same-firm clusters (any type) <= 10 trading days apart; keep the largest by pct_rev

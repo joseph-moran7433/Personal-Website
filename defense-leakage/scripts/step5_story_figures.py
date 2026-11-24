@@ -1,4 +1,5 @@
-"""Figures that separate the method check (test studies) from the real-deal findings.
+"""Figures that separate the method check (test studies) from the real-deal findings. paths() and pvals() are
+superseded by scripts/step6_figures.py (the site uses those versions); running this file overwrites step5_real_pvals.png.
 Reads step45/paths CSVs. Run: python step5_story_figures.py"""
 from pathlib import Path
 

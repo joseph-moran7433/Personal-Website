@@ -29,6 +29,7 @@
   <script src="assets/recipes-data.js"></script>
   <script src="assets/restaurants-data.js"></script>
   <script src="assets/riddles-data.js"></script>
+  <script src="assets/pairings-data.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -729,7 +730,7 @@
        doodle accents. Full-page overlay, same open/close mechanics
        as #project-detail but its own visual identity throughout.
        ═══════════════════════════════════════════════════════════════ */
-    #recipes, #food-hub, #restaurant-finder, #ingredient-game {
+    #recipes, #food-hub, #restaurant-finder, #ingredient-game, #side-kick {
       position: fixed; inset: 0; z-index: 150;
       background:
         radial-gradient(rgba(75,107,63,0.07) 1px, transparent 1px) 0 0/22px 22px,
@@ -740,7 +741,7 @@
       transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1);
       font-family: var(--font-body-fun);
     }
-    #recipes.open, #food-hub.open, #restaurant-finder.open, #ingredient-game.open { opacity: 1; transform: translateX(0); pointer-events: all; }
+    #recipes.open, #food-hub.open, #restaurant-finder.open, #ingredient-game.open, #side-kick.open { opacity: 1; transform: translateX(0); pointer-events: all; }
     /* #food-hub sits "above" the tools in the nav hierarchy (Kitchen -> tool),
        so give it a slightly higher z-index — otherwise identical overlay mechanics. */
     #food-hub { z-index: 151; }
@@ -1340,9 +1341,44 @@
     .food-hub-item.item-book { transform: rotate(-2deg); }
     .food-hub-item.item-pin { margin-top: 4rem; transform: rotate(2deg); }
     .food-hub-item.item-riddle { margin-top: 1.5rem; transform: rotate(-1.5deg); }
+
+    /* ── Side Kick: a plate split into veggie / carb / protein that gently
+       spins, and the pairing tool page it opens. ── */
+    .food-hub-item.item-plate { margin-top: 3rem; transform: rotate(1.5deg); }
+    .plate-stage { width: 210px; height: 190px; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+    .plate-stage svg { width: 180px; height: 180px; animation: plateSway 5s ease-in-out infinite; filter: drop-shadow(0 8px 10px rgba(47,58,38,0.18)); }
+    .plate-stage .plate-part { transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); transform-origin: 90px 90px; }
+    .plate-stage:hover .plate-veg { transform: translate(-5px,-5px); }
+    .plate-stage:hover .plate-carb { transform: translate(6px,-3px); }
+    .plate-stage:hover .plate-pro { transform: translate(0,6px); }
+    .plate-stage:focus-visible { outline: 2px solid var(--rf-basil); outline-offset: 4px; border-radius: 50%; }
+    @keyframes plateSway { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+    @media (prefers-reduced-motion: reduce) { .plate-stage svg { animation: none; } }
+
+    .sk-input { width: 100%; max-width: 520px; font-family: var(--font-body-fun); font-size: 1rem; font-weight: 700; color: var(--rf-text); background: var(--rf-surface); border: 2px solid var(--rf-border); border-radius: 2rem; padding: 0.8rem 1.3rem; outline: none; transition: border-color var(--transition); }
+    .sk-input:focus { border-color: var(--rf-tomato); }
+    .sk-quick { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.8rem; align-items: center; }
+    .sk-quick-label { font-size: 0.8rem; font-weight: 700; color: var(--rf-faint); margin-right: 0.2rem; }
+    .sk-quick button { font-family: var(--font-body-fun); font-size: 0.78rem; font-weight: 700; color: var(--rf-basil); background: rgba(75,107,63,0.08); border: 1px dashed rgba(75,107,63,0.4); border-radius: 2rem; padding: 0.3rem 0.8rem; cursor: pointer; transition: all var(--transition); }
+    .sk-quick button:hover { background: var(--rf-basil); color: #fff; border-style: solid; }
+    .sk-hint { font-size: 0.8rem; color: var(--rf-faint); font-weight: 600; margin-top: 0.6rem; }
+    .sk-plate-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.4rem 0 0.2rem; }
+    .sk-has { font-size: 0.78rem; font-weight: 800; padding: 0.3rem 0.85rem; border-radius: 2rem; border: 2px solid var(--rf-border); color: var(--rf-faint); background: var(--rf-surface); }
+    .sk-has.on { border-color: var(--rf-basil); color: var(--rf-basil-deep); background: rgba(75,107,63,0.1); }
+    .sk-section { margin-bottom: 2.5rem; }
+    .sk-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.4rem; }
+    .sk-section-title { font-family: var(--font-display-fun); font-weight: 700; font-size: 1.35rem; color: var(--rf-basil-deep); }
+    .sk-section-note { font-size: 0.85rem; font-weight: 700; color: var(--rf-muted); margin-bottom: 1rem; }
+    .sk-card { cursor: default; display: flex; flex-direction: column; }
+    .sk-card.has-recipe { cursor: pointer; }
+    .sk-card:not(.has-recipe):hover { border-color: var(--rf-border); transform: none; box-shadow: 0 2px 0 var(--rf-border); }
+    .sk-why { font-size: 0.86rem; color: var(--rf-muted); font-weight: 600; line-height: 1.55; margin-bottom: 0.9rem; flex: 1; }
+    .sk-tag-season { background: rgba(75,107,63,0.14); }
+    .sk-tag-family { background: rgba(217,96,63,0.12); border-color: rgba(217,96,63,0.35); color: var(--rf-tomato-hover); }
     @media (max-width: 900px) {
       .food-hub-item.item-pin { margin-top: 0; }
       .food-hub-item.item-riddle { margin-top: 0; }
+      .food-hub-item.item-plate { margin-top: 0; }
     }
     .cookbook-stage {
       perspective: 1200px; width: 210px; height: 270px; margin-bottom: 2rem;
@@ -2213,7 +2249,7 @@
     </svg>
     <div class="rf-eyebrow">✎ Whisk around and see what's cooking</div>
     <h1 class="rf-title">The Kitchen</h1>
-    <p class="rf-summary">A little corner of the site for food tools — dig through the family recipe box, or find a restaurant I actually recommend nearby. More on the way.</p>
+    <p class="rf-summary">A little corner of the site for food tools — dig through the family recipe box, find a side to go with tonight's dinner, or find a restaurant I actually recommend nearby. More on the way.</p>
   </div>
 
   <div class="rf-body">
@@ -2273,7 +2309,74 @@
         <h2 class="cookbook-label-title">🔍 Riddle Me This</h2>
         <p class="cookbook-label-sub">Lift the lid on a mystery ingredient — 3 lives per riddle, and 5 right wins the game.</p>
       </div>
+      <div class="food-hub-item item-plate">
+        <div class="plate-stage" onclick="openSideKick()" role="button" tabindex="0" aria-label="Open Side Kick" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSideKick();}">
+          <svg viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="90" cy="90" r="84" fill="#fffdf6" stroke="#e8e2c8" stroke-width="4"/>
+            <circle cx="90" cy="90" r="66" fill="none" stroke="#efe9d2" stroke-width="2"/>
+            <g class="plate-part plate-veg">
+              <path d="M90 90 L90 30 A60 60 0 0 0 38 120 Z" fill="#4b6b3f" opacity="0.9"/>
+              <circle cx="66" cy="70" r="8" fill="#6f9460"/><circle cx="58" cy="92" r="7" fill="#6f9460"/><circle cx="74" cy="52" r="6" fill="#6f9460"/>
+            </g>
+            <g class="plate-part plate-carb">
+              <path d="M90 90 L90 30 A60 60 0 0 1 142 120 Z" fill="#e0a530" opacity="0.9"/>
+              <rect x="100" y="56" width="22" height="9" rx="4" fill="#f3c96b"/><rect x="108" y="78" width="22" height="9" rx="4" fill="#f3c96b"/>
+            </g>
+            <g class="plate-part plate-pro">
+              <path d="M90 90 L142 120 A60 60 0 0 1 38 120 Z" fill="#d9603f" opacity="0.9"/>
+              <path d="M70 128 Q90 116 110 128" stroke="#f08a6c" stroke-width="5" stroke-linecap="round" fill="none"/>
+            </g>
+          </svg>
+        </div>
+        <h2 class="cookbook-label-title">🍽️ Side Kick</h2>
+        <p class="cookbook-label-sub">Tell it what's for dinner. It picks a veggie, carb, or protein to round out the plate.</p>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SIDE KICK (side pairings) ═══════════════════════════════════════ -->
+<div id="side-kick">
+  <div class="rf-nav">
+    <button class="rf-back" onclick="closeSideKick()">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span>Back to Kitchen</span>
+    </button>
+    <div class="rf-breadcrumb"><span>Kitchen</span><span>/</span><span>Side Kick</span></div>
+  </div>
+
+  <div class="rf-hero">
+    <svg class="rf-hero-doodle" viewBox="0 0 140 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="62" cy="66" r="38" stroke="#4b6b3f" stroke-width="3"/>
+      <circle cx="62" cy="66" r="27" stroke="#a3ab8f" stroke-width="2" stroke-dasharray="4 5"/>
+      <path d="M115 22v34M109 22v12c0 4 3 6 6 6s6-2 6-6V22" stroke="#d9603f" stroke-width="3" stroke-linecap="round"/>
+      <path d="M115 56v44" stroke="#d9603f" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="18" cy="24" r="3" fill="#e0a530"/><circle cx="30" cy="108" r="2.5" fill="#d9603f"/>
+    </svg>
+    <div class="rf-eyebrow">✎ Round out the plate</div>
+    <h1 class="rf-title">What goes with it?</h1>
+    <p class="rf-summary">Type what you're making and pick what you need: a veggie, a carb, or a protein. It suggests sides that fit the dish, bumps up what's in season, and links the family recipe when there is one.</p>
+  </div>
+
+  <div class="rf-body">
+    <form class="recipe-form" onsubmit="handleSideKick(event)" autocomplete="off">
+      <div class="recipe-form-row">
+        <label class="recipe-form-label" for="sk-dish">🍳 What are you making?</label>
+        <input class="sk-input" id="sk-dish" list="sk-dish-list" placeholder="e.g. tacos, chicken parm, salmon, chili…">
+        <datalist id="sk-dish-list"></datalist>
+        <div class="sk-quick" id="sk-quick"></div>
+      </div>
+      <div class="recipe-form-row">
+        <label class="recipe-form-label">🍽️ What do you need with it? <span style="text-transform:none; letter-spacing:normal; font-weight:500; color:var(--rf-faint); font-size:0.8rem;">(optional: leave blank and it fills in whatever the plate is missing)</span></label>
+        <div class="checkbox-pills" id="sk-type-pills"></div>
+      </div>
+      <div class="recipe-form-actions">
+        <button type="submit" class="rf-submit-btn">Find a Side</button>
+        <span class="recipe-month-note" id="sk-month-note"></span>
+      </div>
+    </form>
+
+    <div class="recipe-results" id="sk-results"></div>
   </div>
 </div>
 
@@ -6355,7 +6458,7 @@ function renderProjectDetail(p) {
 // All full-page food overlays, kept in a list so opening one can reliably
 // close the rest — only one of these (and #project-detail) is ever open
 // at a time, no matter which nav path got you there.
-const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2', 'unrest-phase3', 'unrest-phase4', 'unrest-model-explainer', 'nyc-explorer'];
+const TOOL_OVERLAY_IDS = ['recipes', 'food-hub', 'restaurant-finder', 'tactical-hub', 'weather-tool', 'ingredient-game', 'side-kick', 'unrest-hub', 'unrest-notebook', 'unrest-phase1', 'unrest-phase2', 'unrest-phase3', 'unrest-phase4', 'unrest-model-explainer', 'nyc-explorer'];
 function closeAllToolOverlays() {
   TOOL_OVERLAY_IDS.forEach(id => document.getElementById(id).classList.remove('open'));
 }
@@ -7666,6 +7769,179 @@ document.addEventListener('keydown', (e) => {
 });
 
 initRecipeFinder();
+
+// ─────────────────────────────────────────────────────────────────
+// SIDE KICK — pick a veggie / carb / protein to go with a dish.
+// Pairing tables live in assets/pairings-data.js.
+// ─────────────────────────────────────────────────────────────────
+let skLastDish = null;
+const skOffsets = { veggie: 0, carb: 0, protein: 0 };
+
+function skEsc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+// Word match that ignores letters before the word ("ham" won't hit "graham")
+// but allows plurals after it ("taco" hits "tacos").
+function skHasWord(text, word) {
+  const w = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp('(^|[^a-z])' + w).test(text);
+}
+
+function initSideKick() {
+  buildCheckboxPills('sk-type-pills', PAIR_TYPES, 'sk-type');
+  const family = recipes.filter(r => ['main', 'soup', 'breakfast'].includes(r.category) && !/jam/i.test(r.title)).map(r => r.title);
+  const seen = new Set();
+  const options = [...family, ...PAIR_COMMON_DISHES].filter(t => {
+    const k = t.toLowerCase();
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+  document.getElementById('sk-dish-list').innerHTML = options.map(t => `<option value="${skEsc(t)}"></option>`).join('');
+  const quick = ['Tacos', 'Chicken parm', 'Steak', 'Salmon', 'Beef chili', 'Chicken stir fry', 'Pancakes'];
+  document.getElementById('sk-quick').innerHTML = '<span class="sk-quick-label">Try:</span>' +
+    quick.map(q => `<button type="button" onclick="skQuickPick('${q}')">${q}</button>`).join('');
+  document.getElementById('sk-month-note').textContent = inSeasonThisMonth.length
+    ? `🌱 In season in ${MONTH_NAMES[currentMonthNum - 1]}: ${inSeasonThisMonth.join(', ')}`
+    : `📅 ${MONTH_NAMES[currentMonthNum - 1]}`;
+}
+
+function skQuickPick(dish) {
+  document.getElementById('sk-dish').value = dish;
+  handleSideKick();
+}
+
+function skReadDish(raw) {
+  const text = raw.toLowerCase().trim();
+  const recipe = recipes.find(r => r.title.toLowerCase() === text) || null;
+  let style = null;
+  for (const [s, words] of PAIR_STYLE_KEYWORDS) {
+    if (words.some(w => skHasWord(text, w))) { style = s; break; }
+  }
+  if (!style && recipe) style = CUISINE_TO_STYLE[recipe.cuisine[0]] || null;
+  const has = {};
+  PAIR_TYPES.forEach(t => {
+    const hit = PAIR_CONTAINS[t.value].find(w => skHasWord(text, w));
+    if (hit) has[t.value] = hit;
+  });
+  return { raw: raw.trim(), text, recipe, style: style || 'classic', recognized: !!style, has };
+}
+
+function skRanked(dish, type) {
+  const list = (PAIR_SIDES[dish.style] || PAIR_SIDES.classic)[type] || [];
+  return list
+    .map((side, i) => {
+      const name = side.name.toLowerCase();
+      const clash = PAIR_SHARED_WORDS.some(w => skHasWord(dish.text, w) && skHasWord(name, w));
+      const same = dish.recipe && side.recipeId === dish.recipe.id;
+      const inSeason = (side.seasonal || []).some(p => inSeasonThisMonth.includes(p));
+      return { side, inSeason, skip: clash || same, score: -i + (inSeason ? 3 : 0) + (side.recipeId != null ? 0.5 : 0) };
+    })
+    .filter(x => !x.skip)
+    .sort((a, b) => b.score - a.score);
+}
+
+function skCardHTML(x) {
+  const s = x.side;
+  const fam = s.recipeId != null && recipes.some(r => r.id === s.recipeId);
+  const tags = [];
+  if (x.inSeason) tags.push('<span class="rf-tag sk-tag-season">🌱 In season now</span>');
+  if (fam) tags.push('<span class="rf-tag sk-tag-family">📖 Family recipe: tap to open</span>');
+  return `<div class="recipe-card sk-card${fam ? ' has-recipe' : ''}"${fam ? ` onclick="openRecipeModal(${s.recipeId})" role="button" tabindex="0"` : ''}>
+      <div class="recipe-card-title">${skEsc(s.name)}</div>
+      <div class="sk-why">${skEsc(s.why)}</div>
+      <div class="recipe-card-tags">${tags.join('')}</div>
+    </div>`;
+}
+
+function skSectionHTML(dish, type) {
+  const t = PAIR_TYPES.find(p => p.value === type);
+  const ranked = skRanked(dish, type);
+  const n = ranked.length;
+  const start = n ? skOffsets[type] % n : 0;
+  const shown = [];
+  for (let k = 0; k < Math.min(3, n); k++) shown.push(ranked[(start + k) % n]);
+  const note = dish.has[type]
+    ? `Your dish already brings a ${t.noun} (${skEsc(dish.has[type])}), so these are optional extras.`
+    : `Your plate needs a ${t.noun}. Best fits first.`;
+  return `<div class="sk-section">
+      <div class="sk-section-head">
+        <div class="sk-section-title">${t.label}</div>
+        ${n > 3 ? `<button type="button" class="recipe-shuffle-btn" onclick="skShuffle('${type}')">↻ Show different ones</button>` : ''}
+      </div>
+      <div class="sk-section-note">${note}</div>
+      <div class="recipe-grid">${shown.map(skCardHTML).join('') || '<div class="recipe-empty">Nothing that wouldn\'t repeat your dish. Try another type.</div>'}</div>
+    </div>`;
+}
+
+function skRender() {
+  const dish = skLastDish;
+  const out = document.getElementById('sk-results');
+  if (!dish) return;
+  let types = Array.from(document.querySelectorAll('#sk-type-pills input:checked')).map(el => el.value);
+  let autoNote = '';
+  if (!types.length) {
+    types = PAIR_TYPES.map(t => t.value).filter(v => !dish.has[v]);
+    autoNote = types.length
+      ? 'Nothing picked, so here is what the plate is missing.'
+      : 'This dish already covers all three, so here is a veggie to lighten it up.';
+    if (!types.length) types = ['veggie'];
+  }
+  const plate = PAIR_TYPES.map(t => `<span class="sk-has${dish.has[t.value] ? ' on' : ''}">${dish.has[t.value] ? '✓' : '○'} ${t.label.replace(/^\S+\s/, '')}</span>`).join('');
+  const styleLine = dish.recognized
+    ? `Read as <strong>${PAIR_STYLE_LABELS[dish.style]}</strong>.`
+    : `I didn't recognize that one, so these are all-around sides for a classic dinner. Words like <em>tacos, pasta, curry, stir fry, salmon</em> or <em>chili</em> help.`;
+  out.innerHTML = `
+    <div class="recipe-feature">
+      <div class="rf-pin"></div>
+      <div class="recipe-feature-eyebrow">✎ Pairing for</div>
+      <div class="recipe-feature-title" style="cursor:default">${skEsc(dish.raw)}</div>
+      <div class="recipe-feature-desc">${styleLine} ${autoNote}</div>
+      <div class="sk-plate-line">${plate}</div>
+    </div>
+    ${types.map(t => skSectionHTML(dish, t)).join('')}`;
+  out.classList.add('visible');
+}
+
+function skShuffle(type) {
+  skOffsets[type] += 3;
+  skRender();
+}
+
+function handleSideKick(e) {
+  if (e) e.preventDefault();
+  const raw = document.getElementById('sk-dish').value;
+  const out = document.getElementById('sk-results');
+  if (!raw.trim()) {
+    out.innerHTML = '<div class="recipe-empty">Type what you\'re making first, or tap one of the examples.</div>';
+    out.classList.add('visible');
+    return;
+  }
+  skLastDish = skReadDish(raw);
+  Object.keys(skOffsets).forEach(k => { skOffsets[k] = 0; });
+  skRender();
+  out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function openSideKick() {
+  document.getElementById('project-detail').classList.remove('open');
+  closeAllToolOverlays();
+  document.getElementById('side-kick').classList.add('open');
+  document.getElementById('main-site').classList.add('hidden');
+  window.scrollTo(0, 0);
+  lucide.createIcons();
+  setTimeout(() => document.getElementById('sk-dish').focus({ preventScroll: true }), 350);
+}
+
+function closeSideKick() {
+  document.getElementById('side-kick').classList.remove('open');
+  document.getElementById('food-hub').classList.add('open');
+  window.scrollTo(0, 0);
+  closeRecipeModal();
+}
+
+initSideKick();
 
 // ─────────────────────────────────────────────────────────────────
 // NEARBY EATS — a hand-curated restaurant list (assets/restaurants-data.js),

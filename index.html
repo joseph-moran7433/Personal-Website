@@ -7987,7 +7987,7 @@ function skRender() {
   }
   const plate = PAIR_TYPES.map(t => `<span class="sk-has${dish.has[t.value] ? ' on' : ''}">${dish.has[t.value] ? '✓' : '○'} ${t.label.replace(/^\S+\s/, '')}</span>`).join('');
   const fixLine = dish.fixes.length
-    ? `Read ${dish.fixes.map(([a, b]) => `&ldquo;${skEsc(a)}&rdquo; as &ldquo;${skEsc(b)}&rdquo;`).join(', ')}. `
+    ? `Took ${dish.fixes.map(([a, b]) => `&ldquo;${skEsc(a)}&rdquo; to mean &ldquo;${skEsc(b)}&rdquo;`).join(', ')}. `
     : '';
   const styleLine = fixLine + (dish.recognized
     ? `Read as <strong>${PAIR_STYLE_LABELS[dish.style]}</strong>.`
